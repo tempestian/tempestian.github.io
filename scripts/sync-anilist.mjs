@@ -3,15 +3,29 @@ const USER = process.env.ANILIST_USER || 'TurkTempestian';
 const LIST = process.env.CUSTOM_LIST || 'Total Anime Sayısı';
 const OUT = process.env.OUT || 'data/anime.json';
 const SERIES = new Set(['TV', 'TV_SHORT', 'ONA']);
-const Q = `query($u:String,$c:Int){MediaListCollection(userName:$u,type:ANIME,chunk:$c,perChunk:500){hasNextChunk lists{name isCustomList entries{status progress score(format:POINT_10_DECIMAL) createdAt customLists media{id idMal format episodes startDate{year month day} title{romaji english} coverImage{large} relations{edges{relationType node{id}}}}}}}}`;
+const Q = `query($u:String,$c:Int){MediaListCollection(userName:$u,type:ANIME,chunk:$c,perChunk:100){hasNextChunk lists{name isCustomList entries{status progress score(format:POINT_10_DECIMAL) createdAt customLists media{id format episodes startDate{year month day} title{romaji english} coverImage{large} relations{edges{relationType node{id}}}}}}}}`;
 
 async function gql(c) {
   if (process.env.FIXTURE) return JSON.parse(fs.readFileSync(process.env.FIXTURE, 'utf8'));
   for (let t = 1; ; t++) {
-    const r = await fetch('https://graphql.anilist.co', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ query: Q, variables: { u: USER, c } }) });
-    if (r.ok) { const j = await r.json(); if (j.errors) throw new Error(JSON.stringify(j.errors)); return j; }
-    if (t >= 4 || (r.status < 500 && r.status !== 429)) throw new Error('AniList HTTP ' + r.status);
-    await new Promise(s => setTimeout(s, 4000 * t));
+    let r, body = '';
+    try {
+      r = await fetch('https://graphql.anilist.co', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'User-Agent': 'tempestian-github-io-sync' }, body: JSON.stringify({ query: Q, variables: { u: USER, c } }) });
+      body = await r.text();
+    } catch (err) {
+      if (t >= 4) throw new Error('AniList bağlantı hatası: ' + err.message);
+      await new Promise(s => setTimeout(s, 4000 * t));
+      continue;
+    }
+    if (r.ok) {
+      const j = JSON.parse(body);
+      if (j.errors) throw new Error('AniList sorgu hatası: ' + JSON.stringify(j.errors));
+      if (!j.data || !j.data.MediaListCollection) throw new Error('AniList boş yanıt: ' + body.slice(0, 300));
+      return j;
+    }
+    if (t >= 4 || (r.status < 500 && r.status !== 429)) throw new Error('AniList HTTP ' + r.status + ' ' + body.slice(0, 500));
+    const ra = Number(r.headers.get('retry-after'));
+    await new Promise(s => setTimeout(s, (ra > 0 ? ra : 4 * t) * 1000));
   }
 }
 
@@ -24,7 +38,9 @@ for (let c = 1; ; c++) {
     if ((l.isCustomList && l.name === LIST) || (e.customLists && e.customLists[LIST])) m.custom = true;
   }
   if (!col.hasNextChunk || process.env.FIXTURE) break;
+  await new Promise(s => setTimeout(s, 1000));
 }
+if (!entries.size) throw new Error('AniList listesi boş geldi: kullanıcı adı veya profil gizliliğini kontrol edin.');
 
 const par = new Map([...entries.keys()].map(k => [k, k]));
 const find = x => { while (par.get(x) !== x) { par.set(x, par.get(par.get(x))); x = par.get(x); } return x; };
@@ -59,7 +75,7 @@ for (const members of groups.values()) {
   anime.push({
     id: 'al-' + first.id,
     title: (ov.titles || {})[first.id] || first.title.english || first.title.romaji,
-    anilistId: first.id, malId: first.idMal || null,
+    anilistId: first.id,
     url: 'https://anilist.co/anime/' + first.id,
     status,
     score: scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length * 10) / 10 : null,

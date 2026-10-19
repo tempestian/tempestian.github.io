@@ -1,35 +1,10 @@
 const $ = s => document.querySelector(s);
 const ST = {completed:'İzlendi', watching:'İzleniyor', paused:'Beklemede', dropped:'Bırakıldı', planned:'Planlandı'};
-const wait = ms => new Promise(r => setTimeout(r, ms));
 const sum = (a,k) => a.reduce((n,x) => n+(x[k]||0), 0);
 function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){} }
 const state = {items:[], view:ls('view')==='list' ? 'list' : 'grid', filter:'all', sort:'added', q:''};
 
-const queue = [], memo = new Map(); let busy = false;
-function getCover(it){
-  if(it.image) return Promise.resolve(it.image);
-  if(!it.malId) return Promise.resolve(null);
-  if(memo.has(it.malId)) return memo.get(it.malId);
-  const k = 'img:'+it.malId; let c = null;
-  try{ c = JSON.parse(ls(k)||'null'); }catch(e){}
-  const p = c && Date.now()-c.t < 2592e6 ? Promise.resolve(c.u) : new Promise(res => { queue.push({it, k, res}); pump(); });
-  memo.set(it.malId, p); return p;
-}
-async function pump(){
-  if(busy) return; busy = true;
-  while(queue.length){
-    const job = queue.shift();
-    try{
-      const r = await fetch('https://api.jikan.moe/v4/anime/'+job.it.malId);
-      if(r.status === 429){ queue.unshift(job); await wait(1500); continue; }
-      const u = (await r.json()).data.images.jpg.image_url;
-      ls(job.k, JSON.stringify({u, t:Date.now()}));
-      job.res(u);
-    }catch(e){ job.res(null); }
-    await wait(450);
-  }
-  busy = false;
-}
+const getCover = it => Promise.resolve(it.image || null);
 
 const go = () => document.startViewTransition ? document.startViewTransition(render) : render();
 const byAdded = (a,b) => (b.addedAt||'').localeCompare(a.addedAt||'');
@@ -45,7 +20,7 @@ function render(){
     const li = document.createElement('li');
     li.innerHTML = '<div class="poster"><img alt="" loading="lazy"></div><div class="t"><h3><a target="_blank" rel="noopener"></a></h3><p class="meta"></p><p class="st"></p></div>';
     const a = li.querySelector('a'); a.textContent = it.title;
-    if(it.url) a.href = it.url; else if(it.malId) a.href = 'https://myanimelist.net/anime/'+it.malId;
+    if(it.url) a.href = it.url; else if(it.anilistId) a.href = 'https://anilist.co/anime/'+it.anilistId;
     li.querySelector('.meta').textContent = sn+' sezon, '+(!ep ? w+' bölüm' : w===ep ? ep+' bölüm' : w+'/'+ep+' bölüm');
     const st = li.querySelector('.st');
     if(it.status !== 'completed'){ st.textContent = ST[it.status]||it.status; st.classList.add('st-'+it.status); } else st.remove();

@@ -3,22 +3,38 @@ on:
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/sync-anilist.mjs
+      - .github/workflows/sync-anilist.yml
 permissions:
   contents: write
+  pages: write
+concurrency:
+  group: sync-anilist
+  cancel-in-progress: false
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
       - run: node scripts/sync-anilist.mjs
         env:
           ANILIST_USER: TurkTempestian
-      - name: Değişiklik varsa kaydet
+      - name: Değişiklik varsa kaydet ve yayınla
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/anime.json
-          git diff --cached --quiet || (git commit -m "AniList verisi güncellendi" && git push)
+          if git diff --cached --quiet; then
+            echo "Değişiklik yok."
+            exit 0
+          fi
+          git commit -m "AniList verisi güncellendi"
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+          gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" || echo "Pages derlemesi elle tetiklenemedi."

@@ -47,7 +47,7 @@
   wall(json('wall') || []);
 
   const dock = document.getElementById('dock'), list = document.getElementById('sections'), links = document.getElementById('links');
-  const cover = x => x.image || (x.malId && (json('img:' + x.malId) || {}).u) || null;
+  const cover = x => x.image || null;
   function paint(d, data) {
     dock.replaceChildren();
     for (const s of [{ id: 'home', title: 'Ana sayfa', path: '' }, ...d.sections.filter(s => s.status === 'active')]) {

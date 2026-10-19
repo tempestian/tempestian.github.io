@@ -1,11 +1,13 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "updated": "2026-10-19",
+  "source": "anilist:TurkTempestian",
   "anime": [
     {
-      "id": "death-note",
+      "id": "al-1535",
       "title": "Death Note",
-      "malId": 1535,
+      "anilistId": 1535,
+      "url": "https://anilist.co/anime/1535",
       "status": "completed",
       "score": 10,
       "seasons": [

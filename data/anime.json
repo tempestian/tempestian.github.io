@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-10-19",
+  "anime": [
+    {
+      "id": "death-note",
+      "title": "Death Note",
+      "malId": 1535,
+      "status": "completed",
+      "score": 10,
+      "seasons": [
+        { "name": "Death Note", "episodes": 37, "watched": 37 }
+      ],
+      "image": null,
+      "addedAt": "2026-10-19"
+    }
+  ]
+}

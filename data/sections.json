@@ -1,0 +1,28 @@
+{
+  "sections": [
+    {
+      "id": "anime",
+      "title": "Anime",
+      "path": "anime/",
+      "description": "İzlediğim animeler",
+      "data": "data/anime.json",
+      "countKey": "anime",
+      "unit": "anime",
+      "status": "active"
+    }
+  ],
+  "links": [
+    {
+      "title": "Technopat Sosyal",
+      "url": "https://www.technopat.net/sosyal/uye/bayram-tempestian.657641/"
+    },
+    {
+      "title": "GitHub",
+      "url": "https://github.com/tempestian"
+    },
+    {
+      "title": "AniList",
+      "url": "https://anilist.co/user/TurkTempestian"
+    }
+  ]
+}

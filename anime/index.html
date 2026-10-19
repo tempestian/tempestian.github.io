@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#eceef3">
+<title>Anime · Tempestian</title>
+<link rel="icon" href="../assets/img/icon.svg" type="image/svg+xml">
+<script src="../assets/js/theme.js"></script>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-root="../" data-section="anime">
+<header class="bar">
+  <div class="bar-in">
+    <a class="btn glass" href="../" data-icon="back" aria-label="Ana sayfa"></a>
+    <span class="bar-title" aria-hidden="true">Anime</span>
+    <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
+  </div>
+</header>
+<main class="wrap">
+  <section class="hero"><h1>Anime</h1></section>
+  <section class="stats glass sq" id="stats" hidden></section>
+  <div class="tools">
+    <label class="search glass">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.2 4.2"/></svg>
+      <input id="q" type="search" placeholder="Ara" aria-label="Ada göre ara" autocomplete="off">
+    </label>
+    <div class="pick glass">
+      <select id="sort" aria-label="Sıralama">
+        <option value="added">Son eklenen</option>
+        <option value="score">Puan</option>
+        <option value="title">Ad</option>
+      </select>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg>
+    </div>
+    <div class="view glass" role="group" aria-label="Görünüm">
+      <button type="button" data-view="grid" data-icon="grid" aria-label="Kart"></button>
+      <button type="button" data-view="list" data-icon="list" aria-label="Liste"></button>
+    </div>
+  </div>
+  <div class="chips" id="chips" role="group" aria-label="Duruma göre filtre"></div>
+  <ul id="list" class="grid"></ul>
+  <p id="empty" class="note" hidden></p>
+  <p class="foot">AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir.</p>
+</main>
+<nav id="dock" class="dock glass sq" aria-label="Ana menü"></nav>
+<script src="../assets/js/common.js"></script>
+<script src="../assets/js/anime.js"></script>
+</body>
+</html>

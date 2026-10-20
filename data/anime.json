@@ -5289,8 +5289,8 @@
           "kind": "movie",
           "format": "MOVIE",
           "episodes": 1,
-          "watched": 0,
-          "status": "PLANNING",
+          "watched": 1,
+          "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2026
         },

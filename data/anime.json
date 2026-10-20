@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 2,
-  "updated": "2026-10-19",
+  "schemaVersion": 3,
+  "updated": "2026-10-20",
   "source": "anilist:TurkTempestian",
   "anime": [
     {
@@ -10,30 +10,121 @@
       "url": "https://anilist.co/anime/127399",
       "status": "watching",
       "score": 6.7,
-      "seasons": [
+      "parts": [
         {
+          "id": 127399,
           "name": "Record of Ragnarok",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
         },
         {
+          "id": 138106,
+          "name": "Shuumatsu no Valkyrie Mini Anime",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 14,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 138056,
           "name": "Record of Ragnarok II",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 10,
-          "watched": 10
+          "watched": 10,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
         },
         {
+          "id": 163943,
+          "name": "Shuumatsu no Valkyrie II Mini Anime",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 18,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 165356,
           "name": "Record of Ragnarok II Part 2",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 5,
-          "watched": 5
+          "watched": 5,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
         },
         {
+          "id": 187921,
           "name": "Record of Ragnarok III",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 15,
-          "watched": 10
+          "watched": 10,
+          "status": "CURRENT",
+          "release": "FINISHED",
+          "year": 2025
+        },
+        {
+          "id": 213580,
+          "name": "Shuumatsu no Valkyrie IV",
+          "kind": "other",
+          "format": null,
+          "episodes": 0,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": null
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127399-AAH1pevCZLrB.jpg",
       "addedAt": "2026-10-02"
+    },
+    {
+      "id": "al-162804",
+      "title": "Alya Sometimes Hides Her Feelings in Russian",
+      "anilistId": 162804,
+      "url": "https://anilist.co/anime/162804",
+      "status": "watching",
+      "score": null,
+      "parts": [
+        {
+          "id": 162804,
+          "name": "Alya Sometimes Hides Her Feelings in Russian",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 7,
+          "status": "CURRENT",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 181641,
+          "name": "Tokidoki Bosotto Rossiya-go de Dereru Tonari no Alya-san Season 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 0,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": 2027
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162804-TBeptcAfvqTd.jpg",
+      "addedAt": "2026-09-11"
     },
     {
       "id": "al-20931",
@@ -42,11 +133,17 @@
       "url": "https://anilist.co/anime/20931",
       "status": "completed",
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 20931,
           "name": "Death Parade",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2015
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx20931-bktYqOcxPERi.jpg",
@@ -59,11 +156,28 @@
       "url": "https://anilist.co/anime/98503",
       "status": "completed",
       "score": 7,
-      "seasons": [
+      "parts": [
         {
+          "id": 98503,
           "name": "School Babysitters",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 102969,
+          "name": "School Babysitters OVA",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98503-oUCGDkv2osNK.jpg",
@@ -76,11 +190,17 @@
       "url": "https://anilist.co/anime/20555",
       "status": "completed",
       "score": 7,
-      "seasons": [
+      "parts": [
         {
+          "id": 20555,
           "name": "When Marnie Was There",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2014
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20555-QGbWQC3Kfpok.jpg",
@@ -93,21 +213,61 @@
       "url": "https://anilist.co/anime/108463",
       "status": "completed",
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 108463,
           "name": "Toilet-bound Hanako-kun",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
         },
         {
+          "id": 159074,
+          "name": "After-school Hanako-kun",
+          "kind": "season",
+          "format": "TV_SHORT",
+          "episodes": 4,
+          "watched": 4,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 170893,
+          "name": "After-school Hanako-kun Season 2",
+          "kind": "season",
+          "format": "TV_SHORT",
+          "episodes": 4,
+          "watched": 4,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 170892,
           "name": "Toilet-bound Hanako-kun Season 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2025
         },
         {
+          "id": 189326,
           "name": "Toilet-Bound Hanako-kun Season 2 Part 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2025
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108463-u03vrYnyB3L9.jpg",
@@ -120,11 +280,17 @@
       "url": "https://anilist.co/anime/199",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 199,
           "name": "Spirited Away",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2001
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-sWefXJvXkDOb.jpg",
@@ -137,11 +303,17 @@
       "url": "https://anilist.co/anime/2981",
       "status": "completed",
       "score": 4,
-      "seasons": [
+      "parts": [
         {
+          "id": 2981,
           "name": "Chika Gentou Gekiga: Shoujo Tsubaki",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 1992
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2981-PuzLTzNf4DeV.png",
@@ -154,16 +326,39 @@
       "url": "https://anilist.co/anime/114124",
       "status": "completed",
       "score": 2.5,
-      "seasons": [
+      "parts": [
         {
+          "id": 114124,
           "name": "Moriarty the Patriot",
+          "kind": "season",
+          "format": "TV",
           "episodes": 11,
-          "watched": 11
+          "watched": 11,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
         },
         {
+          "id": 124858,
           "name": "Moriarty the Patriot Part 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 138700,
+          "name": "Moriarty the Patriot OVA",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 2,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114124-def92qPuIVeK.jpg",
@@ -175,17 +370,74 @@
       "anilistId": 21613,
       "url": "https://anilist.co/anime/21613",
       "status": "completed",
-      "score": 7.5,
-      "seasons": [
+      "next": true,
+      "score": 7.7,
+      "parts": [
         {
+          "id": 21613,
           "name": "Saga of Tanya the Evil",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2017
         },
         {
-          "name": "Saga of Tanya the Evil: Operation Desert Pasta",
+          "id": 98186,
+          "name": "Youjo Shenki",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 100878,
+          "name": "Saga of Tanya the Evil - the Movie -",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019
+        },
+        {
+          "id": 135866,
+          "name": "Saga of Tanya the Evil: Operation Desert Pasta",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 135865,
+          "name": "Saga of Tanya the Evil Season 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
+        },
+        {
+          "id": 213961,
+          "name": "Youjo Shenki 2",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21613-qT3NiwYP5dYc.png",
@@ -198,11 +450,17 @@
       "url": "https://anilist.co/anime/181447",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 181447,
           "name": "May I Ask for One Final Thing?",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2025
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181447-aCmaQmtdwuU5.jpg",
@@ -214,17 +472,184 @@
       "anilistId": 1575,
       "url": "https://anilist.co/anime/1575",
       "status": "completed",
-      "score": 10,
-      "seasons": [
+      "next": true,
+      "score": 9.7,
+      "parts": [
         {
+          "id": 1575,
           "name": "Code Geass: Lelouch of the Rebellion",
+          "kind": "season",
+          "format": "TV",
           "episodes": 25,
-          "watched": 25
+          "watched": 25,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2006
         },
         {
+          "id": 1953,
+          "name": "Code Geass: Hangyaku no Lelouch Picture Drama",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 9,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2007
+        },
+        {
+          "id": 2904,
           "name": "Code Geass: Lelouch of the Rebellion R2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 25,
-          "watched": 25
+          "watched": 25,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2008
+        },
+        {
+          "id": 5163,
+          "name": "Code Geass: Hangyaku no Lelouch R2 Picture Drama",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 9,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2008
+        },
+        {
+          "id": 9591,
+          "name": "Code Geass: Lelouch of the Rebellion R2: Flash Specials",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 9,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2008
+        },
+        {
+          "id": 8728,
+          "name": "Code Geass: Hangyaku no Lelouch - Kiseki no Birthday Picture Drama",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
+        },
+        {
+          "id": 18881,
+          "name": "Code Geass: Hangyaku no Lelouch - Kiseki no BABA Gekijou",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
+        },
+        {
+          "id": 132317,
+          "name": "Code Geass: Hangyaku no Lelouch R2 Picture Drama TURN 12.06 - Last Moratorium",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 112900,
+          "name": "Code Geass: Hangyaku no Lelouch Picture Drama - Kiseki no Anniversary",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 101811,
+          "name": "Code Geass: Lelouch of the Rebellion I - Initiation",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 125783,
+          "name": "Code Geass: Hangyaku no Lelouch Picture Drama - Kamen Kokuhaku Taikai",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 101812,
+          "name": "Code Geass: Lelouch of the Rebellion II - Transgression",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 101813,
+          "name": "Code Geass: Lelouch of the Rebellion III - Glorification",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 97880,
+          "name": "Code Geass: Lelouch of the Re;surrection",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019
+        },
+        {
+          "id": 117408,
+          "name": "Code Geass: Fukkatsu no Lelouch Picture Drama",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 2,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2019
+        },
+        {
+          "id": 126830,
+          "name": "Code Geass: Rozé of the Recapture",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1575-hsmWM2ydNm1m.jpg",
@@ -237,11 +662,17 @@
       "url": "https://anilist.co/anime/179696",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 179696,
           "name": "I Have a Crush at Work",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2025
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx179696-1MAqXYVXT7IT.jpg",
@@ -254,11 +685,39 @@
       "url": "https://anilist.co/anime/126288",
       "status": "completed",
       "score": 4,
-      "seasons": [
+      "parts": [
         {
+          "id": 126288,
           "name": "Sasaki and Miyano",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 143082,
+          "name": "Sasaki and Miyano: A Tiny Episode From Before He Realized His Feelings",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 146743,
+          "name": "Sasaki and Miyano: Graduation",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx126288-v9RNANkv2JEi.jpg",
@@ -271,11 +730,50 @@
       "url": "https://anilist.co/anime/16417",
       "status": "completed",
       "score": 4,
-      "seasons": [
+      "parts": [
         {
+          "id": 16417,
           "name": "Tamako Market",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2013
+        },
+        {
+          "id": 17879,
+          "name": "Tamako Market Specials",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 6,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2013
+        },
+        {
+          "id": 20519,
+          "name": "Tamako -love story-",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 21014,
+          "name": "Dera-chan of the Southern Island",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2014
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx16417-r8Njy5UnwvDE.png",
@@ -288,11 +786,17 @@
       "url": "https://anilist.co/anime/181444",
       "status": "completed",
       "score": 8,
-      "seasons": [
+      "parts": [
         {
+          "id": 181444,
           "name": "The Fragrant Flower Blooms With Dignity",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2025
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181444-Ut9DDUZdfHwg.jpg",
@@ -305,11 +809,17 @@
       "url": "https://anilist.co/anime/163623",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 163623,
           "name": "Pseudo Harem",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2024
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163623-pzR6vIHoJh0b.jpg",
@@ -321,16 +831,157 @@
       "anilistId": 116267,
       "url": "https://anilist.co/anime/116267",
       "status": "completed",
+      "next": true,
       "score": 8,
-      "seasons": [
+      "parts": [
         {
+          "id": 116267,
           "name": "TONIKAWA: Over The Moon For You",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
+        },
+        {
+          "id": 127371,
+          "name": "TONIKAWA: Over The Moon For You ~SNS~",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 141212,
+          "name": "TONIKAWA: Over The Moon For You ~Uniform~",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 141208,
+          "name": "TONIKAWA: Over The Moon For You Season 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 166104,
+          "name": "TONIKAWA: Over The Moon For You ~High School Days~",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 4,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2023
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116267-Eo1biPBTlL4i.jpg",
       "addedAt": "2025-06-14"
+    },
+    {
+      "id": "al-66",
+      "title": "Azumanga Daioh",
+      "anilistId": 66,
+      "url": "https://anilist.co/anime/66",
+      "status": "watching",
+      "score": null,
+      "parts": [
+        {
+          "id": 1593,
+          "name": "Azumanga Web Daioh",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2000
+        },
+        {
+          "id": 659,
+          "name": "Azumanga Daioh: The Very Short Movie",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2001
+        },
+        {
+          "id": 66,
+          "name": "Azumanga Daioh",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 26,
+          "watched": 4,
+          "status": "CURRENT",
+          "release": "FINISHED",
+          "year": 2002
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx66-ZqYQWl6LsfeI.png",
+      "addedAt": "2025-06-12"
+    },
+    {
+      "id": "al-101001",
+      "title": "Asobi Asobase - workshop of fun -",
+      "anilistId": 101001,
+      "url": "https://anilist.co/anime/101001",
+      "status": "dropped",
+      "score": null,
+      "parts": [
+        {
+          "id": 101001,
+          "name": "Asobi Asobase - workshop of fun -",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 1,
+          "status": "DROPPED",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 104368,
+          "name": "Asobi Asobase Specials",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 2,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 104170,
+          "name": "Asobi Asobase -workshop of fun- OVA",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101001-UERCW0UGi0P7.jpg",
+      "addedAt": "2025-06-02"
     },
     {
       "id": "al-6574",
@@ -339,36 +990,220 @@
       "url": "https://anilist.co/anime/6574",
       "status": "completed",
       "score": 5,
-      "seasons": [
+      "parts": [
         {
+          "id": 6574,
           "name": "Hanamaru Kindergarten",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2010
+        },
+        {
+          "id": 16646,
+          "name": "Hanamaru Youchien: Panda Neko Taisou",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 8,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6574-rCLnJXp3NK0J.png",
       "addedAt": "2025-05-25"
     },
     {
-      "id": "al-14741",
-      "title": "Love, Chunibyo & Other Delusions",
-      "anilistId": 14741,
-      "url": "https://anilist.co/anime/14741",
-      "status": "completed",
-      "score": 9,
-      "seasons": [
+      "id": "al-21196",
+      "title": "Kabaneri of the Iron Fortress",
+      "anilistId": 21196,
+      "url": "https://anilist.co/anime/21196",
+      "status": "dropped",
+      "score": null,
+      "parts": [
         {
-          "name": "Love, Chunibyo & Other Delusions",
+          "id": 21196,
+          "name": "Kabaneri of the Iron Fortress",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 1,
+          "status": "DROPPED",
+          "release": "FINISHED",
+          "year": 2016
         },
         {
-          "name": "Love, Chunibyo & Other Delusions - Heart Throb -",
-          "episodes": 12,
-          "watched": 12
+          "id": 98662,
+          "name": "Kabaneri of the Iron Fortress: Light That Gathers",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 98663,
+          "name": "Kabaneri of the Iron Fortress: Life That Burns",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 97918,
+          "name": "Kabaneri of the Iron Fortress: The Battle of Unato",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2019
         }
       ],
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14741-CGXEIeUe2roA.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21196-2PfPfIDrxKki.jpg",
+      "addedAt": "2025-05-24"
+    },
+    {
+      "id": "al-15687",
+      "title": "Love, Chunibyo & Other Delusions Lite",
+      "anilistId": 15687,
+      "url": "https://anilist.co/anime/15687",
+      "status": "completed",
+      "score": 8.5,
+      "parts": [
+        {
+          "id": 15687,
+          "name": "Love, Chunibyo & Other Delusions Lite",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 6,
+          "watched": 6,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 14741,
+          "name": "Love, Chunibyo & Other Delusions",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 15879,
+          "name": "Love, Chunibyo & Other Delusions: Depth of Field - Ai to Nikushimi Gekijou",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 7,
+          "watched": 7,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 16934,
+          "name": "Love, Chunibyo & Other Delusions: Glimmering...Explosive Festival (Slapstick Noel)",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2013
+        },
+        {
+          "id": 19021,
+          "name": "Love, Chunibyo & Other Delusions: Rikka Version",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2013
+        },
+        {
+          "id": 20582,
+          "name": "Love, Chunibyo & Other Delusions - Heart Throb - Lite",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 6,
+          "watched": 6,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2013
+        },
+        {
+          "id": 18671,
+          "name": "Love, Chunibyo & Other Delusions - Heart Throb -",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 20660,
+          "name": "Love, Chunibyo & Other Delusions! Rikka Version Lite",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 20777,
+          "name": "Love, Chunibyo & Other Delusions - Heart Throb - Specials",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 7,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 20889,
+          "name": "Love, Chunibyo & Other Delusions - Heart Throb -: The Rikka Wars/ Apocalypse of the Wicked Lord Shingan Reborn",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 98762,
+          "name": "Love, Chunibyo & Other Delusions: Take on Me",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx15687-KK6DHoXp1F0S.png",
       "addedAt": "2025-05-12"
     },
     {
@@ -378,30 +1213,275 @@
       "url": "https://anilist.co/anime/98659",
       "status": "completed",
       "score": 8.3,
-      "seasons": [
+      "parts": [
         {
+          "id": 98659,
           "name": "Classroom of the Elite",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2017
         },
         {
+          "id": 145545,
           "name": "Classroom of the Elite Season 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         },
         {
+          "id": 146066,
           "name": "Classroom of the Elite Season 3",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2024
         },
         {
+          "id": 180745,
           "name": "Classroom of the Elite 4th Season: Second Year, First Semester",
+          "kind": "season",
+          "format": "TV",
           "episodes": 16,
-          "watched": 16
+          "watched": 16,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2026
+        },
+        {
+          "id": 213477,
+          "name": "Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e 5th Season",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 0,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": null
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98659-WNyPLIZDpGGY.jpg",
       "addedAt": "2025-03-28"
+    },
+    {
+      "id": "al-5081",
+      "title": "Bakemonogatari",
+      "anilistId": 5081,
+      "url": "https://anilist.co/anime/5081",
+      "status": "paused",
+      "score": null,
+      "parts": [
+        {
+          "id": 5081,
+          "name": "Bakemonogatari",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 15,
+          "watched": 3,
+          "status": "PAUSED",
+          "release": "FINISHED",
+          "year": 2009
+        },
+        {
+          "id": 11597,
+          "name": "Nisemonogatari",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 11,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 15689,
+          "name": "Nekomonogatari Black",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 4,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 17074,
+          "name": "Monogatari Series Second Season",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 26,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2013
+        },
+        {
+          "id": 20593,
+          "name": "Hanamonogatari",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 5,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 20918,
+          "name": "Tsukimonogatari",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 4,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 21262,
+          "name": "Owarimonogatari",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 9260,
+          "name": "Kizumonogatari Part 1: Tekketsu",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 21520,
+          "name": "Koyomimonogatari",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 21399,
+          "name": "Kizumonogatari Part 2: Nekketsu",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 104434,
+          "name": "Koyomi History",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 21400,
+          "name": "Kizumonogatari Part 3: Reiketsu",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 21745,
+          "name": "Owarimonogatari Second Season",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 7,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 100815,
+          "name": "Zoku Owarimonogatari",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 6,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2019
+        },
+        {
+          "id": 181970,
+          "name": "KIZUMONOGATARI -Koyomi Vamp-",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 173533,
+          "name": "MONOGATARI Series: OFF & MONSTER Season",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 14,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 180332,
+          "name": "MONOGATARI Series: OFF & MONSTER Season - A Cruel Fairy Tale: The Beautiful Princess",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 195448,
+          "name": "Monogatari Series: Off & Monster Season Shin Episode",
+          "kind": "other",
+          "format": null,
+          "episodes": 0,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": 2026
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5081-9GocceQ5Z865.jpg",
+      "addedAt": "2024-09-19"
     },
     {
       "id": "al-124080",
@@ -410,15 +1490,220 @@
       "url": "https://anilist.co/anime/124080",
       "status": "completed",
       "score": 7,
-      "seasons": [
+      "parts": [
         {
+          "id": 124080,
           "name": "Horimiya",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 163132,
+          "name": "Horimiya: The Missing Pieces",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124080-3i22mRVPBS0T.jpg",
       "addedAt": "2024-08-01"
+    },
+    {
+      "id": "al-20464",
+      "title": "HAIKYU!!",
+      "anilistId": 20464,
+      "url": "https://anilist.co/anime/20464",
+      "status": "paused",
+      "score": null,
+      "parts": [
+        {
+          "id": 20464,
+          "name": "HAIKYU!!",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 25,
+          "watched": 10,
+          "status": "PAUSED",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 20884,
+          "name": "HAIKYU!!: Lev Appears!",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 21120,
+          "name": "Haikyu!! the Movie: The End and the Beginning",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21244,
+          "name": "Haikyuu!! the Movie: The Winner and the Loser",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 20992,
+          "name": "HAIKYU!! 2nd Season",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 25,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21348,
+          "name": "HAIKYU!!: VS Failing Marks",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21698,
+          "name": "HAIKYU!! 3rd Season",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 10,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 107351,
+          "name": "HAIKYU!! - Special Feature! The Spring Tournament of Their Youth",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 98884,
+          "name": "Haikyu!! The Movie: Talent and Sense",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 98885,
+          "name": "Haikyu!! The Movie: Battle of Concepts",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 111790,
+          "name": "HAIKYU!! LAND VS. AIR",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 2,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2020
+        },
+        {
+          "id": 106625,
+          "name": "HAIKYU!! TO THE TOP",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2020
+        },
+        {
+          "id": 113538,
+          "name": "HAIKYU!! TO THE TOP Part 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2020
+        },
+        {
+          "id": 153658,
+          "name": "HAIKYU!! The Dumpster Battle",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 174871,
+          "name": "Haikyuu!!: VS Chiisana Kyojin",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": 2027
+        },
+        {
+          "id": 187261,
+          "name": "Haikyuu!!: Bakemono-tachi no Iku Tokoro",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 0,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": 2027
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20464-ooZUyBe4ptp9.png",
+      "addedAt": "2024-04-16"
     },
     {
       "id": "al-1614",
@@ -427,15 +1712,77 @@
       "url": "https://anilist.co/anime/1614",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 1614,
           "name": "Captain Tsubasa",
+          "kind": "season",
+          "format": "TV",
           "episodes": 52,
-          "watched": 52
+          "watched": 52,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2001
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1614-fRXNtx7QobbQ.jpg",
       "addedAt": "2024-03-19"
+    },
+    {
+      "id": "al-21827",
+      "title": "Violet Evergarden",
+      "anilistId": 21827,
+      "url": "https://anilist.co/anime/21827",
+      "status": "paused",
+      "score": null,
+      "parts": [
+        {
+          "id": 21827,
+          "name": "Violet Evergarden",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 3,
+          "status": "PAUSED",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 101432,
+          "name": "Violet Evergarden: Special",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 109190,
+          "name": "Violet Evergarden: Eternity and the Auto Memory Doll",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2019
+        },
+        {
+          "id": 103047,
+          "name": "Violet Evergarden: the Movie",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2020
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21827-ubzq619ZA2E9.png",
+      "addedAt": "2024-03-15"
     },
     {
       "id": "al-142770",
@@ -444,11 +1791,17 @@
       "url": "https://anilist.co/anime/142770",
       "status": "completed",
       "score": 7,
-      "seasons": [
+      "parts": [
         {
+          "id": 142770,
           "name": "Suzume",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142770-dDaDIRnsv5jN.jpg",
@@ -459,27 +1812,124 @@
       "title": "OSHI NO KO",
       "anilistId": 150672,
       "url": "https://anilist.co/anime/150672",
-      "status": "watching",
+      "status": "completed",
+      "next": true,
       "score": 7.5,
-      "seasons": [
+      "parts": [
         {
+          "id": 150672,
           "name": "OSHI NO KO",
+          "kind": "season",
+          "format": "TV",
           "episodes": 11,
-          "watched": 11
+          "watched": 11,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
         },
         {
+          "id": 166531,
           "name": "OSHI NO KO Season 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2024
         },
         {
+          "id": 182587,
           "name": "OSHI NO KO Season 3",
+          "kind": "season",
+          "format": "TV",
           "episodes": 11,
-          "watched": 0
+          "watched": 0,
+          "status": "PLANNING",
+          "release": "FINISHED",
+          "year": 2026
+        },
+        {
+          "id": 209827,
+          "name": "[Oshi no Ko] Final Season",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 0,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": null
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx150672-WqmmwZ4nMzAy.png",
       "addedAt": "2023-06-25"
+    },
+    {
+      "id": "al-20829",
+      "title": "Seraph of the End: Vampire Reign",
+      "anilistId": 20829,
+      "url": "https://anilist.co/anime/20829",
+      "status": "paused",
+      "score": 10,
+      "parts": [
+        {
+          "id": 20829,
+          "name": "Seraph of the End: Vampire Reign",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 4,
+          "status": "PAUSED",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21483,
+          "name": "Seraph of the End: Vampire Reign - Owaranai Seraph",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 9,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 20993,
+          "name": "Seraph of the End: Battle in Nagoya",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21765,
+          "name": "Seraph of the End: Battle in Nagoya - Owaranai Seraph Battle in Nagoya",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 4,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21586,
+          "name": "Seraph of the End: Kyuuketsuki Shahal",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20829-pgsXVjrfyI5V.png",
+      "addedAt": "2023-05-21"
     },
     {
       "id": "al-7088",
@@ -488,11 +1938,28 @@
       "url": "https://anilist.co/anime/7088",
       "status": "completed",
       "score": 4,
-      "seasons": [
+      "parts": [
         {
+          "id": 7088,
           "name": "Demon King Daimao",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2010
+        },
+        {
+          "id": 8465,
+          "name": "Demon King Daimaou Specials",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 6,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7088-Y38q7jaBwlTZ.png",
@@ -505,11 +1972,17 @@
       "url": "https://anilist.co/anime/19",
       "status": "completed",
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 19,
           "name": "Monster",
+          "kind": "season",
+          "format": "TV",
           "episodes": 74,
-          "watched": 74
+          "watched": 74,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2004
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx19-gtMC64182sm4.jpg",
@@ -522,11 +1995,17 @@
       "url": "https://anilist.co/anime/99750",
       "status": "completed",
       "score": 7,
-      "seasons": [
+      "parts": [
         {
+          "id": 99750,
           "name": "I Want to Eat Your Pancreas",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99750-pNyly9d3MEgV.jpg",
@@ -539,16 +2018,171 @@
       "url": "https://anilist.co/anime/20832",
       "status": "dropped",
       "score": 5,
-      "seasons": [
+      "parts": [
         {
+          "id": 20832,
           "name": "Overlord",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2015
         },
         {
+          "id": 21305,
+          "name": "Overlord: Ple Ple Pleiades",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 8,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 166035,
+          "name": "Overlord: Ple Ple Pleiades Tokubetsu-hen",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 87489,
+          "name": "Overlord: Ple Ple Pleiades - Nazarick Saidai no Kiki",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 98873,
+          "name": "Overlord: The Undead King",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 98874,
+          "name": "Overlord: The Dark Hero",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 101098,
+          "name": "Overlord Movie: Ple Ple Pleiades",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 2,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 98437,
           "name": "Overlord II",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 6
+          "watched": 6,
+          "status": "DROPPED",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 101083,
+          "name": "Overlord: Ple Ple Pleiades 2",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 101474,
+          "name": "Overlord III",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 103209,
+          "name": "Overlord: Ple Ple Pleiades 3",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 107264,
+          "name": "Overlord: Ple Ple Pleiades - Clementine Toubou-hen",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 3,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 133844,
+          "name": "Overlord IV",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 151898,
+          "name": "Overlord: Ple Ple Pleiades 4",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 133845,
+          "name": "OVERLORD: The Sacred Kingdom",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20832-vUNm5zrYWifc.jpg",
@@ -561,16 +2195,83 @@
       "url": "https://anilist.co/anime/108465",
       "status": "completed",
       "score": null,
-      "seasons": [
+      "parts": [
         {
+          "id": 108465,
           "name": "Mushoku Tensei: Jobless Reincarnation",
+          "kind": "season",
+          "format": "TV",
           "episodes": 11,
-          "watched": 11
+          "watched": 11,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
         },
         {
+          "id": 127720,
           "name": "Mushoku Tensei: Jobless Reincarnation Cour 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 141534,
+          "name": "Mushoku Tensei: Jobless Reincarnation Cour 2 - Eris the Goblin Slayer",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 146065,
+          "name": "Mushoku Tensei: Jobless Reincarnation Season 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 166873,
+          "name": "Mushoku Tensei: Jobless Reincarnation Season 2 Part 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 178789,
+          "name": "Mushoku Tensei: Jobless Reincarnation Season 3",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 14,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
+        },
+        {
+          "id": 217434,
+          "name": "Mushoku Tensei III: Isekai Ittara Honki Dasu Part 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 0,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": 2027
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108465-1ANspF1EWyFx.jpg",
@@ -582,12 +2283,51 @@
       "anilistId": 127230,
       "url": "https://anilist.co/anime/127230",
       "status": "completed",
-      "score": 6,
-      "seasons": [
+      "score": 7.5,
+      "parts": [
         {
+          "id": 127230,
           "name": "Chainsaw Man",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 198726,
+          "name": "Chainsaw Days",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 5,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2025
+        },
+        {
+          "id": 171627,
+          "name": "Chainsaw Man – The Movie: Reze Arc",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2025
+        },
+        {
+          "id": 204429,
+          "name": "Chainsaw Man: Shikaku-hen",
+          "kind": "other",
+          "format": null,
+          "episodes": 0,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": null
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127230-DdP4vAdssLoz.png",
@@ -599,22 +2339,73 @@
       "anilistId": 14813,
       "url": "https://anilist.co/anime/14813",
       "status": "completed",
-      "score": 10,
-      "seasons": [
+      "score": 9.5,
+      "parts": [
         {
+          "id": 14813,
           "name": "My Teen Romantic Comedy SNAFU",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2013
         },
         {
+          "id": 18753,
+          "name": "My Teen Romantic Comedy SNAFU OVA",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2013
+        },
+        {
+          "id": 20698,
           "name": "My Teen Romantic Comedy SNAFU TOO!",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2015
         },
         {
+          "id": 21769,
+          "name": "My Teen Romantic Comedy SNAFU TOO! OVA",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 108489,
           "name": "My Teen Romantic Comedy SNAFU Climax!",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
+        },
+        {
+          "id": 128643,
+          "name": "Yahari Ore no Seishun Love Come wa Machigatteiru. Kan: Dakara, Shishunki wa Owarazu ni, Seishun wa Tsuzuiteiku.",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14813-3mNvcKNEQcDs.jpg",
@@ -627,11 +2418,17 @@
       "url": "https://anilist.co/anime/98460",
       "status": "completed",
       "score": 7,
-      "seasons": [
+      "parts": [
         {
+          "id": 98460,
           "name": "Devilman Crybaby",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 10,
-          "watched": 10
+          "watched": 10,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98460-bLtH2c3jd6sV.png",
@@ -643,12 +2440,41 @@
       "anilistId": 98549,
       "url": "https://anilist.co/anime/98549",
       "status": "completed",
+      "next": true,
       "score": 5,
-      "seasons": [
+      "parts": [
         {
+          "id": 98549,
           "name": "Pop Team Epic",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 104200,
+          "name": "POP TEAM EPIC TV SPECIAL",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 2,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2019
+        },
+        {
+          "id": 143086,
+          "name": "Pop Team Epic Season 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx98549-XfLyPhrP5Ors.jpg",
@@ -661,11 +2487,17 @@
       "url": "https://anilist.co/anime/114963",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 114963,
           "name": "A Whisker Away",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114963-QWMbi5ttovSK.png",
@@ -678,11 +2510,17 @@
       "url": "https://anilist.co/anime/21234",
       "status": "completed",
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 21234,
           "name": "ERASED",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21234-XmqW39aQ9o7O.jpg",
@@ -695,51 +2533,116 @@
       "url": "https://anilist.co/anime/14719",
       "status": "watching",
       "score": 9.8,
-      "seasons": [
+      "parts": [
         {
+          "id": 14719,
           "name": "JoJo's Bizarre Adventure (TV)",
+          "kind": "season",
+          "format": "TV",
           "episodes": 26,
-          "watched": 26
+          "watched": 26,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2012
         },
         {
+          "id": 20474,
           "name": "JoJo's Bizarre Adventure: Stardust Crusaders",
+          "kind": "season",
+          "format": "TV",
           "episodes": 24,
-          "watched": 24
+          "watched": 24,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2014
         },
         {
+          "id": 20799,
           "name": "JoJo's Bizarre Adventure: Stardust Crusaders - Battle in Egypt",
+          "kind": "season",
+          "format": "TV",
           "episodes": 24,
-          "watched": 24
+          "watched": 24,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2015
         },
         {
+          "id": 21450,
           "name": "JoJo's Bizarre Adventure: Diamond is Unbreakable",
+          "kind": "season",
+          "format": "TV",
           "episodes": 39,
-          "watched": 39
+          "watched": 39,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
         },
         {
+          "id": 21778,
+          "name": "Thus Spoke Rohan Kishibe",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 4,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 102883,
           "name": "JoJo's Bizarre Adventure: Golden Wind",
+          "kind": "season",
+          "format": "TV",
           "episodes": 39,
-          "watched": 39
+          "watched": 39,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
         },
         {
+          "id": 131942,
           "name": "JoJo's Bizarre Adventure: STONE OCEAN",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
         },
         {
+          "id": 146722,
           "name": "JoJo's Bizarre Adventure: STONE OCEAN Part 2",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 26,
-          "watched": 26
+          "watched": 26,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         },
         {
+          "id": 190327,
           "name": "STEEL BALL RUN JoJo's Bizarre Adventure 1st STAGE",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2026
         },
         {
+          "id": 210482,
           "name": "STEEL BALL RUN JoJo's Bizarre Adventure 2nd - 3rd STAGE",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 11,
-          "watched": 3
+          "watched": 3,
+          "status": "CURRENT",
+          "release": "RELEASING",
+          "year": 2026
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14719-VT5dRzTBSZ0w.jpg",
@@ -750,32 +2653,168 @@
       "title": "Re:ZERO -Starting Life in Another World-",
       "anilistId": 21355,
       "url": "https://anilist.co/anime/21355",
-      "status": "watching",
+      "status": "completed",
+      "next": true,
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 21355,
           "name": "Re:ZERO -Starting Life in Another World-",
+          "kind": "season",
+          "format": "TV",
           "episodes": 25,
-          "watched": 25
+          "watched": 25,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
         },
         {
+          "id": 100049,
+          "name": "Re:ZERO -Starting Life in Another World- OVAs",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 2,
+          "watched": 2,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 108632,
           "name": "Re:ZERO -Starting Life in Another World- Season 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
         },
         {
+          "id": 119661,
           "name": "Re:ZERO -Starting Life in Another World- Season 2 Part 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
         },
         {
+          "id": 163134,
           "name": "Re:ZERO -Starting Life in Another World- Season 3",
+          "kind": "season",
+          "format": "TV",
           "episodes": 16,
-          "watched": 0
+          "watched": 0,
+          "status": "PLANNING",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 189046,
+          "name": "Re:ZERO -Starting Life in Another World- Season 4",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 19,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg",
       "addedAt": "2022-07-16"
+    },
+    {
+      "id": "al-5680",
+      "title": "K-ON!",
+      "anilistId": 5680,
+      "url": "https://anilist.co/anime/5680",
+      "status": "paused",
+      "score": null,
+      "parts": [
+        {
+          "id": 5680,
+          "name": "K-ON!",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 2,
+          "status": "PAUSED",
+          "release": "FINISHED",
+          "year": 2009
+        },
+        {
+          "id": 7017,
+          "name": "K-ON! Season 1 Shorts",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 7,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2009
+        },
+        {
+          "id": 6862,
+          "name": "K-ON!: Live House!",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
+        },
+        {
+          "id": 7791,
+          "name": "K-ON! Season 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 26,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
+        },
+        {
+          "id": 9203,
+          "name": "K-ON! Season 2 Shorts",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 9,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
+        },
+        {
+          "id": 9734,
+          "name": "K-ON! Season 2: Plan!",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2011
+        },
+        {
+          "id": 9617,
+          "name": "K-ON!: The Movie",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2011
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5680-r3AI3Cwfv0Aq.png",
+      "addedAt": "2022-07-06"
     },
     {
       "id": "al-20954",
@@ -784,11 +2823,17 @@
       "url": "https://anilist.co/anime/20954",
       "status": "completed",
       "score": 7,
-      "seasons": [
+      "parts": [
         {
+          "id": 20954,
           "name": "A Silent Voice",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20954-sYRfE5jQRtSB.jpg",
@@ -800,27 +2845,85 @@
       "anilistId": 21311,
       "url": "https://anilist.co/anime/21311",
       "status": "completed",
-      "score": 7.5,
-      "seasons": [
+      "next": true,
+      "score": 7.6,
+      "parts": [
         {
+          "id": 21311,
           "name": "Bungo Stray Dogs",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
         },
         {
+          "id": 21679,
           "name": "Bungo Stray Dogs 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
         },
         {
+          "id": 21791,
+          "name": "Bungo Stray Dogs 2: Walking Alone",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 98384,
+          "name": "Bungo Stray Dogs: DEAD APPLE",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 103223,
           "name": "Bungo Stray Dogs 3",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019
         },
         {
+          "id": 141249,
           "name": "Bungo Stray Dogs 4",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 163263,
+          "name": "Bungo Stray Dogs 5",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 11,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2023
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21311-hAXyT8Yoh6G9.jpg",
@@ -833,15 +2936,308 @@
       "url": "https://anilist.co/anime/21290",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 21290,
           "name": "And you thought there is never a girl online?",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21290-R6qYWnylwpbL.png",
       "addedAt": "2022-05-23"
+    },
+    {
+      "id": "al-20",
+      "title": "Naruto",
+      "anilistId": 20,
+      "url": "https://anilist.co/anime/20",
+      "status": "dropped",
+      "score": null,
+      "parts": [
+        {
+          "id": 20,
+          "name": "Naruto",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 220,
+          "watched": 18,
+          "status": "DROPPED",
+          "release": "FINISHED",
+          "year": 2002
+        },
+        {
+          "id": 761,
+          "name": "NARUTO: Akaki Yotsuba no Clover wo Sagase",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2003
+        },
+        {
+          "id": 594,
+          "name": "Naruto: The Lost Story - Mission: Protect the Waterfall Village",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2003
+        },
+        {
+          "id": 442,
+          "name": "Naruto the Movie: Ninja Clash in the Land of Snow",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2004
+        },
+        {
+          "id": 2248,
+          "name": "Hidden Leaf Village Grand Sports Festival",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2004
+        },
+        {
+          "id": 936,
+          "name": "Naruto the Movie: Legend of the Stone of Gelel",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2005
+        },
+        {
+          "id": 1074,
+          "name": "NARUTO: Narutimate Hero 3: Tsui ni Gekitotsu! Jounin VS Genin!! Musabetsu Dairansen Taikai Kaisai!!",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2005
+        },
+        {
+          "id": 2144,
+          "name": "Naruto the Movie: Guardians of the Crescent Moon Kingdom",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2006
+        },
+        {
+          "id": 1735,
+          "name": "Naruto: Shippuden",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 500,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2007
+        },
+        {
+          "id": 2472,
+          "name": "Naruto Shippuden the Movie",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2007
+        },
+        {
+          "id": 4437,
+          "name": "Naruto Shippuden the Movie: Bonds",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2008
+        },
+        {
+          "id": 6325,
+          "name": "Naruto Shippuden the Movie: The Will of Fire",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2009
+        },
+        {
+          "id": 7367,
+          "name": "NARUTO: THE CROSS ROADS",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2009
+        },
+        {
+          "id": 10659,
+          "name": "Naruto, the Genie, and the Three Wishes, Believe It!",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
+        },
+        {
+          "id": 8246,
+          "name": "Naruto Shippuden the Movie: The Lost Tower",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
+        },
+        {
+          "id": 10589,
+          "name": "Naruto Shippuden the Movie: Blood Prison",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2011
+        },
+        {
+          "id": 10686,
+          "name": "NARUTO: Honoo no Chuunin Shiken! Naruto vs Konohamaru!!",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2011
+        },
+        {
+          "id": 13667,
+          "name": "Road to Ninja: Naruto the Movie",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 16870,
+          "name": "The Last: Naruto the Movie",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 21220,
+          "name": "Boruto: Naruto the Movie",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21579,
+          "name": "Boruto: Naruto the Movie - The Day Naruto Became Hokage",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 100721,
+          "name": "Boruto: Jump Festa 2016 Special",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 97938,
+          "name": "Boruto: Naruto Next Generations",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 293,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 155348,
+          "name": "ROAD OF NARUTO",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 165523,
+          "name": "BORUTO: NARUTO NEXT GENERATIONS Part 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 0,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": null
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20-dE6UHbFFg1A5.jpg",
+      "addedAt": "2022-05-19"
     },
     {
       "id": "al-112301",
@@ -850,16 +3246,39 @@
       "url": "https://anilist.co/anime/112301",
       "status": "dropped",
       "score": 5.5,
-      "seasons": [
+      "parts": [
         {
+          "id": 112301,
           "name": "The Misfit of Demon King Academy: History’s Strongest Demon King Reincarnates and Goes to School with His Descendants",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
         },
         {
+          "id": 130588,
           "name": "The Misfit of Demon King Academy Ⅱ: History's Strongest Demon King Reincarnates and Goes to School with His Descendants",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 6
+          "watched": 6,
+          "status": "DROPPED",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 130590,
+          "name": "The Misfit of Demon King Academy II (Cour 2)",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112301-f88Fs2es4pSr.jpg",
@@ -872,11 +3291,17 @@
       "url": "https://anilist.co/anime/20613",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 20613,
           "name": "Akame ga Kill!",
+          "kind": "season",
+          "format": "TV",
           "episodes": 24,
-          "watched": 24
+          "watched": 24,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2014
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20613-HXHpec4bemk5.jpg",
@@ -889,11 +3314,17 @@
       "url": "https://anilist.co/anime/131548",
       "status": "completed",
       "score": null,
-      "seasons": [
+      "parts": [
         {
+          "id": 131548,
           "name": "Akebi’s Sailor Uniform",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131548-4OXik3SWOaee.jpg",
@@ -905,12 +3336,29 @@
       "anilistId": 11111,
       "url": "https://anilist.co/anime/11111",
       "status": "completed",
-      "score": 8,
-      "seasons": [
+      "score": 7.3,
+      "parts": [
         {
+          "id": 11111,
           "name": "Another",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 11701,
+          "name": "Another: The Other",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2012
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11111-gvvE5bBYsyFo.png",
@@ -922,37 +3370,172 @@
       "anilistId": 16498,
       "url": "https://anilist.co/anime/16498",
       "status": "completed",
-      "score": 8.8,
-      "seasons": [
+      "score": 8.7,
+      "parts": [
         {
+          "id": 16498,
           "name": "Attack on Titan",
+          "kind": "season",
+          "format": "TV",
           "episodes": 25,
-          "watched": 25
+          "watched": 25,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2013
         },
         {
+          "id": 18397,
+          "name": "Attack on Titan OVA",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 3,
+          "watched": 3,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2013
+        },
+        {
+          "id": 20691,
+          "name": "Attack on Titan Part I: Crimson Bow and Arrow",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 20811,
+          "name": "Attack on Titan: No Regrets",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 2,
+          "watched": 2,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 20692,
+          "name": "Attack on Titan Part II: Wings of Freedom",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 20958,
           "name": "Attack on Titan Season 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2017
         },
         {
+          "id": 99634,
+          "name": "Attack on Titan: Lost Girls",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 3,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 100465,
+          "name": "Attack on Titan: The Roar of Awakening",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 99147,
           "name": "Attack on Titan Season 3",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
         },
         {
+          "id": 104578,
           "name": "Attack on Titan Season 3 Part 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 10,
-          "watched": 10
+          "watched": 10,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019
         },
         {
+          "id": 119113,
+          "name": "Attack on Titan ~Chronicle~",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2020
+        },
+        {
+          "id": 110277,
           "name": "Attack on Titan Final Season",
+          "kind": "season",
+          "format": "TV",
           "episodes": 16,
-          "watched": 16
+          "watched": 16,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
         },
         {
+          "id": 131681,
           "name": "Attack on Titan Final Season Part 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 146984,
+          "name": "Attack on Titan Final Season THE FINAL CHAPTERS Special 1",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 162314,
+          "name": "Attack on Titan Final Season THE FINAL CHAPTERS Special 2",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16498-buvcRTBx4NSm.jpg",
@@ -965,11 +3548,17 @@
       "url": "https://anilist.co/anime/100388",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 100388,
           "name": "BANANA FISH",
+          "kind": "season",
+          "format": "TV",
           "episodes": 24,
-          "watched": 24
+          "watched": 24,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100388-hjkg1AnlJR5z.jpg",
@@ -981,17 +3570,129 @@
       "anilistId": 269,
       "url": "https://anilist.co/anime/269",
       "status": "completed",
+      "next": true,
       "score": 7,
-      "seasons": [
+      "parts": [
         {
+          "id": 269,
           "name": "Bleach",
+          "kind": "season",
+          "format": "TV",
           "episodes": 366,
-          "watched": 366
+          "watched": 366,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2004
         },
         {
+          "id": 834,
+          "name": "BLEACH: The Sealed Sword Frenzy",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2006
+        },
+        {
+          "id": 1686,
+          "name": "Bleach the Movie: Memories of Nobody",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2006
+        },
+        {
+          "id": 2889,
+          "name": "Bleach the Movie: The DiamondDust Rebellion",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2007
+        },
+        {
+          "id": 100719,
+          "name": "BLEACH Colorful!: Gotei Juusan Yatai Daisakusen!",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2008
+        },
+        {
+          "id": 4835,
+          "name": "Bleach the Movie: Fade to Black",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2008
+        },
+        {
+          "id": 8247,
+          "name": "Bleach the Movie: Hell Verse",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
+        },
+        {
+          "id": 116674,
           "name": "BLEACH: Thousand-Year Blood War",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 159322,
+          "name": "BLEACH: Thousand-Year Blood War - The Separation",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 169755,
+          "name": "BLEACH: Thousand-Year Blood War - The Conflict",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 14,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 185874,
+          "name": "BLEACH: Thousand-Year Blood War - The Calamity",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 10,
+          "watched": 0,
+          "status": "NONE",
+          "release": "RELEASING",
+          "year": 2026
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx269-d2GmRkJbMopq.png",
@@ -1003,12 +3704,40 @@
       "anilistId": 20596,
       "url": "https://anilist.co/anime/20596",
       "status": "completed",
-      "score": 2,
-      "seasons": [
+      "score": 2.7,
+      "parts": [
         {
+          "id": 20596,
           "name": "Blue Spring Ride",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 20837,
+          "name": "Ao Haru Ride: unwritten",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 20900,
+          "name": "Ao Haru Ride PAGE.13",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2014
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20596-fJdMHV8xRMgY.png",
@@ -1021,11 +3750,28 @@
       "url": "https://anilist.co/anime/1535",
       "status": "completed",
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 1535,
           "name": "Death Note",
+          "kind": "season",
+          "format": "TV",
           "episodes": 37,
-          "watched": 37
+          "watched": 37,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2006
+        },
+        {
+          "id": 2994,
+          "name": "Death Note: Relight",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 2,
+          "watched": 2,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2007
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1535-kUgkcrfOrkUM.jpg",
@@ -1037,25 +3783,143 @@
       "anilistId": 101922,
       "url": "https://anilist.co/anime/101922",
       "status": "dropped",
-      "score": 5,
-      "seasons": [
+      "score": 5.5,
+      "parts": [
         {
+          "id": 101922,
           "name": "Demon Slayer: Kimetsu no Yaiba",
+          "kind": "season",
+          "format": "TV",
           "episodes": 26,
-          "watched": 26
+          "watched": 26,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019
         },
         {
+          "id": 112151,
+          "name": "Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
+        },
+        {
+          "id": 129874,
+          "name": "Demon Slayer: Kimetsu no Yaiba Mugen Train Arc",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 7,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 142329,
           "name": "Demon Slayer: Kimetsu no Yaiba Entertainment District Arc",
+          "kind": "season",
+          "format": "TV",
           "episodes": 11,
-          "watched": 11
+          "watched": 11,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
         },
         {
+          "id": 145139,
           "name": "Demon Slayer: Kimetsu no Yaiba Swordsmith Village Arc",
+          "kind": "season",
+          "format": "TV",
           "episodes": 11,
-          "watched": 6
+          "watched": 6,
+          "status": "DROPPED",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 166240,
+          "name": "Demon Slayer: Kimetsu no Yaiba Hashira Training Arc",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 8,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 178788,
+          "name": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2025
+        },
+        {
+          "id": 195200,
+          "name": "Demon Slayer: Kimetsu no Yaiba Infinity Castle Part 2",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": null
+        },
+        {
+          "id": 195201,
+          "name": "Kimetsu no Yaiba: Mugenjou-hen Movie 3",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": null
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101922-WBsBl0ClmgYL.jpg",
+      "addedAt": "2022-04-29"
+    },
+    {
+      "id": "al-17513",
+      "title": "Diabolik Lovers",
+      "anilistId": 17513,
+      "url": "https://anilist.co/anime/17513",
+      "status": "dropped",
+      "score": null,
+      "parts": [
+        {
+          "id": 17513,
+          "name": "Diabolik Lovers",
+          "kind": "season",
+          "format": "TV_SHORT",
+          "episodes": 12,
+          "watched": 7,
+          "status": "DROPPED",
+          "release": "FINISHED",
+          "year": 2013
+        },
+        {
+          "id": 21046,
+          "name": "Diabolik Lovers Ⅱ : More,blood",
+          "kind": "season",
+          "format": "TV_SHORT",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx17513-gfqhEF7XYYvm.jpg",
       "addedAt": "2022-04-29"
     },
     {
@@ -1065,11 +3929,17 @@
       "url": "https://anilist.co/anime/101347",
       "status": "completed",
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 101347,
           "name": "Dororo",
+          "kind": "season",
+          "format": "TV",
           "episodes": 24,
-          "watched": 24
+          "watched": 24,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101347-TGaDwEYqLfm1.jpg",
@@ -1081,12 +3951,40 @@
       "anilistId": 97682,
       "url": "https://anilist.co/anime/97682",
       "status": "completed",
-      "score": 8,
-      "seasons": [
+      "score": 6.5,
+      "parts": [
         {
+          "id": 97682,
           "name": "Grimoire of Zero",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 149099,
+          "name": "Mahoutsukai Reimeiki Mini Anime",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 20,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 133175,
+          "name": "The Dawn of the Witch",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx97682-YRhTwV979zSr.jpg",
@@ -1098,17 +3996,40 @@
       "anilistId": 20987,
       "url": "https://anilist.co/anime/20987",
       "status": "completed",
-      "score": 9,
-      "seasons": [
+      "score": 8.7,
+      "parts": [
         {
+          "id": 20987,
           "name": "Himouto! Umaru-chan",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2015
         },
         {
+          "id": 21327,
+          "name": "Himouto! Umaru-chan OVA",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 2,
+          "watched": 2,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 98572,
           "name": "Himouto! Umaru-chan R",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2017
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20987-9Tq7kZTeJPMo.jpg",
@@ -1120,17 +4041,85 @@
       "anilistId": 113415,
       "url": "https://anilist.co/anime/113415",
       "status": "completed",
-      "score": 2.5,
-      "seasons": [
+      "next": true,
+      "score": 3.7,
+      "parts": [
         {
+          "id": 113415,
           "name": "JUJUTSU KAISEN",
+          "kind": "season",
+          "format": "TV",
           "episodes": 24,
-          "watched": 24
+          "watched": 24,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
         },
         {
+          "id": 131573,
+          "name": "JUJUTSU KAISEN 0",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 145064,
           "name": "JUJUTSU KAISEN Season 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 23,
-          "watched": 23
+          "watched": 23,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 192809,
+          "name": "JUJUTSU KAISEN: Hidden Inventory / Premature Death – The Movie",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2025
+        },
+        {
+          "id": 204066,
+          "name": "JUJUTSU KAISEN: Execution -Shibuya Incident x The Culling Game Begins-",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2025
+        },
+        {
+          "id": 172463,
+          "name": "JUJUTSU KAISEN Season 3: The Culling Game Part 1",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
+        },
+        {
+          "id": 209895,
+          "name": "Jujutsu Kaisen: Shimetsu Kaiyuu - Kouhen",
+          "kind": "other",
+          "format": null,
+          "episodes": 0,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": null
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113415-LHBAeoZDIsnF.jpg",
@@ -1142,27 +4131,95 @@
       "anilistId": 101921,
       "url": "https://anilist.co/anime/101921",
       "status": "completed",
-      "score": 9.5,
-      "seasons": [
+      "score": 8.5,
+      "parts": [
         {
+          "id": 101921,
           "name": "Kaguya-sama: Love is War",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019
         },
         {
+          "id": 112641,
           "name": "Kaguya-sama: Love is War?",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
         },
         {
+          "id": 125368,
+          "name": "Kaguya-sama wa Kokurasetai: Tensaitachi no Renai Zunousen OVA",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 165557,
+          "name": "Kaguya-sama: Love is War -Ultra Romantic- \"Yu Ishigami Wants to Chat\"",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 125367,
           "name": "Kaguya-sama: Love is War -Ultra Romantic-",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         },
         {
+          "id": 151384,
           "name": "Kaguya-sama: Love is War -The First Kiss That Never Ends-",
+          "kind": "season",
+          "format": "TV",
           "episodes": 4,
-          "watched": 4
+          "watched": 4,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 194884,
+          "name": "Kaguya-sama: Love Is War -Stairway to Adulthood-",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 2,
+          "watched": 2,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2025
+        },
+        {
+          "id": 205081,
+          "name": "Kaguya-sama wa Kokurasetai: Kanketsu-hen",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "PLANNING",
+          "release": "NOT_YET_RELEASED",
+          "year": null
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101921-ufrjLzhSz7L1.jpg",
@@ -1175,16 +4232,28 @@
       "url": "https://anilist.co/anime/98314",
       "status": "completed",
       "score": 8,
-      "seasons": [
+      "parts": [
         {
+          "id": 98314,
           "name": "Kakegurui",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2017
         },
         {
+          "id": 100876,
           "name": "Kakegurui xx",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b98314-TSJykxVwCCQN.jpg",
@@ -1197,11 +4266,17 @@
       "url": "https://anilist.co/anime/512",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 512,
           "name": "Kiki's Delivery Service",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 1989
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx512-UwP8X4BR8YoM.png",
@@ -1214,14 +4289,43 @@
       "url": "https://anilist.co/anime/21421",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 21421,
           "name": "Kiznaiver",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21421-5y8ryXsMB7aJ.jpg",
+      "addedAt": "2022-04-29"
+    },
+    {
+      "id": "al-8460",
+      "title": "Mirai Nikki OVA",
+      "anilistId": 8460,
+      "url": "https://anilist.co/anime/8460",
+      "status": "completed",
+      "score": 4,
+      "parts": [
+        {
+          "id": 8460,
+          "name": "Mirai Nikki OVA",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2010
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b8460-2XDzMMR5wcb8.png",
       "addedAt": "2022-04-29"
     },
     {
@@ -1229,18 +4333,31 @@
       "title": "My Dress-Up Darling",
       "anilistId": 132405,
       "url": "https://anilist.co/anime/132405",
-      "status": "watching",
+      "status": "completed",
+      "next": true,
       "score": 5,
-      "seasons": [
+      "parts": [
         {
+          "id": 132405,
           "name": "My Dress-Up Darling",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         },
         {
+          "id": 154768,
           "name": "My Dress-Up Darling Season 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 0
+          "watched": 0,
+          "status": "PLANNING",
+          "release": "FINISHED",
+          "year": 2025
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx132405-qP7FQYGmNI3d.jpg",
@@ -1253,14 +4370,571 @@
       "url": "https://anilist.co/anime/523",
       "status": "completed",
       "score": 5,
-      "seasons": [
+      "parts": [
         {
+          "id": 523,
           "name": "My Neighbor Totoro",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 1988
+        },
+        {
+          "id": 2488,
+          "name": "Mei and the Baby Cat Bus",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2002
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx523-fErBvxOHP7IX.jpg",
+      "addedAt": "2022-04-29"
+    },
+    {
+      "id": "al-21",
+      "title": "ONE PIECE",
+      "anilistId": 21,
+      "url": "https://anilist.co/anime/21",
+      "status": "watching",
+      "score": null,
+      "parts": [
+        {
+          "id": 466,
+          "name": "One Piece: Defeat the Pirate Ganzack!",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 1998
+        },
+        {
+          "id": 21,
+          "name": "ONE PIECE",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 846,
+          "watched": 846,
+          "status": "CURRENT",
+          "release": "RELEASING",
+          "year": 1999
+        },
+        {
+          "id": 459,
+          "name": "ONE PIECE: The Movie",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2000
+        },
+        {
+          "id": 1094,
+          "name": "One Piece: Umi no Heso no Daibouken-hen",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2000
+        },
+        {
+          "id": 460,
+          "name": "One Piece: Clockwork Island Adventure",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2001
+        },
+        {
+          "id": 2385,
+          "name": "One Piece: Django's Dance Carnival",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2001
+        },
+        {
+          "id": 2386,
+          "name": "ONE PIECE: Yume no Soccer Ou!",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2002
+        },
+        {
+          "id": 461,
+          "name": "One Piece: Chopper’s Kingdom on the Island of Strange Animals",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2002
+        },
+        {
+          "id": 462,
+          "name": "One Piece The Movie: The Dead End Adventure",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2003
+        },
+        {
+          "id": 1237,
+          "name": "One Piece Special: Open Upon the Great Sea! A Father's Huge, HUGE Dream!",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2003
+        },
+        {
+          "id": 1238,
+          "name": "One Piece Special: Protect! The Last Great Performance",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2003
+        },
+        {
+          "id": 2490,
+          "name": "ONE PIECE: Mezase! Kaizoku Yakyuu Ou",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2004
+        },
+        {
+          "id": 463,
+          "name": "One Piece: The Curse of the Sacred Sword",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2004
+        },
+        {
+          "id": 464,
+          "name": "One Piece: Baron Omatsuri and the Secret Island",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2005
+        },
+        {
+          "id": 2020,
+          "name": "One Piece Special: The Detective Memoirs of Chief Straw Hat Luffy",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2005
+        },
+        {
+          "id": 465,
+          "name": "One Piece: Mega Mecha Soldier of Karakuri Castle",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2006
+        },
+        {
+          "id": 2107,
+          "name": "One Piece: The Desert Princess and the Pirates, Adventures in Alabasta",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2007
+        },
+        {
+          "id": 3848,
+          "name": "One Piece: Episode Of Chopper +: The Miracle Winter Cherry Blossom",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2008
+        },
+        {
+          "id": 4155,
+          "name": "One Piece Film: Strong World",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2009
+        },
+        {
+          "id": 8740,
+          "name": "ONE PIECE FILM: STRONG WORLD - EPISODE:0",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
+        },
+        {
+          "id": 9999,
+          "name": "One Piece 3D: Mugiwara Chase",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2011
+        },
+        {
+          "id": 106572,
+          "name": "ONE PIECE: Episode of Alabasta - Sabaku no Oujo to Kaizoku-tachi",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2011
+        },
+        {
+          "id": 12001,
+          "name": "ONE PIECE 3D: Gekisou! Trap Coaster",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2011
+        },
+        {
+          "id": 15323,
+          "name": "ONE PIECE: Episode of Nami - Koukaishi no Namida to Nakama no Kizuna",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 16239,
+          "name": "One Piece: Episode of Luffy - Hand Island Adventure",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 12859,
+          "name": "One Piece Film: Z",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 16468,
+          "name": "ONE PIECE FILM: Z - GLORIOUS ISLAND",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 2,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 19123,
+          "name": "One Piece: Episode of Merry - The Tale of One More Friend",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2013
+        },
+        {
+          "id": 20835,
+          "name": "One Piece 3D2Y: Overcome Ace’s Death! Luffy’s Vow to his Friends",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 21230,
+          "name": "One Piece - Episode of Sabo: Bond of Three Brothers - A Miraculous Reunion and an Inherited Will",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21485,
+          "name": "One Piece: Adventure of Nebulandia",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21880,
+          "name": "ONE PIECE FILM: GOLD - episode 0 711ver.",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 21831,
+          "name": "One Piece: Heart of Gold",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 21335,
+          "name": "One Piece Film: Gold",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 126649,
+          "name": "The Great Tongari Island Treasure Hunting Adventure",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 99302,
+          "name": "One Piece: Episode of East Blue",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 101918,
+          "name": "One Piece: Episode of Skypiea",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 105143,
+          "name": "One Piece: Stampede",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2019
+        },
+        {
+          "id": 141902,
+          "name": "One Piece Film: Red",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 167404,
+          "name": "MONSTERS: 103 Mercies Dragon Damnation",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 182469,
+          "name": "ONE PIECE FAN LETTER",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 183423,
+          "name": "One Piece Log: Fish-Man Island Saga",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 21,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 187380,
+          "name": "ONE PIECE: Original Episode/Luffy, Law",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2025
+        },
+        {
+          "id": 188668,
+          "name": "Koisuru ONE PIECE",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 5,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2025
+        },
+        {
+          "id": 197179,
+          "name": "ONE PIECE in LOVE: ONE PIECE DAY’25 Festival Eve Special",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2025
+        },
+        {
+          "id": 197178,
+          "name": "ONE PIECE HEROINES",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
+        },
+        {
+          "id": 215855,
+          "name": "ONE PIECE FILM: GOD VALLEY",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": 2027
+        },
+        {
+          "id": 215856,
+          "name": "ONE PIECE FILM: BAAD",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": 2029
+        }
+      ],
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg",
       "addedAt": "2022-04-29"
     },
     {
@@ -1270,11 +4944,17 @@
       "url": "https://anilist.co/anime/2890",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 2890,
           "name": "Ponyo",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2008
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2890-wcNtFr6aUYOR.jpg",
@@ -1286,12 +4966,74 @@
       "anilistId": 101291,
       "url": "https://anilist.co/anime/101291",
       "status": "completed",
-      "score": 8,
-      "seasons": [
+      "next": true,
+      "score": 8.5,
+      "parts": [
         {
+          "id": 101291,
           "name": "Rascal Does Not Dream of Bunny Girl Senpai",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 104157,
+          "name": "Rascal Does Not Dream of a Dreaming Girl",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019
+        },
+        {
+          "id": 154967,
+          "name": "Rascal Does Not Dream of a Sister Venturing Out",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 161474,
+          "name": "Rascal Does Not Dream of a Knapsack Kid",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 171046,
+          "name": "Rascal Does Not Dream of Santa Claus",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2025
+        },
+        {
+          "id": 199340,
+          "name": "Rascal Does Not Dream of a Dear Friend",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101291-wfEdgPqtfU0l.jpg",
@@ -1303,12 +5045,40 @@
       "anilistId": 21049,
       "url": "https://anilist.co/anime/21049",
       "status": "completed",
-      "score": 7,
-      "seasons": [
+      "score": 7.5,
+      "parts": [
         {
+          "id": 21049,
           "name": "ReLIFE",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 98635,
+          "name": "ReLIFE: Final Arc",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 4,
+          "watched": 4,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 108939,
+          "name": "Shagahai ReLIFE Kenkyuujo Support-ka",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 2,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21049-4AHSLeiDE9eg.png",
@@ -1320,27 +5090,62 @@
       "anilistId": 140960,
       "url": "https://anilist.co/anime/140960",
       "status": "completed",
-      "score": 8,
-      "seasons": [
+      "score": 7.8,
+      "parts": [
         {
+          "id": 140960,
           "name": "SPY x FAMILY",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         },
         {
+          "id": 142838,
           "name": "SPY x FAMILY Cour 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         },
         {
+          "id": 158927,
           "name": "SPY x FAMILY Season 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
         },
         {
+          "id": 158928,
+          "name": "SPY x FAMILY CODE: White",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 177937,
           "name": "SPY x FAMILY Season 3",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 13
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2025
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140960-Kb6R5nYQfjmP.jpg",
@@ -1353,11 +5158,17 @@
       "url": "https://anilist.co/anime/129201",
       "status": "completed",
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 129201,
           "name": "Summer Time Rendering",
+          "kind": "season",
+          "format": "TV",
           "episodes": 25,
-          "watched": 25
+          "watched": 25,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129201-HJBauga2be8I.png",
@@ -1368,58 +5179,154 @@
       "title": "That Time I Got Reincarnated as a Slime",
       "anilistId": 101280,
       "url": "https://anilist.co/anime/101280",
-      "status": "watching",
+      "status": "completed",
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 101280,
           "name": "That Time I Got Reincarnated as a Slime",
+          "kind": "season",
+          "format": "TV",
           "episodes": 24,
-          "watched": 24
+          "watched": 24,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
         },
         {
+          "id": 106509,
+          "name": "That Time I Got Reincarnated as a Slime OAD",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 5,
+          "watched": 5,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019
+        },
+        {
+          "id": 108511,
           "name": "That Time I Got Reincarnated as a Slime Season 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
         },
         {
+          "id": 116741,
+          "name": "The Slime Diaries",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 116742,
           "name": "That Time I Got Reincarnated as a Slime Season 2 Part 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
         },
         {
+          "id": 146503,
+          "name": "Tensei Shitara Slime Datta Ken: Sukuwareru Ramiris",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 2,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 139498,
+          "name": "That Time I Got Reincarnated as a Slime the Movie: Scarlet Bond",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 161802,
+          "name": "That Time I Got Reincarnated as a Slime: Visions of Coleus",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 3,
+          "watched": 3,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 156822,
           "name": "That Time I Got Reincarnated as a Slime Season 3",
+          "kind": "season",
+          "format": "TV",
           "episodes": 24,
-          "watched": 24
+          "watched": 24,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2024
         },
         {
+          "id": 182206,
+          "name": "That Time I Got Reincarnated as a Slime the Movie: Tears of the Azure Sea",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "PLANNING",
+          "release": "FINISHED",
+          "year": 2026
+        },
+        {
+          "id": 182205,
           "name": "That Time I Got Reincarnated as a Slime Season 4",
+          "kind": "season",
+          "format": "TV",
           "episodes": 24,
-          "watched": 24
+          "watched": 24,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2026
         },
         {
-          "name": "Tensei Shitara Slime Datta Ken 4th Season Part 3",
+          "id": 217330,
+          "name": "Tensei Shitara Slime Datta Ken: Clayman REVENGE",
+          "kind": "season",
+          "format": "TV",
           "episodes": 0,
-          "watched": 0
+          "watched": 0,
+          "status": "PLANNING",
+          "release": "NOT_YET_RELEASED",
+          "year": 2027
+        },
+        {
+          "id": 217331,
+          "name": "Tensei Shitara Slime Datta Ken 4th Season Part 3",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 0,
+          "watched": 0,
+          "status": "PLANNING",
+          "release": "NOT_YET_RELEASED",
+          "year": 2027
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101280-tDxCVJm714nt.jpg",
-      "addedAt": "2022-04-29"
-    },
-    {
-      "id": "al-133175",
-      "title": "The Dawn of the Witch",
-      "anilistId": 133175,
-      "url": "https://anilist.co/anime/133175",
-      "status": "completed",
-      "score": 5,
-      "seasons": [
-        {
-          "name": "The Dawn of the Witch",
-          "episodes": 12,
-          "watched": 12
-        }
-      ],
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx133175-M7SRPRqC72lA.jpg",
       "addedAt": "2022-04-29"
     },
     {
@@ -1428,22 +5335,51 @@
       "anilistId": 21804,
       "url": "https://anilist.co/anime/21804",
       "status": "completed",
-      "score": 5.5,
-      "seasons": [
+      "score": 5.4,
+      "parts": [
         {
+          "id": 21804,
           "name": "The Disastrous Life of Saiki K.",
+          "kind": "season",
+          "format": "TV_SHORT",
           "episodes": 120,
-          "watched": 120
+          "watched": 120,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
         },
         {
+          "id": 98034,
           "name": "The Disastrous Life of Saiki K. Season 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 24,
-          "watched": 24
+          "watched": 24,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
         },
         {
+          "id": 104580,
+          "name": "The Disastrous Life of Saiki K. Season 3",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 112625,
           "name": "The Disastrous Life of Saiki K.: Reawakened",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 6,
-          "watched": 6
+          "watched": 6,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21804-As6tDLAvEvNY.jpg",
@@ -1456,11 +5392,17 @@
       "url": "https://anilist.co/anime/129193",
       "status": "completed",
       "score": 8,
-      "seasons": [
+      "parts": [
         {
+          "id": 129193,
           "name": "The Executioner and Her Way of Life",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129193-pT3W5PpiMAUB.png",
@@ -1472,12 +5414,40 @@
       "anilistId": 10620,
       "url": "https://anilist.co/anime/10620",
       "status": "completed",
-      "score": 7,
-      "seasons": [
+      "score": 7.5,
+      "parts": [
         {
+          "id": 10620,
           "name": "The Future Diary",
+          "kind": "season",
+          "format": "TV",
           "episodes": 26,
-          "watched": 26
+          "watched": 26,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2011
+        },
+        {
+          "id": 12503,
+          "name": "The Future Diary: Ura Mirai Nikki",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 10,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2012
+        },
+        {
+          "id": 16762,
+          "name": "The Future Diary: Redial",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2013
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10620-dUZeNej0W4QN.png",
@@ -1490,11 +5460,17 @@
       "url": "https://anilist.co/anime/130586",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 130586,
           "name": "The Greatest Demon Lord Is Reborn as a Typical Nobody",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130586-vzoz4X37RZwc.jpg",
@@ -1506,17 +5482,74 @@
       "anilistId": 20605,
       "url": "https://anilist.co/anime/20605",
       "status": "completed",
+      "next": true,
       "score": 4,
-      "seasons": [
+      "parts": [
         {
+          "id": 20605,
           "name": "Tokyo Ghoul",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2014
         },
         {
+          "id": 20850,
           "name": "Tokyo Ghoul √A",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21132,
+          "name": "Tokyo Ghoul: [JACK]",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21326,
+          "name": "Tokyo Ghoul: [PINTO]",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 100240,
+          "name": "Tokyo Ghoul:re",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
+        },
+        {
+          "id": 102351,
+          "name": "Tokyo Ghoul:re 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2018
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b20605-k665mVkSug8D.jpg",
@@ -1529,11 +5562,28 @@
       "url": "https://anilist.co/anime/6211",
       "status": "completed",
       "score": 6,
-      "seasons": [
+      "parts": [
         {
+          "id": 6211,
           "name": "Tokyo Magnitude 8.0",
+          "kind": "season",
+          "format": "TV",
           "episodes": 11,
-          "watched": 11
+          "watched": 11,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2009
+        },
+        {
+          "id": 7654,
+          "name": "Tokyo Magnitude 8.0 Soushuuhen",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2009
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6211-2MCqBUXvmBdB.png",
@@ -1546,16 +5596,50 @@
       "url": "https://anilist.co/anime/120120",
       "status": "dropped",
       "score": 5,
-      "seasons": [
+      "parts": [
         {
+          "id": 120120,
           "name": "Tokyo Revengers",
+          "kind": "season",
+          "format": "TV",
           "episodes": 24,
-          "watched": 24
+          "watched": 24,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021
         },
         {
+          "id": 142853,
           "name": "Tokyo Revengers Season 2",
+          "kind": "season",
+          "format": "TV",
           "episodes": 13,
-          "watched": 2
+          "watched": 2,
+          "status": "DROPPED",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 163329,
+          "name": "Tokyo Revengers Season 2 Part 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 178083,
+          "name": "Tokyo Revengers: War of the Three Titans Arc",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "RELEASING",
+          "year": 2026
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx120120-cWDmnmeEntSe.jpg",
@@ -1568,11 +5652,17 @@
       "url": "https://anilist.co/anime/141014",
       "status": "completed",
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 141014,
           "name": "Tomodachi Game",
+          "kind": "season",
+          "format": "ONA",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141014-bTWr7TtS0wt9.jpg",
@@ -1585,11 +5675,28 @@
       "url": "https://anilist.co/anime/141774",
       "status": "completed",
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 141774,
           "name": "Ya Boy Kongming!",
+          "kind": "season",
+          "format": "TV",
           "episodes": 12,
-          "watched": 12
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 171026,
+          "name": "Ya Boy Kongming! Road to Summer Sonia",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141774-iteNFzPq2oGw.jpg",
@@ -1602,11 +5709,28 @@
       "url": "https://anilist.co/anime/20665",
       "status": "completed",
       "score": 10,
-      "seasons": [
+      "parts": [
         {
+          "id": 20665,
           "name": "Your lie in April",
+          "kind": "season",
+          "format": "TV",
           "episodes": 22,
-          "watched": 22
+          "watched": 22,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2014
+        },
+        {
+          "id": 21039,
+          "name": "Your lie in April: Moments",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20665-TLgkL8T8IRFd.png",
@@ -1619,11 +5743,17 @@
       "url": "https://anilist.co/anime/21519",
       "status": "completed",
       "score": 7,
-      "seasons": [
+      "parts": [
         {
+          "id": 21519,
           "name": "Your Name.",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
-          "watched": 1
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21519-SUo3ZQuCbYhJ.png",

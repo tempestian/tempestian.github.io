@@ -15,6 +15,7 @@ function partState(p){
   return ['İzlendi','done'];
 }
 const sum = (a,k) => a.reduce((n,x) => n+(x[k]||0), 0);
+const rew = ps => { const n = sum(ps,'repeat'); return n ? '↻ '+n+'× tekrar' : ''; };
 function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){} }
 const state = {items:[], view:ls('view')==='list' ? 'list' : 'grid', filter:'all', sort:'added', q:''};
 
@@ -34,7 +35,7 @@ function render(){
     li.innerHTML = '<div class="poster"><img alt="" loading="lazy"></div><div class="t"><h3><a target="_blank" rel="noopener"></a></h3><p class="meta"></p><p class="st"></p></div>';
     const a = li.querySelector('a'); a.textContent = it.title;
     a.href = '#'+it.id; a.onclick = e => { if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; e.preventDefault(); openSheet(it.id, true); };
-    li.querySelector('.meta').textContent = [sn && sn+' sezon', fl && fl+' film', ot && ot+' ek', !ep ? w+' bölüm' : w===ep ? ep+' bölüm' : w+'/'+ep+' bölüm'].filter(Boolean).join(', ');
+    li.querySelector('.meta').textContent = [sn && sn+' sezon', fl && fl+' film', ot && ot+' ek', rew(ps), !ep ? w+' bölüm' : w===ep ? ep+' bölüm' : w+'/'+ep+' bölüm'].filter(Boolean).join(', ');
     const st = li.querySelector('.st');
     if(it.status !== 'completed'){ st.textContent = ST[it.status]||it.status; st.classList.add('st-'+it.status); }
     else if(it.next){ st.textContent = NEXT; st.classList.add('st-next'); } else st.remove();
@@ -59,7 +60,7 @@ fetch('../data/anime.json').then(r => r.json()).then(d => {
   UI.wall([...d.anime].sort(byAdded).slice(0,3).map(i => i.image));
   const t = UI.tally(d.anime), sc = d.anime.filter(i => UI.tally([i]).anime).map(i => i.score).filter(Boolean);
   const stats = $('#stats');
-  for(const [v,l,tip] of [[t.anime,'anime','Sezonlar, filmler ve ek içerikler ayrı sayılmaz; en az bir parçası tamamlanmış olanlar sayılır (izleniyor, beklemede, bırakıldı ve planlananlar dahil değil)'],[t.season,'sezon'],[t.film,'film'],[t.ep,'bölüm','Yalnızca tamamlanan parçaların bölümleri; film, ek içerik ve yeniden izlemeler dahil'],[sc.length ? (sc.reduce((a,b)=>a+b,0)/sc.length).toFixed(1) : '-','ort. puan']]){
+  for(const [v,l,tip] of [[t.anime,'anime','Sezonlar, filmler ve ek içerikler ayrı sayılmaz; en az bir parçası tamamlanmış olanlar sayılır (izleniyor, beklemede, bırakıldı ve planlananlar dahil değil)'],[t.season,'sezon'],[t.film,'film'],[t.ep,'bölüm','Yalnızca tamamlanan parçaların bölümleri; film ve ek içerik dahil, yeniden izlemeler hariç'],[sc.length ? (sc.reduce((a,b)=>a+b,0)/sc.length).toFixed(1) : '-','ort. puan']]){
     const t = document.createElement('div'); t.className = 'stat'; t.innerHTML = '<b></b><span></span>';
     t.firstChild.textContent = v; t.lastChild.textContent = l; if(tip) t.title = tip; stats.append(t);
   }
@@ -92,6 +93,7 @@ function fillSheet(it){
   const cnt = k => ps.filter(p => p.kind===k && own(p)).length;
   const c = [cnt('season') && cnt('season')+' sezon', cnt('movie') && cnt('movie')+' film', cnt('other') && cnt('other')+' ek'].filter(Boolean).join(', ');
   if(c) bits.push(c);
+  const rp = rew(ps.filter(own)); if(rp) bits.push(rp);
   t('.sh-sub').textContent = bits.join(' · ');
   const im = t('.sheet-cover'); im.hidden = !it.image; if(it.image) im.src = it.image;
   const ol = t('.parts'); ol.replaceChildren();
@@ -101,7 +103,7 @@ function fillSheet(it){
     li.innerHTML = '<span class="pd" aria-hidden="true"></span><div class="pt"><a target="_blank" rel="noopener"></a><span class="pm"></span></div><span class="ps"></span>';
     const a = li.querySelector('a'); a.textContent = p.name; a.href = 'https://anilist.co/anime/'+p.id;
     li.querySelector('.pm').textContent = [FMT[p.format]||(p.kind==='movie'?'Film':''), p.year, p.kind!=='movie' && p.episodes>1 ? p.episodes+' bölüm' : ''].filter(Boolean).join(' · ');
-    li.querySelector('.ps').textContent = txt;
+    li.querySelector('.ps').textContent = txt + (p.repeat ? (cls==='done' ? ' · '+(p.repeat+1)+' kez' : ' · ↻ '+p.repeat+' tekrar') : '');
     ol.append(li);
   }
   const al = t('.sh-al'); al.href = it.url || 'https://anilist.co/anime/'+it.anilistId; al.textContent = "AniList'te aç";

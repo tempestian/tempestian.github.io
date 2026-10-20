@@ -53,7 +53,7 @@
       t.anime++;
       for (const p of done) {
         if (p.kind === 'season') t.season++; else if (p.kind === 'movie') t.film++;
-        t.ep += p.watched * (1 + (p.repeat || 0));
+        t.ep += p.watched;
       }
     }
     return t;

@@ -5242,8 +5242,8 @@
           "kind": "season",
           "format": "ONA",
           "episodes": 2,
-          "watched": 0,
-          "status": "NONE",
+          "watched": 2,
+          "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022
         },

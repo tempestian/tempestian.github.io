@@ -139,7 +139,7 @@ h1{font-size:clamp(2.5rem,10vw,3.4rem);line-height:1.04;font-weight:500;letter-s
 .links a:hover,.links a:active{background:var(--accent-soft)}
 .links svg{width:18px;height:18px;color:var(--ink2)}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);border-radius:var(--rl);padding:6px 0}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);border-radius:var(--rl);padding:6px 0}
 .stat{padding:12px 8px 12px 22px;position:relative}
 .stat+.stat::before{content:"";position:absolute;left:0;top:18%;bottom:18%;width:1px;background:var(--line)}
 .stat b{display:block;font-size:1.65rem;font-weight:500;letter-spacing:-.03em;line-height:1.15;font-variant-numeric:tabular-nums}
@@ -186,7 +186,7 @@ h3 a::after{content:"";position:absolute;inset:0}
 h3 a:focus-visible{outline:0}
 .meta{font-size:.82rem;color:var(--ink2)}
 .st{font-size:.78rem;font-weight:620}
-.st-watching{color:var(--accent)}.st-paused{color:var(--warn)}.st-dropped{color:var(--bad)}.st-planned{color:var(--ink2)}
+.st-watching{color:var(--accent)}.st-paused{color:var(--warn)}.st-dropped{color:var(--bad)}.st-planned{color:var(--ink2)}.st-next{color:var(--accent)}
 .grid .t{padding:10px 4px 0;display:grid;gap:2px}
 .grid .score{position:absolute;top:8px;left:8px;background:var(--glass);-webkit-backdrop-filter:blur(20px) saturate(1.7);backdrop-filter:blur(20px) saturate(1.7)}
 .list li{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:10px 16px 10px 10px;background:var(--glass);
@@ -201,12 +201,47 @@ h3 a:focus-visible{outline:0}
 .foot{margin:40px 6px 0;font-size:.78rem;color:var(--ink2);max-width:46ch}
 
 @media (max-width:520px){
-  .stat{padding:10px 4px 10px 14px}
-  .stat b{font-size:1.4rem}
-  .stat span{font-size:.74rem}
+  .stat{padding:10px 2px 10px 10px}
+  .stat b{font-size:1.2rem}
+  .stat span{font-size:.68rem;white-space:nowrap}
   .search{flex-basis:100%}
   .pick{flex:1}.pick select{width:100%}
 }
+.sheet{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.sheet-card{position:relative;width:min(100%,600px);max-height:88svh;overflow:auto;overscroll-behavior:contain;border-radius:var(--rl) var(--rl) 0 0;
+  background:var(--glass-hi);padding:18px 18px calc(18px + env(safe-area-inset-bottom))}
+.sheet-head{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin-bottom:10px}
+.sheet-cover{width:56px;aspect-ratio:2/3;object-fit:cover;border-radius:calc(12px*var(--k));box-shadow:inset 0 0 0 1px var(--line)}
+.sheet-cover[hidden]{display:none}
+.sheet-t{min-width:0}
+.sheet-t h2{font-size:1.15rem;line-height:1.25;font-weight:620}
+.sh-sub{font-size:.84rem;color:var(--ink2);margin-top:2px}
+.parts{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.part{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:11px 4px;border-top:1px solid var(--line)}
+.part:first-child{border-top:0}
+.pd{width:10px;height:10px;border-radius:50%;background:var(--ink2);opacity:.35}
+.part.done .pd{background:var(--accent);opacity:1}
+.part.cur .pd{background:var(--accent);opacity:1;box-shadow:0 0 0 4px var(--accent-soft)}
+.part.drop .pd{background:var(--bad);opacity:1}
+.pt{display:grid;min-width:0}
+.pt a{color:inherit;text-decoration:none;font-weight:560;font-size:.95rem;line-height:1.3}
+.pt a:hover{text-decoration:underline}
+.pm{font-size:.78rem;color:var(--ink2)}
+.ps{font-size:.8rem;font-weight:620;color:var(--ink2);text-align:right;white-space:nowrap}
+.part.done .ps{color:var(--ink2)}
+.part.cur .ps{color:var(--accent)}
+.part.drop .ps{color:var(--bad)}
+.part.no .pt a{opacity:.8}
+.sh-al{display:inline-block;margin-top:12px;font-size:.84rem;color:var(--accent);text-decoration:none}
+@media (min-width:640px){.sheet{align-items:center}.sheet-card{border-radius:var(--rl)}}
+@media (prefers-reduced-motion:no-preference){
+  .sheet:not([hidden]) .sheet-card{animation:sheet-in .38s var(--ease)}
+  .sheet:not([hidden]) .sheet-bg{animation:sheet-fade .3s ease}
+}
+@keyframes sheet-in{from{transform:translateY(32px);opacity:0}to{transform:none;opacity:1}}
+@keyframes sheet-fade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){
   *,::before,::after{animation:none!important;transition:none!important}
   @view-transition{navigation:none}

@@ -7,6 +7,7 @@
   const P = {
     home: '<path d="M4 11.2 12 4.6l8 6.6V19a1 1 0 0 1-1 1h-4.2v-5.2H9.2V20H5a1 1 0 0 1-1-1z"/>',
     anime: '<rect x="3.5" y="4.5" width="17" height="12.5" rx="3.6"/><path d="M10.4 8.6v4.4l3.8-2.2z"/><path d="M8.5 20.3h7"/>',
+    close: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
     dot: '<circle cx="12" cy="12" r="7.5"/>',
     back: '<path d="M14.5 5.5 8 12l6.5 6.5"/>',
     moon: '<path d="M19.6 14.6A8 8 0 0 1 9.4 4.4a8 8 0 1 0 10.2 10.2z"/>',
@@ -43,7 +44,21 @@
     wallNow = urls; ls('wall', JSON.stringify(urls)); wallEl.replaceChildren();
     for (const u of urls) { const im = new Image(); im.alt = ''; im.decoding = 'async'; im.onload = () => im.classList.add('in'); im.onerror = () => im.remove(); im.src = u; wallEl.append(im); }
   };
-  window.UI = { icon, wall, el };
+  const parts = it => it.parts || (it.seasons || []).map(s => ({ ...s, kind: 'season' }));
+  const tally = items => {
+    const t = { anime: 0, season: 0, film: 0, ep: 0 };
+    for (const it of items) {
+      if (it.status === 'planned') continue;
+      t.anime++;
+      for (const p of parts(it)) {
+        if (!(p.watched > 0)) continue;
+        if (p.kind === 'season') t.season++; else if (p.kind === 'movie') t.film++;
+        t.ep += p.watched;
+      }
+    }
+    return t;
+  };
+  window.UI = { icon, wall, el, parts, tally };
   wall(json('wall') || []);
 
   const dock = document.getElementById('dock'), list = document.getElementById('sections'), links = document.getElementById('links');
@@ -64,11 +79,12 @@
         box.append(top); if (!on) li.classList.add('soon');
         const j = data[s.id], items = (j && j[s.countKey]) || [];
         if (j) {
-          const n = el('p', 'nums'), sum = f => items.reduce((t, x) => t + f(x), 0);
-          const parts = s.id === 'anime' && items.every(x => x.seasons)
-            ? [[items.length, 'anime'], [sum(x => x.seasons.length), 'sezon'], [sum(x => x.seasons.reduce((t, q) => t + (q.watched || 0), 0)), 'bölüm']]
+          const n = el('p', 'nums');
+          const t = tally(items);
+          const nums = s.id === 'anime' && items.every(x => x.parts || x.seasons)
+            ? [[t.anime, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']]
             : [[items.length, s.unit || '']];
-          for (const [v, l] of parts) { const sp = el('span'); sp.append(el('b', '', v), ' ' + l); n.append(sp); }
+          for (const [v, l] of nums) { const sp = el('span'); sp.append(el('b', '', v), ' ' + l); n.append(sp); }
           box.append(n);
         }
         const imgs = items.map(cover).filter(Boolean).slice(0, 4);

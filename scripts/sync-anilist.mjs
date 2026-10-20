@@ -6,7 +6,7 @@ const OUT = process.env.OUT || 'data/anime.json';
 const SERIES = new Set(['TV', 'TV_SHORT', 'ONA']);
 const LINKS = new Set(['PREQUEL', 'SEQUEL', 'SIDE_STORY', 'PARENT', 'SUMMARY']);
 const kind = f => SERIES.has(f) ? 'season' : f === 'MOVIE' ? 'movie' : 'other';
-const Q = `query($u:String,$c:Int){MediaListCollection(userName:$u,type:ANIME,chunk:$c,perChunk:100){hasNextChunk lists{name isCustomList entries{status progress score(format:POINT_10_DECIMAL) createdAt customLists media{id format status episodes startDate{year month day} title{romaji english} coverImage{large} relations{edges{relationType node{id}}}}}}}}`;
+const Q = `query($u:String,$c:Int){MediaListCollection(userName:$u,type:ANIME,chunk:$c,perChunk:100){hasNextChunk lists{name isCustomList entries{status progress repeat score(format:POINT_10_DECIMAL) createdAt customLists media{id format status episodes startDate{year month day} title{romaji english} coverImage{large} relations{edges{relationType node{id}}}}}}}}`;
 
 const QM = `query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){id format status episodes startDate{year month day} title{romaji english} relations{edges{relationType node{id}}}}}}`;
 const sleep = ms => new Promise(s => setTimeout(s, ms));
@@ -69,6 +69,7 @@ try {
   }
 } catch (err) { console.warn('Ara düğümler çözülemedi, eldeki bağlantılarla devam: ' + err.message); }
 
+const ov = fs.existsSync('data/overrides.json') ? JSON.parse(fs.readFileSync('data/overrides.json', 'utf8')) : {};
 const par = new Map();
 const find = x => { if (!par.has(x)) par.set(x, x); while (par.get(x) !== x) { par.set(x, par.get(par.get(x))); x = par.get(x); } return x; };
 const allEdges = [...[...entries].map(([id, m]) => [id, m.media.relations.edges]), ...[...extra].map(([id, n]) => [id, n.relations.edges])];
@@ -77,13 +78,13 @@ for (const [id, edges] of allEdges) for (const ed of edges) {
   if (LINKS.has(ed.relationType)) par.set(find(ed.node.id), find(id));
   if (ed.relationType === 'PREQUEL' || ed.relationType === 'SEQUEL') { chain.add(id); chain.add(ed.node.id); }
 }
+for (const [a, b] of Object.entries(ov.merge || {})) par.set(find(Number(a)), find(Number(b)));
 const groups = new Map(), extraBy = new Map();
 for (const m of entries.values()) { const r = find(m.media.id); (groups.get(r) || groups.set(r, []).get(r)).push(m); }
 for (const n of extra.values()) { const r = find(n.id); (extraBy.get(r) || extraBy.set(r, []).get(r)).push(n); }
 
 const dk = s => (s.year || 9999) * 10000 + (s.month || 0) * 100 + (s.day || 0);
 const byDate = (a, b) => dk(a.media.startDate) - dk(b.media.startDate);
-const ov = fs.existsSync('data/overrides.json') ? JSON.parse(fs.readFileSync('data/overrides.json', 'utf8')) : {};
 const anime = [];
 const state = m => m.status === 'REPEATING' ? 'COMPLETED' : m.status;
 
@@ -110,7 +111,8 @@ for (const [root, members] of groups) {
       year: m.media.startDate.year || null,
       d: dk(m.media.startDate),
       score: m.score > 0 ? m.score : null,
-      createdAt: m.createdAt || 0
+      createdAt: m.createdAt || 0,
+      repeat: m.repeat || 0
     };
   });
   const ext = exts.map(n => ({
@@ -140,7 +142,7 @@ for (const [root, members] of groups) {
     status,
     ...(next ? { next: true } : {}),
     score: scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length * 10) / 10 : null,
-    parts: parts.map(({ id, name, kind, format, episodes, watched, status, release, year }) => ({ id, name, kind, format, episodes, watched, status, release, year })),
+    parts: parts.map(({ id, name, kind, format, episodes, watched, status, release, year, repeat }) => ({ id, name, kind, format, episodes, watched, status, release, year, ...(repeat > 0 ? { repeat } : {}) })),
     image: hm.coverImage.large,
     addedAt: isFinite(ts) ? new Date(ts * 1000).toISOString().slice(0, 10) : ''
   });

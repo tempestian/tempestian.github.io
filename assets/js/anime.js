@@ -57,9 +57,9 @@ function render(){
 fetch('../data/anime.json').then(r => r.json()).then(d => {
   state.items = d.anime;
   UI.wall([...d.anime].sort(byAdded).slice(0,3).map(i => i.image));
-  const t = UI.tally(d.anime), sc = d.anime.map(i => i.score).filter(Boolean);
+  const t = UI.tally(d.anime), sc = d.anime.filter(i => UI.tally([i]).anime).map(i => i.score).filter(Boolean);
   const stats = $('#stats');
-  for(const [v,l,tip] of [[t.anime,'anime','Sezonlar, filmler ve ek içerikler ayrı sayılmaz; planlananlar dahil değil'],[t.season,'sezon'],[t.film,'film'],[t.ep,'bölüm','Film ve ek içerik bölümleri dahil'],[sc.length ? (sc.reduce((a,b)=>a+b,0)/sc.length).toFixed(1) : '-','ort. puan']]){
+  for(const [v,l,tip] of [[t.anime,'anime','Sezonlar, filmler ve ek içerikler ayrı sayılmaz; en az bir parçası tamamlanmış olanlar sayılır (izleniyor, beklemede, bırakıldı ve planlananlar dahil değil)'],[t.season,'sezon'],[t.film,'film'],[t.ep,'bölüm','Yalnızca tamamlanan parçaların bölümleri; film, ek içerik ve yeniden izlemeler dahil'],[sc.length ? (sc.reduce((a,b)=>a+b,0)/sc.length).toFixed(1) : '-','ort. puan']]){
     const t = document.createElement('div'); t.className = 'stat'; t.innerHTML = '<b></b><span></span>';
     t.firstChild.textContent = v; t.lastChild.textContent = l; if(tip) t.title = tip; stats.append(t);
   }

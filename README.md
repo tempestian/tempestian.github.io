@@ -22,12 +22,13 @@ Dosya elle düzenlenmez, AniList senkronu tarafından üretilir. Her kayıt bir 
 | `score` | number/null | 10 üzerinden, ondalıklı; puanlanmış tüm parçaların ortalaması |
 | `next` | true | yalnızca "Devam edilecek" ise bulunur (aşağıya bakın) |
 | `parts` | dizi | franchise'ın tüm içeriği, yayın sırasıyla: `{id, name, kind, format, episodes, watched, status, release, year}`; `kind`: `season`, `movie`, `other`. Listede olmayan (izlenmemiş) içeriklerin `status` değeri `NONE`, `watched` değeri 0'dır |
+| `parts[].repeat` | int | yalnızca yeniden izleme sayısı 0'dan büyükse bulunur; istatistikte bölüm sayısına `episodes × repeat` olarak eklenir |
 | `image` | string/null | AniList kapak görseli |
 | `addedAt` | `YYYY-MM-DD` | |
 
 Bir animeye tıklayınca açılan detay ekranı `parts` listesini sırayla gösterir (İzlendi, İzleniyor, İzlenmedi, Planlandı, Yayınlanmadı...). Adres `anime/#al-<ID>` biçimindedir. Ana listede "Devam edilecek" etiketi ve süzgeci `next` alanından gelir.
 
-İstatistikler (site tarafında hesaplanır): anime = planlanmayan franchise sayısı; sezon/film = en az 1 bölümü izlenmiş `season`/`movie` parçaları; bölüm = tüm parçalardaki izlenen bölümler (film ve OVA dahil).
+İstatistikler (site tarafında hesaplanır): yalnızca tamamlanmış (`COMPLETED`) parçalar sayılır. anime = en az bir tamamlanmış parçası olan franchise (izleniyor/beklemede/bırakıldı durumundaki bir sezon, franchise'ın başka tamamlanmış parçası varsa onu etkilemez; hiç tamamlanmış parçası yoksa franchise sayılmaz, bitince sayılır); sezon/film = tamamlanmış `season`/`movie` parçaları; bölüm = tamamlanmış tüm parçaların bölümleri (film ve OVA dahil, yeniden izlemeler `repeat` ile eklenir); ortalama puan = sayılan franchise'ların puanlarının ortalaması. Liste sayfası yine tüm durumları gösterir.
 
 ## AniList senkronu
 `.github/workflows/sync-anilist.yml` her gün 03:17 UTC'de `scripts/sync-anilist.mjs` çalıştırır, `data/anime.json` değiştiyse commit atar ve GitHub Pages derlemesini tetikler. Betik, iş akışı veya `data/overrides.json` değişince de bir kez çalışır. Elle çalıştırmak için: depo, Actions sekmesi, "AniList senkronu", Run workflow.
@@ -37,6 +38,6 @@ Bir animeye tıklayınca açılan detay ekranı `parts` listesini sırayla göst
 - Devam edilecek (`next`): durumu `completed` olan franchise'ta, izlenen ilk sezondan sonra yayınlanmış (FINISHED/RELEASING), PREQUEL/SEQUEL zincirinde olan (TV veya ONA) ve izlenmemiş bir sezon varsa. Yayınlanmamış sezonlar sayılmaz. `overrides.json` içindeki `noContinue` listesindekilerde hiç etiketlenmez: sayı = franchise'daki herhangi bir AniList ID'si, yazı = başlıkta geçen ifade (şu an `Mushoku Tensei`).
 - Tekrar izleme (`REPEATING`) bir kez bitirilmiş sayılır.
 - İsteğe bağlı: `CUSTOM_LIST` doluysa yalnızca o özel listeden en az bir girişi olan franchise'lar alınır (varsayılan kapalı).
-- Hatalı sonuçlar için `data/overrides.json`: `exclude` (AniList ID listesi), `titles` (`{"ID": "Başlık"}`) ve `noContinue` (yukarıya bakın).
+- Hatalı sonuçlar için `data/overrides.json`: `exclude` (AniList ID listesi), `titles` (`{"ID": "Başlık"}`; ID, franchise'ın ilk izlenen sezonudur), `merge` (`{"ID": "hedef ID"}`; AniList'te bağlı görünmeyen bir girişi, hedef ID'nin franchise'ına katar) ve `noContinue` (yukarıya bakın).
 - Puan, AniList'teki puanın 10 üzerinden (ondalıklı) halidir.
 - Senkron bozulursa son `anime.json` yerinde kalır, site etkilenmez.

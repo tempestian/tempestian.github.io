@@ -48,12 +48,12 @@
   const tally = items => {
     const t = { anime: 0, season: 0, film: 0, ep: 0 };
     for (const it of items) {
-      if (it.status === 'planned') continue;
+      const done = parts(it).filter(p => p.status === 'COMPLETED' && p.watched > 0);
+      if (!done.length) continue;
       t.anime++;
-      for (const p of parts(it)) {
-        if (!(p.watched > 0)) continue;
+      for (const p of done) {
         if (p.kind === 'season') t.season++; else if (p.kind === 'movie') t.film++;
-        t.ep += p.watched;
+        t.ep += p.watched * (1 + (p.repeat || 0));
       }
     }
     return t;

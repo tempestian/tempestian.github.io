@@ -1,5 +1,6 @@
 {
   "exclude": [],
-  "titles": {},
+  "titles": {"15687": "Love, Chunibyo & Other Delusions"},
+  "merge": {"8460": 10620},
   "noContinue": ["Mushoku Tensei"]
 }

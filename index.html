@@ -24,11 +24,51 @@
     <h1>Tempestian</h1>
     <p class="sub">Bayram</p>
   </section>
+  <section class="gift glass sq" id="gift" aria-label="Sürpriz">
+    <span class="gift-bg" aria-hidden="true"></span>
+    <button class="gift-btn" id="giftBtn" type="button" aria-expanded="false" aria-controls="giftPanel" aria-label="Sürprizi aç">
+      <span class="gift-glow" aria-hidden="true"></span>
+      <svg class="gift-box" viewBox="0 -16 120 136" aria-hidden="true">
+        <defs>
+          <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8fc0"/><stop offset="1" stop-color="#f23d8f"/></linearGradient>
+          <linearGradient id="gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa3cc"/><stop offset="1" stop-color="#f7529f"/></linearGradient>
+          <linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0f7"/><stop offset="1" stop-color="#ffc4de"/></linearGradient>
+        </defs>
+        <g class="gift-body">
+          <rect x="22" y="58" width="76" height="52" rx="10" fill="url(#gb)"/>
+          <rect x="54" y="58" width="12" height="52" fill="url(#gr)"/>
+          <rect x="22" y="58" width="76" height="8" fill="#000" opacity=".1"/>
+        </g>
+        <g class="gift-lid">
+          <rect x="15" y="40" width="90" height="23" rx="9" fill="url(#gl)"/>
+          <rect x="54" y="40" width="12" height="23" fill="url(#gr)"/>
+          <path d="M60 40C52 20 31 13 33 29C35 41 52 41 60 40Z" fill="url(#gr)"/>
+          <path d="M60 40C68 20 89 13 87 29C85 41 68 41 60 40Z" fill="url(#gr)"/>
+          <circle cx="60" cy="40" r="6.5" fill="#ffd9ea"/>
+        </g>
+      </svg>
+    </button>
+    <div class="gift-panel" id="giftPanel">
+      <div class="gift-in">
+        <div class="gift-body-txt">
+          <p class="gift-lead" id="giftLead">Hediyenin açılmasına kalan süre</p>
+          <div class="cd" id="giftCd" role="timer" aria-live="off">
+            <div><b data-u="d">0</b><span>Gün</span></div>
+            <div><b data-u="h">00</b><span>Saat</span></div>
+            <div><b data-u="m">00</b><span>Dakika</span></div>
+            <div><b data-u="s">00</b><span>Saniye</span></div>
+          </div>
+          <p class="gift-date" id="giftDate">27 Ekim 2026 · 00.00 (TSİ)</p>
+        </div>
+      </div>
+    </div>
+  </section>
   <ul class="tiles" id="sections"></ul>
   <ul class="links" id="links" aria-label="Bağlantılar"></ul>
   <noscript><p class="note">Bölümler için JavaScript gerekiyor.</p></noscript>
 </main>
 <nav id="dock" class="dock glass sq" aria-label="Ana menü"></nav>
 <script src="assets/js/common.js"></script>
+<script src="assets/js/gift.js"></script>
 </body>
 </html>

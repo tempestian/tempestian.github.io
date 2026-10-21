@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { computeStats } from './stats.mjs';
 const USER = process.env.ANILIST_USER || 'TurkTempestian';
 const LIST = process.env.CUSTOM_LIST || '';
 const PLANNED = process.env.INCLUDE_PLANNED === '1';
@@ -160,17 +161,8 @@ for (const [root, members] of groups) {
 }
 anime.sort((a, b) => b.addedAt.localeCompare(a.addedAt) || a.title.localeCompare(b.title));
 
-// Sayılar AniList'in toplam/özel liste sayılarından değil, yukarıda çözülen kayıtlardan hesaplanır.
-const stats = { anime: 0, season: 0, film: 0, other: 0, episodes: 0, avgScore: null, byStatus: {} };
-const rated = [];
-for (const a of anime) {
-  stats.byStatus[a.status] = (stats.byStatus[a.status] || 0) + 1;
-  const done = a.parts.filter(p => p.status === 'COMPLETED' && p.watched > 0);
-  if (!done.length) continue;
-  stats.anime++; if (a.score) rated.push(a.score);
-  for (const p of done) { stats[p.kind === 'season' ? 'season' : p.kind === 'movie' ? 'film' : 'other']++; stats.episodes += p.watched; }
-}
-if (rated.length) stats.avgScore = Math.round(rated.reduce((x, y) => x + y, 0) / rated.length * 10) / 10;
+// Sayılar ve öne çıkanlar AniList'in toplam/özel liste sayılarından değil, çözülen kayıtlardan scripts/stats.mjs ile hesaplanır.
+const stats = computeStats(anime);
 
 const old = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
 if (old && JSON.stringify(old.anime) === JSON.stringify(anime) && JSON.stringify(old.stats) === JSON.stringify(stats)) { console.log('Değişiklik yok.'); process.exit(0); }

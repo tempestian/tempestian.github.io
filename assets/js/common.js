@@ -59,7 +59,7 @@
   // Ana sayfa için yalnızca özet (sayılar + 4 kapak) saklanır; 150KB'lık JSON her sayfada işlenmez.
   const summarize = (s, j) => {
     const items = (j && j[s.countKey]) || [];
-    const t = tally(items);
+    const t = j && j.stats ? { anime: j.stats.anime, season: j.stats.season, film: j.stats.film, ep: j.stats.episodes } : tally(items);
     const nums = s.id === 'anime' && items.every(x => x.parts || x.seasons)
       ? [[t.anime, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']]
       : [[items.length, s.unit || '']];

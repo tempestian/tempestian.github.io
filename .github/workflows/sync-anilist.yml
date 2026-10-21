@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - scripts/sync-anilist.mjs
+      - scripts/stats.mjs
       - data/overrides.json
       - .github/workflows/sync-anilist.yml
 permissions:

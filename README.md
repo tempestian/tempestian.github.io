@@ -29,7 +29,7 @@ Dosya elle düzenlenmez, AniList senkronu tarafından üretilir. Her kayıt bir 
 | `score` | number/null | 10 üzerinden, ondalıklı; puanlanmış tüm parçaların ortalaması |
 | `next` | true | yalnızca "Devam edilecek" ise bulunur (aşağıya bakın) |
 | `parts` | dizi | franchise'ın tüm içeriği, yayın sırasıyla: `{id, name, kind, format, episodes, watched, status, release, year}`; `kind`: `season`, `movie`, `other`. Listede olmayan (izlenmemiş) içeriklerin `status` değeri `NONE`, `watched` değeri 0'dır |
-| `parts[].repeat` | int | yalnızca yeniden izleme sayısı 0'dan büyükse bulunur; istatistiğe katılmaz, listede "↻ N× tekrar" (franchise toplamı) etiketi, detay ekranında her sezon/film için "İzlendi · N kez" (N = repeat + 1) gösterilir |
+| `parts[].repeat` | int | yalnızca yeniden izleme sayısı 0'dan büyükse bulunur; istatistiğe katılmaz, listede "↻ N× tekrar" etiketi (franchise içindeki en çok tekrar izlenen parçanın tekrar sayısı; parçaların tekrarları toplanmaz), detay ekranında her sezon/film için "İzlendi · N kez" (N = repeat + 1) gösterilir |
 | `genres` | dizi | yalnızca doluysa; franchise'ın izlenen parçalarındaki türler, sık olandan aza, en çok 6 (AniList İngilizce adlarıyla; arayüz Türkçeleştirir) |
 | `image` | string/null | AniList kapak görseli |
 | `addedAt` | `YYYY-MM-DD` | |
@@ -37,6 +37,14 @@ Dosya elle düzenlenmez, AniList senkronu tarafından üretilir. Her kayıt bir 
 Bir animeye tıklayınca açılan detay ekranı `parts` listesini sırayla gösterir (İzlendi, İzleniyor, İzlenmedi, Planlandı, Yayınlanmadı...). Adres `anime/#al-<ID>` biçimindedir. Ana listede "Devam edilecek" etiketi ve süzgeci `next` alanından gelir.
 
 İstatistikler (site tarafında hesaplanır): yalnızca tamamlanmış (`COMPLETED`) parçalar sayılır. anime = en az bir tamamlanmış parçası olan franchise (izleniyor/beklemede/bırakıldı durumundaki bir sezon, franchise'ın başka tamamlanmış parçası varsa onu etkilemez; hiç tamamlanmış parçası yoksa franchise sayılmaz, bitince sayılır); sezon/film = tamamlanmış `season`/`movie` parçaları; bölüm = tamamlanmış tüm parçaların bölümleri (film ve OVA dahil; yeniden izlemeler ana istatistiğe katılmaz); ortalama puan = sayılan franchise'ların puanlarının ortalaması. Liste sayfası yine tüm durumları gösterir.
+
+## İstatistik ve öne çıkanlar (`scripts/stats.mjs`)
+Mantık tek dosyada, belirli bir anime adı yazılmadan kurallarla çalışır; senkron her çalıştığında `anime.json` içindeki `stats` alanını yeniden üretir, site yalnızca bunu gösterir. AniList'e bağlanmadan yeniden hesaplamak için: `node scripts/stats.mjs`.
+- **Sayılar:** anime = en az bir parçası tamamlanmış franchise (durumu ne olursa olsun; bu yüzden "anime" sayısı, durum çubuğundaki "İzlendi" sayısından büyük olabilir: sayılan = tamamlanan + yarım kalan ama en az bir parçası bitmiş; `stats.listed/completed/partial/excluded` dökümü verir); sezon/film/ek = tamamlanmış parçalar; bölüm = tamamlanmış parçaların bölümleri (yeniden izlemeler hariç).
+- **En yüksek puan:** sayılan animeler içinde en yüksek puan; eşitlikte daha çok bölümü izlenen seçilir, kaç animenin aynı puanda olduğu da yazılır.
+- **En çok izlenen:** durumu ne olursa olsun (devam eden dahil) en çok bölümü izlenen.
+- **En çok tekrar:** parçaların tekrar sayıları toplanmaz; en çok tekrar izlenen parçanın sayısı alınır (kez = tekrar + 1). Eşitlikte daha çok bölüm.
+Kuralı değiştirmek için yalnızca `stats.mjs` düzenlenir; sonraki senkronda herkes yeni kurala göre güncellenir.
 
 ## Elle senkron
 - **GitHub'da:** depo → Actions → "AniList senkronu" → Run workflow. Komut satırından: `gh workflow run "AniList senkronu"`. (`scripts/sync-anilist.mjs`, `data/overrides.json` veya workflow dosyası push'lanınca da otomatik çalışır.)

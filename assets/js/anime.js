@@ -15,7 +15,7 @@ function partState(p){
   return ['İzlendi','done'];
 }
 const sum = (a,k) => a.reduce((n,x) => n+(x[k]||0), 0);
-const rew = ps => { const n = sum(ps,'repeat'); return n ? '↻ '+n+'× tekrar' : ''; };
+const rew = ps => { const n = Math.max(0, ...ps.map(p => p.repeat||0)); return n ? '↻ '+n+'× tekrar' : ''; };
 function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){} }
 const state = {items:[], view:ls('view')==='list' ? 'list' : 'grid', filter:'all', sort:'added', q:''};
 
@@ -64,7 +64,7 @@ function build(it){
   }
   const im = li.querySelector('img'); im.onload = () => im.classList.add('in');
   if(it.image) im.src = big(it.image);
-  const m = {li, it, key:it.title.toLocaleLowerCase('tr'), y, d:dec(y), sn, fl, rp:sum(ps,'repeat'), ep:w, g:it.genres||[]};
+  const m = {li, it, key:it.title.toLocaleLowerCase('tr'), y, d:dec(y), sn, fl, rp:Math.max(0, ...ps.map(p => p.repeat||0)), ep:w, g:it.genres||[]};
   nodes.set(it.id, m); return li;
 }
 const active = () => ['sc','dc','kd','gn'].filter(k => state[k]!=='all').length;
@@ -123,9 +123,9 @@ function filters(d){
   $('#fbtn').onclick = () => { const o = $('#fp').classList.toggle('open'); $('#fbtn').setAttribute('aria-expanded', o); };
 }
 function stats(d){
-  const box = $('#stats'), cn = d.anime.filter(i => UI.tally([i]).anime), t = UI.tally(d.anime), scs = cn.map(i => i.score).filter(Boolean);
+  const box = $('#stats'), cn = d.anime.filter(i => UI.tally([i]).anime), S = d.stats, t = S ? {anime:S.anime, season:S.season, film:S.film, ep:S.episodes} : UI.tally(d.anime), scs = cn.map(i => i.score).filter(Boolean), avg = S ? S.avgScore : (scs.length ? (scs.reduce((a,b)=>a+b,0)/scs.length) : null);
   const row = h('div','stats-row');
-  for(const [v,l,tip] of [[t.anime,'anime','Sezonlar, filmler ve ek içerikler ayrı sayılmaz; en az bir parçası tamamlanmış olanlar sayılır (izleniyor, beklemede, bırakıldı ve planlananlar dahil değil)'],[t.season,'sezon'],[t.film,'film'],[t.ep,'bölüm','Yalnızca tamamlanan parçaların bölümleri; film ve ek içerik dahil, yeniden izlemeler hariç'],[scs.length ? (scs.reduce((a,b)=>a+b,0)/scs.length).toFixed(1) : '-','ort. puan']]){
+  for(const [v,l,tip] of [[t.anime,'anime','Sezonlar, filmler ve ek içerikler ayrı sayılmaz; en az bir parçası tamamlanmış olanlar sayılır (izleniyor, beklemede, bırakıldı ve planlananlar dahil değil)'],[t.season,'sezon'],[t.film,'film'],[t.ep,'bölüm','Yalnızca tamamlanan parçaların bölümleri; film ve ek içerik dahil, yeniden izlemeler hariç'],[avg ? (+avg).toFixed(1) : '-','ort. puan']]){
     const e = h('div','stat'); e.innerHTML = '<b></b><span></span>'; e.firstChild.textContent = v; e.lastChild.textContent = l; if(tip) e.title = tip; row.append(e);
   }
   const more = h('button','more','Ayrıntılar'); more.type = 'button'; more.setAttribute('aria-expanded','false'); more.insertAdjacentHTML('beforeend', UI.icon('down'));
@@ -142,11 +142,16 @@ function stats(d){
   for(const k of Object.keys(ST)){ const n = d.anime.filter(i => i.status===k).length; if(!n) continue;
     const b = h('button'); b.type = 'button'; b.title = ST[k]+': '+n; b.style.cssText = '--n:'+n+';--c:'+COL[k]; b.onclick = () => { setF('filter',k); jump(); }; sg.append(b);
     const l = h('span'); l.innerHTML = '<i></i>'; l.firstChild.style.setProperty('--c',COL[k]); l.append(ST[k]+' '+n); lg.append(l); }
-  blk('Durum', sg, lg);
-  const ms = cn.map(i => nodes.get(i.id)), top = (f) => [...ms].sort((a,b) => f(b)-f(a))[0];
-  const hl = h('div','hl'), add = (l,m,v) => { if(!m || !v) return; const r = h('div'); r.append(h('span',null,l), h('b',null,m.it.title+' · '+v)); hl.append(r); };
-  const tp = top(m => m.it.score||0), lg2 = top(m => m.ep), rw = top(m => m.rp);
-  add('En yüksek puan', tp, tp && tp.it.score); add('En uzun', lg2, lg2 && lg2.ep+' bölüm'); add('En çok tekrar', rw, rw && rw.rp+'× tekrar');
+  const note = S && S.listed ? h('p','meta',S.listed+' anime listede; '+S.anime+' tanesi sayılıyor ('+S.completed+' tamamlanan + '+S.partial+' devam eden, beklemede veya bırakılan ama en az bir parçası bitmiş). '+S.excluded+' animenin henüz hiçbir parçası bitmediği için sayılmıyor.') : null;
+  if(note) note.style.marginTop = '10px';
+  blk('Durum', ...[sg, lg, note].filter(Boolean));
+  const H = S && S.highlights, hl = h('div','hl');
+  const add = (l, o, v) => { if(!o) return; const r = h('div'); r.append(h('span',null,l), h('b',null,o.title+' · '+v)); hl.append(r); };
+  if(H){
+    add('En yüksek puan', H.topScore, H.topScore && H.topScore.score + (H.topScore.ties ? ' ('+H.topScore.ties+' anime daha aynı puanda)' : ''));
+    add('En çok izlenen', H.mostWatched, H.mostWatched && H.mostWatched.episodes+' bölüm'+(H.mostWatched.status!=='completed' ? ' · '+(ST[H.mostWatched.status]||'').toLocaleLowerCase('tr') : ''));
+    add('En çok tekrar', H.mostRewatched, H.mostRewatched && H.mostRewatched.times+' kez izlendi');
+  }
   if(hl.children.length) blk('Öne çıkanlar', hl);
   const gc = {}; for(const m of nodes.values()) for(const g of m.g) gc[g] = (gc[g]||0)+1;
   const tg = Object.keys(gc).sort((a,b) => gc[b]-gc[a]).slice(0,8);

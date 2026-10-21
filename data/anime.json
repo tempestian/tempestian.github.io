@@ -5774,5 +5774,42 @@
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21519-SUo3ZQuCbYhJ.png",
       "addedAt": "2022-04-29"
     }
-  ]
+  ],
+  "stats": {
+    "anime": 77,
+    "season": 125,
+    "film": 25,
+    "other": 25,
+    "episodes": 2425,
+    "avgScore": 7,
+    "byStatus": {
+      "watching": 5,
+      "completed": 71,
+      "dropped": 8,
+      "paused": 5
+    },
+    "listed": 89,
+    "completed": 71,
+    "partial": 6,
+    "excluded": 12,
+    "highlights": {
+      "topScore": {
+        "id": "al-101280",
+        "title": "That Time I Got Reincarnated as a Slime",
+        "score": 10,
+        "ties": 11
+      },
+      "mostWatched": {
+        "id": "al-21",
+        "title": "ONE PIECE",
+        "episodes": 846,
+        "status": "watching"
+      },
+      "mostRewatched": {
+        "id": "al-101280",
+        "title": "That Time I Got Reincarnated as a Slime",
+        "times": 22
+      }
+    }
+  }
 }

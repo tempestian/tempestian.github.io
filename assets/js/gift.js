@@ -7,6 +7,7 @@
   const out = {}; cd.querySelectorAll('[data-u]').forEach(b => { out[b.dataset.u] = b; });
   const pad = n => String(n).padStart(2, '0');
   let timer = 0;
+  if ('IntersectionObserver' in window) new IntersectionObserver(e => card.classList.toggle('vis', e[0].isIntersecting)).observe(card); else card.classList.add('vis');
 
   const render = () => {
     const left = TARGET - Date.now();

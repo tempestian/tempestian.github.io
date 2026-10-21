@@ -12,6 +12,6 @@
   window.toggleTheme = () => {
     const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
     try { localStorage.setItem('theme', next); } catch (e) {}
-    document.startViewTransition ? document.startViewTransition(() => apply(next)) : apply(next);
+    apply(next);
   };
 })();

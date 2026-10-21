@@ -19,44 +19,66 @@ const rew = ps => { const n = sum(ps,'repeat'); return n ? '↻ '+n+'× tekrar' 
 function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){} }
 const state = {items:[], view:ls('view')==='list' ? 'list' : 'grid', filter:'all', sort:'added', q:''};
 
-const go = () => document.startViewTransition ? document.startViewTransition(render) : render();
 const byAdded = (a,b) => (b.addedAt||'').localeCompare(a.addedAt||'');
+const SORTS = {
+  added: byAdded,
+  score: (a,b) => (b.score||0)-(a.score||0) || byAdded(a,b),
+  title: (a,b) => a.title.localeCompare(b.title,'tr')
+};
+const nodes = new Map();   // id -> {li, key}
+let order = '', raf = 0;
+
+// DOM bir kez kurulur; filtre/arama yalnızca hidden, sıralama yalnızca yeniden dizme yapar.
+function build(it){
+  const ps = UI.parts(it).filter(own), ep = sum(ps,'episodes'), w = sum(ps,'watched');
+  const cnt = k => ps.filter(p => p.kind===k).length, sn = cnt('season'), fl = cnt('movie'), ot = cnt('other');
+  const li = document.createElement('li');
+  li.innerHTML = '<div class="poster"><img alt="" loading="lazy" decoding="async" width="142" height="213"></div><div class="t"><h3><a target="_blank" rel="noopener"></a></h3><p class="meta"></p><p class="st"></p></div>';
+  const a = li.querySelector('a'); a.textContent = it.title;
+  a.href = '#'+it.id; a.onclick = e => { if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; e.preventDefault(); openSheet(it.id, true); };
+  li.querySelector('.meta').textContent = [sn && sn+' sezon', fl && fl+' film', ot && ot+' ek', rew(ps), !ep ? w+' bölüm' : w===ep ? ep+' bölüm' : w+'/'+ep+' bölüm'].filter(Boolean).join(', ');
+  const st = li.querySelector('.st');
+  if(it.status !== 'completed'){ st.textContent = ST[it.status]||it.status; st.classList.add('st-'+it.status); }
+  else if(it.next){ st.textContent = NEXT; st.classList.add('st-next'); } else st.remove();
+  if(it.score){
+    const sc = document.createElement('span'); sc.className = 'score glass';
+    sc.setAttribute('role', 'img'); sc.setAttribute('aria-label', 'Puan '+it.score+'/10'); sc.innerHTML = UI.icon('star'); sc.append(String(it.score));
+    li.append(sc);
+  }
+  const im = li.querySelector('img'); im.onload = () => im.classList.add('in');
+  if(it.image) im.src = it.image;
+  nodes.set(it.id, {li, key:it.title.toLocaleLowerCase('tr')});
+  return li;
+}
 function render(){
-  const s = state, q = s.q.toLowerCase();
-  const l = s.items.filter(i => (s.filter==='all' || (s.filter==='next' ? i.next : i.status===s.filter)) && i.title.toLowerCase().includes(q));
-  l.sort((a,b) => s.sort==='score' ? (b.score||0)-(a.score||0)
-    : s.sort==='title' ? a.title.localeCompare(b.title,'tr')
-    : byAdded(a,b));
-  const root = $('#list'); root.className = s.view; root.innerHTML = '';
-  l.forEach((it, n) => {
-    const ps = UI.parts(it).filter(own), ep = sum(ps,'episodes'), w = sum(ps,'watched');
-    const cnt = k => ps.filter(p => p.kind===k).length, sn = cnt('season'), fl = cnt('movie'), ot = cnt('other');
-    const li = document.createElement('li');
-    li.innerHTML = '<div class="poster"><img alt="" loading="lazy"></div><div class="t"><h3><a target="_blank" rel="noopener"></a></h3><p class="meta"></p><p class="st"></p></div>';
-    const a = li.querySelector('a'); a.textContent = it.title;
-    a.href = '#'+it.id; a.onclick = e => { if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; e.preventDefault(); openSheet(it.id, true); };
-    li.querySelector('.meta').textContent = [sn && sn+' sezon', fl && fl+' film', ot && ot+' ek', rew(ps), !ep ? w+' bölüm' : w===ep ? ep+' bölüm' : w+'/'+ep+' bölüm'].filter(Boolean).join(', ');
-    const st = li.querySelector('.st');
-    if(it.status !== 'completed'){ st.textContent = ST[it.status]||it.status; st.classList.add('st-'+it.status); }
-    else if(it.next){ st.textContent = NEXT; st.classList.add('st-next'); } else st.remove();
-    if(it.score){
-      const sc = document.createElement('span'); sc.className = 'score glass';
-      sc.setAttribute('role', 'img'); sc.setAttribute('aria-label', 'Puan '+it.score+'/10'); sc.innerHTML = UI.icon('star'); sc.append(String(it.score));
-      s.view === 'grid' ? li.querySelector('.poster').after(sc) : li.append(sc);
-    }
-    if(n < 60) li.style.viewTransitionName = 'a-'+it.id;
-    const im = li.querySelector('img'); im.onload = () => im.classList.add('in');
-    if(it.image) im.src = it.image;
-    root.appendChild(li);
-  });
-  $('#empty').hidden = l.length > 0;
+  const s = state, q = s.q.trim().toLocaleLowerCase('tr'), root = $('#list');
+  root.className = s.view;
+  if(order !== s.sort){
+    order = s.sort;
+    const fr = document.createDocumentFragment();
+    [...s.items].sort(SORTS[s.sort]||byAdded).forEach(it => fr.append(nodes.get(it.id).li));
+    root.append(fr);
+  }
+  let shown = 0, first = null, last = null;
+  for(const it of s.items){
+    const n = nodes.get(it.id);
+    const ok = (s.filter==='all' || (s.filter==='next' ? it.next : it.status===s.filter)) && n.key.includes(q);
+    n.li.hidden = !ok; n.li.classList.remove('f','l');
+  }
+  for(const li of root.children){ if(li.hidden) continue; shown++; if(!first) first = li; last = li; }
+  if(first){ first.classList.add('f'); last.classList.add('l'); }
+  $('#empty').hidden = shown > 0;
   $('#empty').textContent = 'Eşleşen anime yok.';
   document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view===s.view));
   document.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', b.dataset.filter===s.filter));
 }
+const go = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(render); };
 
 fetch('../data/anime.json').then(r => r.json()).then(d => {
   state.items = d.anime;
+  const root = $('#list'), fr = document.createDocumentFragment();
+  d.anime.forEach(it => fr.append(build(it)));
+  root.append(fr);
   UI.wall([...d.anime].sort(byAdded).slice(0,3).map(i => i.image));
   const t = UI.tally(d.anime), sc = d.anime.filter(i => UI.tally([i]).anime).map(i => i.score).filter(Boolean);
   const stats = $('#stats');

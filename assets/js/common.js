@@ -30,19 +30,31 @@
   syncIcons(); document.addEventListener('themechange', syncIcons);
   if (themeBtn) themeBtn.onclick = () => window.toggleTheme();
 
-  const bar = document.querySelector('.bar'), hero = document.querySelector('.hero'), de = document.documentElement;
-  let tick = false;
-  const upd = () => { tick = false; const h = Math.max(60, (hero ? hero.offsetHeight : 120) - (bar ? bar.offsetHeight : 60) - 6); de.style.setProperty('--p', Math.min(1, Math.max(0, scrollY / h)).toFixed(3)); };
-  addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
-  addEventListener('resize', upd); upd();
+  const bar = document.querySelector('.bar');
+  let on = false;
+  const upd = () => { const n = scrollY > 36; if (n !== on) { on = n; bar && bar.classList.toggle('on', n); } };
+  addEventListener('scroll', upd, { passive: true }); upd();
 
   const wallEl = el('div', 'wall'); wallEl.setAttribute('aria-hidden', 'true'); document.body.prepend(wallEl);
   let wallNow = [];
+  // Görseller 40px'e küçültülüp CSS ile büyütülür: dev blur filtresi yerine ucuz, GPU dostu bulanıklık.
   const wall = urls => {
     urls = [...new Set(urls.filter(Boolean))].slice(0, 3);
     if (!urls.length || urls.join() === wallNow.join()) return;
     wallNow = urls; ls('wall', JSON.stringify(urls)); wallEl.replaceChildren();
-    for (const u of urls) { const im = new Image(); im.alt = ''; im.decoding = 'async'; im.onload = () => im.classList.add('in'); im.onerror = () => im.remove(); im.src = u; wallEl.append(im); }
+    for (const u of urls) {
+      const cv = el('canvas'); cv.width = cv.height = 40; wallEl.append(cv);
+      const im = new Image(); im.decoding = 'async';
+      im.onload = () => {
+        try {
+          const c = cv.getContext('2d'), w = im.naturalWidth, h = im.naturalHeight, m = Math.min(w, h);
+          c.imageSmoothingQuality = 'high';
+          c.drawImage(im, (w - m) / 2, (h - m) / 2, m, m, 0, 0, 40, 40);
+          requestAnimationFrame(() => cv.classList.add('in'));
+        } catch (e) { cv.remove(); }
+      };
+      im.onerror = () => cv.remove(); im.src = u;
+    }
   };
   const parts = it => it.parts || (it.seasons || []).map(s => ({ ...s, kind: 'season' }));
   const tally = items => {
@@ -63,50 +75,59 @@
 
   const dock = document.getElementById('dock'), list = document.getElementById('sections'), links = document.getElementById('links');
   const cover = x => x.image || null;
-  function paint(d, data) {
-    dock.replaceChildren();
+  // Ana sayfa için yalnızca özet (sayılar + 4 kapak) saklanır; 150KB'lık JSON her sayfada işlenmez.
+  const summarize = (s, j) => {
+    const items = (j && j[s.countKey]) || [];
+    const t = tally(items);
+    const nums = s.id === 'anime' && items.every(x => x.parts || x.seasons)
+      ? [[t.anime, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']]
+      : [[items.length, s.unit || '']];
+    return { nums: j ? nums : null, imgs: items.map(cover).filter(Boolean).slice(0, 4), wall: items.map(cover).filter(Boolean).slice(0, 3) };
+  };
+  function paint(d, sum) {
+    const fr = document.createDocumentFragment();
     for (const s of [{ id: 'home', title: 'Ana sayfa', path: '' }, ...d.sections.filter(s => s.status === 'active')]) {
       const a = el('a'); a.href = (root + s.path) || './';
       if (s.id === cur) { a.setAttribute('aria-current', 'page'); a.append(el('i', 'pill')); }
-      a.insertAdjacentHTML('beforeend', icon(s.icon || s.id)); a.append(el('span', '', s.title)); dock.append(a);
+      a.insertAdjacentHTML('beforeend', icon(s.icon || s.id)); a.append(el('span', '', s.title)); fr.append(a);
     }
+    dock.replaceChildren(fr);
     if (list) {
-      list.replaceChildren();
+      const lf = document.createDocumentFragment();
       for (const s of d.sections) {
         const on = s.status === 'active', li = el('li', 'tile glass sq'), box = on ? Object.assign(el('a'), { href: root + s.path }) : el('div');
         const top = el('div', 'tile-top'); top.append(el('h2', '', s.title));
         if (on) { const g = el('span', 'go'); g.innerHTML = icon('next'); top.append(g); } else if (s.description) top.append(el('span', 'tag', s.description));
         box.append(top); if (!on) li.classList.add('soon');
-        const j = data[s.id], items = (j && j[s.countKey]) || [];
-        if (j) {
+        const m = sum[s.id];
+        if (m && m.nums) {
           const n = el('p', 'nums');
-          const t = tally(items);
-          const nums = s.id === 'anime' && items.every(x => x.parts || x.seasons)
-            ? [[t.anime, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']]
-            : [[items.length, s.unit || '']];
-          for (const [v, l] of nums) { const sp = el('span'); sp.append(el('b', '', v), ' ' + l); n.append(sp); }
+          for (const [v, l] of m.nums) { const sp = el('span'); sp.append(el('b', '', v), ' ' + l); n.append(sp); }
           box.append(n);
         }
-        const imgs = items.map(cover).filter(Boolean).slice(0, 4);
-        if (imgs.length) { const st = el('div', 'strip'); for (const u of imgs) { const im = el('img'); im.src = u; im.alt = ''; im.loading = 'lazy'; st.append(im); } box.append(st); }
-        li.append(box); list.append(li);
+        if (m && m.imgs.length) { const st = el('div', 'strip'); for (const u of m.imgs) { const im = el('img'); im.src = u; im.alt = ''; im.width = 48; im.height = 72; im.decoding = 'async'; st.append(im); } box.append(st); }
+        li.append(box); lf.append(li);
       }
-      const a = data.anime && data.anime.anime;
-      if (a) wall(a.map(cover));
+      list.replaceChildren(lf);
+      const w = sum.anime && sum.anime.wall; if (w) wall(w);
     }
     if (links) {
-      links.replaceChildren();
-      for (const l of d.links || []) { const li = el('li', 'glass'), a = el('a', '', l.title); a.href = l.url; a.rel = 'me noopener'; a.insertAdjacentHTML('beforeend', icon('out')); li.append(a); links.append(li); }
+      const lf = document.createDocumentFragment();
+      for (const l of d.links || []) { const li = el('li', 'glass'), a = el('a', '', l.title); a.href = l.url; a.rel = 'me noopener'; a.insertAdjacentHTML('beforeend', icon('out')); li.append(a); lf.append(li); }
+      links.replaceChildren(lf);
     }
   }
 
-  const cached = json('ui1');
-  if (cached) paint(cached.s, cached.d);
+  try { localStorage.removeItem('ui1'); } catch (e) {}
+  const cached = json('ui2');
+  if (cached) paint(cached.s, cached.m);
   (async () => {
     let d; try { d = await (await fetch(root + 'data/sections.json')).json(); } catch (e) { if (!cached) paint({ sections: [], links: [] }, {}); return; }
-    const data = {};
-    await Promise.all(d.sections.filter(s => s.data).map(async s => { try { data[s.id] = await (await fetch(root + s.data)).json(); } catch (e) {} }));
-    const fresh = JSON.stringify({ s: d, d: data });
-    if (!cached || fresh !== JSON.stringify(cached)) { ls('ui1', fresh); paint(d, data); }
+    const sum = {};
+    if (list) {   // sayı ve kapaklar yalnızca ana sayfada gerekir
+      await Promise.all(d.sections.filter(s => s.data).map(async s => { try { sum[s.id] = summarize(s, await (await fetch(root + s.data)).json()); } catch (e) {} }));
+    } else if (cached) Object.assign(sum, cached.m);
+    const fresh = JSON.stringify({ s: d, m: sum });
+    if (!cached || fresh !== JSON.stringify(cached)) { ls('ui2', fresh); if (!cached || list) paint(d, sum); else paint(d, cached.m); }
   })();
 })();

@@ -2,6 +2,13 @@
 
 Statik site, derleme gerektirmez. Tüm veri AniList'ten gelir. Depo adı `tempestian.github.io` olmalı; dosyalar kök dizine yüklenir (`.nojekyll` dahil).
 
+## Performans notları
+- `backdrop-filter` yalnızca alt menü, üst çubuk ve detay penceresinde; kartlar/listeler düz yarı saydam (arka plan zaten bulanık).
+- Arka plan bulanıklığı 40px'lik canvas'ın CSS ile büyütülmesiyle yapılır (`common.js` içinde `wall`); dev `filter:blur` yok.
+- Üst çubuk durumu scroll'da sınıf (`.bar.on`) ile değişir; başlık küçülmesi `animation-timeline:scroll()` ile.
+- Anime listesinde DOM bir kez kurulur; filtre `hidden`, sıralama yeniden dizme ile yapılır.
+- Sayfa geçişleri hafif tutuldu (`@view-transition`, yalnızca kök solma + alt menü hapı); `speculationrules` ile hedef sayfa önceden yüklenir.
+
 ## Yapı
 - `index.html`: ana sayfa
 - `anime/index.html`: liste sayfası (`/anime/`)

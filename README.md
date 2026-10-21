@@ -4,7 +4,7 @@ Statik site, derleme gerektirmez. Tüm veri AniList'ten gelir. Depo adı `tempes
 
 ## Performans notları
 - `backdrop-filter` yalnızca alt menü, üst çubuk ve detay penceresinde; kartlar/listeler düz yarı saydam (arka plan zaten bulanık).
-- Arka plan bulanıklığı 40px'lik canvas'ın CSS ile büyütülmesiyle yapılır (`common.js` içinde `wall`); dev `filter:blur` yok.
+- Arka plan yalnızca CSS (üç yumuşak gradyan + koyu temada hafif gren); bölüme özgü görsel kullanılmaz, yeni bölümler eklenince değişmez.
 - Üst çubuk durumu scroll'da sınıf (`.bar.on`) ile değişir; başlık küçülmesi `animation-timeline:scroll()` ile.
 - Anime listesinde DOM bir kez kurulur; filtre `hidden`, sıralama yeniden dizme ile yapılır.
 - Sayfa geçişleri hafif tutuldu (`@view-transition`, yalnızca kök solma + alt menü hapı); `speculationrules` ile hedef sayfa önceden yüklenir.
@@ -13,7 +13,7 @@ Statik site, derleme gerektirmez. Tüm veri AniList'ten gelir. Depo adı `tempes
 - `index.html`: ana sayfa
 - `anime/index.html`: liste sayfası (`/anime/`)
 - `data/anime.json`: tüm içerik burada, tek kaynak
-- `assets/img/icon.svg`: favicon.
+- `assets/img/`: logo ve simgeler (`logo.png` ana sayfadaki işaret, `favicon-32.png`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png`); kökte `favicon.ico`.
 - `assets/css/style.css`, `assets/js/theme.js` (açık/koyu tema, sistemi izler, düğmeyle değişir), `assets/js/common.js` (üst çubuk, alt menü, ana sayfa), `assets/js/anime.js`.
 - `data/sections.json`: menü, ana sayfa bölümleri ve bağlantılar. Yeni bölüm: bu dosyaya kayıt ekleyin, `<bölüm>/index.html` oluşturun (`anime/index.html` örnek, `data-root` ve `data-section` değerlerini değiştirin). Alt menü simgesi `id` ile eşleşir (`home`, `anime`); farklı simge için kayıta `icon` alanı ekleyin, `common.js` içindeki `P` listesine karşılığını yazın.
 

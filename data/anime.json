@@ -1,21 +1,7 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-10-21",
+  "updated": "2026-10-20",
   "source": "anilist:TurkTempestian",
-  "stats": {
-    "anime": 77,
-    "season": 125,
-    "film": 25,
-    "other": 25,
-    "episodes": 2425,
-    "avgScore": 7,
-    "byStatus": {
-      "watching": 5,
-      "completed": 71,
-      "dropped": 8,
-      "paused": 5
-    }
-  },
   "anime": [
     {
       "id": "al-127399",
@@ -23,12 +9,6 @@
       "anilistId": 127399,
       "url": "https://anilist.co/anime/127399",
       "status": "watching",
-      "genres": [
-        "Action",
-        "Drama",
-        "Fantasy",
-        "Supernatural"
-      ],
       "score": 6.7,
       "parts": [
         {
@@ -118,11 +98,6 @@
       "anilistId": 162804,
       "url": "https://anilist.co/anime/162804",
       "status": "watching",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -157,13 +132,6 @@
       "anilistId": 20931,
       "url": "https://anilist.co/anime/20931",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Supernatural",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -187,10 +155,6 @@
       "anilistId": 98503,
       "url": "https://anilist.co/anime/98503",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Slice of Life"
-      ],
       "score": 7,
       "parts": [
         {
@@ -225,11 +189,6 @@
       "anilistId": 20555,
       "url": "https://anilist.co/anime/20555",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological"
-      ],
       "score": 7,
       "parts": [
         {
@@ -253,14 +212,6 @@
       "anilistId": 108463,
       "url": "https://anilist.co/anime/108463",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Supernatural",
-        "Action",
-        "Drama",
-        "Mystery",
-        "Slice of Life"
-      ],
       "score": 10,
       "parts": [
         {
@@ -328,12 +279,6 @@
       "anilistId": 199,
       "url": "https://anilist.co/anime/199",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Drama",
-        "Fantasy",
-        "Supernatural"
-      ],
       "score": 6,
       "parts": [
         {
@@ -357,11 +302,6 @@
       "anilistId": 2981,
       "url": "https://anilist.co/anime/2981",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Horror",
-        "Psychological"
-      ],
       "score": 4,
       "parts": [
         {
@@ -385,12 +325,6 @@
       "anilistId": 114124,
       "url": "https://anilist.co/anime/114124",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Thriller"
-      ],
       "score": 2.5,
       "parts": [
         {
@@ -437,10 +371,6 @@
       "url": "https://anilist.co/anime/21613",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Fantasy"
-      ],
       "score": 7.7,
       "parts": [
         {
@@ -519,13 +449,6 @@
       "anilistId": 181447,
       "url": "https://anilist.co/anime/181447",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Comedy",
-        "Drama",
-        "Fantasy",
-        "Romance"
-      ],
       "score": 6,
       "parts": [
         {
@@ -550,13 +473,6 @@
       "url": "https://anilist.co/anime/1575",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Drama",
-        "Mecha",
-        "Sci-Fi",
-        "Thriller"
-      ],
       "score": 9.7,
       "parts": [
         {
@@ -745,11 +661,6 @@
       "anilistId": 179696,
       "url": "https://anilist.co/anime/179696",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 6,
       "parts": [
         {
@@ -773,11 +684,6 @@
       "anilistId": 126288,
       "url": "https://anilist.co/anime/126288",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 4,
       "parts": [
         {
@@ -823,11 +729,6 @@
       "anilistId": 16417,
       "url": "https://anilist.co/anime/16417",
       "status": "completed",
-      "genres": [
-        "Slice of Life",
-        "Comedy",
-        "Romance"
-      ],
       "score": 4,
       "parts": [
         {
@@ -884,11 +785,6 @@
       "anilistId": 181444,
       "url": "https://anilist.co/anime/181444",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Drama",
-        "Romance"
-      ],
       "score": 8,
       "parts": [
         {
@@ -912,11 +808,6 @@
       "anilistId": 163623,
       "url": "https://anilist.co/anime/163623",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 6,
       "parts": [
         {
@@ -941,11 +832,6 @@
       "url": "https://anilist.co/anime/116267",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 8,
       "parts": [
         {
@@ -1013,10 +899,6 @@
       "anilistId": 66,
       "url": "https://anilist.co/anime/66",
       "status": "watching",
-      "genres": [
-        "Comedy",
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -1062,10 +944,6 @@
       "anilistId": 101001,
       "url": "https://anilist.co/anime/101001",
       "status": "dropped",
-      "genres": [
-        "Comedy",
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -1111,11 +989,6 @@
       "anilistId": 6574,
       "url": "https://anilist.co/anime/6574",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 5,
       "parts": [
         {
@@ -1150,13 +1023,6 @@
       "anilistId": 21196,
       "url": "https://anilist.co/anime/21196",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Drama",
-        "Fantasy",
-        "Horror",
-        "Supernatural"
-      ],
       "score": null,
       "parts": [
         {
@@ -1213,13 +1079,6 @@
       "anilistId": 15687,
       "url": "https://anilist.co/anime/15687",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life",
-        "Drama",
-        "Mecha"
-      ],
       "score": 8.5,
       "parts": [
         {
@@ -1353,11 +1212,6 @@
       "anilistId": 98659,
       "url": "https://anilist.co/anime/98659",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Psychological",
-        "Mystery"
-      ],
       "score": 8.3,
       "parts": [
         {
@@ -1425,14 +1279,6 @@
       "anilistId": 5081,
       "url": "https://anilist.co/anime/5081",
       "status": "paused",
-      "genres": [
-        "Comedy",
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Romance",
-        "Supernatural"
-      ],
       "score": null,
       "parts": [
         {
@@ -1643,11 +1489,6 @@
       "anilistId": 124080,
       "url": "https://anilist.co/anime/124080",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 7,
       "parts": [
         {
@@ -1682,11 +1523,6 @@
       "anilistId": 20464,
       "url": "https://anilist.co/anime/20464",
       "status": "paused",
-      "genres": [
-        "Comedy",
-        "Drama",
-        "Sports"
-      ],
       "score": null,
       "parts": [
         {
@@ -1875,10 +1711,6 @@
       "anilistId": 1614,
       "url": "https://anilist.co/anime/1614",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Sports"
-      ],
       "score": 6,
       "parts": [
         {
@@ -1902,11 +1734,6 @@
       "anilistId": 21827,
       "url": "https://anilist.co/anime/21827",
       "status": "paused",
-      "genres": [
-        "Drama",
-        "Fantasy",
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -1963,12 +1790,6 @@
       "anilistId": 142770,
       "url": "https://anilist.co/anime/142770",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Fantasy",
-        "Mystery",
-        "Supernatural"
-      ],
       "score": 7,
       "parts": [
         {
@@ -1993,12 +1814,6 @@
       "url": "https://anilist.co/anime/150672",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Supernatural"
-      ],
       "score": 7.5,
       "parts": [
         {
@@ -2056,13 +1871,6 @@
       "anilistId": 20829,
       "url": "https://anilist.co/anime/20829",
       "status": "paused",
-      "genres": [
-        "Action",
-        "Drama",
-        "Fantasy",
-        "Mystery",
-        "Supernatural"
-      ],
       "score": 10,
       "parts": [
         {
@@ -2130,12 +1938,6 @@
       "anilistId": 7088,
       "url": "https://anilist.co/anime/7088",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Comedy",
-        "Ecchi",
-        "Fantasy"
-      ],
       "score": 4,
       "parts": [
         {
@@ -2170,13 +1972,6 @@
       "anilistId": 19,
       "url": "https://anilist.co/anime/19",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Horror",
-        "Mystery",
-        "Psychological",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -2200,11 +1995,6 @@
       "anilistId": 99750,
       "url": "https://anilist.co/anime/99750",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 7,
       "parts": [
         {
@@ -2228,11 +2018,6 @@
       "anilistId": 20832,
       "url": "https://anilist.co/anime/20832",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Fantasy"
-      ],
       "score": 5,
       "parts": [
         {
@@ -2410,12 +2195,6 @@
       "anilistId": 108465,
       "url": "https://anilist.co/anime/108465",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Drama",
-        "Ecchi",
-        "Fantasy"
-      ],
       "score": null,
       "parts": [
         {
@@ -2505,13 +2284,6 @@
       "anilistId": 127230,
       "url": "https://anilist.co/anime/127230",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Drama",
-        "Horror",
-        "Supernatural",
-        "Romance"
-      ],
       "score": 7.5,
       "parts": [
         {
@@ -2569,12 +2341,6 @@
       "anilistId": 14813,
       "url": "https://anilist.co/anime/14813",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life",
-        "Drama"
-      ],
       "score": 9.5,
       "parts": [
         {
@@ -2656,13 +2422,6 @@
       "anilistId": 98460,
       "url": "https://anilist.co/anime/98460",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Drama",
-        "Horror",
-        "Psychological",
-        "Supernatural"
-      ],
       "score": 7,
       "parts": [
         {
@@ -2687,9 +2446,6 @@
       "url": "https://anilist.co/anime/98549",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Comedy"
-      ],
       "score": 5,
       "parts": [
         {
@@ -2735,11 +2491,6 @@
       "anilistId": 114963,
       "url": "https://anilist.co/anime/114963",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Fantasy",
-        "Romance"
-      ],
       "score": 6,
       "parts": [
         {
@@ -2763,13 +2514,6 @@
       "anilistId": 21234,
       "url": "https://anilist.co/anime/21234",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Supernatural",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -2793,14 +2537,6 @@
       "anilistId": 14719,
       "url": "https://anilist.co/anime/14719",
       "status": "watching",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Supernatural",
-        "Drama",
-        "Mystery",
-        "Sports"
-      ],
       "score": 9.8,
       "parts": [
         {
@@ -2924,14 +2660,6 @@
       "url": "https://anilist.co/anime/21355",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Drama",
-        "Fantasy",
-        "Psychological",
-        "Action",
-        "Adventure",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -3011,11 +2739,6 @@
       "anilistId": 5680,
       "url": "https://anilist.co/anime/5680",
       "status": "paused",
-      "genres": [
-        "Comedy",
-        "Music",
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -3105,11 +2828,6 @@
       "anilistId": 20954,
       "url": "https://anilist.co/anime/20954",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 7,
       "parts": [
         {
@@ -3134,12 +2852,6 @@
       "url": "https://anilist.co/anime/21311",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Comedy",
-        "Mystery",
-        "Supernatural"
-      ],
       "score": 7.6,
       "parts": [
         {
@@ -3229,11 +2941,6 @@
       "anilistId": 21290,
       "url": "https://anilist.co/anime/21290",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Ecchi",
-        "Romance"
-      ],
       "score": 6,
       "parts": [
         {
@@ -3258,14 +2965,6 @@
       "anilistId": 20,
       "url": "https://anilist.co/anime/20",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Comedy",
-        "Drama",
-        "Fantasy",
-        "Supernatural"
-      ],
       "score": null,
       "parts": [
         {
@@ -3553,11 +3252,6 @@
       "anilistId": 112301,
       "url": "https://anilist.co/anime/112301",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Fantasy",
-        "Comedy"
-      ],
       "score": 5.5,
       "parts": [
         {
@@ -3604,14 +3298,6 @@
       "anilistId": 20613,
       "url": "https://anilist.co/anime/20613",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Drama",
-        "Fantasy",
-        "Horror",
-        "Psychological"
-      ],
       "score": 6,
       "parts": [
         {
@@ -3635,9 +3321,6 @@
       "anilistId": 131548,
       "url": "https://anilist.co/anime/131548",
       "status": "completed",
-      "genres": [
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -3661,13 +3344,6 @@
       "anilistId": 11111,
       "url": "https://anilist.co/anime/11111",
       "status": "completed",
-      "genres": [
-        "Horror",
-        "Mystery",
-        "Thriller",
-        "Psychological",
-        "Supernatural"
-      ],
       "score": 7.3,
       "parts": [
         {
@@ -3702,14 +3378,6 @@
       "anilistId": 16498,
       "url": "https://anilist.co/anime/16498",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Drama",
-        "Fantasy",
-        "Mystery",
-        "Psychological",
-        "Romance"
-      ],
       "score": 8.7,
       "parts": [
         {
@@ -3887,12 +3555,6 @@
       "anilistId": 100388,
       "url": "https://anilist.co/anime/100388",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Drama",
-        "Psychological",
-        "Thriller"
-      ],
       "score": 6,
       "parts": [
         {
@@ -3917,11 +3579,6 @@
       "url": "https://anilist.co/anime/269",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Adventure",
-        "Supernatural"
-      ],
       "score": 7,
       "parts": [
         {
@@ -4055,11 +3712,6 @@
       "anilistId": 20596,
       "url": "https://anilist.co/anime/20596",
       "status": "completed",
-      "genres": [
-        "Romance",
-        "Slice of Life",
-        "Drama"
-      ],
       "score": 2.7,
       "parts": [
         {
@@ -4105,12 +3757,6 @@
       "anilistId": 1535,
       "url": "https://anilist.co/anime/1535",
       "status": "completed",
-      "genres": [
-        "Mystery",
-        "Psychological",
-        "Supernatural",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -4146,14 +3792,6 @@
       "anilistId": 101922,
       "url": "https://anilist.co/anime/101922",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Fantasy",
-        "Supernatural",
-        "Drama",
-        "Mystery"
-      ],
       "score": 5.5,
       "parts": [
         {
@@ -4265,12 +3903,6 @@
       "anilistId": 17513,
       "url": "https://anilist.co/anime/17513",
       "status": "dropped",
-      "genres": [
-        "Drama",
-        "Horror",
-        "Romance",
-        "Supernatural"
-      ],
       "score": null,
       "parts": [
         {
@@ -4305,12 +3937,6 @@
       "anilistId": 101347,
       "url": "https://anilist.co/anime/101347",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Drama",
-        "Supernatural"
-      ],
       "score": 10,
       "parts": [
         {
@@ -4334,14 +3960,6 @@
       "anilistId": 97682,
       "url": "https://anilist.co/anime/97682",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Fantasy",
-        "Adventure",
-        "Comedy",
-        "Drama",
-        "Ecchi"
-      ],
       "score": 6.5,
       "parts": [
         {
@@ -4388,10 +4006,6 @@
       "anilistId": 20987,
       "url": "https://anilist.co/anime/20987",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Slice of Life"
-      ],
       "score": 8.7,
       "parts": [
         {
@@ -4438,11 +4052,6 @@
       "url": "https://anilist.co/anime/113415",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Supernatural",
-        "Drama"
-      ],
       "score": 3.7,
       "parts": [
         {
@@ -4532,13 +4141,6 @@
       "anilistId": 101921,
       "url": "https://anilist.co/anime/101921",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life",
-        "Psychological",
-        "Ecchi"
-      ],
       "score": 8.5,
       "parts": [
         {
@@ -4642,11 +4244,6 @@
       "anilistId": 98314,
       "url": "https://anilist.co/anime/98314",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological"
-      ],
       "score": 8,
       "parts": [
         {
@@ -4681,12 +4278,6 @@
       "anilistId": 512,
       "url": "https://anilist.co/anime/512",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Drama",
-        "Fantasy",
-        "Slice of Life"
-      ],
       "score": 6,
       "parts": [
         {
@@ -4710,11 +4301,6 @@
       "anilistId": 21421,
       "url": "https://anilist.co/anime/21421",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Romance",
-        "Sci-Fi"
-      ],
       "score": 6,
       "parts": [
         {
@@ -4739,12 +4325,6 @@
       "url": "https://anilist.co/anime/132405",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Comedy",
-        "Ecchi",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 5,
       "parts": [
         {
@@ -4779,12 +4359,6 @@
       "anilistId": 523,
       "url": "https://anilist.co/anime/523",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Fantasy",
-        "Slice of Life",
-        "Supernatural"
-      ],
       "score": 5,
       "parts": [
         {
@@ -4819,13 +4393,6 @@
       "anilistId": 21,
       "url": "https://anilist.co/anime/21",
       "status": "watching",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Comedy",
-        "Drama",
-        "Fantasy"
-      ],
       "score": null,
       "parts": [
         {
@@ -5366,10 +4933,6 @@
       "anilistId": 2890,
       "url": "https://anilist.co/anime/2890",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Fantasy"
-      ],
       "score": 6,
       "parts": [
         {
@@ -5394,14 +4957,6 @@
       "url": "https://anilist.co/anime/101291",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Drama",
-        "Psychological",
-        "Romance",
-        "Supernatural",
-        "Comedy",
-        "Mystery"
-      ],
       "score": 8.5,
       "parts": [
         {
@@ -5481,12 +5036,6 @@
       "anilistId": 21049,
       "url": "https://anilist.co/anime/21049",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Drama",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 7.5,
       "parts": [
         {
@@ -5532,13 +5081,6 @@
       "anilistId": 140960,
       "url": "https://anilist.co/anime/140960",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Comedy",
-        "Slice of Life",
-        "Supernatural",
-        "Adventure"
-      ],
       "score": 7.8,
       "parts": [
         {
@@ -5608,13 +5150,6 @@
       "anilistId": 129201,
       "url": "https://anilist.co/anime/129201",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Drama",
-        "Mystery",
-        "Supernatural",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -5639,14 +5174,6 @@
       "anilistId": 101280,
       "url": "https://anilist.co/anime/101280",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Fantasy",
-        "Adventure",
-        "Action",
-        "Ecchi",
-        "Slice of Life"
-      ],
       "score": 10,
       "parts": [
         {
@@ -5810,11 +5337,6 @@
       "anilistId": 21804,
       "url": "https://anilist.co/anime/21804",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Slice of Life",
-        "Supernatural"
-      ],
       "score": 5.4,
       "parts": [
         {
@@ -5871,12 +5393,6 @@
       "anilistId": 129193,
       "url": "https://anilist.co/anime/129193",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Drama",
-        "Fantasy"
-      ],
       "score": 8,
       "parts": [
         {
@@ -5900,14 +5416,6 @@
       "anilistId": 10620,
       "url": "https://anilist.co/anime/10620",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Supernatural",
-        "Psychological",
-        "Horror",
-        "Mystery",
-        "Thriller"
-      ],
       "score": 6.3,
       "parts": [
         {
@@ -5964,12 +5472,6 @@
       "anilistId": 130586,
       "url": "https://anilist.co/anime/130586",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Ecchi",
-        "Fantasy",
-        "Romance"
-      ],
       "score": 6,
       "parts": [
         {
@@ -5994,14 +5496,6 @@
       "url": "https://anilist.co/anime/20605",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Drama",
-        "Horror",
-        "Mystery",
-        "Psychological",
-        "Supernatural"
-      ],
       "score": 4,
       "parts": [
         {
@@ -6080,9 +5574,6 @@
       "anilistId": 6211,
       "url": "https://anilist.co/anime/6211",
       "status": "completed",
-      "genres": [
-        "Drama"
-      ],
       "score": 6,
       "parts": [
         {
@@ -6117,12 +5608,6 @@
       "anilistId": 120120,
       "url": "https://anilist.co/anime/120120",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Drama",
-        "Romance",
-        "Supernatural"
-      ],
       "score": 5,
       "parts": [
         {
@@ -6179,12 +5664,6 @@
       "anilistId": 141014,
       "url": "https://anilist.co/anime/141014",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -6209,12 +5688,6 @@
       "anilistId": 141774,
       "url": "https://anilist.co/anime/141774",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Drama",
-        "Music",
-        "Supernatural"
-      ],
       "score": 10,
       "parts": [
         {
@@ -6250,12 +5723,6 @@
       "anilistId": 20665,
       "url": "https://anilist.co/anime/20665",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Music",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 10,
       "parts": [
         {
@@ -6290,11 +5757,6 @@
       "anilistId": 21519,
       "url": "https://anilist.co/anime/21519",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Romance",
-        "Supernatural"
-      ],
       "score": 7,
       "parts": [
         {

@@ -160,7 +160,6 @@ fetch('../data/anime.json').then(r => r.json()).then(d => {
   const root = $('#list'), fr = document.createDocumentFragment();
   d.anime.forEach(it => fr.append(build(it)));
   root.append(fr);
-  UI.wall([...d.anime].sort(byAdded).slice(0,3).map(i => i.image));
   stats(d); filters(d);
   const chips = $('#chips');
   for(const [k,label] of [['all','Hepsi'], ['next',NEXT], ...Object.entries(ST)]){

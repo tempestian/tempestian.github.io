@@ -37,27 +37,6 @@
   const upd = () => { const n = scrollY > 36; if (n !== on) { on = n; bar && bar.classList.toggle('on', n); } };
   addEventListener('scroll', upd, { passive: true }); upd();
 
-  const wallEl = el('div', 'wall'); wallEl.setAttribute('aria-hidden', 'true'); document.body.prepend(wallEl);
-  let wallNow = [];
-  // Görseller 40px'e küçültülüp CSS ile büyütülür: dev blur filtresi yerine ucuz, GPU dostu bulanıklık.
-  const wall = urls => {
-    urls = [...new Set(urls.filter(Boolean))].slice(0, 3);
-    if (!urls.length || urls.join() === wallNow.join()) return;
-    wallNow = urls; ls('wall', JSON.stringify(urls)); wallEl.replaceChildren();
-    for (const u of urls) {
-      const cv = el('canvas'); cv.width = cv.height = 40; wallEl.append(cv);
-      const im = new Image(); im.decoding = 'async';
-      im.onload = () => {
-        try {
-          const c = cv.getContext('2d'), w = im.naturalWidth, h = im.naturalHeight, m = Math.min(w, h);
-          c.imageSmoothingQuality = 'high';
-          c.drawImage(im, (w - m) / 2, (h - m) / 2, m, m, 0, 0, 40, 40);
-          requestAnimationFrame(() => cv.classList.add('in'));
-        } catch (e) { cv.remove(); }
-      };
-      im.onerror = () => cv.remove(); im.src = u;
-    }
-  };
   const parts = it => it.parts || (it.seasons || []).map(s => ({ ...s, kind: 'season' }));
   const tally = items => {
     const t = { anime: 0, season: 0, film: 0, ep: 0 };
@@ -72,8 +51,8 @@
     }
     return t;
   };
-  window.UI = { icon, wall, el, parts, tally };
-  wall(json('wall') || []);
+  window.UI = { icon, el, parts, tally };
+  try { localStorage.removeItem('wall'); } catch (e) {}
 
   const dock = document.getElementById('dock'), list = document.getElementById('sections'), links = document.getElementById('links');
   const cover = x => x.image || null;
@@ -84,7 +63,7 @@
     const nums = s.id === 'anime' && items.every(x => x.parts || x.seasons)
       ? [[t.anime, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']]
       : [[items.length, s.unit || '']];
-    return { nums: j ? nums : null, imgs: items.map(cover).filter(Boolean).slice(0, 4), wall: items.map(cover).filter(Boolean).slice(0, 3) };
+    return { nums: j ? nums : null, imgs: items.map(cover).filter(Boolean).slice(0, 4) };
   };
   function paint(d, sum) {
     const fr = document.createDocumentFragment();
@@ -111,7 +90,6 @@
         li.append(box); lf.append(li);
       }
       list.replaceChildren(lf);
-      const w = sum.anime && sum.anime.wall; if (w) wall(w);
     }
     if (links) {
       const lf = document.createDocumentFragment();

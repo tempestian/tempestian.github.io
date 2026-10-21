@@ -7,9 +7,9 @@
 <meta name="theme-color" content="#eceef3">
 <title>Tempestian</title>
 <meta name="description" content="Bayram Tempestian'ın kişisel sitesi.">
-<link rel="icon" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
-<link rel="icon" href="assets/img/icon-192.png" type="image/png" sizes="192x192">
-<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="icon" id="fav32" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" id="fav192" href="assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" id="favApple" href="assets/img/apple-touch-icon.png">
 <script src="assets/js/theme.js"></script>
 <link rel="stylesheet" href="assets/css/style.css">
 <script type="speculationrules">{"prerender":[{"urls":["anime/"],"eagerness":"moderate"}]}</script>
@@ -17,15 +17,15 @@
 <body data-root="" data-section="home">
 <header class="bar">
   <div class="bar-in">
-    <span class="bar-title" aria-hidden="true">Tempestian</span>
+    <span class="bar-title" id="barTitle" aria-hidden="true">Tempestian</span>
     <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
   </div>
 </header>
 <main class="wrap">
-  <section class="hero">
-    <img class="mark" src="assets/img/logo.png" width="64" height="64" alt="" decoding="async">
-    <h1>Tempestian</h1>
-    <p class="sub">Bayram</p>
+  <section class="hero" id="heroSection">
+    <img class="mark" id="heroLogo" src="assets/img/logo.png" width="64" height="64" alt="" decoding="async">
+    <h1 id="heroTitle">Tempestian</h1>
+    <p class="sub" id="heroSub">Bayram</p>
   </section>
   <section class="gift glass sq" id="gift" aria-label="Sürpriz">
     <span class="gift-bg" aria-hidden="true"></span>
@@ -56,17 +56,20 @@
         <div class="gift-body-txt">
           <p class="gift-lead" id="giftLead">Hediyenin açılmasına kalan süre</p>
           <div class="cd" id="giftCd" role="timer" aria-live="off">
-            <div><b data-u="d">0</b><span>Gün</span></div>
-            <div><b data-u="h">00</b><span>Saat</span></div>
-            <div><b data-u="m">00</b><span>Dakika</span></div>
-            <div><b data-u="s">00</b><span>Saniye</span></div>
+            <div><b data-u="d">0</b><span data-ul="d">Gün</span></div>
+            <div><b data-u="h">00</b><span data-ul="h">Saat</span></div>
+            <div><b data-u="m">00</b><span data-ul="m">Dakika</span></div>
+            <div><b data-u="s">00</b><span data-ul="s">Saniye</span></div>
           </div>
           <p class="gift-date" id="giftDate">27 Ekim 2026 · 00.00 (TSİ)</p>
         </div>
       </div>
     </div>
   </section>
+  <!-- [AI-MIMARI-NOTU]: Admin panelinden eklenen üst özel kutucuklar (#boxesTop), ana kategoriler (#sections), alt özel kutucuklar (#boxesBottom) ve dış bağlantılar (#links) common.js tarafından dinamik olarak doldurulur. -->
+  <ul class="tiles custom-boxes" id="boxesTop" hidden></ul>
   <ul class="tiles" id="sections"></ul>
+  <ul class="tiles custom-boxes" id="boxesBottom" hidden></ul>
   <ul class="links" id="links" aria-label="Bağlantılar"></ul>
   <noscript><p class="note">Bölümler için JavaScript gerekiyor.</p></noscript>
 </main>

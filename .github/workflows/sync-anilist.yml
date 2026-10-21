@@ -3,12 +3,18 @@ on:
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
+    inputs:
+      sync_mode:
+        description: 'Senkronizasyon Modu (hybrid: Profil + İlk Sezon Linklerinden Bağlantılı Animeler, relations_only: Sadece Sitedeki İlk Sezon Linklerinden Bağlantılı Animeler & Kapaklar)'
+        required: false
+        default: 'hybrid'
   push:
     branches: [main]
     paths:
       - scripts/sync-anilist.mjs
       - scripts/stats.mjs
       - data/overrides.json
+      - data/anime.json
       - .github/workflows/sync-anilist.yml
 permissions:
   contents: write
@@ -18,14 +24,30 @@ concurrency:
   cancel-in-progress: false
 jobs:
   sync:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - run: node scripts/sync-anilist.mjs
+        with:
+          fetch-depth: 2
+      - name: Bot commit döngüsünü engelle
+        id: check_commit
+        run: |
+          LAST_AUTHOR=$(git log -1 --pretty=format:'%an')
+          if [ "$LAST_AUTHOR" = "github-actions[bot]" ] && [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: İlk sezon linklerinden bağlantılı animeleri ve yan içerikleri çek
+        if: steps.check_commit.outputs.skip != 'true'
+        run: node scripts/sync-anilist.mjs
         env:
           ANILIST_USER: TurkTempestian
+          SYNC_MODE: ${{ github.event.inputs.sync_mode || 'hybrid' }}
       - name: Değişiklik varsa kaydet ve yayınla
+        if: steps.check_commit.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -36,7 +58,7 @@ jobs:
             echo "Değişiklik yok."
             exit 0
           fi
-          git commit -m "AniList verisi güncellendi"
+          git commit -m "AniList ve bağlantılı yan içerik verisi güncellendi"
           git pull --rebase origin "$GITHUB_REF_NAME"
           git push origin "HEAD:$GITHUB_REF_NAME"
           gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" || echo "Pages derlemesi elle tetiklenemedi."

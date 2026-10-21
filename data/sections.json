@@ -1,4 +1,35 @@
 {
+  "schemaVersion": 2,
+  "site": {
+    "title": "Tempestian",
+    "subtitle": "Bayram",
+    "barTitle": "Tempestian",
+    "description": "Bayram Tempestian'ın kişisel sitesi.",
+    "homeLabel": "Ana sayfa",
+    "logo": "assets/img/logo.png",
+    "favicon32": "assets/img/favicon-32.png",
+    "icon192": "assets/img/icon-192.png",
+    "appleTouchIcon": "assets/img/apple-touch-icon.png"
+  },
+  "gift": {
+    "enabled": true,
+    "ariaLabel": "Sürpriz",
+    "openLabel": "Sürprizi aç",
+    "closeLabel": "Sürprizi kapat",
+    "leadText": "Hediyenin açılmasına kalan süre",
+    "targetDate": "2026-10-27T00:00:00+03:00",
+    "dateLabel": "27 Ekim 2026 · 00.00 (TSİ)",
+    "expiredLeadText": "Hediyenin açılma zamanı geldi",
+    "expiredSubText": "Az sonra burada olacak.",
+    "expiredUrl": "",
+    "units": {
+      "d": "Gün",
+      "h": "Saat",
+      "m": "Dakika",
+      "s": "Saniye"
+    }
+  },
+  "boxes": [],
   "sections": [
     {
       "id": "anime",
@@ -8,21 +39,42 @@
       "data": "data/anime.json",
       "countKey": "anime",
       "unit": "anime",
-      "status": "active"
+      "status": "active",
+      "icon": "anime",
+      "showStrip": true
     }
   ],
   "links": [
     {
+      "id": "lnk-technopat",
       "title": "Technopat Sosyal",
-      "url": "https://www.technopat.net/sosyal/uye/bayram-tempestian.657641/"
+      "url": "https://www.technopat.net/sosyal/uye/bayram-tempestian.657641/",
+      "enabled": true
     },
     {
+      "id": "lnk-github",
       "title": "GitHub",
-      "url": "https://github.com/tempestian"
+      "url": "https://github.com/tempestian",
+      "enabled": true
     },
     {
+      "id": "lnk-anilist",
       "title": "AniList",
-      "url": "https://anilist.co/user/TurkTempestian"
+      "url": "https://anilist.co/user/TurkTempestian",
+      "enabled": true
     }
-  ]
+  ],
+  "pages": {
+    "anime": {
+      "title": "Anime",
+      "metaTitle": "Anime · Tempestian",
+      "description": "Tempestian'ın izlediği animeler: puanlar, sezonlar ve izleme durumu.",
+      "searchPlaceholder": "Ara",
+      "emptyText": "Eşleşen anime yok.",
+      "footerText": "AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir.",
+      "detailsText": "Ayrıntılar",
+      "resetFilterText": "Filtreleri sıfırla",
+      "anilistButtonText": "AniList'te aç"
+    }
+  }
 }

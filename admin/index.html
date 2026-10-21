@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; connect-src 'self' https://api.github.com https://graphql.anilist.co; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'none';">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#eceef3">
+<title>Yönetim · Tempestian</title>
+<link rel="icon" href="../assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<script src="../assets/js/theme.js"></script>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/admin.css">
+</head>
+<body data-root="../" data-section="admin">
+<header class="bar on">
+  <div class="bar-in admin-bar-in">
+    <div class="admin-brand">
+      <a class="btn glass" href="../" data-icon="back" aria-label="Siteye dön" title="Siteye dön"></a>
+      <span class="admin-title">Tempestian Yönetim</span>
+      <span class="admin-badge" id="sessionBadge" hidden>Kilitli</span>
+    </div>
+    <div class="admin-bar-actions">
+      <button class="btn glass" id="lockBtn" type="button" title="Oturumu Kilitle" aria-label="Oturumu Kilitle" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </button>
+      <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap admin-wrap">
+  <div id="toastArea" class="toast-area" aria-live="polite"></div>
+
+  <section id="authGate" class="auth-gate glass sq">
+    <div class="auth-head">
+      <div class="auth-shield" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 19 5.8v5.7c0 5-3.2 8.8-7 10-3.8-1.2-7-5-7-10V5.8z"/><path d="m9.5 12 1.8 1.8 3.6-3.6"/></svg>
+      </div>
+      <div>
+        <h1>Yönetici Doğrulaması</h1>
+        <p class="sub" id="authSubtitle">Devam etmek için Google Authenticator (TOTP) doğrulamasını tamamlayın.</p>
+      </div>
+    </div>
+
+    <div class="auth-tabs" role="tablist" aria-label="Doğrulama Yöntemi">
+      <button type="button" class="auth-tab" role="tab" data-auth-tab="totp" aria-selected="true">Google Authenticator Girişi</button>
+      <button type="button" class="auth-tab" role="tab" data-auth-tab="pair" aria-selected="false">Yeni Cihaz / Kasa Bağla</button>
+    </div>
+
+    <p id="authAlert" class="auth-alert" hidden></p>
+
+    <div id="authPaneTotp" class="auth-pane">
+      <div id="deviceReadyBox" class="auth-box" hidden>
+        <div class="status-banner ok" id="deviceStatusBanner"></div>
+        <form id="formDeviceTotp" autocomplete="off">
+          <label class="field">
+            <span>Google Authenticator 6 Haneli Kod</span>
+            <input type="text" id="loginTotpCode" class="totp-input glass" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" autocomplete="one-time-code" required>
+            <small>Telefonunuzdaki Google Authenticator uygulamasında görünen 6 haneli kodu girin.</small>
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Doğrula ve Giriş Yap</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="deviceMissingBox" class="auth-box" hidden>
+        <div class="status-banner warn">
+          <span>Bu tarayıcıda yetkilendirilmiş yönetici oturumu bulunmuyor.</span>
+        </div>
+        <p class="help-txt">Bu cihazda henüz yönetici anahtarı tanımlanmamış. Yalnızca depo sahibi (<b>tempestian</b>) geçerli GitHub yazma yetkisi ve Google Authenticator doğrulaması ile cihaz eşleştirebilir.</p>
+        <div class="form-actions">
+          <button type="button" class="btn-primary" id="goToPairBtn">Cihaz / Kasa Doğrulamasına Geç</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="authPanePair" class="auth-pane" hidden>
+      <div id="pairVaultBox" class="vault-block" hidden>
+        <h3>Mühürlü Yönetici Kasası + Google Authenticator (2FA)</h3>
+        <p class="help-txt">Depodaki mühürlü kasa (<code>data/admin-vault.json</code>) aktiftir. Bu cihazı yetkilendirmek için Yönetici Parolanızı, Google Authenticator 6 haneli kodunuzu ve GitHub Fine-Grained Token bilginizi girin.</p>
+        <form id="formPairExistingVault" autocomplete="off">
+          <div class="field-row">
+            <label class="field">
+              <span>Yönetici Kullanıcı Adı</span>
+              <input type="text" id="vaultUsername" class="inp glass" value="tempestian" required>
+            </label>
+            <label class="field">
+              <span>Yönetici Kasa Parolası</span>
+              <input type="password" id="vaultPassword" class="inp glass" placeholder="AES-256-GCM kasa parolanız" required>
+            </label>
+          </div>
+          <div class="field-row">
+            <label class="field">
+              <span>Google Authenticator Kodu (6 Hane)</span>
+              <input type="text" id="vaultTotpCode" class="totp-input glass" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" required>
+            </label>
+            <label class="field">
+              <span>GitHub Fine-Grained Token (PAT)</span>
+              <input type="password" id="vaultPatInput" class="inp glass" placeholder="github_pat_..." required>
+            </label>
+          </div>
+          <label class="field">
+            <span>Harici Kasa Dosyası <small>(İsteğe bağlı `.vault.json` yedeği)</small></span>
+            <input type="file" id="vaultFileInput" accept=".json,application/json" class="inp glass file-inp">
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="pairExistingBtn">Doğrula ve Bu Cihazı Yetkilendir</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="pairInitialGate" class="vault-block" hidden>
+        <h3>Depo Sahibi Kimlik Kanıtı (İlk Mühürleme)</h3>
+        <p class="help-txt">Bu sayfada herkese açık QR kodu bulunmaz. İlk Google Authenticator anahtarını üretmek ve depoyu mühürlemek için önce <b>tempestian/tempestian.github.io</b> deposuna yazma yetkisi olan GitHub Fine-Grained Token doğrulaması yapılmalıdır.</p>
+        <form id="formVerifySetupToken" autocomplete="off">
+          <div class="field-row">
+            <label class="field">
+              <span>Repo Sahibi</span>
+              <input type="text" id="setupRepoOwner" class="inp glass" value="tempestian" required>
+            </label>
+            <label class="field">
+              <span>Repo Adı</span>
+              <input type="text" id="setupRepoName" class="inp glass" value="tempestian.github.io" required>
+            </label>
+            <label class="field">
+              <span>Dal (Branch)</span>
+              <input type="text" id="setupBranch" class="inp glass" value="main" required>
+            </label>
+          </div>
+          <label class="field">
+            <span>GitHub Fine-Grained Token (PAT) — Zorunlu</span>
+            <input type="password" id="setupPat" class="inp glass" placeholder="github_pat_..." required>
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="verifySetupPatBtn">GitHub API ile Sahipliği Doğrula</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="pairDynamicMount"></div>
+    </div>
+  </section>
+
+  <section id="adminApp" class="admin-app" hidden></section>
+</main>
+
+<script src="../assets/js/common.js"></script>
+<script src="../assets/js/qr.js"></script>
+<script src="../assets/js/admin-security.js"></script>
+<script src="../assets/js/admin.js"></script>
+</body>
+</html>

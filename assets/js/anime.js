@@ -1,8 +1,43 @@
+// ============================================================================
+// [AI-MIMARI-NOTU: ANİME LİSTESİ, İSTATİSTİK VE DETAY GÖRÜNÜMÜ MOTORU]
+// Bu dosya `/anime/` sayfasını (`data/anime.json`) oluşturur.
+// - Hem AniList senkronundan gelen (`id: "al-..."`) hem de Admin Panelinden
+//   elle eklenen (`id: "custom-..."`, `source: "manual"`) animeleri destekler.
+// - Admin panelinde yapılan değişikliklerin GitHub commit öncesi test edilebilmesi
+//   için `localStorage['tp_anime_preview']` önbelleğini destekler.
+// ============================================================================
 const $ = s => document.querySelector(s);
 const ST = {completed:'İzlendi', watching:'İzleniyor', paused:'Beklemede', dropped:'Bırakıldı', planned:'Planlandı'};
 const NEXT = 'Devam edilecek';
 const FMT = {TV:'TV', TV_SHORT:'Kısa', MOVIE:'Film', OVA:'OVA', SPECIAL:'Özel', ONA:'ONA'};
 const own = p => p.status !== 'PLANNING' && p.status !== 'NONE';
+
+const pageTexts = {
+  searchPlaceholder: 'Ara',
+  emptyText: 'Eşleşen anime yok.',
+  footerText: "AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir.",
+  detailsText: 'Ayrıntılar',
+  resetFilterText: 'Filtreleri sıfırla',
+  anilistButtonText: "AniList'te aç"
+};
+
+function applyAnimePageConfig(cfg) {
+  const pa = cfg && cfg.pages && cfg.pages.anime;
+  if (!pa) return;
+  Object.assign(pageTexts, pa);
+  const qEl = $('#q');
+  if (qEl && pa.searchPlaceholder) qEl.placeholder = pa.searchPlaceholder;
+  const footEl = document.querySelector('.foot');
+  if (footEl && pa.footerText !== undefined) {
+    footEl.textContent = pa.footerText;
+    footEl.hidden = pa.footerText === '';
+  }
+  const emptyEl = $('#empty');
+  if (emptyEl && !emptyEl.hidden && state.items.length) emptyEl.textContent = pageTexts.emptyText;
+}
+if (window.SITE_CONFIG) applyAnimePageConfig(window.SITE_CONFIG);
+document.addEventListener('siteconfig', e => applyAnimePageConfig(e.detail));
+
 function partState(p){
   const ep = p.episodes||0, w = p.watched||0, frac = ep ? w+'/'+ep : w+' bölüm';
   if(p.status==='NONE' || (!p.status && !w)){
@@ -22,7 +57,11 @@ const state = {items:[], view:ls('view')==='list' ? 'list' : 'grid', filter:'all
 const byAdded = (a,b) => (b.addedAt||'').localeCompare(a.addedAt||'');
 const nodes = new Map();   // id -> meta
 let order = '', raf = 0;
-const big = u => u && u.replace('/cover/medium/','/cover/large/');
+const big = u => {
+  if (!u) return '';
+  if (/^(https?:|data:|blob:|\/)/i.test(u)) return u.replace('/cover/medium/','/cover/large/');
+  return (document.body.dataset.root || '../') + u.replace(/^\.?\//, '');
+};
 const dec = y => !y ? 'old' : y>=2020 ? '2020' : y>=2010 ? '2010' : y>=2000 ? '2000' : 'old';
 const DEC = {2020:"2020'ler",2010:"2010'lar",2000:"2000'ler",old:'Daha eski'};
 const DORD = ['2020','2010','2000','old'];
@@ -87,7 +126,7 @@ function render(){
   for(const li of root.children){ if(li.hidden) continue; shown++; if(!first) first = li; last = li; }
   if(first){ first.classList.add('f'); last.classList.add('l'); }
   $('#empty').hidden = shown > 0;
-  $('#empty').textContent = 'Eşleşen anime yok.';
+  $('#empty').textContent = pageTexts.emptyText || 'Eşleşen anime yok.';
   const n = active(), dot = $('#fdot'); dot.hidden = !n; dot.textContent = n;
   document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view===s.view));
   document.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', b.dataset.filter===s.filter));
@@ -117,7 +156,7 @@ function filters(d){
   const gs = Object.keys(gcount).sort((a,b) => gcount[b]-gcount[a] || gl(a).localeCompare(gl(b),'tr'));
   if(gs.length) grp('Tür','gn',gs.map(g => [g,gl(g)]),gcount);
   grp('İçerik','kd',KIND,Object.fromEntries(KIND.map(([v]) => [v, ms.filter(m => kOk(v,m)).length])));
-  const rs = h('button','more','Filtreleri sıfırla'); rs.type = 'button';
+  const rs = h('button','more', pageTexts.resetFilterText || 'Filtreleri sıfırla'); rs.type = 'button';
   rs.onclick = () => { Object.assign(state,{sc:'all',dc:'all',kd:'all',gn:'all',filter:'all',q:''}); $('#q').value = ''; go(); };
   box.append(rs); fp.append(box);
   $('#fbtn').onclick = () => { const o = $('#fp').classList.toggle('open'); $('#fbtn').setAttribute('aria-expanded', o); };
@@ -128,7 +167,7 @@ function stats(d){
   for(const [v,l,tip] of [[t.anime,'anime','Sezonlar, filmler ve ek içerikler ayrı sayılmaz; en az bir parçası tamamlanmış olanlar sayılır (izleniyor, beklemede, bırakıldı ve planlananlar dahil değil)'],[t.season,'sezon'],[t.film,'film'],[t.ep,'bölüm','Yalnızca tamamlanan parçaların bölümleri; film ve ek içerik dahil, yeniden izlemeler hariç'],[avg ? (+avg).toFixed(1) : '-','ort. puan']]){
     const e = h('div','stat'); e.innerHTML = '<b></b><span></span>'; e.firstChild.textContent = v; e.lastChild.textContent = l; if(tip) e.title = tip; row.append(e);
   }
-  const more = h('button','more','Ayrıntılar'); more.type = 'button'; more.setAttribute('aria-expanded','false'); more.insertAdjacentHTML('beforeend', UI.icon('down'));
+  const more = h('button','more', pageTexts.detailsText || 'Ayrıntılar'); more.type = 'button'; more.setAttribute('aria-expanded','false'); more.insertAdjacentHTML('beforeend', UI.icon('down'));
   const ins = h('div','ins'), inn = h('div','ins-in'); ins.append(inn);
   const blk = (title, ...kids) => { const b = h('div','blk'); b.append(h('h4',null,title), ...kids); inn.append(b); };
   const bars = (arr, fn) => { const w = h('div','hbs'), mx = Math.max(1,...arr.map(a => a[1]));
@@ -160,20 +199,33 @@ function stats(d){
   box.append(row, ins, more); box.hidden = false;
 }
 
-fetch('../data/anime.json').then(r => r.json()).then(d => {
-  state.items = d.anime;
-  const root = $('#list'), fr = document.createDocumentFragment();
-  d.anime.forEach(it => fr.append(build(it)));
-  root.append(fr);
-  stats(d); filters(d);
-  const chips = $('#chips');
-  for(const [k,label] of [['all','Hepsi'], ['next',NEXT], ...Object.entries(ST)]){
-    const n = k==='all' ? d.anime.length : k==='next' ? d.anime.filter(i => i.next).length : d.anime.filter(i => i.status===k).length;
-    if(!n) continue;
-    chip(chips,label,n,{filter:k},() => setF('filter',k));
+(async () => {
+  try {
+    let d = null;
+    try {
+      const prev = ls('tp_anime_preview');
+      if (prev) d = JSON.parse(prev);
+    } catch (e) {}
+    if (!d) {
+      const r = await fetch('../data/anime.json');
+      d = await r.json();
+    }
+    state.items = d.anime;
+    const root = $('#list'), fr = document.createDocumentFragment();
+    d.anime.forEach(it => fr.append(build(it)));
+    root.append(fr);
+    stats(d); filters(d);
+    const chips = $('#chips');
+    for(const [k,label] of [['all','Hepsi'], ['next',NEXT], ...Object.entries(ST)]){
+      const n = k==='all' ? d.anime.length : k==='next' ? d.anime.filter(i => i.next).length : d.anime.filter(i => i.status===k).length;
+      if(!n) continue;
+      chip(chips,label,n,{filter:k},() => setF('filter',k));
+    }
+    render(); syncSheet();
+  } catch (err) {
+    const e = $('#empty'); e.textContent = 'Liste yüklenemedi.'; e.hidden = false;
   }
-  render(); syncSheet();
-}).catch(() => { const e = $('#empty'); e.textContent = 'Liste yüklenemedi.'; e.hidden = false; });
+})();
 
 $('#q').oninput = e => { state.q = e.target.value; go(); };
 $('#sort').onchange = e => { state.sort = e.target.value; go(); };
@@ -203,13 +255,25 @@ function fillSheet(it){
   for(const p of ps){
     const [txt, cls] = partState(p), li = document.createElement('li');
     li.className = 'part '+cls;
-    li.innerHTML = '<span class="pd" aria-hidden="true"></span><div class="pt"><a target="_blank" rel="noopener"></a><span class="pm"></span></div><span class="ps"></span>';
-    const a = li.querySelector('a'); a.textContent = p.name; a.href = 'https://anilist.co/anime/'+p.id;
+    const isNumericId = typeof p.id === 'number' || /^\d+$/.test(String(p.id || ''));
+    const partUrl = p.url || (isNumericId ? 'https://anilist.co/anime/'+p.id : '');
+    li.innerHTML = '<span class="pd" aria-hidden="true"></span><div class="pt">'+(partUrl ? '<a target="_blank" rel="noopener"></a>' : '<span class="pt-name"></span>')+'<span class="pm"></span></div><span class="ps"></span>';
+    const nameNode = li.querySelector('a, .pt-name');
+    nameNode.textContent = p.name;
+    if (partUrl && nameNode.tagName === 'A') nameNode.href = partUrl;
     li.querySelector('.pm').textContent = [FMT[p.format]||(p.kind==='movie'?'Film':''), p.year, p.kind!=='movie' && p.episodes>1 ? p.episodes+' bölüm' : ''].filter(Boolean).join(' · ');
     li.querySelector('.ps').textContent = txt + (p.repeat ? (cls==='done' ? ' · '+(p.repeat+1)+' kez' : ' · ↻ '+p.repeat+' tekrar') : '');
     ol.append(li);
   }
-  const al = t('.sh-al'); al.href = it.url || 'https://anilist.co/anime/'+it.anilistId; al.textContent = "AniList'te aç";
+  const al = t('.sh-al');
+  const mainUrl = it.url || (it.anilistId ? 'https://anilist.co/anime/'+it.anilistId : '');
+  if (mainUrl) {
+    al.href = mainUrl;
+    al.textContent = pageTexts.anilistButtonText || "AniList'te aç";
+    al.hidden = false;
+  } else {
+    al.hidden = true;
+  }
   t('.sheet-card').scrollTop = 0;
 }
 const hashId = () => { try { return decodeURIComponent(location.hash.slice(1)); } catch(e) { return ''; } };

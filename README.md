@@ -30,6 +30,7 @@ Dosya elle düzenlenmez, AniList senkronu tarafından üretilir. Her kayıt bir 
 | `next` | true | yalnızca "Devam edilecek" ise bulunur (aşağıya bakın) |
 | `parts` | dizi | franchise'ın tüm içeriği, yayın sırasıyla: `{id, name, kind, format, episodes, watched, status, release, year}`; `kind`: `season`, `movie`, `other`. Listede olmayan (izlenmemiş) içeriklerin `status` değeri `NONE`, `watched` değeri 0'dır |
 | `parts[].repeat` | int | yalnızca yeniden izleme sayısı 0'dan büyükse bulunur; istatistiğe katılmaz, listede "↻ N× tekrar" (franchise toplamı) etiketi, detay ekranında her sezon/film için "İzlendi · N kez" (N = repeat + 1) gösterilir |
+| `genres` | dizi | yalnızca doluysa; franchise'ın izlenen parçalarındaki türler, sık olandan aza, en çok 6 (AniList İngilizce adlarıyla; arayüz Türkçeleştirir) |
 | `image` | string/null | AniList kapak görseli |
 | `addedAt` | `YYYY-MM-DD` | |
 
@@ -37,7 +38,14 @@ Bir animeye tıklayınca açılan detay ekranı `parts` listesini sırayla göst
 
 İstatistikler (site tarafında hesaplanır): yalnızca tamamlanmış (`COMPLETED`) parçalar sayılır. anime = en az bir tamamlanmış parçası olan franchise (izleniyor/beklemede/bırakıldı durumundaki bir sezon, franchise'ın başka tamamlanmış parçası varsa onu etkilemez; hiç tamamlanmış parçası yoksa franchise sayılmaz, bitince sayılır); sezon/film = tamamlanmış `season`/`movie` parçaları; bölüm = tamamlanmış tüm parçaların bölümleri (film ve OVA dahil; yeniden izlemeler ana istatistiğe katılmaz); ortalama puan = sayılan franchise'ların puanlarının ortalaması. Liste sayfası yine tüm durumları gösterir.
 
+## Elle senkron
+- **GitHub'da:** depo → Actions → "AniList senkronu" → Run workflow. Komut satırından: `gh workflow run "AniList senkronu"`. (`scripts/sync-anilist.mjs`, `data/overrides.json` veya workflow dosyası push'lanınca da otomatik çalışır.)
+- **Kendi bilgisayarında:** depo kökünde (Node 18+ yeterli, paket kurulumu yok): `node scripts/sync-anilist.mjs`. Ardından `git add data/anime.json && git commit -m "AniList verisi güncellendi" && git push`.
+- İsteğe bağlı ortam değişkenleri: `ANILIST_USER=kullanici`, `INCLUDE_PLANNED=1` (planlananları da al), `OUT=/tmp/anime.json` (başka dosyaya yaz, denemek için).
+
 ## AniList senkronu
+Sayılar (`stats` alanı dahil) AniList'in toplam veya özel liste sayılarından değil, betiğin kayıtlardan kendi hesapladığı değerlerdir. Durum da ilerlemeden doğrulanır: tüm bölümleri izlenmiş giriş `completed`, ilerlemesi 0 olan "izleniyor" girişi `planned` sayılır; `completed` ve `dropped` listede işaretlendiği gibi kalır.
+
 `.github/workflows/sync-anilist.yml` her gün 03:17 UTC'de `scripts/sync-anilist.mjs` çalıştırır, `data/anime.json` değiştiyse commit atar ve GitHub Pages derlemesini tetikler. Betik, iş akışı veya `data/overrides.json` değişince de bir kez çalışır. Elle çalıştırmak için: depo, Actions sekmesi, "AniList senkronu", Run workflow.
 - Kullanıcı: `TurkTempestian` (workflow dosyasındaki `ANILIST_USER`). Profil herkese açık olmalı.
 - Kaynak: AniList listesindeki tüm girişler (özel liste gerekmez). `MUSIC` biçimi atlanır; `PLANNING` girişler varsayılan olarak alınmaz (`INCLUDE_PLANNED=1` ile alınır).

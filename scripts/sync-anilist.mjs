@@ -6,7 +6,7 @@ const OUT = process.env.OUT || 'data/anime.json';
 const SERIES = new Set(['TV', 'TV_SHORT', 'ONA']);
 const LINKS = new Set(['PREQUEL', 'SEQUEL', 'SIDE_STORY', 'PARENT', 'SUMMARY']);
 const kind = f => SERIES.has(f) ? 'season' : f === 'MOVIE' ? 'movie' : 'other';
-const Q = `query($u:String,$c:Int){MediaListCollection(userName:$u,type:ANIME,chunk:$c,perChunk:100){hasNextChunk lists{name isCustomList entries{status progress repeat score(format:POINT_10_DECIMAL) createdAt customLists media{id format status episodes startDate{year month day} title{romaji english} coverImage{large} relations{edges{relationType node{id}}}}}}}}`;
+const Q = `query($u:String,$c:Int){MediaListCollection(userName:$u,type:ANIME,chunk:$c,perChunk:100){hasNextChunk lists{name isCustomList entries{status progress repeat score(format:POINT_10_DECIMAL) createdAt customLists media{id format status episodes startDate{year month day} genres title{romaji english} coverImage{large} relations{edges{relationType node{id}}}}}}}}`;
 
 const QM = `query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){id format status episodes startDate{year month day} title{romaji english} relations{edges{relationType node{id}}}}}}`;
 const sleep = ms => new Promise(s => setTimeout(s, ms));
@@ -86,7 +86,14 @@ for (const n of extra.values()) { const r = find(n.id); (extraBy.get(r) || extra
 const dk = s => (s.year || 9999) * 10000 + (s.month || 0) * 100 + (s.day || 0);
 const byDate = (a, b) => dk(a.media.startDate) - dk(b.media.startDate);
 const anime = [];
-const state = m => m.status === 'REPEATING' ? 'COMPLETED' : m.status;
+// Durum, AniList'in liste durumuna körü körüne güvenmeden izleme ilerlemesinden de doğrulanır.
+const state = m => {
+  const ep = m.media.episodes || 0, pr = m.progress || 0, s = m.status === 'REPEATING' ? 'COMPLETED' : m.status;
+  if (s === 'COMPLETED' || s === 'DROPPED') return s;
+  if (ep && pr >= ep) return 'COMPLETED';               // tüm bölümler izlenmiş
+  if (s === 'CURRENT' && pr === 0) return 'PLANNING';   // hiç başlanmamış
+  return s;
+};
 
 const noCont = ov.noContinue || [];
 const hit = (list, id, names) => list.some(x => typeof x === 'number' ? x === id : names.some(n => (n || '').toLowerCase().includes(String(x).toLowerCase())));
@@ -134,6 +141,9 @@ for (const [root, members] of groups) {
   const seas = parts.filter(p => p.kind === 'season'), fw = seas.findIndex(p => p.watched > 0);
   const next = status === 'completed' && fw >= 0 && !hit(noCont, head.id, [title, ...parts.map(p => p.name)]) && !parts.some(p => hit(noCont, p.id, []))
     && seas.slice(fw + 1).some(p => p.watched === 0 && p.format !== 'TV_SHORT' && chain.has(p.id) && ['FINISHED', 'RELEASING'].includes(p.release));
+  const gc = new Map();
+  for (const m of members) if (pool.some(p => p.id === m.media.id)) for (const g of m.media.genres || []) gc.set(g, (gc.get(g) || 0) + 1);
+  const genres = [...gc].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 6).map(x => x[0]);
   anime.push({
     id: 'al-' + head.id,
     title,
@@ -141,6 +151,7 @@ for (const [root, members] of groups) {
     url: 'https://anilist.co/anime/' + head.id,
     status,
     ...(next ? { next: true } : {}),
+    ...(genres.length ? { genres } : {}),
     score: scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length * 10) / 10 : null,
     parts: parts.map(({ id, name, kind, format, episodes, watched, status, release, year, repeat }) => ({ id, name, kind, format, episodes, watched, status, release, year, ...(repeat > 0 ? { repeat } : {}) })),
     image: hm.coverImage.large,
@@ -149,7 +160,19 @@ for (const [root, members] of groups) {
 }
 anime.sort((a, b) => b.addedAt.localeCompare(a.addedAt) || a.title.localeCompare(b.title));
 
+// Sayılar AniList'in toplam/özel liste sayılarından değil, yukarıda çözülen kayıtlardan hesaplanır.
+const stats = { anime: 0, season: 0, film: 0, other: 0, episodes: 0, avgScore: null, byStatus: {} };
+const rated = [];
+for (const a of anime) {
+  stats.byStatus[a.status] = (stats.byStatus[a.status] || 0) + 1;
+  const done = a.parts.filter(p => p.status === 'COMPLETED' && p.watched > 0);
+  if (!done.length) continue;
+  stats.anime++; if (a.score) rated.push(a.score);
+  for (const p of done) { stats[p.kind === 'season' ? 'season' : p.kind === 'movie' ? 'film' : 'other']++; stats.episodes += p.watched; }
+}
+if (rated.length) stats.avgScore = Math.round(rated.reduce((x, y) => x + y, 0) / rated.length * 10) / 10;
+
 const old = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
-if (old && JSON.stringify(old.anime) === JSON.stringify(anime)) { console.log('Değişiklik yok.'); process.exit(0); }
-fs.writeFileSync(OUT, JSON.stringify({ schemaVersion: 3, updated: new Date().toISOString().slice(0, 10), source: 'anilist:' + USER, anime }, null, 2) + '\n');
-console.log(anime.length + ' anime yazıldı.');
+if (old && JSON.stringify(old.anime) === JSON.stringify(anime) && JSON.stringify(old.stats) === JSON.stringify(stats)) { console.log('Değişiklik yok.'); process.exit(0); }
+fs.writeFileSync(OUT, JSON.stringify({ schemaVersion: 3, updated: new Date().toISOString().slice(0, 10), source: 'anilist:' + USER, stats, anime }, null, 2) + '\n');
+console.log(anime.length + ' franchise yazıldı; sayılan: ' + stats.anime + ' anime, ' + stats.season + ' sezon, ' + stats.film + ' film, ' + stats.other + ' ek, ' + stats.episodes + ' bölüm.');

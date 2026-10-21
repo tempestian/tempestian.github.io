@@ -115,16 +115,17 @@
           "kind": "season",
           "format": "ONA",
           "episodes": 15,
-          "watched": 10,
+          "watched": 11,
           "status": "CURRENT",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "adminModified": true
         },
         {
           "id": 213580,
           "name": "Shuumatsu no Valkyrie IV",
           "kind": "other",
-          "format": null,
+          "format": "TV",
           "episodes": 0,
           "watched": 0,
           "status": "NONE",
@@ -134,7 +135,16 @@
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127399-AAH1pevCZLrB.jpg",
       "addedAt": "2026-10-02",
-      "firstSeasonUrl": "https://anilist.co/anime/127399"
+      "firstSeasonUrl": "https://anilist.co/anime/127399",
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt",
+        "image"
+      ]
     },
     {
       "id": "al-162804",

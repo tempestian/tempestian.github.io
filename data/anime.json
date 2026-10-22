@@ -12,9 +12,9 @@
     "season": 126,
     "film": 25,
     "other": 25,
-    "episodes": 3364,
+    "episodes": 3365,
     "completedEpisodes": 3271,
-    "inProgressEpisodes": 93,
+    "inProgressEpisodes": 94,
     "favorites": 0,
     "avgScore": 7,
     "byStatus": {
@@ -139,10 +139,11 @@
           "kind": "season",
           "format": "ONA",
           "episodes": 15,
-          "watched": 10,
+          "watched": 11,
           "status": "CURRENT",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "adminModified": true
         },
         {
           "id": 213580,
@@ -157,7 +158,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127399-AAH1pevCZLrB.jpg",
-      "addedAt": "2026-10-02"
+      "addedAt": "2026-10-02",
+      "adminModified": true,
+      "lockedFields": [
+        "status",
+        "title",
+        "score",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-162804",
@@ -6230,5 +6239,6 @@
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21519-SUo3ZQuCbYhJ.png",
       "addedAt": "2022-04-29"
     }
-  ]
+  ],
+  "customGenreCatalog": []
 }

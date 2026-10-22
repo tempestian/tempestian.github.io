@@ -15,9 +15,9 @@
     "season": 126,
     "film": 25,
     "other": 25,
-    "episodes": 3364,
+    "episodes": 3365,
     "completedEpisodes": 3271,
-    "inProgressEpisodes": 93,
+    "inProgressEpisodes": 94,
     "favorites": 10,
     "avgScore": 6.3,
     "byStatus": {
@@ -296,7 +296,7 @@
           "kind": "season",
           "format": "ONA",
           "episodes": 15,
-          "watched": 10,
+          "watched": 11,
           "status": "CURRENT",
           "release": "FINISHED",
           "year": 2025,
@@ -307,7 +307,7 @@
           "id": 213580,
           "name": "Shuumatsu no Valkyrie IV",
           "kind": "other",
-          "format": null,
+          "format": "TV",
           "episodes": 0,
           "watched": 0,
           "status": "NONE",
@@ -323,7 +323,8 @@
         "score",
         "status",
         "genres",
-        "addedAt"
+        "addedAt",
+        "image"
       ]
     },
     {

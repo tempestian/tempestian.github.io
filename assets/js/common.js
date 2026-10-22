@@ -4,20 +4,9 @@
 // Film, Dizi, Rehber vb. alt sayfalarda) çalışan ortak veri ve arayüz katmanıdır.
 //
 // 1. Veri Kaynağı: `data/sections.json` (schemaVersion: 2).
-//    - `site`: Başlık, alt başlık, üst çubuk başlığı, meta açıklama ve ikon/logo yolları.
-//    - `gift`: Ana sayfadaki sürpriz geri sayım kutucuğunun tüm metinleri, hedef tarihi ve aktiflik durumu.
-//    - `boxes`: Admin panelinden eklenebilen özel bilgi/duyuru/kart kutucukları (`position`: 'above' | 'below').
-//    - `sections`: Sitedeki ana içerik kategorileri (Anime, Manga, Kitap, Dizi, Film, Rehber vb.).
-//      `status`: 'active' (hem alt menüde hem ana sayfada tıklanabilir),
-//                'soon' (ana sayfada "Yakında" etiketiyle görünür),
-//                'hidden' (taslak; arayüzde gizlenir).
-//    - `links`: Ana sayfanın altındaki dış bağlantı kutucukları (`enabled`: true/false).
-//    - `pages`: Alt sayfaların (ör. `pages.anime`) başlık, arama, boş durum ve alt bilgi metinleri.
-//
-// 2. Önbellek ve Canlı Önizleme:
-//    - `localStorage['ui2']`: Ziyaretçiler için son çekilen yapılandırma ve özet veriyi saklar (anında çizim sağlar).
-//    - `localStorage['tp_site_preview']`: Admin panelinde "Önizlemeye Uygula" dendiğinde GitHub'a commit
-//      atmadan önce sitede canlı test yapılmasını sağlar.
+// 2. İstatistik Özeti (`UI.tally`): `scripts/stats.mjs` ile birebir uyumlu olarak:
+//    - En az 1 sezon veya film tamamlandığında (`completed_season_or_movie`) izlenen anime sayısını artırır.
+//    - Yeni bölüm izledikçe (`watched > 0`) devam eden sezonlardaki bölümleri de anında toplam bölüme dahil eder.
 // ============================================================================
 (() => {
   const root = document.body.dataset.root || '', cur = document.body.dataset.section;
@@ -25,8 +14,6 @@
   const ls = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} };
   const json = k => { try { return JSON.parse(ls(k)); } catch (e) { return null; } };
 
-  // [AI-MIMARI-NOTU]: İleride eklenecek yeni bölümler (manga, book, movie, series, guide, game vb.)
-  // için ikon sözlüğü şimdiden genişletilmiştir. `sections.json` içindeki `icon` alanı buradaki anahtarları kullanır.
   const P = {
     home: '<path d="M4 11.2 12 4.6l8 6.6V19a1 1 0 0 1-1 1h-4.2v-5.2H9.2V20H5a1 1 0 0 1-1-1z"/>',
     anime: '<rect x="3.5" y="4.5" width="17" height="12.5" rx="3.6"/><path d="M10.4 8.6v4.4l3.8-2.2z"/><path d="M8.5 20.3h7"/>',
@@ -76,17 +63,57 @@
   const upd = () => { const n = scrollY > 36; if (n !== on) { on = n; bar && bar.classList.toggle('on', n); } };
   addEventListener('scroll', upd, { passive: true }); upd();
 
-  const parts = it => it.parts || (it.seasons || []).map(s => ({ ...s, kind: 'season' }));
-  const tally = items => {
+  const parts = it => {
+    const raw = it.parts || (it.seasons || []).map(s => ({ ...s, kind: 'season' }));
+    if (!raw.length && it.status === 'completed') {
+      return [{ kind: 'season', status: 'COMPLETED', episodes: 1, watched: 1, repeat: 0 }];
+    }
+    const anyDone = raw.some(p => p && (p.status === 'COMPLETED' || (p.watched || 0) > 0));
+    return raw.map((p, idx) => {
+      const ep = Math.max(0, Number(p.episodes) || 0);
+      let w = Math.max(0, Number(p.watched) || 0);
+      let st = p.status || 'NONE';
+      if (!anyDone && it.status === 'completed' && (p.kind === 'season' || idx === 0)) st = 'COMPLETED';
+      if (st === 'COMPLETED' && w === 0) w = ep > 0 ? ep : 1;
+      if (ep > 0 && w >= ep && st === 'CURRENT') st = 'COMPLETED';
+      return {
+        ...p,
+        kind: p.kind === 'movie' ? 'movie' : p.kind === 'other' ? 'other' : 'season',
+        episodes: ep,
+        watched: w,
+        status: st
+      };
+    });
+  };
+
+  const tally = (items, statsConfig = {}) => {
+    const includeInProgress = statsConfig.includeInProgressEpisodes !== false;
+    const rule = statsConfig.animeCountRule || 'completed_season_or_movie';
     const t = { anime: 0, season: 0, film: 0, ep: 0 };
     for (const it of items) {
-      const done = parts(it).filter(p => p.status === 'COMPLETED' && p.watched > 0);
-      if (!done.length) continue;
-      t.anime++;
+      const ps = parts(it);
+      const done = ps.filter(p => p.status === 'COMPLETED' && p.watched > 0);
+      const doneSeasonOrMovie = done.filter(p => p.kind === 'season' || p.kind === 'movie');
+      const active = ps.filter(p => p.status !== 'NONE' && p.status !== 'PLANNING' && p.watched > 0);
+      const isCounted = rule === 'completed_only'
+        ? it.status === 'completed'
+        : rule === 'any_watched'
+          ? (active.length > 0 || done.length > 0 || it.status === 'completed')
+          : (doneSeasonOrMovie.length > 0 || (done.length > 0 && !ps.some(p => p.kind === 'season' || p.kind === 'movie')) || it.status === 'completed');
+
       for (const p of done) {
-        if (p.kind === 'season') t.season++; else if (p.kind === 'movie') t.film++;
+        if (isCounted) {
+          if (p.kind === 'season') t.season++;
+          else if (p.kind === 'movie') t.film++;
+        }
         t.ep += p.watched;
       }
+      if (includeInProgress) {
+        for (const p of active) {
+          if (p.status !== 'COMPLETED') t.ep += p.watched;
+        }
+      }
+      if (isCounted) t.anime++;
     }
     return t;
   };
@@ -97,18 +124,15 @@
   const boxesTop = document.getElementById('boxesTop'), boxesBottom = document.getElementById('boxesBottom');
   const cover = x => x.image || null;
 
-  // Ana sayfa için yalnızca özet (sayılar + 4 kapak) saklanır; 150KB'lık JSON her sayfada işlenmez.
   const summarize = (s, j) => {
     const items = (j && j[s.countKey]) || [];
-    const t = j && j.stats ? { anime: j.stats.anime, season: j.stats.season, film: j.stats.film, ep: j.stats.episodes } : tally(items);
+    const t = j && j.stats ? { anime: j.stats.anime, season: j.stats.season, film: j.stats.film, ep: j.stats.episodes } : tally(items, j && j.statsConfig);
     const nums = s.id === 'anime' && items.every(x => x.parts || x.seasons)
       ? [[t.anime, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']]
       : [[items.length, s.unit || '']];
     return { nums: j ? nums : null, imgs: s.showStrip === false ? [] : items.map(cover).filter(Boolean).slice(0, 4) };
   };
 
-  // [AI-MIMARI-NOTU]: Özel kutucukları (duyuru, bilgi, özel kart vb.) ana sayfadaki
-  // kategori kutucuklarıyla aynı Liquid Glass (.tile.glass.sq) tasarım dilinde üretir.
   function renderCustomBoxes(container, boxItems) {
     if (!container) return;
     const activeBoxes = (boxItems || []).filter(b => b && b.enabled !== false);
@@ -198,135 +222,135 @@
         hs.hidden = site.subtitle === '';
       }
       const hl = document.getElementById('heroLogo') || document.querySelector('.hero .mark');
-      if (hl) {
-        if (site.logo) {
-          hl.src = resolveAsset(site.logo);
-          hl.hidden = false;
-        } else if (site.logo === '') {
-          hl.hidden = true;
-        }
-      }
+      if (hl && site.logo) hl.src = resolveAsset(site.logo);
     } else if (cur && d && d.pages && d.pages[cur]) {
       const pg = d.pages[cur];
       if (pg.metaTitle) document.title = pg.metaTitle;
-      else if (pg.title && site.title) document.title = `${pg.title} · ${site.title}`;
       if (pg.description) {
         const md = document.querySelector('meta[name="description"]');
         if (md) md.content = pg.description;
       }
       const bt = document.querySelector('.bar-title');
       if (bt && pg.title) bt.textContent = pg.title;
-      const ht = document.querySelector('.hero h1');
-      if (ht && pg.title) ht.textContent = pg.title;
+      const h1 = document.querySelector('.page-head h1');
+      if (h1 && pg.title) h1.textContent = pg.title;
     }
   }
 
-  function paint(d, sum) {
-    if (!d) return;
+  function render(d, sum) {
     window.SITE_CONFIG = d;
+    document.dispatchEvent(new CustomEvent('siteconfig', { detail: d }));
     applySiteIdentity(d);
 
-    const secs = (d.sections || []).filter(s => s && s.status !== 'hidden');
-    const homeLabel = (d.site && d.site.homeLabel) || 'Ana sayfa';
+    const visibleSections = (d.sections || []).filter(s => s && s.status !== 'hidden');
+    const active = visibleSections.filter(s => s.status === 'active');
 
     if (dock) {
-      const fr = document.createDocumentFragment();
-      for (const s of [{ id: 'home', title: homeLabel, path: '', icon: 'home' }, ...secs.filter(s => s.status === 'active')]) {
-        const a = el('a'); a.href = (root + s.path) || './';
-        if (s.id === cur) { a.setAttribute('aria-current', 'page'); a.append(el('i', 'pill')); }
-        a.insertAdjacentHTML('beforeend', icon(s.icon || s.id)); a.append(el('span', '', s.title)); fr.append(a);
+      if (active.length) {
+        const homeLabel = (d.site && d.site.homeLabel) || 'Ana sayfa';
+        const items = [{ id: 'home', title: homeLabel, href: root || './', icon: 'home' }, ...active.map(s => ({ id: s.id, title: s.title, href: root + s.path, icon: s.icon || s.id }))];
+        const nav = el('nav', 'glass'); nav.setAttribute('aria-label', 'Bölümler');
+        for (const it of items) {
+          const a = el('a'); a.href = it.href; a.innerHTML = icon(it.icon);
+          a.append(el('span', '', it.title));
+          if (it.id === cur) a.setAttribute('aria-current', 'page');
+          nav.append(a);
+        }
+        dock.replaceChildren(nav); dock.hidden = false;
+      } else {
+        dock.replaceChildren(); dock.hidden = true;
       }
-      dock.replaceChildren(fr);
     }
 
     if (boxesTop || boxesBottom) {
-      const allBoxes = d.boxes || [];
-      renderCustomBoxes(boxesTop, allBoxes.filter(b => (b.position || 'above') === 'above'));
+      const allBoxes = Array.isArray(d.boxes) ? d.boxes : [];
+      renderCustomBoxes(boxesTop, allBoxes.filter(b => b.position !== 'below'));
       renderCustomBoxes(boxesBottom, allBoxes.filter(b => b.position === 'below'));
     }
 
     if (list) {
-      const lf = document.createDocumentFragment();
-      for (const s of secs) {
-        const on = s.status === 'active', li = el('li', 'tile glass sq'), box = on ? Object.assign(el('a'), { href: root + s.path }) : el('div');
-        const top = el('div', 'tile-top'); top.append(el('h2', '', s.title));
+      const fr = document.createDocumentFragment();
+      for (const s of visibleSections) {
+        const on = s.status === 'active', m = sum[s.id] || {};
+        const li = el('li', 'tile glass sq' + (on ? '' : ' soon'));
+        const box = on ? Object.assign(el('a'), { href: root + s.path }) : el('div');
+        const top = el('div', 'tile-top');
+        const headLeft = el('div', 'box-head-left');
+        if (s.customImage) {
+          const cimg = el('img', 'box-thumb');
+          cimg.src = resolveAsset(s.customImage);
+          cimg.alt = '';
+          cimg.width = 36;
+          cimg.height = 36;
+          headLeft.append(cimg);
+        } else if (s.icon && P[s.icon]) {
+          const ic = el('span', 'box-ic');
+          ic.innerHTML = icon(s.icon);
+          headLeft.append(ic);
+        }
+        headLeft.append(el('h2', '', s.title));
+        top.append(headLeft);
         if (on) {
-          if (s.badge) top.append(el('span', 'tag', s.badge));
           const g = el('span', 'go'); g.innerHTML = icon('next'); top.append(g);
-        } else if (s.description) {
-          top.append(el('span', 'tag', s.description));
+        } else {
+          top.append(el('span', 'tag', s.badgeText || s.description || 'Yakında'));
         }
         box.append(top);
-        if (!on) li.classList.add('soon');
-        if (s.subtitle) box.append(el('p', 'box-txt', s.subtitle));
-
-        const m = sum && sum[s.id];
-        const customNums = Array.isArray(s.customStats) && s.customStats.length
-          ? s.customStats.map(cs => [cs.value, cs.label])
-          : null;
-        const numsToRender = customNums || (m && m.nums);
-        if (numsToRender && numsToRender.length) {
+        if (s.subtitle) {
+          box.append(el('p', 'box-txt', s.subtitle));
+        }
+        if (on && m.nums) {
           const n = el('p', 'nums');
-          for (const [v, l] of numsToRender) { const sp = el('span'); sp.append(el('b', '', v), ' ' + l); n.append(sp); }
+          for (const [v, u] of m.nums) { const sp = el('span'); sp.append(el('b', '', v), ' ' + u); n.append(sp); }
           box.append(n);
         }
-        if (s.showStrip !== false && m && m.imgs && m.imgs.length) {
+        if (on && m.imgs && m.imgs.length && s.showStrip !== false) {
           const st = el('div', 'strip');
-          for (const u of m.imgs) { const im = el('img'); im.src = resolveAsset(u); im.alt = ''; im.width = 48; im.height = 72; im.decoding = 'async'; st.append(im); }
+          for (const u of m.imgs) { const im = el('img'); im.src = resolveAsset(u); im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.width = 88; im.height = 132; im.onload = () => im.classList.add('in'); st.append(im); }
           box.append(st);
         }
-        li.append(box); lf.append(li);
+        li.append(box); fr.append(li);
       }
-      list.replaceChildren(lf);
+      list.replaceChildren(fr);
     }
 
     if (links) {
-      const lf = document.createDocumentFragment();
-      for (const l of (d.links || []).filter(x => x && x.enabled !== false)) {
-        const li = el('li', 'glass'), a = el('a', '', l.title);
-        a.href = l.url;
-        a.rel = 'me noopener';
-        a.insertAdjacentHTML('beforeend', icon(l.icon || 'out'));
-        li.append(a);
-        lf.append(li);
+      const activeLinks = (d.links || []).filter(l => l && l.enabled !== false);
+      const fr = document.createDocumentFragment();
+      for (const l of activeLinks) {
+        const li = el('li'), a = el('a', 'glass', l.title);
+        a.href = l.url; a.target = '_blank'; a.rel = 'noopener me';
+        const o = el('span', 'out'); o.innerHTML = icon('out'); a.append(o);
+        li.append(a); fr.append(li);
       }
-      links.replaceChildren(lf);
+      links.replaceChildren(fr);
     }
-
-    document.dispatchEvent(new CustomEvent('siteconfig', { detail: d }));
   }
 
-  try { localStorage.removeItem('ui1'); } catch (e) {}
   const previewCfg = json('tp_site_preview');
   const cached = json('ui2');
   if (previewCfg) {
-    paint(previewCfg, (cached && cached.m) || {});
-  } else if (cached && cached.s) {
-    paint(cached.s, cached.m || {});
+    render(previewCfg, (cached && cached.s) || {});
+  } else if (cached && cached.d) {
+    render(cached.d, cached.s || {});
   }
 
   (async () => {
-    let d;
     try {
-      d = previewCfg || await (await fetch(root + 'data/sections.json')).json();
-    } catch (e) {
-      if (!cached) paint({ sections: [], links: [] }, {});
-      return;
-    }
-    const sum = {};
-    if (list) {   // sayı ve kapaklar yalnızca ana sayfada gerekir
-      await Promise.all((d.sections || []).filter(s => s && s.status !== 'hidden' && s.data).map(async s => {
-        try { sum[s.id] = summarize(s, await (await fetch(root + s.data)).json()); } catch (e) {}
-      }));
-    } else if (cached && cached.m) {
-      Object.assign(sum, cached.m);
-    }
-    const fresh = JSON.stringify({ s: d, m: sum });
-    if (!previewCfg && (!cached || fresh !== JSON.stringify(cached))) {
-      ls('ui2', fresh);
-      if (!cached || list) paint(d, sum); else paint(d, cached.m);
-    } else if (previewCfg) {
-      paint(d, sum);
-    }
+      const d = previewCfg || await fetch(root + 'data/sections.json').then(r => r.json());
+      const sum = (cached && cached.s) || {};
+      render(d, sum);
+      if (list) {
+        const previewAnime = json('tp_anime_preview');
+        await Promise.all((d.sections || []).filter(s => s.status === 'active' && s.data).map(async s => {
+          try {
+            const j = (s.id === 'anime' && previewAnime) ? previewAnime : await fetch(root + s.data).then(r => r.json());
+            sum[s.id] = summarize(s, j);
+          } catch (e) {}
+        }));
+        render(d, sum);
+      }
+      if (!previewCfg) ls('ui2', JSON.stringify({ d, s: sum }));
+    } catch (e) {}
   })();
 })();

@@ -1,10 +1,12 @@
 // ============================================================================
-// [AI-MIMARI-NOTU: ANİME LİSTESİ, İSTATİSTİK VE DETAY GÖRÜNÜMÜ MOTORU]
+// [AI-MIMARI-NOTU: ANİME LİSTESİ, İSTATİSTİK VE DETAY GÖRÜNÜMÜ MOTORU (ADIM 7 & 8)]
 // Bu dosya `/anime/` sayfasını (`data/anime.json`) oluşturur.
-// - Hem AniList senkronundan gelen (`id: "al-..."`) hem de Admin Panelinden
-//   elle eklenen (`id: "custom-..."`, `source: "manual"`) animeleri destekler.
-// - Admin panelinde yapılan değişikliklerin GitHub commit öncesi test edilebilmesi
-//   için `localStorage['tp_anime_preview']` önbelleğini destekler.
+// - Puanlar: Sezon (×1.00), Film (×0.35) ve Yan İçerik (×0.15) ağırlıklı puan ortalamasından
+//   (`getEffectiveScore`) otomatik belirlenir.
+// - Türler: Yalnızca admin tarafından seçilen özel kategoriler (`customGenres`: Shounen,
+//   Seinen, Isekai, Rom-Com vb.) filtrelerde ve istatistiklerde yer alır.
+// - İzlenen Anime & Bölüm: En az 1 sezon veya film bitince izlenen anime sayısına yansır;
+//   izlenen her yeni bölüm (`+1 Bölüm`) anında toplam bölüm sayısına dahil edilir.
 // ============================================================================
 const $ = s => document.querySelector(s);
 const ST = {completed:'İzlendi', watching:'İzleniyor', paused:'Beklemede', dropped:'Bırakıldı', planned:'Planlandı'};
@@ -52,10 +54,10 @@ function partState(p){
 const sum = (a,k) => a.reduce((n,x) => n+(x[k]||0), 0);
 const rew = ps => { const n = Math.max(0, ...ps.map(p => p.repeat||0)); return n ? '↻ '+n+'× tekrar' : ''; };
 function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){} }
-const state = {items:[], view:ls('view')==='list' ? 'list' : 'grid', filter:'all', sort:'added', q:''};
+const state = {items:[], statsConfig:{}, view:ls('view')==='list' ? 'list' : 'grid', filter:'all', sort:'added', q:''};
 
 const byAdded = (a,b) => (b.addedAt||'').localeCompare(a.addedAt||'');
-const nodes = new Map();   // id -> meta
+const nodes = new Map();
 let order = '', raf = 0;
 const big = u => {
   if (!u) return '';
@@ -65,8 +67,46 @@ const big = u => {
 const dec = y => !y ? 'old' : y>=2020 ? '2020' : y>=2010 ? '2010' : y>=2000 ? '2000' : 'old';
 const DEC = {2020:"2020'ler",2010:"2010'lar",2000:"2000'ler",old:'Daha eski'};
 const DORD = ['2020','2010','2000','old'];
-const GEN = {Action:'Aksiyon',Adventure:'Macera',Comedy:'Komedi',Drama:'Drama',Ecchi:'Ecchi',Fantasy:'Fantastik',Horror:'Korku','Mahou Shoujo':'Büyülü Kız',Mecha:'Mecha',Music:'Müzik',Mystery:'Gizem',Psychological:'Psikolojik',Romance:'Romantik','Sci-Fi':'Bilim Kurgu','Slice of Life':'Günlük Yaşam',Sports:'Spor',Supernatural:'Doğaüstü',Thriller:'Gerilim'};
-const gl = g => GEN[g] || g;
+
+// [AI-MIMARI-NOTU]: Sezon (×1.00), Film (×0.35), Yan İçerik/OVA (×0.15) ağırlıklı puan hesabı.
+function getPartWeight(p) {
+  if (!p) return 0.15;
+  if (p.kind === 'movie' || p.format === 'MOVIE') return 0.35;
+  if (p.kind === 'other' || ['OVA', 'SPECIAL', 'TV_SHORT'].includes(p.format)) return 0.15;
+  return 1.0;
+}
+
+function getEffectiveScore(it) {
+  if (!it) return null;
+  const parts = Array.isArray(it.parts) ? it.parts : [];
+  let weightedSum = 0, totalWeight = 0;
+  for (const p of parts) {
+    if (!p) continue;
+    const sc = Number(p.score);
+    if (!isNaN(sc) && sc > 0) {
+      const w = getPartWeight(p);
+      weightedSum += sc * w;
+      totalWeight += w;
+    }
+  }
+  if (totalWeight > 0) {
+    return Math.round((weightedSum / totalWeight) * 10) / 10;
+  }
+  const s = Number(it.score);
+  return !isNaN(s) && s > 0 ? Math.round(s * 10) / 10 : null;
+}
+
+// [AI-MIMARI-NOTU]: Yalnızca adminin elle seçtiği özel kategorileri (`customGenres`) döndürür.
+function getEffectiveGenres(it, genreSourceRule = 'custom_only') {
+  if (!it) return [];
+  if (Array.isArray(it.customGenres) && it.customGenres.length) {
+    return [...new Set(it.customGenres.map(g => String(g).trim()).filter(Boolean))];
+  }
+  if (genreSourceRule === 'custom_only') return [];
+  const raw = Array.isArray(it.genres) ? it.genres : [];
+  return [...new Set(raw.map(g => String(g).trim()).filter(Boolean))];
+}
+
 const SCO = [['9','9 ve üstü'],['8','8–9'],['7','7–8'],['low','7 altı'],['none','Puansız']];
 const KIND = [['multi','2+ sezon'],['movie','Filmli'],['rewatch','Tekrar izlenen']];
 const COL = {completed:'var(--accent)',watching:'#3ccf91',paused:'var(--warn)',dropped:'var(--bad)',planned:'var(--ink2)'};
@@ -76,34 +116,36 @@ const h = (t,c,x) => { const e = document.createElement(t); if(c) e.className = 
 Object.assign(state, {sc:'all', dc:'all', kd:'all', gn:'all'});
 const SORTS = {
   added: byAdded,
-  score: (a,b) => (b.score||0)-(a.score||0) || byAdded(a,b),
+  score: (a,b) => (nodes.get(b.id).sc||0)-(nodes.get(a.id).sc||0) || byAdded(a,b),
   title: (a,b) => a.title.localeCompare(b.title,'tr'),
   year: (a,b) => (nodes.get(b.id).y||0)-(nodes.get(a.id).y||0),
   eps: (a,b) => nodes.get(b.id).ep-nodes.get(a.id).ep
 };
 
-// DOM bir kez kurulur; filtre/arama yalnızca hidden, sıralama yalnızca yeniden dizme yapar.
 function build(it){
   const ps = UI.parts(it).filter(own), ep = sum(ps,'episodes'), w = sum(ps,'watched');
   const cnt = k => ps.filter(p => p.kind===k).length, sn = cnt('season'), fl = cnt('movie'), ot = cnt('other');
   const ys = ps.map(p => p.year).filter(Boolean), y = ys.length ? Math.min(...ys) : 0;
+  const effScore = getEffectiveScore(it);
+  const effGenres = getEffectiveGenres(it, (state.statsConfig && state.statsConfig.genreSourceRule) || 'custom_only');
   const li = h('li');
   li.innerHTML = '<div class="poster"><img alt="" loading="lazy" decoding="async" width="142" height="213"></div><div class="t"><h3><a target="_blank" rel="noopener"></a></h3><p class="meta"></p><p class="st"></p></div>';
   const a = li.querySelector('a'); a.textContent = it.title;
   a.href = '#'+it.id; a.onclick = e => { if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; e.preventDefault(); openSheet(it.id, true); };
-  li.querySelector('.meta').textContent = [sn && sn+' sezon', fl && fl+' film', ot && ot+' ek', rew(ps), !ep ? w+' bölüm' : w===ep ? ep+' bölüm' : w+'/'+ep+' bölüm'].filter(Boolean).join(', ');
+  const genrePreview = effGenres.slice(0, 2).join(' · ');
+  li.querySelector('.meta').textContent = [sn && sn+' sezon', fl && fl+' film', ot && ot+' ek', rew(ps), !ep ? w+' bölüm' : w===ep ? ep+' bölüm' : w+'/'+ep+' bölüm', genrePreview].filter(Boolean).join(', ');
   const st = li.querySelector('.st'), po = li.querySelector('.poster');
   const lab = it.status !== 'completed' ? (ST[it.status]||it.status) : it.next ? NEXT : '';
   if(lab){ st.textContent = lab; st.classList.add('st-'+(it.status !== 'completed' ? it.status : 'next')); const sb = h('span','sb st-'+(it.status !== 'completed' ? it.status : 'next'), lab); po.append(sb); } else st.remove();
   if(it.status !== 'completed' && ep && w < ep){ const pg = h('div','pg'); pg.innerHTML = '<i></i>'; pg.firstChild.style.setProperty('--w', Math.round(w/ep*100)+'%'); po.append(pg); }
-  if(it.score){
+  if(effScore){
     const sc = h('span','score glass');
-    sc.setAttribute('role','img'); sc.setAttribute('aria-label','Puan '+it.score+'/10'); sc.innerHTML = UI.icon('star'); sc.append(String(it.score));
+    sc.setAttribute('role','img'); sc.setAttribute('aria-label','Puan '+effScore+'/10'); sc.innerHTML = UI.icon('star'); sc.append(String(effScore));
     li.append(sc);
   }
   const im = li.querySelector('img'); im.onload = () => im.classList.add('in');
   if(it.image) im.src = big(it.image);
-  const m = {li, it, key:it.title.toLocaleLowerCase('tr'), y, d:dec(y), sn, fl, rp:Math.max(0, ...ps.map(p => p.repeat||0)), ep:w, g:it.genres||[]};
+  const m = {li, it, sc: effScore || 0, key:it.title.toLocaleLowerCase('tr'), y, d:dec(y), sn, fl, rp:Math.max(0, ...ps.map(p => p.repeat||0)), ep:w, g:effGenres};
   nodes.set(it.id, m); return li;
 }
 const active = () => ['sc','dc','kd','gn'].filter(k => state[k]!=='all').length;
@@ -120,7 +162,7 @@ function render(){
   for(const it of s.items){
     const n = nodes.get(it.id);
     const ok = (s.filter==='all' || (s.filter==='next' ? it.next : it.status===s.filter)) && n.key.includes(q)
-      && scOk(s.sc, it.score||0) && (s.gn==='all' || n.g.includes(s.gn)) && (s.dc==='all' || n.d===s.dc) && kOk(s.kd, n);
+      && scOk(s.sc, n.sc) && (s.gn==='all' || n.g.includes(s.gn)) && (s.dc==='all' || n.d===s.dc) && kOk(s.kd, n);
     n.li.hidden = !ok; n.li.classList.remove('f','l');
   }
   for(const li of root.children){ if(li.hidden) continue; shown++; if(!first) first = li; last = li; }
@@ -142,7 +184,8 @@ function chip(root, label, count, attrs, fn){
   b.onclick = fn; root.append(b);
 }
 function filters(d){
-  const fp = $('#fpIn'), box = h('div');
+  const fp = $('#fpIn'); fp.replaceChildren();
+  const box = h('div');
   const grp = (title, k, opts, counts) => {
     const g = h('div','fg'), row = h('div','chips'); g.append(h('span',null,title), row);
     chip(row,'Hepsi',null,{g:k,v:'all'},() => setF(k,'all'));
@@ -151,10 +194,10 @@ function filters(d){
   };
   const ms = [...nodes.values()], gcount = {};
   for(const m of ms) for(const g of m.g) gcount[g] = (gcount[g]||0)+1;
-  grp('Puan','sc',SCO,Object.fromEntries(SCO.map(([v]) => [v, ms.filter(m => scOk(v,m.it.score||0)).length])));
+  grp('Puan','sc',SCO,Object.fromEntries(SCO.map(([v]) => [v, ms.filter(m => scOk(v,m.sc)).length])));
   grp('Yıl','dc',DORD.map(k => [k,DEC[k]]),Object.fromEntries(DORD.map(v => [v, ms.filter(m => m.d===v).length])));
-  const gs = Object.keys(gcount).sort((a,b) => gcount[b]-gcount[a] || gl(a).localeCompare(gl(b),'tr'));
-  if(gs.length) grp('Tür','gn',gs.map(g => [g,gl(g)]),gcount);
+  const gs = Object.keys(gcount).sort((a,b) => gcount[b]-gcount[a] || a.localeCompare(b,'tr'));
+  if(gs.length) grp('Tür / Kategori','gn',gs.map(g => [g,g]),gcount);
   grp('İçerik','kd',KIND,Object.fromEntries(KIND.map(([v]) => [v, ms.filter(m => kOk(v,m)).length])));
   const rs = h('button','more', pageTexts.resetFilterText || 'Filtreleri sıfırla'); rs.type = 'button';
   rs.onclick = () => { Object.assign(state,{sc:'all',dc:'all',kd:'all',gn:'all',filter:'all',q:''}); $('#q').value = ''; go(); };
@@ -162,26 +205,38 @@ function filters(d){
   $('#fbtn').onclick = () => { const o = $('#fp').classList.toggle('open'); $('#fbtn').setAttribute('aria-expanded', o); };
 }
 function stats(d){
-  const box = $('#stats'), cn = d.anime.filter(i => UI.tally([i]).anime), S = d.stats, t = S ? {anime:S.anime, season:S.season, film:S.film, ep:S.episodes} : UI.tally(d.anime), scs = cn.map(i => i.score).filter(Boolean), avg = S ? S.avgScore : (scs.length ? (scs.reduce((a,b)=>a+b,0)/scs.length) : null);
+  const box = $('#stats'); box.replaceChildren();
+  const cfg = { animeCountRule: 'completed_season_or_movie', includeInProgressEpisodes: true, genreSourceRule: 'custom_only', ...(d.statsConfig || {}) };
+  const cn = d.anime.filter(i => UI.tally([i], cfg).anime > 0);
+  const S = d.stats;
+  const t = S ? {anime:S.anime, season:S.season, film:S.film, ep:S.episodes} : UI.tally(d.anime, cfg);
+  const scs = cn.map(i => getEffectiveScore(i)).filter(Boolean);
+  const avg = S && S.avgScore != null ? S.avgScore : (scs.length ? (scs.reduce((a,b)=>a+b,0)/scs.length) : null);
   const row = h('div','stats-row');
-  for(const [v,l,tip] of [[t.anime,'anime','Sezonlar, filmler ve ek içerikler ayrı sayılmaz; en az bir parçası tamamlanmış olanlar sayılır (izleniyor, beklemede, bırakıldı ve planlananlar dahil değil)'],[t.season,'sezon'],[t.film,'film'],[t.ep,'bölüm','Yalnızca tamamlanan parçaların bölümleri; film ve ek içerik dahil, yeniden izlemeler hariç'],[avg ? (+avg).toFixed(1) : '-','ort. puan']]){
+  for(const [v,l,tip] of [
+    [t.anime,'anime','En az 1 sezonu veya filmi tamamlanmış olan animeler sayılır'],
+    [t.season,'sezon'],
+    [t.film,'film'],
+    [t.ep,'bölüm','Tamamlanan ve şu an izlenmekte olan parçaların toplam izlenen bölümleri (yeniden izlemeler hariç)'],
+    [avg ? (+avg).toFixed(1) : '-','ort. puan','Sezon (×1.00), Film (×0.35) ve Yan İçerik (×0.15) ağırlıklı puan ortalaması']
+  ]){
     const e = h('div','stat'); e.innerHTML = '<b></b><span></span>'; e.firstChild.textContent = v; e.lastChild.textContent = l; if(tip) e.title = tip; row.append(e);
   }
   const more = h('button','more', pageTexts.detailsText || 'Ayrıntılar'); more.type = 'button'; more.setAttribute('aria-expanded','false'); more.insertAdjacentHTML('beforeend', UI.icon('down'));
   const ins = h('div','ins'), inn = h('div','ins-in'); ins.append(inn);
   const blk = (title, ...kids) => { const b = h('div','blk'); b.append(h('h4',null,title), ...kids); inn.append(b); };
-  const bars = (arr, fn) => { const w = h('div','hbs'), mx = Math.max(1,...arr.map(a => a[1]));
+  const bars = (arr) => { const w = h('div','hbs'), mx = Math.max(1,...arr.map(a => a[1]));
     for(const [l,n,k,v] of arr){ const b = h('button','hb'); b.type = 'button'; b.setAttribute('aria-label', l+': '+n); b.innerHTML = '<b></b><i></i><span></span>'; b.children[0].textContent = n || ''; b.children[1].style.setProperty('--h', (n/mx*100)+'%'); b.children[2].textContent = l; b.onclick = () => { setF(k,v); jump(); }; w.append(b); } return w; };
   const hist = Array.from({length:10},(_,i) => [String(i+1), 0, 'sc', 'b'+(i+1)]);
   for(const x of scs) hist[Math.min(10,Math.max(1,Math.floor(x)))-1][1]++;
-  blk('Puan dağılımı', bars(hist.slice(Math.min(...hist.map((x,i) => x[1] ? i : 9))))); 
+  blk('Puan dağılımı', bars(hist.slice(Math.min(...hist.map((x,i) => x[1] ? i : 9)))));
   const dcs = [...DORD].reverse().map(k => [DEC[k].replace("'ler",'').replace("'lar",''), cn.filter(i => nodes.get(i.id).d===k).length, 'dc', k]);
   blk('Çıkış yılına göre', bars(dcs));
   const sg = h('div','seg'), lg = h('div','leg');
   for(const k of Object.keys(ST)){ const n = d.anime.filter(i => i.status===k).length; if(!n) continue;
     const b = h('button'); b.type = 'button'; b.title = ST[k]+': '+n; b.style.cssText = '--n:'+n+';--c:'+COL[k]; b.onclick = () => { setF('filter',k); jump(); }; sg.append(b);
     const l = h('span'); l.innerHTML = '<i></i>'; l.firstChild.style.setProperty('--c',COL[k]); l.append(ST[k]+' '+n); lg.append(l); }
-  const note = S && S.listed ? h('p','meta',S.listed+' anime listede; '+S.anime+' tanesi sayılıyor ('+S.completed+' tamamlanan + '+S.partial+' devam eden, beklemede veya bırakılan ama en az bir parçası bitmiş). '+S.excluded+' animenin henüz hiçbir parçası bitmediği için sayılmıyor.') : null;
+  const note = S && S.listed ? h('p','meta',S.listed+' anime listede; '+S.anime+' tanesi sayılıyor (en az 1 sezon veya filmi tamamlananlar). '+(S.inProgressEpisodes ? 'Devam eden sezonlarda izlenen '+S.inProgressEpisodes+' bölüm toplam bölüme dahil edildi.' : '')) : null;
   if(note) note.style.marginTop = '10px';
   blk('Durum', ...[sg, lg, note].filter(Boolean));
   const H = S && S.highlights, hl = h('div','hl');
@@ -192,9 +247,13 @@ function stats(d){
     add('En çok tekrar', H.mostRewatched, H.mostRewatched && H.mostRewatched.times+' kez izlendi');
   }
   if(hl.children.length) blk('Öne çıkanlar', hl);
-  const gc = {}; for(const m of nodes.values()) for(const g of m.g) gc[g] = (gc[g]||0)+1;
-  const tg = Object.keys(gc).sort((a,b) => gc[b]-gc[a]).slice(0,8);
-  if(tg.length){ const row = h('div','chips'); for(const g of tg) chip(row, gl(g), gc[g], {g:'gn',v:g}, () => { setF('gn',g); jump(); }); blk('Türler', row); }
+  const gc = {};
+  for(const i of cn){
+    const gs = nodes.get(i.id) ? nodes.get(i.id).g : getEffectiveGenres(i, cfg.genreSourceRule);
+    for(const g of gs) gc[g] = (gc[g]||0)+1;
+  }
+  const tg = Object.keys(gc).sort((a,b) => gc[b]-gc[a] || a.localeCompare(b,'tr')).slice(0,12);
+  if(tg.length){ const rowG = h('div','chips'); for(const g of tg) chip(rowG, g, gc[g], {g:'gn',v:g}, () => { setF('gn',g); jump(); }); blk('Türler & Kategoriler', rowG); }
   more.onclick = () => { const o = box.classList.toggle('open'); more.setAttribute('aria-expanded', o); };
   box.append(row, ins, more); box.hidden = false;
 }
@@ -211,6 +270,7 @@ function stats(d){
       d = await r.json();
     }
     state.items = d.anime;
+    state.statsConfig = { animeCountRule: 'completed_season_or_movie', includeInProgressEpisodes: true, genreSourceRule: 'custom_only', ...(d.statsConfig || {}) };
     const root = $('#list'), fr = document.createDocumentFragment();
     d.anime.forEach(it => fr.append(build(it)));
     root.append(fr);
@@ -233,21 +293,28 @@ document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => { state.
 
 const sheet = document.createElement('div');
 sheet.className = 'sheet'; sheet.hidden = true; sheet.setAttribute('role','dialog'); sheet.setAttribute('aria-modal','true'); sheet.setAttribute('aria-labelledby','sh-title');
-sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-head"><img class="sheet-cover" alt=""><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><a class="sh-al" target="_blank" rel="noopener"></a></div>';
+sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-head"><img class="sheet-cover" alt=""><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><a class="sh-al" target="_blank" rel="noopener"></a></div>';
 document.body.append(sheet);
 const closeBtn = sheet.querySelector('[data-close]'); closeBtn.innerHTML = UI.icon('close');
 let opener = null, pushed = false;
 
 function fillSheet(it){
   const ps = UI.parts(it), t = sheet.querySelector.bind(sheet);
+  const effScore = getEffectiveScore(it);
+  const effGenres = getEffectiveGenres(it, (state.statsConfig && state.statsConfig.genreSourceRule) || 'custom_only');
   t('#sh-title').textContent = it.title;
   const bits = [it.status==='completed' && it.next ? NEXT : (ST[it.status]||it.status)];
-  if(it.score) bits.push('★ '+it.score);
+  if(effScore) bits.push('★ '+effScore);
   const cnt = k => ps.filter(p => p.kind===k && own(p)).length;
   const c = [cnt('season') && cnt('season')+' sezon', cnt('movie') && cnt('movie')+' film', cnt('other') && cnt('other')+' ek'].filter(Boolean).join(', ');
   if(c) bits.push(c);
   const rp = rew(ps.filter(own)); if(rp) bits.push(rp);
   t('.sh-sub').textContent = bits.join(' · ');
+  const gEl = t('.sh-genres');
+  if (gEl) {
+    gEl.textContent = effGenres.join(' · ');
+    gEl.hidden = !effGenres.length;
+  }
   const im = t('.sheet-cover'); im.hidden = !it.image; if(it.image) im.src = big(it.image);
   const own2 = ps.filter(own), te = sum(own2,'episodes'), tw = sum(own2,'watched'), pg = t('.sh-pg');
   pg.hidden = !(te && tw < te); if(!pg.hidden) pg.firstChild.style.setProperty('--w', Math.round(tw/te*100)+'%');
@@ -261,7 +328,7 @@ function fillSheet(it){
     const nameNode = li.querySelector('a, .pt-name');
     nameNode.textContent = p.name;
     if (partUrl && nameNode.tagName === 'A') nameNode.href = partUrl;
-    li.querySelector('.pm').textContent = [FMT[p.format]||(p.kind==='movie'?'Film':''), p.year, p.kind!=='movie' && p.episodes>1 ? p.episodes+' bölüm' : ''].filter(Boolean).join(' · ');
+    li.querySelector('.pm').textContent = [FMT[p.format]||(p.kind==='movie'?'Film':''), p.year, p.kind!=='movie' && p.episodes>1 ? p.episodes+' bölüm' : '', p.score ? '★ '+p.score : ''].filter(Boolean).join(' · ');
     li.querySelector('.ps').textContent = txt + (p.repeat ? (cls==='done' ? ' · '+(p.repeat+1)+' kez' : ' · ↻ '+p.repeat+' tekrar') : '');
     ol.append(li);
   }

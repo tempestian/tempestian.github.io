@@ -1,11 +1,11 @@
 // ============================================================================
 // [AI-MIMARI-NOTU: HİBRİT ANILIST SENKRON VE BAĞLANTILI ANİME / YAN İÇERİK KEŞİF MOTORU]
-// Bu betik Adım 3, 4, 5 ve 6 kapsamında şu görevleri yerine getirir:
+// Bu betik Adım 3, 4, 5, 6, 7 ve 8 kapsamında şu görevleri yerine getirir:
 //
 // 1. İlk Sezon AniList Linki (`firstSeasonUrl` / `url`) Çözümleme (Adım 5 & 6):
 //    - Admin panelinden yeni anime eklenirken veya mevcut bir anime düzenlenirken girilen
 //      "İlk Sezonun AniList Linki" (`https://anilist.co/anime/101280/...` veya doğrudan ID)
-//      `parseAnilistIdFromUrl` fonksiyonu ile çözümlenir.
+//      `parseAnilistId` fonksiyonu ile çözümlenir.
 //    - Bu ID tohum (seed) kabul edilerek AniList GraphQL API'si üzerinden (`QM` sorgusu)
 //      10 tura kadar genişlik öncelikli arama (BFS) ile tüm bağlantılı içerikler:
 //      * Ana Sezonlar (`PREQUEL`, `SEQUEL`)
@@ -17,16 +17,14 @@
 //    - Sadece yeni eklenen animeler değil, `data/anime.json` içinde halihazırda bulunan
 //      tüm animeler için de AniList'te yeni bir sezon, film veya yan içerik olup olmadığı
 //      her çalışmada sorgulanır ve eksik parçalar (`parts`) site verilerine çekilir.
-//    - Admin panelinden yalnızca ilk sezon linki ve genel izleme durumu girilerek eklenen
-//      animelerde, yer tutucu (placeholder) `part-...` kaydı otomatik olarak ilk sezonun
-//      gerçek AniList ID'si ve bilgileriyle eşleştirilir; adminin girdiği izleme durumu korunur.
 //
-// 3. Admin Düzenlemelerinin Korunması (`adminModified` & `lockedFields`):
-//    - Admin panelinden düzenlenen başlık, puan, durum, türler, kapak görseli ve parça bazlı
-//      izleme/tekrar verileri GitHub Actions çalıştığında asla ezilmez.
+// 3. Ağırlıklı Puan, Özel Tür (`customGenres`) ve Admin Düzenlemelerinin Korunması (Adım 7 & 8):
+//    - Animenin genel puanı her zaman parçalara (Sezon ×1.00, Film ×0.35, Yan İçerik ×0.15)
+//      verilen puanlardan (`parts[].score`) otomatik hesaplanır (`resolveEffectiveScore`).
+//    - Tür istatistiklerinde yalnızca adminin seçtiği özel kategoriler (`customGenres`) yer alır.
 // ============================================================================
 import fs from 'node:fs';
-import { computeStats } from './stats.mjs';
+import { computeStats, resolveEffectiveScore, DEFAULT_STATS_CONFIG } from './stats.mjs';
 
 const USER = process.env.ANILIST_USER || 'TurkTempestian';
 const LIST = process.env.CUSTOM_LIST || '';
@@ -36,12 +34,9 @@ const OVERRIDES_FILE = process.env.OVERRIDES || 'data/overrides.json';
 const SYNC_MODE = (process.env.SYNC_MODE || 'hybrid').toLowerCase(); // 'hybrid' | 'relations_only'
 
 const SERIES = new Set(['TV', 'TV_SHORT', 'ONA']);
-// Sezon, film ve yan içerikleri (OVA, Special, Spin-off, Side Story, Summary) yakalayan ilişki türleri
 const LINKS = new Set(['PREQUEL', 'SEQUEL', 'SIDE_STORY', 'PARENT', 'SUMMARY', 'SPIN_OFF']);
 const kind = f => SERIES.has(f) ? 'season' : f === 'MOVIE' ? 'movie' : 'other';
 
-// [AI-MIMARI-NOTU]: Admin panelinden girilen "https://anilist.co/anime/101280/..."
-// biçimindeki ilk sezon URL'sinden veya doğrudan sayısal değerden AniList ID'sini çıkarır.
 export function parseAnilistId(input) {
   if (input == null || input === '') return null;
   if (typeof input === 'number' && Number.isInteger(input) && input > 0) return input;
@@ -108,7 +103,6 @@ const ov = fs.existsSync(OVERRIDES_FILE) ? JSON.parse(fs.readFileSync(OVERRIDES_
 const excludedIds = new Set((ov.exclude || []).map(Number).filter(Boolean));
 const deletedFranchiseIds = new Set(ov.deletedIds || []);
 
-// Mevcut animeleri indeksle (firstSeasonUrl / url / anilistId üzerinden)
 const existingById = new Map();
 const existingByAnilistId = new Map();
 const existingPartMap = new Map();
@@ -125,8 +119,6 @@ for (const item of existingAnimeList) {
   }
   existingById.set(item.id, item);
 
-  // Eğer admin yeni bir animeyi ilk sezon URL'siyle eklediyse ve içinde henüz gerçek AniList ID'si olmayan
-  // tek bir yer tutucu (placeholder) sezon varsa, bu yer tutucuyu ilk sezon ID'siyle eşleştir.
   const parts = item.parts || [];
   if (seedId && parts.length === 1 && typeof parts[0].id === 'string' && parts[0].id.startsWith('part-')) {
     parts[0].id = seedId;
@@ -336,6 +328,7 @@ for (const [root, members] of groups) {
     const ep = m.media.episodes || m.progress || 0, st = state(m);
     const prevPart = existingPartMap.get(m.media.id);
     const keepAdminPart = prevPart && (prevPart.adminModified || (matchedExisting && matchedExisting.adminModified));
+    const partScore = (prevPart && prevPart.score != null) ? prevPart.score : (m.score > 0 ? m.score : null);
     return {
       id: m.media.id,
       name: (keepAdminPart && prevPart.name && prevPart.name !== '1. Sezon') ? prevPart.name : (m.media.title.english || m.media.title.romaji),
@@ -349,7 +342,7 @@ for (const [root, members] of groups) {
       release: m.media.status || (prevPart && prevPart.release) || null,
       year: (m.media.startDate && m.media.startDate.year) || (prevPart && prevPart.year) || null,
       d: dk(m.media.startDate),
-      score: (keepAdminPart && prevPart.score != null) ? prevPart.score : (m.score > 0 ? m.score : null),
+      ...(partScore != null ? { score: partScore } : {}),
       createdAt: m.createdAt || 0,
       repeat: (keepAdminPart && prevPart.repeat != null) ? prevPart.repeat : (m.repeat || 0),
       ...(keepAdminPart ? { adminModified: true } : {})
@@ -358,8 +351,6 @@ for (const [root, members] of groups) {
 
   const ext = exts.filter(n => !memberIds.has(n.id)).map(n => {
     const prevPart = existingPartMap.get(n.id);
-    // Eğer bu düğüm adminin girdiği ilk sezon URL'sinin (seed) kendisiyse ve admin henüz parça detayı girmediyse,
-    // animenin genel durumuna göre ilk sezonu varsayılan olarak tamamlanmış/izleniyor kabul et.
     const isSeedNode = matchedExisting && extractSeedAnilistId(matchedExisting) === n.id;
     const hasLocalProgress = prevPart && (prevPart.adminModified || prevPart.status !== 'NONE' || (prevPart.watched || 0) > 0);
     const ep = n.episodes || (prevPart && prevPart.episodes) || 0;
@@ -383,6 +374,7 @@ for (const [root, members] of groups) {
       release: n.status || (prevPart && prevPart.release) || null,
       year: (n.startDate && n.startDate.year) || (prevPart && prevPart.year) || null,
       d: dk(n.startDate || {}),
+      ...(prevPart && prevPart.score != null ? { score: prevPart.score } : {}),
       repeat: hasLocalProgress ? (prevPart.repeat || 0) : 0,
       ...(hasLocalProgress && prevPart.adminModified ? { adminModified: true } : {})
     };
@@ -416,9 +408,9 @@ for (const [root, members] of groups) {
   const defaultTitle = (ov.titles || {})[head.id] || (hm && (hm.title.english || hm.title.romaji)) || (matchedExisting && matchedExisting.title) || head.name;
   const title = (isModified && locked.has('title') && matchedExisting.title) ? matchedExisting.title : defaultTitle;
 
-  const scores = pool.map(p => p.score).filter(Boolean);
-  const computedScore = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length * 10) / 10 : (matchedExisting ? matchedExisting.score : null);
-  const score = (isModified && locked.has('score')) ? matchedExisting.score : computedScore;
+  // [AI-MIMARI-NOTU]: Puan hesaplaması her zaman parçalara (Sezon ×1.00, Film ×0.35, Yan İçerik ×0.15)
+  // verilen puanların ağırlıklı ortalamasından yapılır (`resolveEffectiveScore`).
+  const score = resolveEffectiveScore({ ...(matchedExisting || {}), parts });
 
   const status = (isModified && locked.has('status') && matchedExisting.status) ? matchedExisting.status : computedStatus;
 
@@ -431,13 +423,10 @@ for (const [root, members] of groups) {
     && seas.slice(fw + 1).some(p => p.watched === 0 && p.format !== 'TV_SHORT' && (chain.has(p.id) || p.kind === 'season') && ['FINISHED', 'RELEASING'].includes(p.release));
   const next = (isModified && locked.has('next')) ? Boolean(matchedExisting.next) : computedNext;
 
-  const gc = new Map();
-  for (const m of members) if (pool.some(p => p.id === m.media.id)) for (const g of m.media.genres || []) gc.set(g, (gc.get(g) || 0) + 1);
-  if (!gc.size && hm && hm.genres) for (const g of hm.genres) gc.set(g, 1);
-  const computedGenres = [...gc].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 6).map(x => x[0]);
-  const genres = (isModified && locked.has('genres') && Array.isArray(matchedExisting.genres) && matchedExisting.genres.length)
-    ? matchedExisting.genres
-    : (computedGenres.length ? computedGenres : ((matchedExisting && matchedExisting.genres) || []));
+  // [AI-MIMARI-NOTU]: Türler (Adım 7 & 8): Yalnızca adminin seçtiği özel kategoriler (`customGenres`) korunur.
+  const customGenres = (matchedExisting && Array.isArray(matchedExisting.customGenres) && matchedExisting.customGenres.length)
+    ? matchedExisting.customGenres
+    : null;
 
   const image = (isModified && locked.has('image') && matchedExisting.image)
     ? matchedExisting.image
@@ -455,9 +444,9 @@ for (const [root, members] of groups) {
     firstSeasonUrl,
     status,
     ...(next ? { next: true } : {}),
-    ...(genres.length ? { genres } : {}),
+    ...(customGenres && customGenres.length ? { genres: customGenres, customGenres } : {}),
     score: score ?? null,
-    parts: parts.map(({ id, name, kind, format, episodes, watched, status, release, year, repeat, adminModified }) => ({
+    parts: parts.map(({ id, name, kind, format, episodes, watched, status, release, year, score: pScore, repeat, adminModified }) => ({
       id,
       name,
       kind,
@@ -467,6 +456,7 @@ for (const [root, members] of groups) {
       status,
       release,
       year,
+      ...(pScore != null ? { score: pScore } : {}),
       ...(repeat > 0 ? { repeat } : {}),
       ...(adminModified ? { adminModified: true } : {})
     })),
@@ -483,6 +473,7 @@ for (const item of existingAnimeList) {
   const seedId = extractSeedAnilistId(item);
   if (seedId && excludedIds.has(seedId)) continue;
   if (!processedExistingIds.has(item.id)) {
+    item.score = resolveEffectiveScore(item);
     anime.push(item);
   }
 }
@@ -493,7 +484,8 @@ if (!anime.length) {
 
 anime.sort((a, b) => (b.addedAt || '').localeCompare(a.addedAt || '') || a.title.localeCompare(b.title));
 
-const stats = computeStats(anime);
+const statsConfig = { ...DEFAULT_STATS_CONFIG, ...(existingData.statsConfig || {}), animeCountRule: 'completed_season_or_movie', includeInProgressEpisodes: true, genreSourceRule: 'custom_only' };
+const stats = computeStats(anime, statsConfig);
 
 const old = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
 if (old && JSON.stringify(old.anime) === JSON.stringify(anime) && JSON.stringify(old.stats) === JSON.stringify(stats)) {
@@ -501,6 +493,15 @@ if (old && JSON.stringify(old.anime) === JSON.stringify(anime) && JSON.stringify
   process.exit(0);
 }
 
-const sourceLabel = SYNC_MODE === 'relations_only' ? 'hybrid:local+anilist-relations' : ('anilist:' + USER);
-fs.writeFileSync(OUT, JSON.stringify({ schemaVersion: 3, updated: new Date().toISOString().slice(0, 10), source: sourceLabel, stats, anime }, null, 2) + '\n');
-console.log(anime.length + ' franchise yazıldı (' + SYNC_MODE + ' modu); sayılan: ' + stats.anime + ' anime, ' + stats.season + ' sezon, ' + stats.film + ' film, ' + stats.other + ' ek, ' + stats.episodes + ' bölüm.');
+const outPayload = {
+  schemaVersion: 3,
+  updated: new Date().toISOString().slice(0, 10),
+  source: 'hybrid:' + USER,
+  statsConfig,
+  ...(Array.isArray(existingData.customGenreCatalog) ? { customGenreCatalog: existingData.customGenreCatalog } : {}),
+  stats,
+  anime
+};
+
+fs.writeFileSync(OUT, JSON.stringify(outPayload, null, 2) + '\n');
+console.log(`${anime.length} franchise yazıldı (${SYNC_MODE} modu); sayılan: ${stats.anime} anime, ${stats.season} sezon, ${stats.film} film, ${stats.other} ek, ${stats.episodes} bölüm.`);

@@ -3,11 +3,13 @@
   "updated": "2026-10-21",
   "source": "anilist:TurkTempestian",
   "stats": {
-    "anime": 77,
-    "season": 125,
+    "anime": 78,
+    "season": 126,
     "film": 25,
     "other": 25,
-    "episodes": 2425,
+    "episodes": 3364,
+    "completedEpisodes": 3271,
+    "inProgressEpisodes": 93,
     "avgScore": 7,
     "byStatus": {
       "watching": 5,
@@ -15,10 +17,28 @@
       "dropped": 8,
       "paused": 5
     },
+    "genres": [],
+    "scoreHistogram": {
+      "1": 0,
+      "2": 2,
+      "3": 1,
+      "4": 5,
+      "5": 9,
+      "6": 17,
+      "7": 16,
+      "8": 10,
+      "9": 3,
+      "10": 12
+    },
+    "rules": {
+      "animeCountRule": "completed_season_or_movie",
+      "includeInProgressEpisodes": true,
+      "genreSourceRule": "custom_only"
+    },
     "listed": 89,
     "completed": 71,
-    "partial": 6,
-    "excluded": 12,
+    "partial": 7,
+    "excluded": 11,
     "highlights": {
       "topScore": {
         "id": "al-101280",
@@ -63,7 +83,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 6.7
         },
         {
           "id": 138106,
@@ -85,7 +106,8 @@
           "watched": 10,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 6.7
         },
         {
           "id": 163943,
@@ -107,7 +129,8 @@
           "watched": 5,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 6.7
         },
         {
           "id": 187921,
@@ -115,17 +138,16 @@
           "kind": "season",
           "format": "ONA",
           "episodes": 15,
-          "watched": 11,
+          "watched": 10,
           "status": "CURRENT",
           "release": "FINISHED",
-          "year": 2025,
-          "adminModified": true
+          "year": 2025
         },
         {
           "id": 213580,
           "name": "Shuumatsu no Valkyrie IV",
           "kind": "other",
-          "format": "TV",
+          "format": null,
           "episodes": 0,
           "watched": 0,
           "status": "NONE",
@@ -135,16 +157,7 @@
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127399-AAH1pevCZLrB.jpg",
       "addedAt": "2026-10-02",
-      "firstSeasonUrl": "https://anilist.co/anime/127399",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt",
-        "image"
-      ]
+      "firstSeasonUrl": "https://anilist.co/anime/127399"
     },
     {
       "id": "al-162804",
@@ -210,7 +223,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2015
+          "year": 2015,
+          "score": 10
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx20931-bktYqOcxPERi.jpg",
@@ -238,7 +252,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 7
         },
         {
           "id": 102969,
@@ -278,7 +293,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 7
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20555-QGbWQC3Kfpok.jpg",
@@ -310,7 +326,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2020
+          "year": 2020,
+          "score": 10
         },
         {
           "id": 159074,
@@ -321,7 +338,8 @@
           "watched": 4,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 10
         },
         {
           "id": 170893,
@@ -332,7 +350,8 @@
           "watched": 4,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2024
+          "year": 2024,
+          "score": 10
         },
         {
           "id": 170892,
@@ -343,7 +362,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "score": 10
         },
         {
           "id": 189326,
@@ -354,7 +374,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "score": 10
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108463-u03vrYnyB3L9.jpg",
@@ -384,7 +405,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2001
+          "year": 2001,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-sWefXJvXkDOb.jpg",
@@ -413,7 +435,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 1992
+          "year": 1992,
+          "score": 4
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2981-PuzLTzNf4DeV.png",
@@ -443,7 +466,8 @@
           "watched": 11,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2020
+          "year": 2020,
+          "score": 2.5
         },
         {
           "id": 124858,
@@ -454,7 +478,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 2.5
         },
         {
           "id": 138700,
@@ -494,7 +519,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2017
+          "year": 2017,
+          "score": 7.7
         },
         {
           "id": 98186,
@@ -527,7 +553,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 7.7
         },
         {
           "id": 135865,
@@ -580,7 +607,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181447-aCmaQmtdwuU5.jpg",
@@ -612,7 +640,8 @@
           "watched": 25,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2006
+          "year": 2006,
+          "score": 9.7
         },
         {
           "id": 1953,
@@ -634,7 +663,8 @@
           "watched": 25,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2008
+          "year": 2008,
+          "score": 9.7
         },
         {
           "id": 5163,
@@ -806,7 +836,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx179696-1MAqXYVXT7IT.jpg",
@@ -835,7 +866,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 4
         },
         {
           "id": 143082,
@@ -886,7 +918,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 4
         },
         {
           "id": 17879,
@@ -948,7 +981,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "score": 8
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181444-Ut9DDUZdfHwg.jpg",
@@ -977,7 +1011,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2024
+          "year": 2024,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163623-pzR6vIHoJh0b.jpg",
@@ -1007,7 +1042,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2020
+          "year": 2020,
+          "score": 8
         },
         {
           "id": 127371,
@@ -1040,7 +1076,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 8
         },
         {
           "id": 166104,
@@ -1180,7 +1217,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2010
+          "year": 2010,
+          "score": 5
         },
         {
           "id": 16646,
@@ -1286,7 +1324,8 @@
           "watched": 6,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2012
+          "year": 2012,
+          "score": 8.5
         },
         {
           "id": 14741,
@@ -1297,7 +1336,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2012
+          "year": 2012,
+          "score": 8.5
         },
         {
           "id": 15879,
@@ -1341,7 +1381,8 @@
           "watched": 6,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 8.5
         },
         {
           "id": 18671,
@@ -1352,7 +1393,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 8.5
         },
         {
           "id": 20660,
@@ -1425,7 +1467,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2017
+          "year": 2017,
+          "score": 8.3
         },
         {
           "id": 145545,
@@ -1436,7 +1479,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 8.3
         },
         {
           "id": 146066,
@@ -1447,7 +1491,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2024
+          "year": 2024,
+          "score": 8.3
         },
         {
           "id": 180745,
@@ -1458,7 +1503,8 @@
           "watched": 16,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2026
+          "year": 2026,
+          "score": 8.3
         },
         {
           "id": 213477,
@@ -1717,7 +1763,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 7
         },
         {
           "id": 163132,
@@ -1728,7 +1775,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 7
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124080-3i22mRVPBS0T.jpg",
@@ -1950,7 +1998,8 @@
           "watched": 52,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2001
+          "year": 2001,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1614-fRXNtx7QobbQ.jpg",
@@ -2042,7 +2091,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 7
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142770-dDaDIRnsv5jN.jpg",
@@ -2074,7 +2124,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "repeat": 1
+          "repeat": 1,
+          "score": 7.5
         },
         {
           "id": 166531,
@@ -2085,7 +2136,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2024
+          "year": 2024,
+          "score": 7.5
         },
         {
           "id": 182587,
@@ -2212,7 +2264,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2010
+          "year": 2010,
+          "score": 4
         },
         {
           "id": 8465,
@@ -2254,7 +2307,8 @@
           "watched": 74,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2004
+          "year": 2004,
+          "score": 10
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx19-gtMC64182sm4.jpg",
@@ -2283,7 +2337,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 7
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99750-pNyly9d3MEgV.jpg",
@@ -2312,7 +2367,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2015
+          "year": 2015,
+          "score": 5
         },
         {
           "id": 21305,
@@ -2594,7 +2650,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 1
+          "repeat": 1,
+          "score": 7.5
         },
         {
           "id": 198726,
@@ -2658,7 +2715,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2013,
-          "repeat": 2
+          "repeat": 2,
+          "score": 9.5
         },
         {
           "id": 18753,
@@ -2681,7 +2739,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "repeat": 1
+          "repeat": 1,
+          "score": 9.5
         },
         {
           "id": 21769,
@@ -2704,7 +2763,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "repeat": 2
+          "repeat": 2,
+          "score": 9.5
         },
         {
           "id": 128643,
@@ -2746,7 +2806,8 @@
           "watched": 10,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 7
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98460-bLtH2c3jd6sV.png",
@@ -2774,7 +2835,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 5
         },
         {
           "id": 104200,
@@ -2825,7 +2887,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2020
+          "year": 2020,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114963-QWMbi5ttovSK.png",
@@ -2856,7 +2919,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "score": 10
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21234-XmqW39aQ9o7O.jpg",
@@ -2888,7 +2952,8 @@
           "watched": 26,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2012
+          "year": 2012,
+          "score": 9.8
         },
         {
           "id": 20474,
@@ -2899,7 +2964,8 @@
           "watched": 24,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 9.8
         },
         {
           "id": 20799,
@@ -2910,7 +2976,8 @@
           "watched": 24,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2015
+          "year": 2015,
+          "score": 9.8
         },
         {
           "id": 21450,
@@ -2921,7 +2988,8 @@
           "watched": 39,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "score": 9.8
         },
         {
           "id": 21778,
@@ -2943,7 +3011,8 @@
           "watched": 39,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 9.8
         },
         {
           "id": 131942,
@@ -2954,7 +3023,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 9.8
         },
         {
           "id": 146722,
@@ -2965,7 +3035,8 @@
           "watched": 26,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 9.8
         },
         {
           "id": 190327,
@@ -2976,7 +3047,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2026
+          "year": 2026,
+          "score": 9.8
         },
         {
           "id": 210482,
@@ -3021,7 +3093,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "repeat": 1
+          "repeat": 1,
+          "score": 10
         },
         {
           "id": 100049,
@@ -3043,7 +3116,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2020
+          "year": 2020,
+          "score": 10
         },
         {
           "id": 119661,
@@ -3054,7 +3128,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 10
         },
         {
           "id": 163134,
@@ -3200,7 +3275,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "score": 7
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20954-sYRfE5jQRtSB.jpg",
@@ -3231,7 +3307,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "score": 7.6
         },
         {
           "id": 21679,
@@ -3242,7 +3319,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "score": 7.6
         },
         {
           "id": 21791,
@@ -3275,7 +3353,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 7.6
         },
         {
           "id": 141249,
@@ -3286,7 +3365,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 7.6
         },
         {
           "id": 163263,
@@ -3327,7 +3407,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "repeat": 1
+          "repeat": 1,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21290-R6qYWnylwpbL.png",
@@ -3653,7 +3734,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "repeat": 1
+          "repeat": 1,
+          "score": 5.5
         },
         {
           "id": 130588,
@@ -3707,7 +3789,8 @@
           "watched": 24,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20613-HXHpec4bemk5.jpg",
@@ -3765,7 +3848,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2012
+          "year": 2012,
+          "score": 7.3
         },
         {
           "id": 11701,
@@ -3808,7 +3892,8 @@
           "watched": 25,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 8.7
         },
         {
           "id": 18397,
@@ -3863,7 +3948,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2017
+          "year": 2017,
+          "score": 8.7
         },
         {
           "id": 99634,
@@ -3896,7 +3982,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 8.7
         },
         {
           "id": 104578,
@@ -3907,7 +3994,8 @@
           "watched": 10,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 8.7
         },
         {
           "id": 119113,
@@ -3929,7 +4017,8 @@
           "watched": 16,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2020
+          "year": 2020,
+          "score": 8.7
         },
         {
           "id": 131681,
@@ -3940,7 +4029,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 8.7
         },
         {
           "id": 146984,
@@ -3992,7 +4082,8 @@
           "watched": 24,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100388-hjkg1AnlJR5z.jpg",
@@ -4022,7 +4113,8 @@
           "watched": 366,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2004
+          "year": 2004,
+          "score": 7
         },
         {
           "id": 834,
@@ -4099,7 +4191,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 7
         },
         {
           "id": 159322,
@@ -4161,7 +4254,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 2.7
         },
         {
           "id": 20837,
@@ -4214,7 +4308,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2006,
-          "repeat": 1
+          "repeat": 1,
+          "score": 10
         },
         {
           "id": 2994,
@@ -4257,7 +4352,8 @@
           "watched": 26,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 5.5
         },
         {
           "id": 112151,
@@ -4290,7 +4386,8 @@
           "watched": 11,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 5.5
         },
         {
           "id": 145139,
@@ -4416,7 +4513,8 @@
           "watched": 24,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 10
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101347-TGaDwEYqLfm1.jpg",
@@ -4449,7 +4547,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "repeat": 1
+          "repeat": 1,
+          "score": 6.5
         },
         {
           "id": 149099,
@@ -4471,7 +4570,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 6.5
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx97682-YRhTwV979zSr.jpg",
@@ -4499,7 +4599,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2015
+          "year": 2015,
+          "score": 8.7
         },
         {
           "id": 21327,
@@ -4521,7 +4622,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2017
+          "year": 2017,
+          "score": 8.7
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20987-9Tq7kZTeJPMo.jpg",
@@ -4551,7 +4653,8 @@
           "watched": 24,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2020
+          "year": 2020,
+          "score": 3.7
         },
         {
           "id": 131573,
@@ -4573,7 +4676,8 @@
           "watched": 23,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 3.7
         },
         {
           "id": 192809,
@@ -4649,7 +4753,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "repeat": 2
+          "repeat": 2,
+          "score": 8.5
         },
         {
           "id": 112641,
@@ -4661,7 +4766,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "repeat": 2
+          "repeat": 2,
+          "score": 8.5
         },
         {
           "id": 125368,
@@ -4695,7 +4801,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 2
+          "repeat": 2,
+          "score": 8.5
         },
         {
           "id": 151384,
@@ -4706,7 +4813,8 @@
           "watched": 4,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 8.5
         },
         {
           "id": 194884,
@@ -4757,7 +4865,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2017
+          "year": 2017,
+          "score": 8
         },
         {
           "id": 100876,
@@ -4768,7 +4877,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 8
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b98314-TSJykxVwCCQN.jpg",
@@ -4798,7 +4908,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 1989
+          "year": 1989,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx512-UwP8X4BR8YoM.png",
@@ -4827,7 +4938,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21421-5y8ryXsMB7aJ.jpg",
@@ -4858,7 +4970,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 5
         },
         {
           "id": 154768,
@@ -4899,7 +5012,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 1988
+          "year": 1988,
+          "score": 5
         },
         {
           "id": 2488,
@@ -5486,7 +5600,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2008
+          "year": 2008,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2890-wcNtFr6aUYOR.jpg",
@@ -5520,7 +5635,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "repeat": 2
+          "repeat": 2,
+          "score": 8.5
         },
         {
           "id": 104157,
@@ -5605,7 +5721,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "score": 7.5
         },
         {
           "id": 98635,
@@ -5659,7 +5776,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 1
+          "repeat": 1,
+          "score": 7.8
         },
         {
           "id": 142838,
@@ -5671,7 +5789,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 1
+          "repeat": 1,
+          "score": 7.8
         },
         {
           "id": 158927,
@@ -5682,7 +5801,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 7.8
         },
         {
           "id": 158928,
@@ -5704,7 +5824,8 @@
           "watched": 13,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "score": 7.8
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140960-Kb6R5nYQfjmP.jpg",
@@ -5736,7 +5857,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 2
+          "repeat": 2,
+          "score": 10
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129201-HJBauga2be8I.png",
@@ -5769,7 +5891,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "repeat": 21
+          "repeat": 21,
+          "score": 10
         },
         {
           "id": 106509,
@@ -5793,7 +5916,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "repeat": 21
+          "repeat": 21,
+          "score": 10
         },
         {
           "id": 116741,
@@ -5805,7 +5929,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "repeat": 3
+          "repeat": 3,
+          "score": 10
         },
         {
           "id": 116742,
@@ -5817,7 +5942,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "repeat": 20
+          "repeat": 20,
+          "score": 10
         },
         {
           "id": 146503,
@@ -5828,7 +5954,8 @@
           "watched": 2,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 10
         },
         {
           "id": 139498,
@@ -5864,7 +5991,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2024,
-          "repeat": 6
+          "repeat": 6,
+          "score": 10
         },
         {
           "id": 182206,
@@ -5886,7 +6014,8 @@
           "watched": 24,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2026
+          "year": 2026,
+          "score": 10
         },
         {
           "id": 217330,
@@ -5937,7 +6066,8 @@
           "watched": 120,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "score": 5.4
         },
         {
           "id": 98034,
@@ -5948,7 +6078,8 @@
           "watched": 24,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 5.4
         },
         {
           "id": 104580,
@@ -5970,7 +6101,8 @@
           "watched": 6,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 5.4
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21804-As6tDLAvEvNY.jpg",
@@ -6000,7 +6132,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 8
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129193-pT3W5PpiMAUB.png",
@@ -6043,7 +6176,8 @@
           "watched": 26,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2011
+          "year": 2011,
+          "score": 6.3
         },
         {
           "id": 12503,
@@ -6095,7 +6229,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 6
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130586-vzoz4X37RZwc.jpg",
@@ -6128,7 +6263,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 4
         },
         {
           "id": 20850,
@@ -6139,7 +6275,8 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2015
+          "year": 2015,
+          "score": 4
         },
         {
           "id": 21132,
@@ -6210,7 +6347,8 @@
           "watched": 11,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2009
+          "year": 2009,
+          "score": 6
         },
         {
           "id": 7654,
@@ -6251,7 +6389,8 @@
           "watched": 24,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 5
         },
         {
           "id": 142853,
@@ -6315,7 +6454,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 3
+          "repeat": 3,
+          "score": 10
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141014-bTWr7TtS0wt9.jpg",
@@ -6346,7 +6486,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 1
+          "repeat": 1,
+          "score": 10
         },
         {
           "id": 171026,
@@ -6387,7 +6528,8 @@
           "watched": 22,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 10
         },
         {
           "id": 21039,
@@ -6427,12 +6569,18 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "score": 7
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21519-SUo3ZQuCbYhJ.png",
       "addedAt": "2022-04-29",
       "firstSeasonUrl": "https://anilist.co/anime/21519"
     }
-  ]
+  ],
+  "statsConfig": {
+    "animeCountRule": "completed_season_or_movie",
+    "includeInProgressEpisodes": true,
+    "genreSourceRule": "custom_only"
+  }
 }

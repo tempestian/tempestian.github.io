@@ -135,18 +135,33 @@
   // [AI-MIMARI-NOTU: ADIM 12 & 13 — ÇOKLU-MEDYA KART ÖZETLEYİCİ]
   const summarize = (s, j) => {
     const items = (j && (j[s.countKey] || j.items || j.anime)) || [];
-    const t = j && j.stats ? { anime: j.stats.anime, season: j.stats.season, film: j.stats.film, ep: j.stats.episodes, avg: j.stats.avgScore } : tally(items, j && j.statsConfig);
+    const st = j && j.stats;
+    const t = st
+      ? {
+          main: st.watched ?? st.read ?? st.published ?? st.total ?? st.anime ?? 0,
+          season: st.seasons ?? st.volumes ?? st.films ?? st.season ?? 0,
+          film: st.film ?? st.specials ?? st.extras ?? 0,
+          ep: st.episodes ?? st.pages ?? st.chapters ?? st.watchCount ?? 0,
+          avg: st.avgScore
+        }
+      : (() => {
+          const raw = tally(items, j && j.statsConfig);
+          return { main: raw.anime, season: raw.season, film: raw.film, ep: raw.ep, avg: null };
+        })();
     let nums;
     if (s.id === 'anime') {
-      nums = [[t.anime, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']];
+      nums = [[t.main, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']];
     } else if (s.id === 'series') {
-      nums = [[t.anime, 'dizi'], [t.season, 'sezon'], [t.ep, 'bölüm']];
+      nums = [[t.main, 'dizi'], [t.season, 'sezon'], [t.ep, 'bölüm']];
     } else if (s.id === 'movie') {
-      nums = [[t.anime || items.filter(x => x.status === 'completed').length, 'film'], ...(t.avg ? [[t.avg, 'ort. puan']] : [])];
+      nums = [[t.main || items.filter(x => x.status === 'completed').length, 'film'], ...(t.avg ? [[t.avg, 'ort. puan']] : [])];
     } else if (s.id === 'manga') {
-      nums = [[t.anime, 'manga'], [t.ep, 'bölüm']];
+      nums = [[t.main, 'manga'], [t.ep, 'bölüm']];
     } else if (s.id === 'book') {
-      nums = [[t.anime, 'kitap'], [t.ep, 'sayfa']];
+      nums = [[t.main, 'kitap'], [t.ep, 'sayfa']];
+    } else if (s.id === 'guide') {
+      const catCount = st && Array.isArray(st.genres) ? st.genres.length : 0;
+      nums = [[items.length, 'rehber'], ...(catCount ? [[catCount, 'kategori']] : [])];
     } else {
       nums = [[items.length, s.unit || 'içerik']];
     }

@@ -6,75 +6,68 @@
     "userId": "657641",
     "username": "Bayram Tempestian",
     "prefixFilter": "Rehber",
-    "lastSyncedAt": "2026-10-22T11:28:37.140Z"
+    "lastSyncedAt": "2026-10-22T15:10:00.000Z"
   },
   "customGenreCatalog": [
     "Linux & Sistem",
-    "Donanım",
-    "Yazılım & Kodlama",
+    "Masaüstü & Özelleştirme",
+    "Paket Yönetimi",
+    "Donanım & Sürücü",
+    "Yazılım & Araçlar",
     "Oyun Rehberi",
-    "Yapay Zeka"
+    "Yazılım & Kodlama",
+    "Yapay Zeka",
+    "Ağ & Güvenlik"
   ],
   "stats": {
-    "anime": 17,
-    "season": 17,
-    "film": 0,
-    "other": 0,
-    "episodes": 17,
-    "completedEpisodes": 17,
-    "inProgressEpisodes": 0,
+    "total": 54,
+    "published": 54,
+    "draft": 0,
     "favorites": 0,
-    "avgScore": null,
     "byStatus": {
-      "completed": 17
+      "completed": 54
     },
     "genres": [
       {
         "name": "Linux & Sistem",
-        "count": 14
+        "count": 52
       },
       {
-        "name": "Yazılım & Kodlama",
-        "count": 5
+        "name": "Masaüstü & Özelleştirme",
+        "count": 16
+      },
+      {
+        "name": "Paket Yönetimi",
+        "count": 11
+      },
+      {
+        "name": "Donanım & Sürücü",
+        "count": 10
+      },
+      {
+        "name": "Yazılım & Araçlar",
+        "count": 7
       },
       {
         "name": "Oyun Rehberi",
-        "count": 4
+        "count": 6
       },
       {
-        "name": "Donanım",
+        "name": "Yazılım & Kodlama",
         "count": 2
       },
       {
         "name": "Yapay Zeka",
-        "count": 2
+        "count": 1
       }
-    ],
-    "scoreHistogram": {},
-    "rules": {
-      "animeCountRule": "completed_season_or_movie",
-      "includeInProgressEpisodes": true,
-      "genreSourceRule": "custom_only"
-    },
-    "listed": 17,
-    "completed": 17,
-    "partial": 0,
-    "excluded": 0,
-    "highlights": {
-      "mostWatched": {
-        "id": "tp-konu-3776056",
-        "title": "GNOME WEB'te Firefox eklentileri nasıl kurulur?",
-        "episodes": 1,
-        "status": "completed"
-      }
-    }
+    ]
   },
   "items": [
     {
       "id": "tp-konu-4170078",
       "threadId": 4170078,
-      "title": "NixOS'te OMEN Space kurulumu",
-      "url": "https://www.technopat.net/sosyal/konu/nixoste-omen-space-kurulumu.4170078/",
+      "title": "NixOS'te OmenCtl kurulumu",
+      "url": "https://www.technopat.net/sosyal/konu/nixoste-omenctl-kurulumu.4170078/",
       "summary": "Hepinize iyi Sosyaller. Bugün GNU/Linux dağıtımlarında HP Victus ve Omen laptoplarda fan kontrolü, klavye RGB ayarlarını düzenleyebildiğimiz OMEN Space'in NixOS'te nasıl kurulabileceğini anlatacağım. OMEN Space yazılımını geliştirdiği için @yunusemre.yl 'ye teşekkür ederiz. Öncelikle Flakes...",
       "forumSection": "GNU/Linux",
       "addedAt": "2026-09-02",
@@ -85,13 +78,10 @@
       ],
       "customGenres": [
         "Linux & Sistem",
-        "Donanım",
-        "Yazılım & Kodlama"
+        "Donanım & Sürücü"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-4146287",
@@ -111,9 +101,7 @@
         "Yazılım & Kodlama"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-4146238",
@@ -132,9 +120,47 @@
         "Linux & Sistem"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-4117622",
+      "threadId": 4117622,
+      "title": "KWin pencere yöneticisini yapılandırma",
+      "url": "https://www.technopat.net/sosyal/konu/kde-plasmada-kwin-pencere-yoneticisi-nasil-yapilandirilir.4117622/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"KWin pencere yöneticisini yapılandırma\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2026-06-05",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-4117046",
+      "threadId": 4117046,
+      "title": "Plasma masaüstü ortamını özelleştirme",
+      "url": "https://www.technopat.net/sosyal/konu/kde-plasma-masaustu-ortamini-ozellestirme.4117046/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"Plasma masaüstü ortamını özelleştirme\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2026-06-04",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
     },
     {
       "id": "tp-konu-4114470",
@@ -153,14 +179,31 @@
         "Linux & Sistem"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-4109658",
+      "threadId": 4109658,
+      "title": "GNU/Linux kurduktan sonra yapılması gerekenler",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linux-kurduktan-sonra-yapilmasi-gerekenler.4109658/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNU/Linux kurduktan sonra yapılması gerekenler\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2026-05-22",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
     },
     {
       "id": "tp-konu-4107370",
       "threadId": 4107370,
-      "title": "GNU/Linux'ta Adobe Lightroom CC nasıl kurulur?",
+      "title": "GNU/Linux'ta Adobe Lightroom CC kurulumu",
       "url": "https://www.technopat.net/sosyal/konu/gnu-linuxta-adobe-lightroom-cc-nasil-kurulur.4107370/",
       "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları. Bugün Claude Opus 4.7 ile Linux dağıtımlarında çalıştırılması sağlanmış olan Adobe Lightroom CC'yi nasıl kuracağınızı anlatacağım. Rehber sonunda: WINE ile uyumlu çalışan bir Creative Cloud uygulaması elde edeceksiniz. Bulutla senkronize edilmiş...",
       "forumSection": "GNU/Linux",
@@ -172,17 +215,15 @@
       ],
       "customGenres": [
         "Linux & Sistem",
-        "Yapay Zeka"
+        "Yazılım & Araçlar"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-4100637",
       "threadId": 4100637,
-      "title": "R36S ve klonları için dArkOS kurulum rehberi",
+      "title": "R36S ve klonları için dArkOS (Debian) kurulumu",
       "url": "https://www.technopat.net/sosyal/konu/r36s-ve-klonlari-icin-darkos-kurulum-rehberi.4100637/",
       "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları. Bugün R36S retro oyun konsoluna dArkOS'in nasıl kurulacağını anlatacağım. Öncelikle cihazdan ve işletim sisteminden bahsedeyim. R36S genellikle NES, SNES, GBA gibi eski nesil oyunları oynamaya yönelik bir el konsoludur. Orijinal R36S donanımı...",
       "forumSection": "Diğer Konsollar",
@@ -193,12 +234,12 @@
         "Diğer Konsollar"
       ],
       "customGenres": [
+        "Linux & Sistem",
+        "Donanım & Sürücü",
         "Oyun Rehberi"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-4085202",
@@ -215,13 +256,11 @@
       ],
       "customGenres": [
         "Linux & Sistem",
-        "Oyun Rehberi",
-        "Donanım"
+        "Masaüstü & Özelleştirme",
+        "Oyun Rehberi"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-4057878",
@@ -237,18 +276,18 @@
         "GNU/Linux"
       ],
       "customGenres": [
-        "Linux & Sistem"
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme",
+        "Donanım & Sürücü"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-4044065",
       "threadId": 4044065,
-      "title": "HyprSettings: Hyprland ayarlarınızı arayüzle yönetin!",
-      "url": "https://www.technopat.net/sosyal/konu/hyprsettings-hyprland-ayarlarinizi-arayuzle-yonetin.4044065/",
+      "title": "Hyprland ayarlarını arayüzle yapılandırma",
+      "url": "https://www.technopat.net/sosyal/konu/hyprsettings-hyprland-ayarlarinizi-arayuezle-yoenetin.4044065/",
       "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları. Hyprland, WM kullanmaya yeni başlayan insanlar için basit olsa da kullanıcılar config düzenlemeye alışık olmadıkları için öğrenmekte zorluk yaşayabilmekte. Bugün kullanımını anlatacağım HyprSettings, Hyprland config dosyasını arayüzle...",
       "forumSection": "GNU/Linux",
       "addedAt": "2026-02-11",
@@ -258,18 +297,17 @@
         "GNU/Linux"
       ],
       "customGenres": [
-        "Linux & Sistem"
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-4035241",
       "threadId": 4035241,
-      "title": "Linux'ta Gemini ile Türkçe dil desteği olmayan oyunları anlık olarak çevirme",
-      "url": "https://www.technopat.net/sosyal/konu/linuxta-gemini-ile-turkce-dil-destegi-olmayan-oyunlari-anlik-olarak-cevirme.4035241/",
+      "title": "Oyunlarda Gemini ile anlık Türkçe çeviri nasıl yapılır?",
+      "url": "https://www.technopat.net/sosyal/konu/linuxta-gemini-ile-tuerkce-dil-destegi-olmayan-oyunlari-anlik-olarak-cevirme.4035241/",
       "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları, bugün Linux'ta Türkçe dil desteği bulunmayan oyunlarda ekranda belirli bir kısmı seçerek yapay zekaya çevirmenizi sağlayan basit bir script tanıtacağım. Zamanla geliştirilebilir. Bash scripti olduğu için geliştirme seçeneği çok fazla. Ben şu an...",
       "forumSection": "GNU/Linux",
       "addedAt": "2026-01-30",
@@ -284,15 +322,13 @@
         "Yapay Zeka"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-3999213",
       "threadId": 3999213,
       "title": "Kernel Panic hatası nasıl çözülür?",
-      "url": "https://www.technopat.net/sosyal/konu/kernel-panic-hatasi-nasil-cozulur.3999213/",
+      "url": "https://www.technopat.net/sosyal/konu/kernel-panic-hatasi-nasil-coezueluer.3999213/",
       "summary": "Kernel Panic hatasının ne olduğundan, hatanın tespitinden ve çözümüne nasıl ulaşılacağından bahsedeceğim rehbere hoş geldiniz sevgili Technopat Sosyal kullanıcıları. 1- Kernel Panic nedir? Öncelikle Kernel Panic'in ne olduğundan bahsederek başlayalım. İşletim sisteminin verimli bir şekilde...",
       "forumSection": "GNU/Linux",
       "addedAt": "2025-12-19",
@@ -305,15 +341,13 @@
         "Linux & Sistem"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-3947918",
       "threadId": 3947918,
-      "title": "TLP-UI: GNU/Linux'ta güç yönetimi ile laptopunuzun pil ömrünü uzatın!",
-      "url": "https://www.technopat.net/sosyal/konu/tlp-ui-gnu-linuxta-guc-yonetimi-ile-laptopunuzun-pil-omrunu-uzatin.3947918/",
+      "title": "GNU/Linux'ta pil ömrünü uzatma",
+      "url": "https://www.technopat.net/sosyal/konu/tlp-ui-gnu-linuxta-guec-yoenetimi-ile-laptopunuzun-pil-oemruenue-uzatin.3947918/",
       "summary": "Merhaba sevgili Technopat Sosyal üyeleri, bugün laptop kullanıcılarının GNU/Linux'ta şarj süresini uzatmasını sağlayabilecek, performansı arttırmayı veya sıcaklığı azaltmayı sağlayabileceğimiz TLP uygulamasında önemli ayarları öğreneceğiz. TLP, GNU/Linux dağıtımlarında güç yönetimini...",
       "forumSection": "GNU/Linux",
       "addedAt": "2025-10-21",
@@ -323,18 +357,17 @@
         "GNU/Linux"
       ],
       "customGenres": [
-        "Linux & Sistem"
+        "Linux & Sistem",
+        "Donanım & Sürücü"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-3918073",
       "threadId": 3918073,
-      "title": "Tüm Linux dağıtımlarında manuel NVIDIA sürücü kurulumu",
-      "url": "https://www.technopat.net/sosyal/konu/tum-linux-dagitimlarinda-manuel-nvidia-surucu-kurulumu.3918073/",
+      "title": "GNU/Linux'ta NVIDIA sürücü kurulumu",
+      "url": "https://www.technopat.net/sosyal/konu/tuem-linux-dagitimlarinda-manuel-nvidia-sueruecue-kurulumu.3918073/",
       "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları, Son kullanıcıya yönelik birçok dağıtımda NVIDIA sürücüsü hazır gelse de veya kurmak kolay olsa da bugün tüm dağıtımlar için ortak ve resmi kurulum yöntemi olan, basitçe manuel kurulum diyebileceğimiz adımları göstereceğim. Dağıtımınızın sunduğu...",
       "forumSection": "GNU/Linux",
       "addedAt": "2025-09-15",
@@ -344,12 +377,11 @@
         "GNU/Linux"
       ],
       "customGenres": [
-        "Linux & Sistem"
+        "Linux & Sistem",
+        "Donanım & Sürücü"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-3858764",
@@ -368,9 +400,47 @@
         "Yazılım & Kodlama"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3856064",
+      "threadId": 3856064,
+      "title": "GNOME masaüstü ortamını özelleştirme",
+      "url": "https://www.technopat.net/sosyal/konu/gnome-masaustu-ortamini-ozellestirme.3856064/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNOME masaüstü ortamını özelleştirme\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2025-07-22",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3832638",
+      "threadId": 3832638,
+      "title": "GNU/Linux'ta Huawei Matebook X, 14, 14s ve 16s modellerinde ses çıkışını düzeltme",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linuxta-huawei-matebook-x-14-14s-ve-16s-modellerinde-ses-cikisini-duzeltme.3832638/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNU/Linux'ta Huawei Matebook X, 14, 14s ve 16s modellerinde ses çıkışını düzeltme\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2025-07-05",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Donanım & Sürücü"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
     },
     {
       "id": "tp-konu-3783464",
@@ -386,17 +456,16 @@
         "GNU/Linux"
       ],
       "customGenres": [
-        "Linux & Sistem"
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-3776056",
       "threadId": 3776056,
-      "title": "GNOME WEB'te Firefox eklentileri nasıl kurulur?",
+      "title": "Epiphany'de Firefox eklentisi kullanımı",
       "url": "https://www.technopat.net/sosyal/konu/gnome-webte-firefox-eklentileri-nasil-kurulur.3776056/",
       "summary": "İyi akşamlar sevgili Technopat Sosyal kullanıcıları. GNOME WEB yani Epiphany, GNOME masaüstünün varsayılan internet tarayıcısıdır. Çoğumuz eklenti desteği olmadığı için Epiphany'i silerek Firefox kullanırız. Rehber tüm eklentiler için geçerli olmasa da bazı eklentileri Epiphany'de nasıl...",
       "forumSection": "İnternet Araçları",
@@ -408,18 +477,17 @@
       ],
       "customGenres": [
         "Linux & Sistem",
-        "Yazılım & Kodlama"
+        "Masaüstü & Özelleştirme",
+        "Yazılım & Araçlar"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
     },
     {
       "id": "tp-konu-3749743",
       "threadId": 3749743,
-      "title": "XenForo forumlarda OS'i Arch Linux olarak gösterme",
-      "url": "https://www.technopat.net/sosyal/konu/xenforo-forumlarda-osi-arch-linux-olarak-gosterme.3749743/",
+      "title": "XenForo forumlarında işletim sistemini Arch Linux olarak gösterme",
+      "url": "https://www.technopat.net/sosyal/konu/xenforo-forumlarda-osi-arch-linux-olarak-goesterme.3749743/",
       "summary": "Hepinize iyi günler dilerim sevgili Technopat Sosyal kullanıcıları. XenForo'nun OS algılama sistemi Windows 11, Arch Linux, Fedora gibi işletim sistemlerini algılamayabiliyor. Örneğin: Windows 11 kullanıcıları Windows 10 kullanıyor gibi görünüyor. Ubuntu haricindeki Linux dağıtımları \"Linux\"...",
       "forumSection": "İnternet Araçları",
       "addedAt": "2025-04-28",
@@ -430,12 +498,647 @@
       ],
       "customGenres": [
         "Linux & Sistem",
-        "Yazılım & Kodlama"
+        "Yazılım & Araçlar"
       ],
       "source": "technopat-sync",
-      "adminModified": false,
-      "lockedFields": [],
-      "parts": []
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3701139",
+      "threadId": 3701139,
+      "title": "Theme.sh: Terminalizi Renklendirin!",
+      "url": "https://www.technopat.net/sosyal/konu/theme-sh-terminalizi-renklendirin.3701139/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"Theme.sh: Terminalizi Renklendirin!\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2025-03-18",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3685440",
+      "threadId": 3685440,
+      "title": "EnvyControl: GNU/Linux'ta GPU modu seçimi",
+      "url": "https://www.technopat.net/sosyal/konu/envycontrol-gnu-linuxta-gpu-modu-secimi.3685440/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"EnvyControl: GNU/Linux'ta GPU modu seçimi\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2025-03-05",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Donanım & Sürücü"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3679172",
+      "threadId": 3679172,
+      "title": "Eski Arch Linux depolarını kaldırma",
+      "url": "https://www.technopat.net/sosyal/konu/eski-arch-linux-depolarini-kaldirma.3679172/",
+      "summary": "Arch Linux kullanıcıları için eski Arch Linux depolarını kaldırma adımlarını içeren kapsamlı rehber.",
+      "forumSection": "Arch Linux",
+      "addedAt": "2025-03-01",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "Arch Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Paket Yönetimi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3615743",
+      "threadId": 3615743,
+      "title": "GNU/Linux'a yeni geçen kullanıcıların kullanması gereken programlar",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linuxa-yeni-gecen-kullanicilarin-kullanmasi-gereken-programlar.3615743/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNU/Linux'a yeni geçen kullanıcıların kullanması gereken programlar\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2025-01-19",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Yazılım & Araçlar"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3512511",
+      "threadId": 3512511,
+      "title": "Pacstall: Ubuntu için AUR alternatifi",
+      "url": "https://www.technopat.net/sosyal/konu/pacstall-ubuntu-icin-aur-alternatifi.3512511/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"Pacstall: Ubuntu için AUR alternatifi\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-11-15",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Paket Yönetimi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3476816",
+      "threadId": 3476816,
+      "title": "GNU/Linux'ta gereksiz dosyaları temizleme",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linuxta-gereksiz-dosyalari-temizleme.3476816/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNU/Linux'ta gereksiz dosyaları temizleme\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-10-23",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3462187",
+      "threadId": 3462187,
+      "title": "GNU/Linux'ta ICC profili ayarlama",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linuxta-icc-profili-ayarlama.3462187/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNU/Linux'ta ICC profili ayarlama\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-10-13",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Donanım & Sürücü"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3432621",
+      "threadId": 3432621,
+      "title": "GNU/Linux'ta güncel Premiere Pro kurulumu",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linuxta-guencel-premiere-pro-kurulumu.3432621/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNU/Linux'ta güncel Premiere Pro kurulumu\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-09-25",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Yazılım & Araçlar"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3430749",
+      "threadId": 3430749,
+      "title": "GNU/Linux'ta güncel Photoshop kurulumu",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linuxta-guencel-photoshop-kurulumu.3430749/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNU/Linux'ta güncel Photoshop kurulumu\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-09-23",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Yazılım & Araçlar"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3427350",
+      "threadId": 3427350,
+      "title": "Steam'i GTK ile uyumlu hâle getirme",
+      "url": "https://www.technopat.net/sosyal/konu/steami-gtk-ile-uyumlu-hale-getirme.3427350/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"Steam'i GTK ile uyumlu hâle getirme\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-09-21",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme",
+        "Oyun Rehberi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3416609",
+      "threadId": 3416609,
+      "title": "Ubuntu'dan Snap paketlerini ve mağazasını kaldırma",
+      "url": "https://www.technopat.net/sosyal/konu/ubuntudan-snap-paketlerini-ve-magazasini-kaldirma.3416609/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"Ubuntu'dan Snap paketlerini ve mağazasını kaldırma\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-09-14",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Paket Yönetimi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3397752",
+      "threadId": 3397752,
+      "title": "Eopkg paket yöneticisinin kullanımı",
+      "url": "https://www.technopat.net/sosyal/konu/eopkg-paket-yoeneticisinin-kullanimi.3397752/",
+      "summary": "GNU/Linux dağıtımlarında Eopkg paket yöneticisinin temel komutları, paket kurma, kaldırma, güncelleme ve depo yönetimi rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-09-02",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Paket Yönetimi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3394678",
+      "threadId": 3394678,
+      "title": "XBPS paket yöneticisinin kullanımı",
+      "url": "https://www.technopat.net/sosyal/konu/xbps-paket-yoeneticisinin-kullanimi.3394678/",
+      "summary": "GNU/Linux dağıtımlarında XBPS paket yöneticisinin temel komutları, paket kurma, kaldırma, güncelleme ve depo yönetimi rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-08-31",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Paket Yönetimi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3382029",
+      "threadId": 3382029,
+      "title": "Zypper paket yöneticisinin kullanımı",
+      "url": "https://www.technopat.net/sosyal/konu/zypper-paket-yoeneticisinin-kullanimi.3382029/",
+      "summary": "GNU/Linux dağıtımlarında Zypper paket yöneticisinin temel komutları, paket kurma, kaldırma, güncelleme ve depo yönetimi rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-08-23",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Paket Yönetimi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3379093",
+      "threadId": 3379093,
+      "title": "DNF paket yöneticisinin kullanımı",
+      "url": "https://www.technopat.net/sosyal/konu/dnf-paket-yoeneticisinin-kullanimi.3379093/",
+      "summary": "GNU/Linux dağıtımlarında DNF paket yöneticisinin temel komutları, paket kurma, kaldırma, güncelleme ve depo yönetimi rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-08-21",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Paket Yönetimi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3377445",
+      "threadId": 3377445,
+      "title": "APT paket yöneticisinin kullanımı",
+      "url": "https://www.technopat.net/sosyal/konu/apt-paket-yoeneticisinin-kullanimi.3377445/",
+      "summary": "GNU/Linux dağıtımlarında APT paket yöneticisinin temel komutları, paket kurma, kaldırma, güncelleme ve depo yönetimi rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-08-20",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Paket Yönetimi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3377425",
+      "threadId": 3377425,
+      "title": "Pacman paket yöneticisinin kullanımı",
+      "url": "https://www.technopat.net/sosyal/konu/pacman-paket-yoeneticisinin-kullanimi.3377425/",
+      "summary": "GNU/Linux dağıtımlarında Pacman paket yöneticisinin temel komutları, paket kurma, kaldırma, güncelleme ve depo yönetimi rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-08-20",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Paket Yönetimi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3377261",
+      "threadId": 3377261,
+      "title": "GNU/Linux dağıtımlarında paket yönetimi nasıl çalışır?",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linux-dagitimlarinda-paket-yoenetimi-nasil-calisir.3377261/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNU/Linux dağıtımlarında paket yönetimi nasıl çalışır?\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-08-20",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Paket Yönetimi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3375046",
+      "threadId": 3375046,
+      "title": "GNU/Linux'ta RGB kontrolü",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linuxta-rgb-kontrolue.3375046/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNU/Linux'ta RGB kontrolü\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-08-19",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Donanım & Sürücü"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3373923",
+      "threadId": 3373923,
+      "title": "GNU/Linux'ta HP laptop klavye RGB kontrolü",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linuxta-hp-laptop-klavye-rgb-kontrolue.3373923/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNU/Linux'ta HP laptop klavye RGB kontrolü\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-08-18",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Donanım & Sürücü"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3372920",
+      "threadId": 3372920,
+      "title": "GNU/Linux sistem bilgisi görüntüleme: Inxi",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linux-sistem-bilgisi-goeruentueleme-inxi.3372920/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"GNU/Linux sistem bilgisi görüntüleme: Inxi\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-08-18",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Yazılım & Araçlar"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3309523",
+      "threadId": 3309523,
+      "title": "XeroLinux Toolkit - Arch Linux'unuzu özelleştiren araç!",
+      "url": "https://www.technopat.net/sosyal/konu/xerolinux-toolkit-arch-linuxunuzu-oezellestiren-arac.3309523/",
+      "summary": "Arch Linux kullanıcıları için xeroLinux Toolkit - Arch Linux'unuzu özelleştiren araç! adımlarını içeren kapsamlı rehber.",
+      "forumSection": "Arch Linux",
+      "addedAt": "2024-07-11",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "Arch Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3274940",
+      "threadId": 3274940,
+      "title": "Fastfetch custom logo nasıl eklenir?",
+      "url": "https://www.technopat.net/sosyal/konu/fastfetch-custom-logo-nasil-eklenir.3274940/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"Fastfetch custom logo nasıl eklenir?\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-06-20",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3167466",
+      "threadId": 3167466,
+      "title": "Arch Linux'ta DEB paketi nasıl kurulur?",
+      "url": "https://www.technopat.net/sosyal/konu/arch-linuxta-deb-paketi-kurmak.3167466/",
+      "summary": "Arch Linux kullanıcıları için arch Linux'ta DEB paketi nasıl kurulur? adımlarını içeren kapsamlı rehber.",
+      "forumSection": "Arch Linux",
+      "addedAt": "2024-04-17",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "Arch Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Paket Yönetimi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-3158392",
+      "threadId": 3158392,
+      "title": "Linux'ta Roblox nasıl oynanır?",
+      "url": "https://www.technopat.net/sosyal/konu/linuxta-roblox-oynamak-linux-android-destegi.3158392/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"Linux'ta Roblox nasıl oynanır?\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2024-04-12",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Oyun Rehberi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-2708873",
+      "threadId": 2708873,
+      "title": "Farklı disklerdeki işletim sistemlerini GRUB menüsünde göstermek",
+      "url": "https://www.technopat.net/sosyal/konu/farkli-disklerdeki-isletim-sistemlerini-grub-menuesuende-goestermek.2708873/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"Farklı disklerdeki işletim sistemlerini GRUB menüsünde göstermek\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2023-08-15",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-2651041",
+      "threadId": 2651041,
+      "title": "Hyprland ve Waybar config hazırlama",
+      "url": "https://www.technopat.net/sosyal/konu/hyprland-ve-waybar-config-hazirlama.2651041/",
+      "summary": "Hyprland ve Waybar config hazırlama hakkında adım adım yapılandırma, gerekli paketler ve masaüstü özelleştirme rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2023-07-14",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-2619490",
+      "threadId": 2619490,
+      "title": "Starship ile Linux terminalini güzelleştirmek",
+      "url": "https://www.technopat.net/sosyal/konu/starship-ile-linux-terminalini-guezellestirmek.2619490/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"Starship ile Linux terminalini güzelleştirmek\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2023-06-27",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-2582775",
+      "threadId": 2582775,
+      "title": "Hyprland ve temel gereksinimler",
+      "url": "https://www.technopat.net/sosyal/konu/hyprland-ve-temel-gereksinimler.2582775/",
+      "summary": "Hyprland ve temel gereksinimler hakkında adım adım yapılandırma, gerekli paketler ve masaüstü özelleştirme rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2023-06-07",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-2550435",
+      "threadId": 2550435,
+      "title": "Hatalı güncelleme sonrasında eski sürüme nasıl dönülür?",
+      "url": "https://www.technopat.net/sosyal/konu/hatali-guencelleme-sonrasinda-eski-suerueme-doenmek.2550435/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"Hatalı güncelleme sonrasında eski sürüme nasıl dönülür?\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2023-05-21",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-2541778",
+      "threadId": 2541778,
+      "title": "Neofetch: ASCII nasıl değiştirilir?",
+      "url": "https://www.technopat.net/sosyal/konu/terminalde-anime-kizi-neofetch.2541778/",
+      "summary": "Technopat Sosyal üzerinde yayınlanan \"Neofetch: ASCII nasıl değiştirilir?\" başlıklı GNU/Linux rehberi.",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2023-05-16",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Masaüstü & Özelleştirme"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
+    },
+    {
+      "id": "tp-konu-2539084",
+      "threadId": 2539084,
+      "title": "Arch Linux'ta kurulum sonrasında yapılacaklar",
+      "url": "https://www.technopat.net/sosyal/konu/arch-linux-kurulum-sonrasinda-yapilacaklar.2539084/",
+      "summary": "Arch Linux kullanıcıları için arch Linux'ta kurulum sonrasında yapılacaklar adımlarını içeren kapsamlı rehber.",
+      "forumSection": "Arch Linux",
+      "addedAt": "2023-05-15",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "Arch Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false
     }
   ]
 }

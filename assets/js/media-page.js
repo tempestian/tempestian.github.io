@@ -269,7 +269,14 @@
     box.replaceChildren();
     if (!items.length) { box.hidden = true; return; }
     const cn = items.filter(i => UI.tally([i]).anime > 0);
-    const t = S && S.anime != null ? { anime: S.anime, season: S.season, film: S.film, ep: S.episodes } : UI.tally(items);
+    const t = S && (S.watched != null || S.read != null || S.anime != null)
+      ? {
+          anime: S.watched ?? S.read ?? S.anime ?? 0,
+          season: S.seasons ?? S.volumes ?? S.films ?? S.season ?? 0,
+          film: S.specials ?? S.extras ?? S.film ?? 0,
+          ep: S.episodes ?? S.pages ?? S.chapters ?? S.watchCount ?? 0
+        }
+      : UI.tally(items);
     const scs = cn.map(i => getEffectiveScore(i)).filter(Boolean);
     const avg = S && S.avgScore != null ? S.avgScore : (scs.length ? (scs.reduce((a, b) => a + b, 0) / scs.length) : null);
     const favCount = items.filter(i => i.favorite).length;

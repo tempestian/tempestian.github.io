@@ -243,6 +243,103 @@ export function computeStats(anime, rawConfig = {}) {
   return stats;
 }
 
+
+export function computeMediaStats(items, rawConfig = {}, mediaType = 'anime') {
+  const list = Array.isArray(items) ? items : [];
+  if (mediaType === 'guide') {
+    const byStatus = {};
+    const genreCounts = new Map();
+    let favorites = 0;
+    let published = 0;
+    for (const it of list) {
+      if (!it) continue;
+      if (it.favorite) favorites++;
+      const st = it.status || 'completed';
+      byStatus[st] = (byStatus[st] || 0) + 1;
+      if (st === 'completed') published++;
+      for (const g of resolveEffectiveGenres(it, 'custom_only')) {
+        genreCounts.set(g, (genreCounts.get(g) || 0) + 1);
+      }
+    }
+    const genres = [...genreCounts.entries()]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'tr'))
+      .map(([name, count]) => ({ name, count }));
+    return {
+      total: list.length,
+      published,
+      draft: list.length - published,
+      favorites,
+      byStatus,
+      genres
+    };
+  }
+
+  const base = computeStats(list, rawConfig);
+  if (mediaType === 'book') {
+    return {
+      total: list.length,
+      read: base.anime,
+      volumes: base.season,
+      extras: base.film + base.other,
+      pages: base.episodes,
+      completedPages: base.completedEpisodes,
+      inProgressPages: base.inProgressEpisodes,
+      favorites: base.favorites,
+      avgScore: base.avgScore,
+      byStatus: base.byStatus,
+      genres: base.genres,
+      scoreHistogram: base.scoreHistogram
+    };
+  }
+  if (mediaType === 'manga') {
+    return {
+      total: list.length,
+      read: base.anime,
+      volumes: base.season,
+      specials: base.film + base.other,
+      chapters: base.episodes,
+      completedChapters: base.completedEpisodes,
+      inProgressChapters: base.inProgressEpisodes,
+      favorites: base.favorites,
+      avgScore: base.avgScore,
+      byStatus: base.byStatus,
+      genres: base.genres,
+      scoreHistogram: base.scoreHistogram
+    };
+  }
+  if (mediaType === 'movie') {
+    return {
+      total: list.length,
+      watched: base.anime,
+      films: base.season + base.film,
+      extras: base.other,
+      watchCount: base.episodes,
+      favorites: base.favorites,
+      avgScore: base.avgScore,
+      byStatus: base.byStatus,
+      genres: base.genres,
+      scoreHistogram: base.scoreHistogram
+    };
+  }
+  if (mediaType === 'series') {
+    return {
+      total: list.length,
+      watched: base.anime,
+      seasons: base.season,
+      specials: base.film + base.other,
+      episodes: base.episodes,
+      completedEpisodes: base.completedEpisodes,
+      inProgressEpisodes: base.inProgressEpisodes,
+      favorites: base.favorites,
+      avgScore: base.avgScore,
+      byStatus: base.byStatus,
+      genres: base.genres,
+      scoreHistogram: base.scoreHistogram
+    };
+  }
+  return base;
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const f = process.env.OUT || 'data/anime.json';
   const d = JSON.parse(fs.readFileSync(f, 'utf8'));

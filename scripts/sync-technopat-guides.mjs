@@ -16,7 +16,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { computeStats } from './stats.mjs';
+import { computeMediaStats } from './stats.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -505,8 +505,6 @@ async function main() {
         customGenres: autoCats,
         source: 'technopat-sync',
         adminModified: false,
-        lockedFields: [],
-        parts: []
       };
       existingById.set(newItem.id, newItem);
       addedCount++;
@@ -517,7 +515,7 @@ async function main() {
     return (b.addedAt || '').localeCompare(a.addedAt || '') || (b.threadId || 0) - (a.threadId || 0) || (a.title || '').localeCompare(b.title || '', 'tr');
   });
 
-  const stats = computeStats(finalItems, { genreSourceRule: 'custom_only' });
+  const stats = computeMediaStats(finalItems, { genreSourceRule: 'custom_only' }, 'guide');
 
   const outPayload = {
     schemaVersion: 3,

@@ -2,12 +2,6 @@
   "schemaVersion": 3,
   "updated": "2026-10-22",
   "source": "site-first:guide",
-  "technopatUser": {
-    "userId": "657641",
-    "username": "Bayram Tempestian",
-    "prefixFilter": "Rehber",
-    "lastSyncedAt": "2026-10-22T15:10:00.000Z"
-  },
   "customGenreCatalog": [
     "Linux & Sistem",
     "Masaüstü & Özelleştirme",
@@ -23,7 +17,7 @@
     "total": 54,
     "published": 54,
     "draft": 0,
-    "favorites": 0,
+    "favorites": 3,
     "byStatus": {
       "completed": 54
     },
@@ -151,7 +145,7 @@
       "forumSection": "GNU/Linux",
       "addedAt": "2026-06-04",
       "status": "completed",
-      "favorite": false,
+      "favorite": true,
       "genres": [
         "GNU/Linux"
       ],
@@ -160,7 +154,7 @@
         "Masaüstü & Özelleştirme"
       ],
       "source": "technopat-sync",
-      "adminModified": false
+      "adminModified": true
     },
     {
       "id": "tp-konu-4114470",
@@ -411,7 +405,7 @@
       "forumSection": "GNU/Linux",
       "addedAt": "2025-07-22",
       "status": "completed",
-      "favorite": false,
+      "favorite": true,
       "genres": [
         "GNU/Linux"
       ],
@@ -420,7 +414,7 @@
         "Masaüstü & Özelleştirme"
       ],
       "source": "technopat-sync",
-      "adminModified": false
+      "adminModified": true
     },
     {
       "id": "tp-konu-3832638",
@@ -451,7 +445,7 @@
       "forumSection": "GNU/Linux",
       "addedAt": "2025-05-27",
       "status": "completed",
-      "favorite": false,
+      "favorite": true,
       "genres": [
         "GNU/Linux"
       ],
@@ -460,7 +454,7 @@
         "Masaüstü & Özelleştirme"
       ],
       "source": "technopat-sync",
-      "adminModified": false
+      "adminModified": true
     },
     {
       "id": "tp-konu-3776056",

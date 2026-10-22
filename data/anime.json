@@ -16,25 +16,166 @@
     "completedEpisodes": 3271,
     "inProgressEpisodes": 93,
     "favorites": 0,
-    "avgScore": 7,
+    "avgScore": 6.3,
     "byStatus": {
       "watching": 5,
       "completed": 71,
       "dropped": 8,
       "paused": 5
     },
-    "genres": [],
+    "genres": [
+      {
+        "name": "Shounen",
+        "count": 42
+      },
+      {
+        "name": "Dram",
+        "count": 31
+      },
+      {
+        "name": "Aksiyon",
+        "count": 27
+      },
+      {
+        "name": "Fantastik",
+        "count": 26
+      },
+      {
+        "name": "Komedi",
+        "count": 25
+      },
+      {
+        "name": "Slice of Life",
+        "count": 23
+      },
+      {
+        "name": "Okul",
+        "count": 21
+      },
+      {
+        "name": "Psikolojik",
+        "count": 21
+      },
+      {
+        "name": "Doğaüstü",
+        "count": 20
+      },
+      {
+        "name": "Romantik",
+        "count": 20
+      },
+      {
+        "name": "Seinen",
+        "count": 19
+      },
+      {
+        "name": "Gizem",
+        "count": 18
+      },
+      {
+        "name": "Macera",
+        "count": 14
+      },
+      {
+        "name": "Rom-Com",
+        "count": 14
+      },
+      {
+        "name": "Shoujo",
+        "count": 13
+      },
+      {
+        "name": "Gerilim",
+        "count": 12
+      },
+      {
+        "name": "Karanlık Fantezi",
+        "count": 12
+      },
+      {
+        "name": "Süper Güç",
+        "count": 8
+      },
+      {
+        "name": "Reenkarnasyon",
+        "count": 7
+      },
+      {
+        "name": "Isekai",
+        "count": 6
+      },
+      {
+        "name": "Korku",
+        "count": 5
+      },
+      {
+        "name": "Dedektiflik",
+        "count": 4
+      },
+      {
+        "name": "Zaman Yolculuğu",
+        "count": 4
+      },
+      {
+        "name": "Askeri",
+        "count": 3
+      },
+      {
+        "name": "Harem",
+        "count": 3
+      },
+      {
+        "name": "Müzik",
+        "count": 3
+      },
+      {
+        "name": "Post-Apokaliptik",
+        "count": 3
+      },
+      {
+        "name": "Bilim Kurgu",
+        "count": 2
+      },
+      {
+        "name": "Ecchi",
+        "count": 2
+      },
+      {
+        "name": "Oyun / VR",
+        "count": 2
+      },
+      {
+        "name": "Parodi",
+        "count": 2
+      },
+      {
+        "name": "Büyülü Kız",
+        "count": 1
+      },
+      {
+        "name": "Mecha",
+        "count": 1
+      },
+      {
+        "name": "Siyaset",
+        "count": 1
+      },
+      {
+        "name": "Spor",
+        "count": 1
+      }
+    ],
     "scoreHistogram": {
-      "1": 0,
+      "1": 5,
       "2": 2,
       "3": 1,
-      "4": 5,
-      "5": 9,
+      "4": 6,
+      "5": 15,
       "6": 17,
-      "7": 16,
-      "8": 10,
-      "9": 3,
-      "10": 12
+      "7": 11,
+      "8": 6,
+      "9": 7,
+      "10": 8
     },
     "rules": {
       "animeCountRule": "completed_season_or_movie",
@@ -47,10 +188,10 @@
     "excluded": 11,
     "highlights": {
       "topScore": {
-        "id": "al-101280",
-        "title": "That Time I Got Reincarnated as a Slime",
+        "id": "al-14719",
+        "title": "JoJo's Bizarre Adventure (TV)",
         "score": 10,
-        "ties": 11
+        "ties": 7
       },
       "mostWatched": {
         "id": "al-21",
@@ -73,7 +214,7 @@
       "url": "https://anilist.co/anime/127399",
       "firstSeasonUrl": "https://anilist.co/anime/127399",
       "status": "watching",
-      "score": 6.7,
+      "score": 6.3,
       "parts": [
         {
           "id": 127399,
@@ -85,7 +226,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 6.7
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 138106,
@@ -108,7 +250,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 6.7
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 163943,
@@ -131,7 +274,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 6.7
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 187921,
@@ -142,7 +286,9 @@
           "watched": 10,
           "status": "CURRENT",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 213580,
@@ -157,7 +303,25 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127399-AAH1pevCZLrB.jpg",
-      "addedAt": "2026-10-02"
+      "addedAt": "2026-10-02",
+      "customGenres": [
+        "Shounen",
+        "Aksiyon",
+        "Fantastik"
+      ],
+      "genres": [
+        "Shounen",
+        "Aksiyon",
+        "Fantastik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-162804",
@@ -177,7 +341,8 @@
           "watched": 7,
           "status": "CURRENT",
           "release": "FINISHED",
-          "year": 2024
+          "year": 2024,
+          "adminModified": true
         },
         {
           "id": 181641,
@@ -192,7 +357,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162804-TBeptcAfvqTd.jpg",
-      "addedAt": "2026-09-11"
+      "addedAt": "2026-09-11",
+      "customGenres": [
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Slice of Life",
+        "Shounen"
+      ],
+      "genres": [
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Slice of Life",
+        "Shounen"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20931",
@@ -213,11 +402,38 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx20931-bktYqOcxPERi.jpg",
-      "addedAt": "2026-05-30"
+      "addedAt": "2026-05-30",
+      "customGenres": [
+        "Karanlık Fantezi",
+        "Dram",
+        "Psikolojik",
+        "Gizem",
+        "Gerilim",
+        "Doğaüstü",
+        "Seinen"
+      ],
+      "genres": [
+        "Karanlık Fantezi",
+        "Dram",
+        "Psikolojik",
+        "Gizem",
+        "Gerilim",
+        "Doğaüstü",
+        "Seinen"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-98503",
@@ -226,7 +442,7 @@
       "url": "https://anilist.co/anime/98503",
       "firstSeasonUrl": "https://anilist.co/anime/98503",
       "status": "completed",
-      "score": 7,
+      "score": 5.9,
       "parts": [
         {
           "id": 98503,
@@ -238,7 +454,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 7
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 102969,
@@ -249,11 +466,35 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 5,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98503-oUCGDkv2osNK.jpg",
-      "addedAt": "2026-02-02"
+      "addedAt": "2026-02-02",
+      "customGenres": [
+        "Shoujo",
+        "Okul",
+        "Komedi",
+        "Slice of Life",
+        "Dram"
+      ],
+      "genres": [
+        "Shoujo",
+        "Okul",
+        "Komedi",
+        "Slice of Life",
+        "Dram"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20555",
@@ -274,11 +515,32 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 7
+          "score": 7,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20555-QGbWQC3Kfpok.jpg",
-      "addedAt": "2026-02-02"
+      "addedAt": "2026-02-02",
+      "customGenres": [
+        "Shoujo",
+        "Gizem",
+        "Dram",
+        "Psikolojik"
+      ],
+      "genres": [
+        "Shoujo",
+        "Gizem",
+        "Dram",
+        "Psikolojik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-108463",
@@ -299,7 +561,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 159074,
@@ -311,7 +574,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 170893,
@@ -323,7 +587,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2024,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 170892,
@@ -335,7 +600,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 189326,
@@ -347,11 +613,36 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108463-u03vrYnyB3L9.jpg",
-      "addedAt": "2026-01-26"
+      "addedAt": "2026-01-26",
+      "customGenres": [
+        "Shounen",
+        "Okul",
+        "Karanlık Fantezi",
+        "Komedi",
+        "Gizem",
+        "Doğaüstü"
+      ],
+      "genres": [
+        "Shounen",
+        "Okul",
+        "Karanlık Fantezi",
+        "Komedi",
+        "Gizem",
+        "Doğaüstü"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-199",
@@ -360,7 +651,7 @@
       "url": "https://anilist.co/anime/199",
       "firstSeasonUrl": "https://anilist.co/anime/199",
       "status": "completed",
-      "score": 6,
+      "score": 7,
       "parts": [
         {
           "id": 199,
@@ -372,11 +663,32 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2001,
-          "score": 6
+          "score": 7,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-sWefXJvXkDOb.jpg",
-      "addedAt": "2026-01-21"
+      "addedAt": "2026-01-21",
+      "customGenres": [
+        "Shoujo",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "genres": [
+        "Shoujo",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-2981",
@@ -385,7 +697,7 @@
       "url": "https://anilist.co/anime/2981",
       "firstSeasonUrl": "https://anilist.co/anime/2981",
       "status": "completed",
-      "score": 4,
+      "score": 2,
       "parts": [
         {
           "id": 2981,
@@ -397,11 +709,38 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 1992,
-          "score": 4
+          "score": 2,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2981-PuzLTzNf4DeV.png",
-      "addedAt": "2026-01-20"
+      "addedAt": "2026-01-20",
+      "customGenres": [
+        "Seinen",
+        "Karanlık Fantezi",
+        "Psikolojik",
+        "Dram",
+        "Korku",
+        "Gerilim",
+        "Gizem"
+      ],
+      "genres": [
+        "Seinen",
+        "Karanlık Fantezi",
+        "Psikolojik",
+        "Dram",
+        "Korku",
+        "Gerilim",
+        "Gizem"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-114124",
@@ -422,7 +761,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 2.5
+          "score": 4,
+          "adminModified": true
         },
         {
           "id": 124858,
@@ -434,7 +774,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 2.5
+          "score": 1,
+          "adminModified": true
         },
         {
           "id": 138700,
@@ -449,7 +790,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114124-def92qPuIVeK.jpg",
-      "addedAt": "2026-01-20"
+      "addedAt": "2026-01-20",
+      "customGenres": [
+        "Shounen",
+        "Dedektiflik",
+        "Psikolojik",
+        "Gizem"
+      ],
+      "genres": [
+        "Shounen",
+        "Dedektiflik",
+        "Psikolojik",
+        "Gizem"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21613",
@@ -459,7 +820,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/21613",
       "status": "completed",
       "next": true,
-      "score": 7.7,
+      "score": 6.1,
       "parts": [
         {
           "id": 21613,
@@ -471,7 +832,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "score": 7.7
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 98186,
@@ -493,7 +855,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 4,
+          "adminModified": true
         },
         {
           "id": 135866,
@@ -505,7 +869,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 7.7
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 135865,
@@ -531,7 +896,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21613-qT3NiwYP5dYc.png",
-      "addedAt": "2026-01-18"
+      "addedAt": "2026-01-18",
+      "customGenres": [
+        "Isekai",
+        "Aksiyon",
+        "Fantastik",
+        "Askeri",
+        "Seinen",
+        "Reenkarnasyon"
+      ],
+      "genres": [
+        "Isekai",
+        "Aksiyon",
+        "Fantastik",
+        "Askeri",
+        "Seinen",
+        "Reenkarnasyon"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-181447",
@@ -552,11 +941,32 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 6
+          "score": 6,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181447-aCmaQmtdwuU5.jpg",
-      "addedAt": "2026-01-01"
+      "addedAt": "2026-01-01",
+      "customGenres": [
+        "Shoujo",
+        "Reenkarnasyon",
+        "Aksiyon",
+        "Fantastik"
+      ],
+      "genres": [
+        "Shoujo",
+        "Reenkarnasyon",
+        "Aksiyon",
+        "Fantastik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-1575",
@@ -566,7 +976,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/1575",
       "status": "completed",
       "next": true,
-      "score": 9.7,
+      "score": 9.6,
       "parts": [
         {
           "id": 1575,
@@ -578,7 +988,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2006,
-          "score": 9.7
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 1953,
@@ -601,7 +1012,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2008,
-          "score": 9.7
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 5163,
@@ -733,7 +1145,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 117408,
@@ -759,7 +1173,37 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1575-hsmWM2ydNm1m.jpg",
-      "addedAt": "2025-12-31"
+      "addedAt": "2025-12-31",
+      "customGenres": [
+        "Shounen",
+        "Askeri",
+        "Okul",
+        "Aksiyon",
+        "Psikolojik",
+        "Gizem",
+        "Mecha",
+        "Dram",
+        "Süper Güç"
+      ],
+      "genres": [
+        "Shounen",
+        "Askeri",
+        "Okul",
+        "Aksiyon",
+        "Psikolojik",
+        "Gizem",
+        "Mecha",
+        "Dram",
+        "Süper Güç"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-179696",
@@ -768,7 +1212,7 @@
       "url": "https://anilist.co/anime/179696",
       "firstSeasonUrl": "https://anilist.co/anime/179696",
       "status": "completed",
-      "score": 6,
+      "score": 5.5,
       "parts": [
         {
           "id": 179696,
@@ -780,11 +1224,34 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 6
+          "score": 5.5,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx179696-1MAqXYVXT7IT.jpg",
-      "addedAt": "2025-12-13"
+      "addedAt": "2025-12-13",
+      "customGenres": [
+        "Seinen",
+        "Rom-Com",
+        "Komedi",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Seinen",
+        "Rom-Com",
+        "Komedi",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-126288",
@@ -793,7 +1260,7 @@
       "url": "https://anilist.co/anime/126288",
       "firstSeasonUrl": "https://anilist.co/anime/126288",
       "status": "completed",
-      "score": 4,
+      "score": 4.1,
       "parts": [
         {
           "id": 126288,
@@ -805,7 +1272,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 4
+          "score": 4,
+          "adminModified": true
         },
         {
           "id": 143082,
@@ -816,7 +1284,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 3,
+          "adminModified": true
         },
         {
           "id": 146743,
@@ -827,11 +1297,33 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 5,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx126288-v9RNANkv2JEi.jpg",
-      "addedAt": "2025-12-02"
+      "addedAt": "2025-12-02",
+      "customGenres": [
+        "Shoujo",
+        "Okul",
+        "Rom-Com",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shoujo",
+        "Okul",
+        "Rom-Com",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-16417",
@@ -840,7 +1332,7 @@
       "url": "https://anilist.co/anime/16417",
       "firstSeasonUrl": "https://anilist.co/anime/16417",
       "status": "completed",
-      "score": 4,
+      "score": 1.5,
       "parts": [
         {
           "id": 16417,
@@ -852,7 +1344,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2013,
-          "score": 4
+          "score": 1,
+          "adminModified": true
         },
         {
           "id": 17879,
@@ -874,7 +1367,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 3,
+          "adminModified": true
         },
         {
           "id": 21014,
@@ -889,7 +1384,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx16417-r8Njy5UnwvDE.png",
-      "addedAt": "2025-10-26"
+      "addedAt": "2025-10-26",
+      "customGenres": [
+        "Shoujo",
+        "Okul",
+        "Komedi",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shoujo",
+        "Okul",
+        "Komedi",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-181444",
@@ -910,11 +1425,36 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 8
+          "score": 8,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181444-Ut9DDUZdfHwg.jpg",
-      "addedAt": "2025-09-27"
+      "addedAt": "2025-09-27",
+      "customGenres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Romantik",
+        "Dram",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Romantik",
+        "Dram",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-163623",
@@ -935,11 +1475,36 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2024,
-          "score": 6
+          "score": 6,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163623-pzR6vIHoJh0b.jpg",
-      "addedAt": "2025-09-04"
+      "addedAt": "2025-09-04",
+      "customGenres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-116267",
@@ -949,7 +1514,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/116267",
       "status": "completed",
       "next": true,
-      "score": 8,
+      "score": 7,
       "parts": [
         {
           "id": 116267,
@@ -961,7 +1526,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 8
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 127371,
@@ -995,7 +1561,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 8
+          "score": 8,
+          "adminModified": true
         },
         {
           "id": 166104,
@@ -1010,7 +1577,29 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116267-Eo1biPBTlL4i.jpg",
-      "addedAt": "2025-06-14"
+      "addedAt": "2025-06-14",
+      "customGenres": [
+        "Shounen",
+        "Rom-Com",
+        "Komedi",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shounen",
+        "Rom-Com",
+        "Komedi",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-66",
@@ -1052,11 +1641,32 @@
           "watched": 4,
           "status": "CURRENT",
           "release": "FINISHED",
-          "year": 2002
+          "year": 2002,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx66-ZqYQWl6LsfeI.png",
-      "addedAt": "2025-06-12"
+      "addedAt": "2025-06-12",
+      "customGenres": [
+        "Shounen",
+        "Okul",
+        "Komedi",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shounen",
+        "Okul",
+        "Komedi",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101001",
@@ -1076,7 +1686,8 @@
           "watched": 1,
           "status": "DROPPED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "adminModified": true
         },
         {
           "id": 104368,
@@ -1102,7 +1713,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101001-UERCW0UGi0P7.jpg",
-      "addedAt": "2025-06-02"
+      "addedAt": "2025-06-02",
+      "customGenres": [
+        "Seinen",
+        "Okul",
+        "Komedi",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Seinen",
+        "Okul",
+        "Komedi",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-6574",
@@ -1123,7 +1754,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2010,
-          "score": 5
+          "score": 5,
+          "adminModified": true
         },
         {
           "id": 16646,
@@ -1138,7 +1770,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6574-rCLnJXp3NK0J.png",
-      "addedAt": "2025-05-25"
+      "addedAt": "2025-05-25",
+      "customGenres": [
+        "Seinen",
+        "Komedi",
+        "Slice of Life",
+        "Okul"
+      ],
+      "genres": [
+        "Seinen",
+        "Komedi",
+        "Slice of Life",
+        "Okul"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21196",
@@ -1158,7 +1810,8 @@
           "watched": 1,
           "status": "DROPPED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "adminModified": true
         },
         {
           "id": 98662,
@@ -1195,7 +1848,33 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21196-2PfPfIDrxKki.jpg",
-      "addedAt": "2025-05-24"
+      "addedAt": "2025-05-24",
+      "customGenres": [
+        "Shounen",
+        "Post-Apokaliptik",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Fantastik",
+        "Korku",
+        "Gerilim"
+      ],
+      "genres": [
+        "Shounen",
+        "Post-Apokaliptik",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Fantastik",
+        "Korku",
+        "Gerilim"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-15687",
@@ -1204,7 +1883,7 @@
       "url": "https://anilist.co/anime/15687",
       "firstSeasonUrl": "https://anilist.co/anime/15687",
       "status": "completed",
-      "score": 8.5,
+      "score": 7.5,
       "parts": [
         {
           "id": 15687,
@@ -1216,7 +1895,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2012,
-          "score": 8.5
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 14741,
@@ -1228,7 +1908,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2012,
-          "score": 8.5
+          "score": 8,
+          "adminModified": true
         },
         {
           "id": 15879,
@@ -1239,7 +1920,9 @@
           "watched": 7,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2012
+          "year": 2012,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 16934,
@@ -1250,7 +1933,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 8,
+          "adminModified": true
         },
         {
           "id": 19021,
@@ -1261,7 +1946,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 20582,
@@ -1273,7 +1960,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2013,
-          "score": 8.5
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 18671,
@@ -1285,7 +1973,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 8.5
+          "score": 9,
+          "adminModified": true
         },
         {
           "id": 20660,
@@ -1329,11 +2018,35 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 10,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx15687-KK6DHoXp1F0S.png",
-      "addedAt": "2025-05-12"
+      "addedAt": "2025-05-12",
+      "customGenres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik"
+      ],
+      "genres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-98659",
@@ -1342,7 +2055,7 @@
       "url": "https://anilist.co/anime/98659",
       "firstSeasonUrl": "https://anilist.co/anime/98659",
       "status": "completed",
-      "score": 8.3,
+      "score": 6.5,
       "parts": [
         {
           "id": 98659,
@@ -1354,7 +2067,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "score": 8.3
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 145545,
@@ -1366,7 +2080,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 8.3
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 146066,
@@ -1378,7 +2093,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2024,
-          "score": 8.3
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 180745,
@@ -1390,7 +2106,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2026,
-          "score": 8.3
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 213477,
@@ -1405,7 +2122,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98659-WNyPLIZDpGGY.jpg",
-      "addedAt": "2025-03-28"
+      "addedAt": "2025-03-28",
+      "customGenres": [
+        "Seinen",
+        "Okul",
+        "Psikolojik",
+        "Gizem"
+      ],
+      "genres": [
+        "Seinen",
+        "Okul",
+        "Psikolojik",
+        "Gizem"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-5081",
@@ -1425,7 +2162,8 @@
           "watched": 3,
           "status": "PAUSED",
           "release": "FINISHED",
-          "year": 2009
+          "year": 2009,
+          "adminModified": true
         },
         {
           "id": 11597,
@@ -1616,7 +2354,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5081-9GocceQ5Z865.jpg",
-      "addedAt": "2024-09-19"
+      "addedAt": "2024-09-19",
+      "customGenres": [
+        "Seinen",
+        "Okul",
+        "Gizem",
+        "Doğaüstü",
+        "Romantik",
+        "Komedi"
+      ],
+      "genres": [
+        "Seinen",
+        "Okul",
+        "Gizem",
+        "Doğaüstü",
+        "Romantik",
+        "Komedi"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-124080",
@@ -1625,7 +2387,7 @@
       "url": "https://anilist.co/anime/124080",
       "firstSeasonUrl": "https://anilist.co/anime/124080",
       "status": "completed",
-      "score": 7,
+      "score": 5,
       "parts": [
         {
           "id": 124080,
@@ -1637,7 +2399,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 7
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 163132,
@@ -1649,11 +2412,36 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 7
+          "score": 4,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124080-3i22mRVPBS0T.jpg",
-      "addedAt": "2024-08-01"
+      "addedAt": "2024-08-01",
+      "customGenres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20464",
@@ -1673,7 +2461,8 @@
           "watched": 10,
           "status": "PAUSED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "adminModified": true
         },
         {
           "id": 20884,
@@ -1842,7 +2631,23 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20464-ooZUyBe4ptp9.png",
-      "addedAt": "2024-04-16"
+      "addedAt": "2024-04-16",
+      "customGenres": [
+        "Shounen",
+        "Spor"
+      ],
+      "genres": [
+        "Shounen",
+        "Spor"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-1614",
@@ -1851,7 +2656,7 @@
       "url": "https://anilist.co/anime/1614",
       "firstSeasonUrl": "https://anilist.co/anime/1614",
       "status": "completed",
-      "score": 6,
+      "score": 5,
       "parts": [
         {
           "id": 1614,
@@ -1863,11 +2668,28 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2001,
-          "score": 6
+          "score": 5,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1614-fRXNtx7QobbQ.jpg",
-      "addedAt": "2024-03-19"
+      "addedAt": "2024-03-19",
+      "customGenres": [
+        "Spor",
+        "Shounen"
+      ],
+      "genres": [
+        "Spor",
+        "Shounen"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21827",
@@ -1887,7 +2709,8 @@
           "watched": 3,
           "status": "PAUSED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "adminModified": true
         },
         {
           "id": 101432,
@@ -1924,7 +2747,25 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21827-ubzq619ZA2E9.png",
-      "addedAt": "2024-03-15"
+      "addedAt": "2024-03-15",
+      "customGenres": [
+        "Shounen",
+        "Dram",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shounen",
+        "Dram",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-142770",
@@ -1933,7 +2774,7 @@
       "url": "https://anilist.co/anime/142770",
       "firstSeasonUrl": "https://anilist.co/anime/142770",
       "status": "completed",
-      "score": 7,
+      "score": 6.5,
       "parts": [
         {
           "id": 142770,
@@ -1945,11 +2786,34 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 7
+          "score": 6.5,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142770-dDaDIRnsv5jN.jpg",
-      "addedAt": "2024-02-14"
+      "addedAt": "2024-02-14",
+      "customGenres": [
+        "Shounen",
+        "Macera",
+        "Fantastik",
+        "Dram",
+        "Romantik"
+      ],
+      "genres": [
+        "Shounen",
+        "Macera",
+        "Fantastik",
+        "Dram",
+        "Romantik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-150672",
@@ -1959,7 +2823,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/150672",
       "status": "completed",
       "next": true,
-      "score": 7.5,
+      "score": 7,
       "parts": [
         {
           "id": 150672,
@@ -1971,8 +2835,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 7.5,
-          "repeat": 1
+          "score": 8,
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 166531,
@@ -1984,7 +2849,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2024,
-          "score": 7.5
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 182587,
@@ -1995,7 +2861,8 @@
           "watched": 0,
           "status": "PLANNING",
           "release": "FINISHED",
-          "year": 2026
+          "year": 2026,
+          "adminModified": true
         },
         {
           "id": 209827,
@@ -2010,7 +2877,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx150672-WqmmwZ4nMzAy.png",
-      "addedAt": "2023-06-25"
+      "addedAt": "2023-06-25",
+      "customGenres": [
+        "Seinen",
+        "Reenkarnasyon",
+        "Dram",
+        "Gizem",
+        "Psikolojik",
+        "Müzik"
+      ],
+      "genres": [
+        "Seinen",
+        "Reenkarnasyon",
+        "Dram",
+        "Gizem",
+        "Psikolojik",
+        "Müzik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20829",
@@ -2030,7 +2921,9 @@
           "watched": 4,
           "status": "PAUSED",
           "release": "FINISHED",
-          "year": 2015
+          "year": 2015,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 21483,
@@ -2078,7 +2971,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20829-pgsXVjrfyI5V.png",
-      "addedAt": "2023-05-21"
+      "addedAt": "2023-05-21",
+      "customGenres": [
+        "Post-Apokaliptik",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Dram",
+        "Doğaüstü",
+        "Gizem"
+      ],
+      "genres": [
+        "Post-Apokaliptik",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Dram",
+        "Doğaüstü",
+        "Gizem"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-7088",
@@ -2087,7 +3004,7 @@
       "url": "https://anilist.co/anime/7088",
       "firstSeasonUrl": "https://anilist.co/anime/7088",
       "status": "completed",
-      "score": 4,
+      "score": 1,
       "parts": [
         {
           "id": 7088,
@@ -2099,7 +3016,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2010,
-          "score": 4
+          "score": 1,
+          "adminModified": true
         },
         {
           "id": 8465,
@@ -2114,7 +3032,35 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7088-Y38q7jaBwlTZ.png",
-      "addedAt": "2023-05-18"
+      "addedAt": "2023-05-18",
+      "customGenres": [
+        "Shounen",
+        "Harem",
+        "Okul",
+        "Süper Güç",
+        "Aksiyon",
+        "Fantastik",
+        "Ecchi",
+        "Komedi"
+      ],
+      "genres": [
+        "Shounen",
+        "Harem",
+        "Okul",
+        "Süper Güç",
+        "Aksiyon",
+        "Fantastik",
+        "Ecchi",
+        "Komedi"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-19",
@@ -2123,7 +3069,7 @@
       "url": "https://anilist.co/anime/19",
       "firstSeasonUrl": "https://anilist.co/anime/19",
       "status": "completed",
-      "score": 10,
+      "score": 9,
       "parts": [
         {
           "id": 19,
@@ -2135,11 +3081,36 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2004,
-          "score": 10
+          "score": 9,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx19-gtMC64182sm4.jpg",
-      "addedAt": "2023-02-24"
+      "addedAt": "2023-02-24",
+      "customGenres": [
+        "Seinen",
+        "Dedektiflik",
+        "Gerilim",
+        "Psikolojik",
+        "Dram",
+        "Gizem"
+      ],
+      "genres": [
+        "Seinen",
+        "Dedektiflik",
+        "Gerilim",
+        "Psikolojik",
+        "Dram",
+        "Gizem"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-99750",
@@ -2160,11 +3131,32 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 7
+          "score": 7,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99750-pNyly9d3MEgV.jpg",
-      "addedAt": "2023-01-19"
+      "addedAt": "2023-01-19",
+      "customGenres": [
+        "Shounen",
+        "Dram",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shounen",
+        "Dram",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20832",
@@ -2185,7 +3177,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "score": 5
+          "score": 5,
+          "adminModified": true
         },
         {
           "id": 21305,
@@ -2262,7 +3255,8 @@
           "watched": 6,
           "status": "DROPPED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "adminModified": true
         },
         {
           "id": 101083,
@@ -2343,7 +3337,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20832-vUNm5zrYWifc.jpg",
-      "addedAt": "2023-01-06"
+      "addedAt": "2023-01-06",
+      "customGenres": [
+        "Shounen",
+        "Isekai",
+        "Oyun / VR",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Fantastik"
+      ],
+      "genres": [
+        "Shounen",
+        "Isekai",
+        "Oyun / VR",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Fantastik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-108465",
@@ -2352,7 +3370,7 @@
       "url": "https://anilist.co/anime/108465",
       "firstSeasonUrl": "https://anilist.co/anime/108465",
       "status": "completed",
-      "score": null,
+      "score": 0.1,
       "parts": [
         {
           "id": 108465,
@@ -2363,7 +3381,9 @@
           "watched": 11,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 0.1,
+          "adminModified": true
         },
         {
           "id": 127720,
@@ -2374,7 +3394,9 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 0.1,
+          "adminModified": true
         },
         {
           "id": 141534,
@@ -2433,7 +3455,33 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108465-1ANspF1EWyFx.jpg",
-      "addedAt": "2022-12-22"
+      "addedAt": "2022-12-22",
+      "customGenres": [
+        "Shounen",
+        "Isekai",
+        "Reenkarnasyon",
+        "Macera",
+        "Fantastik",
+        "Dram",
+        "Harem"
+      ],
+      "genres": [
+        "Shounen",
+        "Isekai",
+        "Reenkarnasyon",
+        "Macera",
+        "Fantastik",
+        "Dram",
+        "Harem"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-127230",
@@ -2443,7 +3491,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/127230",
       "status": "completed",
       "next": true,
-      "score": 7.5,
+      "score": 6.8,
       "parts": [
         {
           "id": 127230,
@@ -2455,8 +3503,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 7.5,
-          "repeat": 1
+          "score": 6,
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 198726,
@@ -2478,7 +3527,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "score": 9,
+          "adminModified": true
         },
         {
           "id": 204429,
@@ -2493,7 +3544,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127230-DdP4vAdssLoz.png",
-      "addedAt": "2022-10-12"
+      "addedAt": "2022-10-12",
+      "customGenres": [
+        "Shounen",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Doğaüstü",
+        "Korku",
+        "Dram"
+      ],
+      "genres": [
+        "Shounen",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Doğaüstü",
+        "Korku",
+        "Dram"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-14813",
@@ -2502,7 +3577,7 @@
       "url": "https://anilist.co/anime/14813",
       "firstSeasonUrl": "https://anilist.co/anime/14813",
       "status": "completed",
-      "score": 9.5,
+      "score": 10,
       "parts": [
         {
           "id": 14813,
@@ -2514,8 +3589,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2013,
-          "score": 9.5,
-          "repeat": 2
+          "score": 10,
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 18753,
@@ -2526,7 +3602,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 20698,
@@ -2538,8 +3616,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "score": 9.5,
-          "repeat": 1
+          "score": 10,
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 21769,
@@ -2550,7 +3629,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 108489,
@@ -2562,8 +3643,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 9.5,
-          "repeat": 2
+          "score": 10,
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 128643,
@@ -2574,11 +3656,39 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 10,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14813-3mNvcKNEQcDs.jpg",
-      "addedAt": "2022-09-28"
+      "addedAt": "2022-09-28",
+      "customGenres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Dram",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Dram",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-98460",
@@ -2587,7 +3697,7 @@
       "url": "https://anilist.co/anime/98460",
       "firstSeasonUrl": "https://anilist.co/anime/98460",
       "status": "completed",
-      "score": 7,
+      "score": 6,
       "parts": [
         {
           "id": 98460,
@@ -2599,11 +3709,40 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 7
+          "score": 6,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98460-bLtH2c3jd6sV.png",
-      "addedAt": "2022-09-17"
+      "addedAt": "2022-09-17",
+      "customGenres": [
+        "Seinen",
+        "Karanlık Fantezi",
+        "Post-Apokaliptik",
+        "Aksiyon",
+        "Doğaüstü",
+        "Korku",
+        "Dram",
+        "Psikolojik"
+      ],
+      "genres": [
+        "Seinen",
+        "Karanlık Fantezi",
+        "Post-Apokaliptik",
+        "Aksiyon",
+        "Doğaüstü",
+        "Korku",
+        "Dram",
+        "Psikolojik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-98549",
@@ -2625,7 +3764,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 5
+          "score": 5,
+          "adminModified": true
         },
         {
           "id": 104200,
@@ -2651,7 +3791,25 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx98549-XfLyPhrP5Ors.jpg",
-      "addedAt": "2022-09-08"
+      "addedAt": "2022-09-08",
+      "customGenres": [
+        "Parodi",
+        "Komedi",
+        "Seinen"
+      ],
+      "genres": [
+        "Parodi",
+        "Komedi",
+        "Seinen"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-114963",
@@ -2660,7 +3818,7 @@
       "url": "https://anilist.co/anime/114963",
       "firstSeasonUrl": "https://anilist.co/anime/114963",
       "status": "completed",
-      "score": 6,
+      "score": 5.5,
       "parts": [
         {
           "id": 114963,
@@ -2672,11 +3830,32 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 6
+          "score": 5.5,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114963-QWMbi5ttovSK.png",
-      "addedAt": "2022-07-23"
+      "addedAt": "2022-07-23",
+      "customGenres": [
+        "Shounen",
+        "Fantastik",
+        "Romantik",
+        "Dram"
+      ],
+      "genres": [
+        "Shounen",
+        "Fantastik",
+        "Romantik",
+        "Dram"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21234",
@@ -2697,11 +3876,36 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21234-XmqW39aQ9o7O.jpg",
-      "addedAt": "2022-07-16"
+      "addedAt": "2022-07-16",
+      "customGenres": [
+        "Zaman Yolculuğu",
+        "Okul",
+        "Gizem",
+        "Gerilim",
+        "Psikolojik",
+        "Dram"
+      ],
+      "genres": [
+        "Zaman Yolculuğu",
+        "Okul",
+        "Gizem",
+        "Gerilim",
+        "Psikolojik",
+        "Dram"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-14719",
@@ -2710,7 +3914,7 @@
       "url": "https://anilist.co/anime/14719",
       "firstSeasonUrl": "https://anilist.co/anime/14719",
       "status": "watching",
-      "score": 9.8,
+      "score": 10,
       "parts": [
         {
           "id": 14719,
@@ -2722,7 +3926,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2012,
-          "score": 9.8
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 20474,
@@ -2734,7 +3939,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 9.8
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 20799,
@@ -2746,7 +3952,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "score": 9.8
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 21450,
@@ -2758,7 +3965,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 9.8
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 21778,
@@ -2781,7 +3989,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 9.8
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 131942,
@@ -2793,7 +4002,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 9.8
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 146722,
@@ -2805,7 +4015,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 9.8
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 190327,
@@ -2817,7 +4028,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2026,
-          "score": 9.8
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 210482,
@@ -2828,11 +4040,36 @@
           "watched": 3,
           "status": "CURRENT",
           "release": "RELEASING",
-          "year": 2026
+          "year": 2026,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14719-VT5dRzTBSZ0w.jpg",
-      "addedAt": "2022-07-16"
+      "addedAt": "2022-07-16",
+      "customGenres": [
+        "Shounen",
+        "Süper Güç",
+        "Aksiyon",
+        "Macera",
+        "Doğaüstü",
+        "Fantastik"
+      ],
+      "genres": [
+        "Shounen",
+        "Süper Güç",
+        "Aksiyon",
+        "Macera",
+        "Doğaüstü",
+        "Fantastik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21355",
@@ -2855,7 +4092,8 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 21780,
@@ -2888,7 +4126,9 @@
           "watched": 2,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 108632,
@@ -2900,7 +4140,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 120700,
@@ -2923,7 +4164,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 128306,
@@ -2945,7 +4187,8 @@
           "watched": 0,
           "status": "PLANNING",
           "release": "FINISHED",
-          "year": 2024
+          "year": 2024,
+          "adminModified": true
         },
         {
           "id": 182417,
@@ -2982,7 +4225,33 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg",
-      "addedAt": "2022-07-16"
+      "addedAt": "2022-07-16",
+      "customGenres": [
+        "Shounen",
+        "Isekai",
+        "Zaman Yolculuğu",
+        "Dram",
+        "Fantastik",
+        "Psikolojik",
+        "Gerilim"
+      ],
+      "genres": [
+        "Shounen",
+        "Isekai",
+        "Zaman Yolculuğu",
+        "Dram",
+        "Fantastik",
+        "Psikolojik",
+        "Gerilim"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-5680",
@@ -3002,7 +4271,8 @@
           "watched": 2,
           "status": "PAUSED",
           "release": "FINISHED",
-          "year": 2009
+          "year": 2009,
+          "adminModified": true
         },
         {
           "id": 7017,
@@ -3072,7 +4342,29 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5680-r3AI3Cwfv0Aq.png",
-      "addedAt": "2022-07-06"
+      "addedAt": "2022-07-06",
+      "customGenres": [
+        "Seinen",
+        "Okul",
+        "Komedi",
+        "Slice of Life",
+        "Müzik"
+      ],
+      "genres": [
+        "Seinen",
+        "Okul",
+        "Komedi",
+        "Slice of Life",
+        "Müzik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20954",
@@ -3093,11 +4385,32 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 7
+          "score": 7,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20954-sYRfE5jQRtSB.jpg",
-      "addedAt": "2022-06-17"
+      "addedAt": "2022-06-17",
+      "customGenres": [
+        "Dram",
+        "Romantik",
+        "Psikolojik",
+        "Shounen"
+      ],
+      "genres": [
+        "Dram",
+        "Romantik",
+        "Psikolojik",
+        "Shounen"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21311",
@@ -3107,7 +4420,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/21311",
       "status": "completed",
       "next": true,
-      "score": 7.6,
+      "score": 6.6,
       "parts": [
         {
           "id": 21311,
@@ -3119,7 +4432,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 7.6
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 21679,
@@ -3131,7 +4445,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 7.6
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 21791,
@@ -3153,7 +4468,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 8,
+          "adminModified": true
         },
         {
           "id": 103223,
@@ -3165,7 +4482,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 7.6
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 120150,
@@ -3188,7 +4506,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 7.6
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 163263,
@@ -3214,7 +4533,33 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21311-hAXyT8Yoh6G9.jpg",
-      "addedAt": "2022-06-08"
+      "addedAt": "2022-06-08",
+      "customGenres": [
+        "Seinen",
+        "Dedektiflik",
+        "Süper Güç",
+        "Aksiyon",
+        "Gizem",
+        "Doğaüstü",
+        "Komedi"
+      ],
+      "genres": [
+        "Seinen",
+        "Dedektiflik",
+        "Süper Güç",
+        "Aksiyon",
+        "Gizem",
+        "Doğaüstü",
+        "Komedi"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21290",
@@ -3223,7 +4568,7 @@
       "url": "https://anilist.co/anime/21290",
       "firstSeasonUrl": "https://anilist.co/anime/21290",
       "status": "completed",
-      "score": 6,
+      "score": 5,
       "parts": [
         {
           "id": 21290,
@@ -3235,12 +4580,39 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 6,
-          "repeat": 1
+          "score": 5,
+          "repeat": 1,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21290-R6qYWnylwpbL.png",
-      "addedAt": "2022-05-23"
+      "addedAt": "2022-05-23",
+      "customGenres": [
+        "Shounen",
+        "Rom-Com",
+        "Oyun / VR",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Ecchi"
+      ],
+      "genres": [
+        "Shounen",
+        "Rom-Com",
+        "Oyun / VR",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Ecchi"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20",
@@ -3260,7 +4632,8 @@
           "watched": 18,
           "status": "DROPPED",
           "release": "FINISHED",
-          "year": 2002
+          "year": 2002,
+          "adminModified": true
         },
         {
           "id": 761,
@@ -3528,7 +4901,29 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20-dE6UHbFFg1A5.jpg",
-      "addedAt": "2022-05-19"
+      "addedAt": "2022-05-19",
+      "customGenres": [
+        "Shounen",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Süper Güç"
+      ],
+      "genres": [
+        "Shounen",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Süper Güç"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-112301",
@@ -3537,7 +4932,7 @@
       "url": "https://anilist.co/anime/112301",
       "firstSeasonUrl": "https://anilist.co/anime/112301",
       "status": "dropped",
-      "score": 5.5,
+      "score": 4.5,
       "parts": [
         {
           "id": 112301,
@@ -3549,8 +4944,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 5.5,
-          "repeat": 1
+          "score": 6,
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 130588,
@@ -3561,7 +4957,9 @@
           "watched": 6,
           "status": "DROPPED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 3,
+          "adminModified": true
         },
         {
           "id": 130590,
@@ -3576,7 +4974,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112301-f88Fs2es4pSr.jpg",
-      "addedAt": "2022-05-18"
+      "addedAt": "2022-05-18",
+      "customGenres": [
+        "Reenkarnasyon",
+        "Shounen",
+        "Süper Güç",
+        "Aksiyon",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "genres": [
+        "Reenkarnasyon",
+        "Shounen",
+        "Süper Güç",
+        "Aksiyon",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20613",
@@ -3585,7 +5007,7 @@
       "url": "https://anilist.co/anime/20613",
       "firstSeasonUrl": "https://anilist.co/anime/20613",
       "status": "completed",
-      "score": 6,
+      "score": 5,
       "parts": [
         {
           "id": 20613,
@@ -3597,11 +5019,38 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 6
+          "score": 5,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20613-HXHpec4bemk5.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Dram",
+        "Komedi"
+      ],
+      "genres": [
+        "Shounen",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Dram",
+        "Komedi"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-131548",
@@ -3610,7 +5059,7 @@
       "url": "https://anilist.co/anime/131548",
       "firstSeasonUrl": "https://anilist.co/anime/131548",
       "status": "completed",
-      "score": null,
+      "score": 0.1,
       "parts": [
         {
           "id": 131548,
@@ -3621,11 +5070,31 @@
           "watched": 12,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 0.1,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131548-4OXik3SWOaee.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Okul",
+        "Shoujo",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Okul",
+        "Shoujo",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-11111",
@@ -3634,7 +5103,7 @@
       "url": "https://anilist.co/anime/11111",
       "firstSeasonUrl": "https://anilist.co/anime/11111",
       "status": "completed",
-      "score": 7.3,
+      "score": 7.6,
       "parts": [
         {
           "id": 11111,
@@ -3646,7 +5115,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2012,
-          "score": 7.3
+          "score": 8,
+          "adminModified": true
         },
         {
           "id": 11701,
@@ -3657,11 +5127,37 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2012
+          "year": 2012,
+          "score": 5,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11111-gvvE5bBYsyFo.png",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Okul",
+        "Gizem",
+        "Gerilim",
+        "Korku",
+        "Doğaüstü"
+      ],
+      "genres": [
+        "Shounen",
+        "Okul",
+        "Gizem",
+        "Gerilim",
+        "Korku",
+        "Doğaüstü"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-16498",
@@ -3671,7 +5167,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/16498",
       "status": "completed",
       "next": true,
-      "score": 8.7,
+      "score": 9,
       "parts": [
         {
           "id": 16498,
@@ -3683,7 +5179,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2013,
-          "score": 8.7
+          "score": 8,
+          "adminModified": true
         },
         {
           "id": 18397,
@@ -3694,7 +5191,9 @@
           "watched": 3,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 20691,
@@ -3716,7 +5215,9 @@
           "watched": 2,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 8,
+          "adminModified": true
         },
         {
           "id": 20692,
@@ -3750,7 +5251,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "score": 8.7
+          "score": 8,
+          "adminModified": true
         },
         {
           "id": 99634,
@@ -3784,7 +5286,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 8.7
+          "score": 9,
+          "adminModified": true
         },
         {
           "id": 104578,
@@ -3796,7 +5299,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 8.7
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 119113,
@@ -3819,7 +5323,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 8.7
+          "score": 9,
+          "adminModified": true
         },
         {
           "id": 131681,
@@ -3831,7 +5336,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 8.7
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 146984,
@@ -3842,7 +5348,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 162314,
@@ -3853,11 +5361,41 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 10,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16498-buvcRTBx4NSm.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Karanlık Fantezi",
+        "Post-Apokaliptik",
+        "Askeri",
+        "Aksiyon",
+        "Dram",
+        "Gizem",
+        "Fantastik"
+      ],
+      "genres": [
+        "Shounen",
+        "Karanlık Fantezi",
+        "Post-Apokaliptik",
+        "Askeri",
+        "Aksiyon",
+        "Dram",
+        "Gizem",
+        "Fantastik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-100388",
@@ -3878,11 +5416,34 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 6
+          "score": 6,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100388-hjkg1AnlJR5z.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shoujo",
+        "Aksiyon",
+        "Dram",
+        "Gerilim",
+        "Psikolojik"
+      ],
+      "genres": [
+        "Shoujo",
+        "Aksiyon",
+        "Dram",
+        "Gerilim",
+        "Psikolojik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-269",
@@ -3892,7 +5453,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/269",
       "status": "completed",
       "next": true,
-      "score": 7,
+      "score": 5.8,
       "parts": [
         {
           "id": 269,
@@ -3904,7 +5465,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2004,
-          "score": 7
+          "score": 5.5,
+          "adminModified": true
         },
         {
           "id": 834,
@@ -3982,7 +5544,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 7
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 159322,
@@ -4019,7 +5582,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx269-d2GmRkJbMopq.png",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü",
+        "Süper Güç"
+      ],
+      "genres": [
+        "Shounen",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü",
+        "Süper Güç"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20596",
@@ -4028,7 +5615,7 @@
       "url": "https://anilist.co/anime/20596",
       "firstSeasonUrl": "https://anilist.co/anime/20596",
       "status": "completed",
-      "score": 2.7,
+      "score": 1.1,
       "parts": [
         {
           "id": 20596,
@@ -4040,7 +5627,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 2.7
+          "score": 1,
+          "adminModified": true
         },
         {
           "id": 20837,
@@ -4051,7 +5639,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 1,
+          "adminModified": true
         },
         {
           "id": 20900,
@@ -4062,11 +5652,33 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 2,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20596-fJdMHV8xRMgY.png",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shoujo",
+        "Romantik",
+        "Dram",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shoujo",
+        "Romantik",
+        "Dram",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-1535",
@@ -4075,7 +5687,7 @@
       "url": "https://anilist.co/anime/1535",
       "firstSeasonUrl": "https://anilist.co/anime/1535",
       "status": "completed",
-      "score": 10,
+      "score": 9,
       "parts": [
         {
           "id": 1535,
@@ -4087,8 +5699,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2006,
-          "score": 10,
-          "repeat": 1
+          "score": 9,
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 2994,
@@ -4099,11 +5712,37 @@
           "watched": 2,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2007
+          "year": 2007,
+          "score": 9,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1535-kUgkcrfOrkUM.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Dedektiflik",
+        "Gizem",
+        "Gerilim",
+        "Doğaüstü",
+        "Psikolojik"
+      ],
+      "genres": [
+        "Shounen",
+        "Dedektiflik",
+        "Gizem",
+        "Gerilim",
+        "Doğaüstü",
+        "Psikolojik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101922",
@@ -4112,7 +5751,7 @@
       "url": "https://anilist.co/anime/101922",
       "firstSeasonUrl": "https://anilist.co/anime/101922",
       "status": "dropped",
-      "score": 5.5,
+      "score": 4.3,
       "parts": [
         {
           "id": 101922,
@@ -4124,7 +5763,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 5.5
+          "score": 4,
+          "adminModified": true
         },
         {
           "id": 112151,
@@ -4135,7 +5775,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2020
+          "year": 2020,
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 129874,
@@ -4158,7 +5800,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 5.5
+          "score": 5,
+          "adminModified": true
         },
         {
           "id": 145139,
@@ -4169,7 +5812,9 @@
           "watched": 6,
           "status": "DROPPED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 3,
+          "adminModified": true
         },
         {
           "id": 166240,
@@ -4217,7 +5862,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101922-WBsBl0ClmgYL.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Aksiyon",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "genres": [
+        "Shounen",
+        "Aksiyon",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-17513",
@@ -4226,7 +5891,7 @@
       "url": "https://anilist.co/anime/17513",
       "firstSeasonUrl": "https://anilist.co/anime/17513",
       "status": "dropped",
-      "score": null,
+      "score": 0.1,
       "parts": [
         {
           "id": 17513,
@@ -4237,7 +5902,9 @@
           "watched": 7,
           "status": "DROPPED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 0,
+          "adminModified": true
         },
         {
           "id": 21046,
@@ -4252,7 +5919,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx17513-gfqhEF7XYYvm.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shoujo",
+        "Harem",
+        "Korku",
+        "Doğaüstü"
+      ],
+      "genres": [
+        "Shoujo",
+        "Harem",
+        "Korku",
+        "Doğaüstü"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101347",
@@ -4261,7 +5948,7 @@
       "url": "https://anilist.co/anime/101347",
       "firstSeasonUrl": "https://anilist.co/anime/101347",
       "status": "completed",
-      "score": 10,
+      "score": 8,
       "parts": [
         {
           "id": 101347,
@@ -4273,11 +5960,36 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 10
+          "score": 8,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101347-TGaDwEYqLfm1.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Dram"
+      ],
+      "genres": [
+        "Shounen",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Dram"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-97682",
@@ -4287,7 +5999,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/97682",
       "status": "completed",
       "next": true,
-      "score": 6.5,
+      "score": 5,
       "parts": [
         {
           "id": 97682,
@@ -4299,8 +6011,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "score": 6.5,
-          "repeat": 1
+          "score": 6,
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 149099,
@@ -4323,11 +6036,34 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 6.5
+          "score": 4,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx97682-YRhTwV979zSr.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "genres": [
+        "Shounen",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20987",
@@ -4336,7 +6072,7 @@
       "url": "https://anilist.co/anime/20987",
       "firstSeasonUrl": "https://anilist.co/anime/20987",
       "status": "completed",
-      "score": 8.7,
+      "score": 8.3,
       "parts": [
         {
           "id": 20987,
@@ -4348,7 +6084,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "score": 8.7
+          "score": 8,
+          "adminModified": true
         },
         {
           "id": 21328,
@@ -4370,7 +6107,9 @@
           "watched": 2,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2015
+          "year": 2015,
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 98572,
@@ -4382,11 +6121,30 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "score": 8.7
+          "score": 9,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20987-9Tq7kZTeJPMo.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Komedi",
+        "Slice of Life",
+        "Seinen"
+      ],
+      "genres": [
+        "Komedi",
+        "Slice of Life",
+        "Seinen"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-113415",
@@ -4396,7 +6154,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/113415",
       "status": "completed",
       "next": true,
-      "score": 3.7,
+      "score": 3.4,
       "parts": [
         {
           "id": 113415,
@@ -4408,7 +6166,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 3.7
+          "score": 2,
+          "adminModified": true
         },
         {
           "id": 131573,
@@ -4419,7 +6178,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 145064,
@@ -4431,7 +6192,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 3.7
+          "score": 4,
+          "adminModified": true
         },
         {
           "id": 192809,
@@ -4479,7 +6241,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113415-LHBAeoZDIsnF.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Aksiyon",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "genres": [
+        "Shounen",
+        "Aksiyon",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101921",
@@ -4489,7 +6271,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/101921",
       "status": "completed",
       "next": true,
-      "score": 8.5,
+      "score": 8.4,
       "parts": [
         {
           "id": 101921,
@@ -4501,8 +6283,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 8.5,
-          "repeat": 2
+          "score": 8,
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 112641,
@@ -4514,8 +6297,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 8.5,
-          "repeat": 2
+          "score": 8,
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 125368,
@@ -4526,7 +6310,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 4,
+          "adminModified": true
         },
         {
           "id": 165557,
@@ -4549,8 +6335,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 8.5,
-          "repeat": 2
+          "score": 9,
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 151384,
@@ -4562,7 +6349,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 8.5
+          "score": 9,
+          "adminModified": true
         },
         {
           "id": 194884,
@@ -4573,7 +6361,9 @@
           "watched": 2,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 205081,
@@ -4584,11 +6374,34 @@
           "watched": 0,
           "status": "PLANNING",
           "release": "NOT_YET_RELEASED",
-          "year": null
+          "year": null,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101921-ufrjLzhSz7L1.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Rom-Com",
+        "Romantik",
+        "Komedi",
+        "Slice of Life",
+        "Seinen"
+      ],
+      "genres": [
+        "Rom-Com",
+        "Romantik",
+        "Komedi",
+        "Slice of Life",
+        "Seinen"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-98314",
@@ -4598,7 +6411,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/98314",
       "status": "completed",
       "next": true,
-      "score": 8,
+      "score": 6.5,
       "parts": [
         {
           "id": 98314,
@@ -4610,7 +6423,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "score": 8
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 100876,
@@ -4622,7 +6436,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 8
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 141351,
@@ -4637,7 +6452,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b98314-TSJykxVwCCQN.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Psikolojik",
+        "Shounen",
+        "Okul",
+        "Gerilim"
+      ],
+      "genres": [
+        "Psikolojik",
+        "Shounen",
+        "Okul",
+        "Gerilim"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-512",
@@ -4658,11 +6493,34 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 1989,
-          "score": 6
+          "score": 6,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx512-UwP8X4BR8YoM.png",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shoujo",
+        "Büyülü Kız",
+        "Macera",
+        "Fantastik",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shoujo",
+        "Büyülü Kız",
+        "Macera",
+        "Fantastik",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21421",
@@ -4671,7 +6529,7 @@
       "url": "https://anilist.co/anime/21421",
       "firstSeasonUrl": "https://anilist.co/anime/21421",
       "status": "completed",
-      "score": 6,
+      "score": 5.5,
       "parts": [
         {
           "id": 21421,
@@ -4683,11 +6541,32 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 6
+          "score": 5.5,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21421-5y8ryXsMB7aJ.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Dram",
+        "Psikolojik",
+        "Bilim Kurgu"
+      ],
+      "genres": [
+        "Shounen",
+        "Dram",
+        "Psikolojik",
+        "Bilim Kurgu"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-132405",
@@ -4709,7 +6588,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 5
+          "score": 5,
+          "adminModified": true
         },
         {
           "id": 154768,
@@ -4720,11 +6600,34 @@
           "watched": 0,
           "status": "PLANNING",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx132405-qP7FQYGmNI3d.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Seinen",
+        "Rom-Com",
+        "Romantik",
+        "Komedi",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Seinen",
+        "Rom-Com",
+        "Romantik",
+        "Komedi",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-523",
@@ -4733,7 +6636,7 @@
       "url": "https://anilist.co/anime/523",
       "firstSeasonUrl": "https://anilist.co/anime/523",
       "status": "completed",
-      "score": 5,
+      "score": 6,
       "parts": [
         {
           "id": 523,
@@ -4745,7 +6648,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 1988,
-          "score": 5
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 2488,
@@ -4760,7 +6664,29 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx523-fErBvxOHP7IX.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shoujo",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Shoujo",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21",
@@ -4769,7 +6695,7 @@
       "url": "https://anilist.co/anime/21",
       "firstSeasonUrl": "https://anilist.co/anime/21",
       "status": "watching",
-      "score": null,
+      "score": 6,
       "parts": [
         {
           "id": 466,
@@ -4791,7 +6717,9 @@
           "watched": 846,
           "status": "CURRENT",
           "release": "RELEASING",
-          "year": 1999
+          "year": 1999,
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 459,
@@ -5312,7 +7240,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Süper Güç",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Komedi"
+      ],
+      "genres": [
+        "Shounen",
+        "Süper Güç",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Komedi"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-2890",
@@ -5333,11 +7285,32 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2008,
-          "score": 6
+          "score": 6,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2890-wcNtFr6aUYOR.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shoujo",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "genres": [
+        "Shoujo",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101291",
@@ -5347,7 +7320,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/101291",
       "status": "completed",
       "next": true,
-      "score": 8.5,
+      "score": 7.3,
       "parts": [
         {
           "id": 101291,
@@ -5359,8 +7332,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 8.5,
-          "repeat": 2
+          "score": 7,
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 104157,
@@ -5371,7 +7345,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 8,
+          "adminModified": true
         },
         {
           "id": 154967,
@@ -5419,7 +7395,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101291-wfEdgPqtfU0l.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Rom-Com",
+        "Komedi",
+        "Romantik",
+        "Dram",
+        "Psikolojik"
+      ],
+      "genres": [
+        "Shounen",
+        "Rom-Com",
+        "Komedi",
+        "Romantik",
+        "Dram",
+        "Psikolojik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21049",
@@ -5429,7 +7429,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/21049",
       "status": "completed",
       "next": true,
-      "score": 7.5,
+      "score": 7,
       "parts": [
         {
           "id": 21049,
@@ -5441,7 +7441,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 7.5
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 98635,
@@ -5452,7 +7453,9 @@
           "watched": 4,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 108939,
@@ -5467,7 +7470,33 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21049-4AHSLeiDE9eg.png",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Seinen",
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Dram",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Seinen",
+        "Rom-Com",
+        "Okul",
+        "Komedi",
+        "Romantik",
+        "Dram",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-140960",
@@ -5476,7 +7505,7 @@
       "url": "https://anilist.co/anime/140960",
       "firstSeasonUrl": "https://anilist.co/anime/140960",
       "status": "completed",
-      "score": 7.8,
+      "score": 7.3,
       "parts": [
         {
           "id": 140960,
@@ -5488,8 +7517,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 7.8,
-          "repeat": 1
+          "score": 7,
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 142838,
@@ -5501,8 +7531,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 7.8,
-          "repeat": 1
+          "score": 7,
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 158927,
@@ -5514,7 +7545,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 7.8
+          "score": 7,
+          "adminModified": true
         },
         {
           "id": 158928,
@@ -5525,7 +7557,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 8,
+          "adminModified": true
         },
         {
           "id": 177937,
@@ -5537,11 +7571,36 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 7.8
+          "score": 8,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140960-Kb6R5nYQfjmP.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Rom-Com",
+        "Aksiyon",
+        "Komedi",
+        "Slice of Life",
+        "Romantik"
+      ],
+      "genres": [
+        "Shounen",
+        "Rom-Com",
+        "Aksiyon",
+        "Komedi",
+        "Slice of Life",
+        "Romantik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-129201",
@@ -5550,7 +7609,7 @@
       "url": "https://anilist.co/anime/129201",
       "firstSeasonUrl": "https://anilist.co/anime/129201",
       "status": "completed",
-      "score": 10,
+      "score": 9.5,
       "parts": [
         {
           "id": 129201,
@@ -5562,12 +7621,37 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 10,
-          "repeat": 2
+          "score": 9.5,
+          "repeat": 2,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129201-HJBauga2be8I.png",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Zaman Yolculuğu",
+        "Gizem",
+        "Gerilim",
+        "Doğaüstü",
+        "Bilim Kurgu"
+      ],
+      "genres": [
+        "Shounen",
+        "Zaman Yolculuğu",
+        "Gizem",
+        "Gerilim",
+        "Doğaüstü",
+        "Bilim Kurgu"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101280",
@@ -5589,7 +7673,8 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 10,
-          "repeat": 21
+          "repeat": 21,
+          "adminModified": true
         },
         {
           "id": 106509,
@@ -5601,7 +7686,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "repeat": 5
+          "repeat": 5,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 108511,
@@ -5614,7 +7701,8 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 10,
-          "repeat": 21
+          "repeat": 21,
+          "adminModified": true
         },
         {
           "id": 116741,
@@ -5627,7 +7715,8 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 10,
-          "repeat": 3
+          "repeat": 3,
+          "adminModified": true
         },
         {
           "id": 116742,
@@ -5640,7 +7729,8 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 10,
-          "repeat": 20
+          "repeat": 20,
+          "adminModified": true
         },
         {
           "id": 146503,
@@ -5652,7 +7742,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 139498,
@@ -5664,7 +7755,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 5
+          "repeat": 5,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 161802,
@@ -5676,7 +7769,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "repeat": 5
+          "repeat": 5,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 156822,
@@ -5689,7 +7784,8 @@
           "release": "FINISHED",
           "year": 2024,
           "score": 10,
-          "repeat": 6
+          "repeat": 6,
+          "adminModified": true
         },
         {
           "id": 182206,
@@ -5700,7 +7796,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2026
+          "year": 2026,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 182205,
@@ -5712,7 +7810,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2026,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 217330,
@@ -5723,7 +7822,9 @@
           "watched": 0,
           "status": "PLANNING",
           "release": "NOT_YET_RELEASED",
-          "year": 2027
+          "year": 2027,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 217331,
@@ -5734,11 +7835,40 @@
           "watched": 0,
           "status": "PLANNING",
           "release": "NOT_YET_RELEASED",
-          "year": 2027
+          "year": 2027,
+          "score": 10,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101280-tDxCVJm714nt.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Seinen",
+        "Isekai",
+        "Reenkarnasyon",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Siyaset"
+      ],
+      "genres": [
+        "Seinen",
+        "Isekai",
+        "Reenkarnasyon",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Siyaset"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt",
+        "image"
+      ]
     },
     {
       "id": "al-21804",
@@ -5747,7 +7877,7 @@
       "url": "https://anilist.co/anime/21804",
       "firstSeasonUrl": "https://anilist.co/anime/21804",
       "status": "completed",
-      "score": 5.4,
+      "score": 4.6,
       "parts": [
         {
           "id": 21804,
@@ -5759,7 +7889,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 5.4
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 98034,
@@ -5771,7 +7902,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 5.4
+          "score": 4,
+          "adminModified": true
         },
         {
           "id": 104580,
@@ -5782,7 +7914,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 5,
+          "adminModified": true
         },
         {
           "id": 112625,
@@ -5794,11 +7928,36 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 5.4
+          "score": 5,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21804-As6tDLAvEvNY.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Parodi",
+        "Süper Güç",
+        "Okul",
+        "Komedi",
+        "Doğaüstü",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Parodi",
+        "Süper Güç",
+        "Okul",
+        "Komedi",
+        "Doğaüstü",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-129193",
@@ -5807,7 +7966,7 @@
       "url": "https://anilist.co/anime/129193",
       "firstSeasonUrl": "https://anilist.co/anime/129193",
       "status": "completed",
-      "score": 8,
+      "score": 8.5,
       "parts": [
         {
           "id": 129193,
@@ -5819,11 +7978,36 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 8
+          "score": 8.5,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129193-pT3W5PpiMAUB.png",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shoujo",
+        "Isekai",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Fantastik",
+        "Macera"
+      ],
+      "genres": [
+        "Shoujo",
+        "Isekai",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Fantastik",
+        "Macera"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-10620",
@@ -5832,7 +8016,7 @@
       "url": "https://anilist.co/anime/10620",
       "firstSeasonUrl": "https://anilist.co/anime/10620",
       "status": "completed",
-      "score": 6.3,
+      "score": 6,
       "parts": [
         {
           "id": 8460,
@@ -5843,7 +8027,9 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2010
+          "year": 2010,
+          "score": 4,
+          "adminModified": true
         },
         {
           "id": 10620,
@@ -5855,7 +8041,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2011,
-          "score": 6.3
+          "score": 6,
+          "adminModified": true
         },
         {
           "id": 12503,
@@ -5877,11 +8064,39 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 8,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10620-dUZeNej0W4QN.png",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Gizem",
+        "Gerilim",
+        "Psikolojik",
+        "Doğaüstü"
+      ],
+      "genres": [
+        "Shounen",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Gizem",
+        "Gerilim",
+        "Psikolojik",
+        "Doğaüstü"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-130586",
@@ -5902,11 +8117,38 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 6
+          "score": 6,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130586-vzoz4X37RZwc.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Reenkarnasyon",
+        "Okul",
+        "Aksiyon",
+        "Fantastik",
+        "Komedi",
+        "Harem"
+      ],
+      "genres": [
+        "Shounen",
+        "Reenkarnasyon",
+        "Okul",
+        "Aksiyon",
+        "Fantastik",
+        "Komedi",
+        "Harem"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20605",
@@ -5928,7 +8170,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 4
+          "score": 4,
+          "adminModified": true
         },
         {
           "id": 20850,
@@ -5940,7 +8183,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "score": 4
+          "score": 4,
+          "adminModified": true
         },
         {
           "id": 21132,
@@ -5988,7 +8232,31 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b20605-k665mVkSug8D.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Seinen",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Psikolojik",
+        "Korku",
+        "Dram"
+      ],
+      "genres": [
+        "Seinen",
+        "Karanlık Fantezi",
+        "Aksiyon",
+        "Psikolojik",
+        "Korku",
+        "Dram"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-6211",
@@ -5997,7 +8265,7 @@
       "url": "https://anilist.co/anime/6211",
       "firstSeasonUrl": "https://anilist.co/anime/6211",
       "status": "completed",
-      "score": 6,
+      "score": 4,
       "parts": [
         {
           "id": 6211,
@@ -6009,7 +8277,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2009,
-          "score": 6
+          "score": 4,
+          "adminModified": true
         },
         {
           "id": 7654,
@@ -6024,7 +8293,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6211-2MCqBUXvmBdB.png",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Post-Apokaliptik",
+        "Dram",
+        "Psikolojik"
+      ],
+      "genres": [
+        "Shounen",
+        "Post-Apokaliptik",
+        "Dram",
+        "Psikolojik"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-120120",
@@ -6045,7 +8334,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 5
+          "score": 5,
+          "adminModified": true
         },
         {
           "id": 132467,
@@ -6067,7 +8357,8 @@
           "watched": 2,
           "status": "DROPPED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "adminModified": true
         },
         {
           "id": 163329,
@@ -6104,7 +8395,25 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx120120-cWDmnmeEntSe.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Zaman Yolculuğu",
+        "Aksiyon",
+        "Dram"
+      ],
+      "genres": [
+        "Zaman Yolculuğu",
+        "Aksiyon",
+        "Dram"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-141014",
@@ -6113,7 +8422,7 @@
       "url": "https://anilist.co/anime/141014",
       "firstSeasonUrl": "https://anilist.co/anime/141014",
       "status": "completed",
-      "score": 10,
+      "score": 9,
       "parts": [
         {
           "id": 141014,
@@ -6125,12 +8434,33 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 10,
-          "repeat": 3
+          "score": 9,
+          "repeat": 3,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141014-bTWr7TtS0wt9.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Psikolojik",
+        "Gerilim",
+        "Gizem",
+        "Seinen"
+      ],
+      "genres": [
+        "Psikolojik",
+        "Gerilim",
+        "Gizem",
+        "Seinen"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-141774",
@@ -6139,7 +8469,7 @@
       "url": "https://anilist.co/anime/141774",
       "firstSeasonUrl": "https://anilist.co/anime/141774",
       "status": "completed",
-      "score": 10,
+      "score": 9,
       "parts": [
         {
           "id": 141774,
@@ -6151,8 +8481,9 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 10,
-          "repeat": 1
+          "score": 9,
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 171026,
@@ -6167,7 +8498,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141774-iteNFzPq2oGw.jpg",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Seinen",
+        "Komedi",
+        "Müzik",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Seinen",
+        "Komedi",
+        "Müzik",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20665",
@@ -6188,7 +8539,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 10
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 21039,
@@ -6203,7 +8555,27 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20665-TLgkL8T8IRFd.png",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Dram",
+        "Romantik",
+        "Müzik",
+        "Slice of Life"
+      ],
+      "genres": [
+        "Dram",
+        "Romantik",
+        "Müzik",
+        "Slice of Life"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21519",
@@ -6212,7 +8584,7 @@
       "url": "https://anilist.co/anime/21519",
       "firstSeasonUrl": "https://anilist.co/anime/21519",
       "status": "completed",
-      "score": 7,
+      "score": 8,
       "parts": [
         {
           "id": 21519,
@@ -6224,11 +8596,37 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 7
+          "score": 8,
+          "adminModified": true
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21519-SUo3ZQuCbYhJ.png",
-      "addedAt": "2022-04-29"
+      "addedAt": "2022-04-29",
+      "customGenres": [
+        "Shounen",
+        "Romantik",
+        "Dram",
+        "Doğaüstü",
+        "Gizem"
+      ],
+      "genres": [
+        "Shounen",
+        "Romantik",
+        "Dram",
+        "Doğaüstü",
+        "Gizem"
+      ],
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     }
+  ],
+  "customGenreCatalog": [
+    "Siyaset"
   ]
 }

@@ -5840,4 +5840,75 @@
   };
 
   initAuthGate();
+
+  // [AI-MIMARI-NOTU]: Masaüstünde (PC) `.chips`, `.dock` ve `.rq-strip` gibi yatay şeritlerin
+  // hem fareyle basılı tutup sürükleyerek (drag-to-scroll) hem de fare tekerleğiyle (wheel)
+  // kaydırılabilmesini sağlayan evrensel olay dinleyicisi.
+  (() => {
+    const SELECTOR = '.chips, .dock, .rq-strip, .anime-stats-bar';
+
+    document.addEventListener('wheel', e => {
+      const el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
+      if (!el || el.scrollWidth <= el.clientWidth) return;
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        const canRight = e.deltaY > 0 && el.scrollLeft < maxScroll - 1;
+        const canLeft = e.deltaY < 0 && el.scrollLeft > 1;
+        if (canRight || canLeft) {
+          e.preventDefault();
+          el.scrollLeft += e.deltaY;
+        }
+      }
+    }, { passive: false });
+
+    document.addEventListener('mousedown', e => {
+      if (e.button !== 0) return;
+      const el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
+      if (!el || el.scrollWidth <= el.clientWidth) return;
+
+      const startX = e.clientX;
+      const startScroll = el.scrollLeft;
+      let moved = false;
+
+      const onMove = ev => {
+        const dx = ev.clientX - startX;
+        if (!moved && Math.abs(dx) > 5) {
+          moved = true;
+          el.classList.add('is-dragging');
+        }
+        if (moved) {
+          ev.preventDefault();
+          el.scrollLeft = startScroll - dx;
+        }
+      };
+
+      const onUp = () => {
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('mouseup', onUp);
+        if (moved) {
+          setTimeout(() => el.classList.remove('is-dragging'), 0);
+          const stopClick = ce => {
+            ce.stopPropagation();
+            ce.preventDefault();
+          };
+          window.addEventListener('click', stopClick, { capture: true, once: true });
+        } else {
+          el.classList.remove('is-dragging');
+        }
+      };
+
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onUp);
+    });
+
+    document.addEventListener('click', e => {
+      const btn = e.target && e.target.closest ? e.target.closest('.chips button') : null;
+      if (!btn) return;
+      const bar = btn.closest('.chips');
+      if (bar && bar.scrollWidth > bar.clientWidth && typeof btn.scrollIntoView === 'function') {
+        btn.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+      }
+    });
+  })();
+
 })();

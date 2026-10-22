@@ -392,3 +392,15 @@ h3 a:focus-visible{outline:0}
 .guide-out-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent);font-weight:620}
 .guide-out-badge svg{width:15px;height:15px}
 .guide-cat-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+
+/* ---- v5: Masaüstü (PC) Yatay Kaydırma (Fare Sürükleme & Tekerlek) Desteği ---- */
+.chips,.dock{user-select:none;-webkit-user-select:none;-webkit-overflow-scrolling:touch}
+@media (hover:hover) and (pointer:fine){
+  .chips{cursor:grab;padding-bottom:8px;scrollbar-width:thin;scrollbar-color:transparent transparent}
+  .chips:hover{scrollbar-color:var(--line) transparent}
+  .chips::-webkit-scrollbar{display:block;height:4px}
+  .chips::-webkit-scrollbar-track{background:transparent}
+  .chips::-webkit-scrollbar-thumb{background:transparent;border-radius:99px}
+  .chips:hover::-webkit-scrollbar-thumb{background:var(--line)}
+}
+.chips.is-dragging,.chips.is-dragging *,.dock.is-dragging,.dock.is-dragging *{cursor:grabbing!important}

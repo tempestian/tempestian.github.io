@@ -1,7 +1,12 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-10-21",
-  "source": "anilist:TurkTempestian",
+  "updated": "2026-10-22",
+  "source": "hybrid:TurkTempestian",
+  "statsConfig": {
+    "animeCountRule": "completed_season_or_movie",
+    "includeInProgressEpisodes": true,
+    "genreSourceRule": "custom_only"
+  },
   "stats": {
     "anime": 78,
     "season": 126,
@@ -21,9 +26,9 @@
     "scoreHistogram": {
       "1": 0,
       "2": 2,
-      "3": 1,
-      "4": 5,
-      "5": 9,
+      "3": 0,
+      "4": 8,
+      "5": 7,
       "6": 17,
       "7": 16,
       "8": 10,
@@ -65,13 +70,8 @@
       "title": "Record of Ragnarok",
       "anilistId": 127399,
       "url": "https://anilist.co/anime/127399",
+      "firstSeasonUrl": "https://anilist.co/anime/127399",
       "status": "watching",
-      "genres": [
-        "Action",
-        "Drama",
-        "Fantasy",
-        "Supernatural"
-      ],
       "score": 6.7,
       "parts": [
         {
@@ -156,20 +156,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127399-AAH1pevCZLrB.jpg",
-      "addedAt": "2026-10-02",
-      "firstSeasonUrl": "https://anilist.co/anime/127399"
+      "addedAt": "2026-10-02"
     },
     {
       "id": "al-162804",
       "title": "Alya Sometimes Hides Her Feelings in Russian",
       "anilistId": 162804,
       "url": "https://anilist.co/anime/162804",
+      "firstSeasonUrl": "https://anilist.co/anime/162804",
       "status": "watching",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -196,22 +191,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162804-TBeptcAfvqTd.jpg",
-      "addedAt": "2026-09-11",
-      "firstSeasonUrl": "https://anilist.co/anime/162804"
+      "addedAt": "2026-09-11"
     },
     {
       "id": "al-20931",
       "title": "Death Parade",
       "anilistId": 20931,
       "url": "https://anilist.co/anime/20931",
+      "firstSeasonUrl": "https://anilist.co/anime/20931",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Supernatural",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -228,19 +216,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx20931-bktYqOcxPERi.jpg",
-      "addedAt": "2026-05-30",
-      "firstSeasonUrl": "https://anilist.co/anime/20931"
+      "addedAt": "2026-05-30"
     },
     {
       "id": "al-98503",
       "title": "School Babysitters",
       "anilistId": 98503,
       "url": "https://anilist.co/anime/98503",
+      "firstSeasonUrl": "https://anilist.co/anime/98503",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Slice of Life"
-      ],
       "score": 7,
       "parts": [
         {
@@ -264,24 +248,20 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 7
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98503-oUCGDkv2osNK.jpg",
-      "addedAt": "2026-02-02",
-      "firstSeasonUrl": "https://anilist.co/anime/98503"
+      "addedAt": "2026-02-02"
     },
     {
       "id": "al-20555",
       "title": "When Marnie Was There",
       "anilistId": 20555,
       "url": "https://anilist.co/anime/20555",
+      "firstSeasonUrl": "https://anilist.co/anime/20555",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological"
-      ],
       "score": 7,
       "parts": [
         {
@@ -298,23 +278,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20555-QGbWQC3Kfpok.jpg",
-      "addedAt": "2026-02-02",
-      "firstSeasonUrl": "https://anilist.co/anime/20555"
+      "addedAt": "2026-02-02"
     },
     {
       "id": "al-108463",
       "title": "Toilet-bound Hanako-kun",
       "anilistId": 108463,
       "url": "https://anilist.co/anime/108463",
+      "firstSeasonUrl": "https://anilist.co/anime/108463",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Supernatural",
-        "Action",
-        "Drama",
-        "Mystery",
-        "Slice of Life"
-      ],
       "score": 10,
       "parts": [
         {
@@ -379,21 +351,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108463-u03vrYnyB3L9.jpg",
-      "addedAt": "2026-01-26",
-      "firstSeasonUrl": "https://anilist.co/anime/108463"
+      "addedAt": "2026-01-26"
     },
     {
       "id": "al-199",
       "title": "Spirited Away",
       "anilistId": 199,
       "url": "https://anilist.co/anime/199",
+      "firstSeasonUrl": "https://anilist.co/anime/199",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Drama",
-        "Fantasy",
-        "Supernatural"
-      ],
       "score": 6,
       "parts": [
         {
@@ -410,20 +376,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-sWefXJvXkDOb.jpg",
-      "addedAt": "2026-01-21",
-      "firstSeasonUrl": "https://anilist.co/anime/199"
+      "addedAt": "2026-01-21"
     },
     {
       "id": "al-2981",
       "title": "Chika Gentou Gekiga: Shoujo Tsubaki",
       "anilistId": 2981,
       "url": "https://anilist.co/anime/2981",
+      "firstSeasonUrl": "https://anilist.co/anime/2981",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Horror",
-        "Psychological"
-      ],
       "score": 4,
       "parts": [
         {
@@ -440,21 +401,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2981-PuzLTzNf4DeV.png",
-      "addedAt": "2026-01-20",
-      "firstSeasonUrl": "https://anilist.co/anime/2981"
+      "addedAt": "2026-01-20"
     },
     {
       "id": "al-114124",
       "title": "Moriarty the Patriot",
       "anilistId": 114124,
       "url": "https://anilist.co/anime/114124",
+      "firstSeasonUrl": "https://anilist.co/anime/114124",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Thriller"
-      ],
       "score": 2.5,
       "parts": [
         {
@@ -494,20 +449,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114124-def92qPuIVeK.jpg",
-      "addedAt": "2026-01-20",
-      "firstSeasonUrl": "https://anilist.co/anime/114124"
+      "addedAt": "2026-01-20"
     },
     {
       "id": "al-21613",
       "title": "Saga of Tanya the Evil",
       "anilistId": 21613,
       "url": "https://anilist.co/anime/21613",
+      "firstSeasonUrl": "https://anilist.co/anime/21613",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Fantasy"
-      ],
       "score": 7.7,
       "parts": [
         {
@@ -542,7 +493,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 8
         },
         {
           "id": 135866,
@@ -580,22 +532,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21613-qT3NiwYP5dYc.png",
-      "addedAt": "2026-01-18",
-      "firstSeasonUrl": "https://anilist.co/anime/21613"
+      "addedAt": "2026-01-18"
     },
     {
       "id": "al-181447",
       "title": "May I Ask for One Final Thing?",
       "anilistId": 181447,
       "url": "https://anilist.co/anime/181447",
+      "firstSeasonUrl": "https://anilist.co/anime/181447",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Comedy",
-        "Drama",
-        "Fantasy",
-        "Romance"
-      ],
       "score": 6,
       "parts": [
         {
@@ -612,24 +557,17 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181447-aCmaQmtdwuU5.jpg",
-      "addedAt": "2026-01-01",
-      "firstSeasonUrl": "https://anilist.co/anime/181447"
+      "addedAt": "2026-01-01"
     },
     {
       "id": "al-1575",
       "title": "Code Geass: Lelouch of the Rebellion",
       "anilistId": 1575,
       "url": "https://anilist.co/anime/1575",
+      "firstSeasonUrl": "https://anilist.co/anime/1575",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Drama",
-        "Mecha",
-        "Sci-Fi",
-        "Thriller"
-      ],
-      "score": 9.7,
+      "score": 9.6,
       "parts": [
         {
           "id": 1575,
@@ -711,6 +649,17 @@
           "year": 2010
         },
         {
+          "id": 17277,
+          "name": "Code Geass: Oz the Reflection Picture Drama",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2013
+        },
+        {
           "id": 132317,
           "name": "Code Geass: Hangyaku no Lelouch R2 Picture Drama TURN 12.06 - Last Moratorium",
           "kind": "other",
@@ -785,7 +734,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 9
         },
         {
           "id": 117408,
@@ -811,20 +761,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1575-hsmWM2ydNm1m.jpg",
-      "addedAt": "2025-12-31",
-      "firstSeasonUrl": "https://anilist.co/anime/1575"
+      "addedAt": "2025-12-31"
     },
     {
       "id": "al-179696",
       "title": "I Have a Crush at Work",
       "anilistId": 179696,
       "url": "https://anilist.co/anime/179696",
+      "firstSeasonUrl": "https://anilist.co/anime/179696",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 6,
       "parts": [
         {
@@ -841,20 +786,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx179696-1MAqXYVXT7IT.jpg",
-      "addedAt": "2025-12-13",
-      "firstSeasonUrl": "https://anilist.co/anime/179696"
+      "addedAt": "2025-12-13"
     },
     {
       "id": "al-126288",
       "title": "Sasaki and Miyano",
       "anilistId": 126288,
       "url": "https://anilist.co/anime/126288",
+      "firstSeasonUrl": "https://anilist.co/anime/126288",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 4,
       "parts": [
         {
@@ -878,7 +818,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 4
         },
         {
           "id": 146743,
@@ -889,24 +830,20 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 4
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx126288-v9RNANkv2JEi.jpg",
-      "addedAt": "2025-12-02",
-      "firstSeasonUrl": "https://anilist.co/anime/126288"
+      "addedAt": "2025-12-02"
     },
     {
       "id": "al-16417",
       "title": "Tamako Market",
       "anilistId": 16417,
       "url": "https://anilist.co/anime/16417",
+      "firstSeasonUrl": "https://anilist.co/anime/16417",
       "status": "completed",
-      "genres": [
-        "Slice of Life",
-        "Comedy",
-        "Romance"
-      ],
       "score": 4,
       "parts": [
         {
@@ -941,7 +878,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 4
         },
         {
           "id": 21014,
@@ -956,20 +894,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx16417-r8Njy5UnwvDE.png",
-      "addedAt": "2025-10-26",
-      "firstSeasonUrl": "https://anilist.co/anime/16417"
+      "addedAt": "2025-10-26"
     },
     {
       "id": "al-181444",
       "title": "The Fragrant Flower Blooms With Dignity",
       "anilistId": 181444,
       "url": "https://anilist.co/anime/181444",
+      "firstSeasonUrl": "https://anilist.co/anime/181444",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Drama",
-        "Romance"
-      ],
       "score": 8,
       "parts": [
         {
@@ -986,20 +919,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181444-Ut9DDUZdfHwg.jpg",
-      "addedAt": "2025-09-27",
-      "firstSeasonUrl": "https://anilist.co/anime/181444"
+      "addedAt": "2025-09-27"
     },
     {
       "id": "al-163623",
       "title": "Pseudo Harem",
       "anilistId": 163623,
       "url": "https://anilist.co/anime/163623",
+      "firstSeasonUrl": "https://anilist.co/anime/163623",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 6,
       "parts": [
         {
@@ -1016,21 +944,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163623-pzR6vIHoJh0b.jpg",
-      "addedAt": "2025-09-04",
-      "firstSeasonUrl": "https://anilist.co/anime/163623"
+      "addedAt": "2025-09-04"
     },
     {
       "id": "al-116267",
       "title": "TONIKAWA: Over The Moon For You",
       "anilistId": 116267,
       "url": "https://anilist.co/anime/116267",
+      "firstSeasonUrl": "https://anilist.co/anime/116267",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 8,
       "parts": [
         {
@@ -1092,19 +1015,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116267-Eo1biPBTlL4i.jpg",
-      "addedAt": "2025-06-14",
-      "firstSeasonUrl": "https://anilist.co/anime/116267"
+      "addedAt": "2025-06-14"
     },
     {
       "id": "al-66",
       "title": "Azumanga Daioh",
       "anilistId": 66,
       "url": "https://anilist.co/anime/66",
+      "firstSeasonUrl": "https://anilist.co/anime/66",
       "status": "watching",
-      "genres": [
-        "Comedy",
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -1142,19 +1061,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx66-ZqYQWl6LsfeI.png",
-      "addedAt": "2025-06-12",
-      "firstSeasonUrl": "https://anilist.co/anime/66"
+      "addedAt": "2025-06-12"
     },
     {
       "id": "al-101001",
       "title": "Asobi Asobase - workshop of fun -",
       "anilistId": 101001,
       "url": "https://anilist.co/anime/101001",
+      "firstSeasonUrl": "https://anilist.co/anime/101001",
       "status": "dropped",
-      "genres": [
-        "Comedy",
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -1192,20 +1107,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101001-UERCW0UGi0P7.jpg",
-      "addedAt": "2025-06-02",
-      "firstSeasonUrl": "https://anilist.co/anime/101001"
+      "addedAt": "2025-06-02"
     },
     {
       "id": "al-6574",
       "title": "Hanamaru Kindergarten",
       "anilistId": 6574,
       "url": "https://anilist.co/anime/6574",
+      "firstSeasonUrl": "https://anilist.co/anime/6574",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 5,
       "parts": [
         {
@@ -1233,22 +1143,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6574-rCLnJXp3NK0J.png",
-      "addedAt": "2025-05-25",
-      "firstSeasonUrl": "https://anilist.co/anime/6574"
+      "addedAt": "2025-05-25"
     },
     {
       "id": "al-21196",
       "title": "Kabaneri of the Iron Fortress",
       "anilistId": 21196,
       "url": "https://anilist.co/anime/21196",
+      "firstSeasonUrl": "https://anilist.co/anime/21196",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Drama",
-        "Fantasy",
-        "Horror",
-        "Supernatural"
-      ],
       "score": null,
       "parts": [
         {
@@ -1297,22 +1200,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21196-2PfPfIDrxKki.jpg",
-      "addedAt": "2025-05-24",
-      "firstSeasonUrl": "https://anilist.co/anime/21196"
+      "addedAt": "2025-05-24"
     },
     {
       "id": "al-15687",
       "title": "Love, Chunibyo & Other Delusions",
       "anilistId": 15687,
       "url": "https://anilist.co/anime/15687",
+      "firstSeasonUrl": "https://anilist.co/anime/15687",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life",
-        "Drama",
-        "Mecha"
-      ],
       "score": 8.5,
       "parts": [
         {
@@ -1348,7 +1244,8 @@
           "watched": 7,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2012
+          "year": 2012,
+          "score": 10
         },
         {
           "id": 16934,
@@ -1359,7 +1256,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 8
         },
         {
           "id": 19021,
@@ -1370,7 +1268,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 7
         },
         {
           "id": 20582,
@@ -1438,24 +1337,20 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 10
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx15687-KK6DHoXp1F0S.png",
-      "addedAt": "2025-05-12",
-      "firstSeasonUrl": "https://anilist.co/anime/15687"
+      "addedAt": "2025-05-12"
     },
     {
       "id": "al-98659",
       "title": "Classroom of the Elite",
       "anilistId": 98659,
       "url": "https://anilist.co/anime/98659",
+      "firstSeasonUrl": "https://anilist.co/anime/98659",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Psychological",
-        "Mystery"
-      ],
       "score": 8.3,
       "parts": [
         {
@@ -1519,23 +1414,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98659-WNyPLIZDpGGY.jpg",
-      "addedAt": "2025-03-28",
-      "firstSeasonUrl": "https://anilist.co/anime/98659"
+      "addedAt": "2025-03-28"
     },
     {
       "id": "al-5081",
       "title": "Bakemonogatari",
       "anilistId": 5081,
       "url": "https://anilist.co/anime/5081",
+      "firstSeasonUrl": "https://anilist.co/anime/5081",
       "status": "paused",
-      "genres": [
-        "Comedy",
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Romance",
-        "Supernatural"
-      ],
       "score": null,
       "parts": [
         {
@@ -1738,20 +1625,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5081-9GocceQ5Z865.jpg",
-      "addedAt": "2024-09-19",
-      "firstSeasonUrl": "https://anilist.co/anime/5081"
+      "addedAt": "2024-09-19"
     },
     {
       "id": "al-124080",
       "title": "Horimiya",
       "anilistId": 124080,
       "url": "https://anilist.co/anime/124080",
+      "firstSeasonUrl": "https://anilist.co/anime/124080",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 7,
       "parts": [
         {
@@ -1780,20 +1662,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124080-3i22mRVPBS0T.jpg",
-      "addedAt": "2024-08-01",
-      "firstSeasonUrl": "https://anilist.co/anime/124080"
+      "addedAt": "2024-08-01"
     },
     {
       "id": "al-20464",
       "title": "HAIKYU!!",
       "anilistId": 20464,
       "url": "https://anilist.co/anime/20464",
+      "firstSeasonUrl": "https://anilist.co/anime/20464",
       "status": "paused",
-      "genres": [
-        "Comedy",
-        "Drama",
-        "Sports"
-      ],
       "score": null,
       "parts": [
         {
@@ -1974,19 +1851,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20464-ooZUyBe4ptp9.png",
-      "addedAt": "2024-04-16",
-      "firstSeasonUrl": "https://anilist.co/anime/20464"
+      "addedAt": "2024-04-16"
     },
     {
       "id": "al-1614",
       "title": "Captain Tsubasa",
       "anilistId": 1614,
       "url": "https://anilist.co/anime/1614",
+      "firstSeasonUrl": "https://anilist.co/anime/1614",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Sports"
-      ],
       "score": 6,
       "parts": [
         {
@@ -2003,20 +1876,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1614-fRXNtx7QobbQ.jpg",
-      "addedAt": "2024-03-19",
-      "firstSeasonUrl": "https://anilist.co/anime/1614"
+      "addedAt": "2024-03-19"
     },
     {
       "id": "al-21827",
       "title": "Violet Evergarden",
       "anilistId": 21827,
       "url": "https://anilist.co/anime/21827",
+      "firstSeasonUrl": "https://anilist.co/anime/21827",
       "status": "paused",
-      "genres": [
-        "Drama",
-        "Fantasy",
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -2065,21 +1933,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21827-ubzq619ZA2E9.png",
-      "addedAt": "2024-03-15",
-      "firstSeasonUrl": "https://anilist.co/anime/21827"
+      "addedAt": "2024-03-15"
     },
     {
       "id": "al-142770",
       "title": "Suzume",
       "anilistId": 142770,
       "url": "https://anilist.co/anime/142770",
+      "firstSeasonUrl": "https://anilist.co/anime/142770",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Fantasy",
-        "Mystery",
-        "Supernatural"
-      ],
       "score": 7,
       "parts": [
         {
@@ -2096,22 +1958,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142770-dDaDIRnsv5jN.jpg",
-      "addedAt": "2024-02-14",
-      "firstSeasonUrl": "https://anilist.co/anime/142770"
+      "addedAt": "2024-02-14"
     },
     {
       "id": "al-150672",
       "title": "OSHI NO KO",
       "anilistId": 150672,
       "url": "https://anilist.co/anime/150672",
+      "firstSeasonUrl": "https://anilist.co/anime/150672",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Supernatural"
-      ],
       "score": 7.5,
       "parts": [
         {
@@ -2124,8 +1980,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "repeat": 1,
-          "score": 7.5
+          "score": 7.5,
+          "repeat": 1
         },
         {
           "id": 166531,
@@ -2163,22 +2019,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx150672-WqmmwZ4nMzAy.png",
-      "addedAt": "2023-06-25",
-      "firstSeasonUrl": "https://anilist.co/anime/150672"
+      "addedAt": "2023-06-25"
     },
     {
       "id": "al-20829",
       "title": "Seraph of the End: Vampire Reign",
       "anilistId": 20829,
       "url": "https://anilist.co/anime/20829",
+      "firstSeasonUrl": "https://anilist.co/anime/20829",
       "status": "paused",
-      "genres": [
-        "Action",
-        "Drama",
-        "Fantasy",
-        "Mystery",
-        "Supernatural"
-      ],
       "score": 10,
       "parts": [
         {
@@ -2190,7 +2039,8 @@
           "watched": 4,
           "status": "PAUSED",
           "release": "FINISHED",
-          "year": 2015
+          "year": 2015,
+          "score": 10
         },
         {
           "id": 21483,
@@ -2238,21 +2088,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20829-pgsXVjrfyI5V.png",
-      "addedAt": "2023-05-21",
-      "firstSeasonUrl": "https://anilist.co/anime/20829"
+      "addedAt": "2023-05-21"
     },
     {
       "id": "al-7088",
       "title": "Demon King Daimao",
       "anilistId": 7088,
       "url": "https://anilist.co/anime/7088",
+      "firstSeasonUrl": "https://anilist.co/anime/7088",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Comedy",
-        "Ecchi",
-        "Fantasy"
-      ],
       "score": 4,
       "parts": [
         {
@@ -2280,22 +2124,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7088-Y38q7jaBwlTZ.png",
-      "addedAt": "2023-05-18",
-      "firstSeasonUrl": "https://anilist.co/anime/7088"
+      "addedAt": "2023-05-18"
     },
     {
       "id": "al-19",
       "title": "Monster",
       "anilistId": 19,
       "url": "https://anilist.co/anime/19",
+      "firstSeasonUrl": "https://anilist.co/anime/19",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Horror",
-        "Mystery",
-        "Psychological",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -2312,20 +2149,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx19-gtMC64182sm4.jpg",
-      "addedAt": "2023-02-24",
-      "firstSeasonUrl": "https://anilist.co/anime/19"
+      "addedAt": "2023-02-24"
     },
     {
       "id": "al-99750",
       "title": "I Want to Eat Your Pancreas",
       "anilistId": 99750,
       "url": "https://anilist.co/anime/99750",
+      "firstSeasonUrl": "https://anilist.co/anime/99750",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 7,
       "parts": [
         {
@@ -2342,20 +2174,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99750-pNyly9d3MEgV.jpg",
-      "addedAt": "2023-01-19",
-      "firstSeasonUrl": "https://anilist.co/anime/99750"
+      "addedAt": "2023-01-19"
     },
     {
       "id": "al-20832",
       "title": "Overlord",
       "anilistId": 20832,
       "url": "https://anilist.co/anime/20832",
+      "firstSeasonUrl": "https://anilist.co/anime/20832",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Fantasy"
-      ],
       "score": 5,
       "parts": [
         {
@@ -2526,21 +2353,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20832-vUNm5zrYWifc.jpg",
-      "addedAt": "2023-01-06",
-      "firstSeasonUrl": "https://anilist.co/anime/20832"
+      "addedAt": "2023-01-06"
     },
     {
       "id": "al-108465",
       "title": "Mushoku Tensei: Jobless Reincarnation",
       "anilistId": 108465,
       "url": "https://anilist.co/anime/108465",
+      "firstSeasonUrl": "https://anilist.co/anime/108465",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Drama",
-        "Ecchi",
-        "Fantasy"
-      ],
       "score": null,
       "parts": [
         {
@@ -2622,23 +2443,17 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108465-1ANspF1EWyFx.jpg",
-      "addedAt": "2022-12-22",
-      "firstSeasonUrl": "https://anilist.co/anime/108465"
+      "addedAt": "2022-12-22"
     },
     {
       "id": "al-127230",
       "title": "Chainsaw Man",
       "anilistId": 127230,
       "url": "https://anilist.co/anime/127230",
+      "firstSeasonUrl": "https://anilist.co/anime/127230",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Drama",
-        "Horror",
-        "Supernatural",
-        "Romance"
-      ],
-      "score": 7.5,
+      "next": true,
+      "score": 7.9,
       "parts": [
         {
           "id": 127230,
@@ -2650,8 +2465,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 1,
-          "score": 7.5
+          "score": 7.5,
+          "repeat": 1
         },
         {
           "id": 198726,
@@ -2673,7 +2488,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "score": 9
         },
         {
           "id": 204429,
@@ -2688,22 +2504,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127230-DdP4vAdssLoz.png",
-      "addedAt": "2022-10-12",
-      "firstSeasonUrl": "https://anilist.co/anime/127230"
+      "addedAt": "2022-10-12"
     },
     {
       "id": "al-14813",
       "title": "My Teen Romantic Comedy SNAFU",
       "anilistId": 14813,
       "url": "https://anilist.co/anime/14813",
+      "firstSeasonUrl": "https://anilist.co/anime/14813",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life",
-        "Drama"
-      ],
-      "score": 9.5,
+      "score": 9.4,
       "parts": [
         {
           "id": 14813,
@@ -2715,8 +2525,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2013,
-          "repeat": 2,
-          "score": 9.5
+          "score": 9.5,
+          "repeat": 2
         },
         {
           "id": 18753,
@@ -2727,7 +2537,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 10
         },
         {
           "id": 20698,
@@ -2739,8 +2550,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "repeat": 1,
-          "score": 9.5
+          "score": 9.5,
+          "repeat": 1
         },
         {
           "id": 21769,
@@ -2751,7 +2562,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2016
+          "year": 2016,
+          "score": 7
         },
         {
           "id": 108489,
@@ -2763,8 +2575,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "repeat": 2,
-          "score": 9.5
+          "score": 9.5,
+          "repeat": 2
         },
         {
           "id": 128643,
@@ -2775,26 +2587,20 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 10
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14813-3mNvcKNEQcDs.jpg",
-      "addedAt": "2022-09-28",
-      "firstSeasonUrl": "https://anilist.co/anime/14813"
+      "addedAt": "2022-09-28"
     },
     {
       "id": "al-98460",
       "title": "Devilman Crybaby",
       "anilistId": 98460,
       "url": "https://anilist.co/anime/98460",
+      "firstSeasonUrl": "https://anilist.co/anime/98460",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Drama",
-        "Horror",
-        "Psychological",
-        "Supernatural"
-      ],
       "score": 7,
       "parts": [
         {
@@ -2811,19 +2617,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98460-bLtH2c3jd6sV.png",
-      "addedAt": "2022-09-17",
-      "firstSeasonUrl": "https://anilist.co/anime/98460"
+      "addedAt": "2022-09-17"
     },
     {
       "id": "al-98549",
       "title": "Pop Team Epic",
       "anilistId": 98549,
       "url": "https://anilist.co/anime/98549",
+      "firstSeasonUrl": "https://anilist.co/anime/98549",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Comedy"
-      ],
       "score": 5,
       "parts": [
         {
@@ -2862,20 +2665,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx98549-XfLyPhrP5Ors.jpg",
-      "addedAt": "2022-09-08",
-      "firstSeasonUrl": "https://anilist.co/anime/98549"
+      "addedAt": "2022-09-08"
     },
     {
       "id": "al-114963",
       "title": "A Whisker Away",
       "anilistId": 114963,
       "url": "https://anilist.co/anime/114963",
+      "firstSeasonUrl": "https://anilist.co/anime/114963",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Fantasy",
-        "Romance"
-      ],
       "score": 6,
       "parts": [
         {
@@ -2892,22 +2690,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114963-QWMbi5ttovSK.png",
-      "addedAt": "2022-07-23",
-      "firstSeasonUrl": "https://anilist.co/anime/114963"
+      "addedAt": "2022-07-23"
     },
     {
       "id": "al-21234",
       "title": "ERASED",
       "anilistId": 21234,
       "url": "https://anilist.co/anime/21234",
+      "firstSeasonUrl": "https://anilist.co/anime/21234",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Supernatural",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -2924,23 +2715,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21234-XmqW39aQ9o7O.jpg",
-      "addedAt": "2022-07-16",
-      "firstSeasonUrl": "https://anilist.co/anime/21234"
+      "addedAt": "2022-07-16"
     },
     {
       "id": "al-14719",
       "title": "JoJo's Bizarre Adventure (TV)",
       "anilistId": 14719,
       "url": "https://anilist.co/anime/14719",
+      "firstSeasonUrl": "https://anilist.co/anime/14719",
       "status": "watching",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Supernatural",
-        "Drama",
-        "Mystery",
-        "Sports"
-      ],
       "score": 9.8,
       "parts": [
         {
@@ -3063,24 +2846,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14719-VT5dRzTBSZ0w.jpg",
-      "addedAt": "2022-07-16",
-      "firstSeasonUrl": "https://anilist.co/anime/14719"
+      "addedAt": "2022-07-16"
     },
     {
       "id": "al-21355",
       "title": "Re:ZERO -Starting Life in Another World-",
       "anilistId": 21355,
       "url": "https://anilist.co/anime/21355",
+      "firstSeasonUrl": "https://anilist.co/anime/21355",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Drama",
-        "Fantasy",
-        "Psychological",
-        "Action",
-        "Adventure",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -3093,8 +2868,30 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "repeat": 1,
-          "score": 10
+          "score": 10,
+          "repeat": 1
+        },
+        {
+          "id": 21780,
+          "name": "Re:ZERO ~Starting Break Time From Zero~",
+          "kind": "season",
+          "format": "TV_SHORT",
+          "episodes": 11,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 21891,
+          "name": "Re:PETIT ~Re: Starting Life in Another World From PETIT~",
+          "kind": "season",
+          "format": "TV_SHORT",
+          "episodes": 14,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
         },
         {
           "id": 100049,
@@ -3105,7 +2902,8 @@
           "watched": 2,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 10
         },
         {
           "id": 108632,
@@ -3120,6 +2918,17 @@
           "score": 10
         },
         {
+          "id": 120700,
+          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 2nd Season",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2020
+        },
+        {
           "id": 119661,
           "name": "Re:ZERO -Starting Life in Another World- Season 2 Part 2",
           "kind": "season",
@@ -3130,6 +2939,17 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 10
+        },
+        {
+          "id": 128306,
+          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 2nd Season Part 2",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2021
         },
         {
           "id": 163134,
@@ -3143,6 +2963,17 @@
           "year": 2024
         },
         {
+          "id": 182417,
+          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 3rd Season",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 16,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
           "id": 189046,
           "name": "Re:ZERO -Starting Life in Another World- Season 4",
           "kind": "season",
@@ -3152,23 +2983,29 @@
           "status": "NONE",
           "release": "FINISHED",
           "year": 2026
+        },
+        {
+          "id": 210687,
+          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 4th Season",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 19,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg",
-      "addedAt": "2022-07-16",
-      "firstSeasonUrl": "https://anilist.co/anime/21355"
+      "addedAt": "2022-07-16"
     },
     {
       "id": "al-5680",
       "title": "K-ON!",
       "anilistId": 5680,
       "url": "https://anilist.co/anime/5680",
+      "firstSeasonUrl": "https://anilist.co/anime/5680",
       "status": "paused",
-      "genres": [
-        "Comedy",
-        "Music",
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -3250,20 +3087,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5680-r3AI3Cwfv0Aq.png",
-      "addedAt": "2022-07-06",
-      "firstSeasonUrl": "https://anilist.co/anime/5680"
+      "addedAt": "2022-07-06"
     },
     {
       "id": "al-20954",
       "title": "A Silent Voice",
       "anilistId": 20954,
       "url": "https://anilist.co/anime/20954",
+      "firstSeasonUrl": "https://anilist.co/anime/20954",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 7,
       "parts": [
         {
@@ -3280,22 +3112,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20954-sYRfE5jQRtSB.jpg",
-      "addedAt": "2022-06-17",
-      "firstSeasonUrl": "https://anilist.co/anime/20954"
+      "addedAt": "2022-06-17"
     },
     {
       "id": "al-21311",
       "title": "Bungo Stray Dogs",
       "anilistId": 21311,
       "url": "https://anilist.co/anime/21311",
+      "firstSeasonUrl": "https://anilist.co/anime/21311",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Comedy",
-        "Mystery",
-        "Supernatural"
-      ],
       "score": 7.6,
       "parts": [
         {
@@ -3342,7 +3168,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 8
         },
         {
           "id": 103223,
@@ -3355,6 +3182,17 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 7.6
+        },
+        {
+          "id": 120150,
+          "name": "Bungo Stray Dogs WAN!",
+          "kind": "season",
+          "format": "TV_SHORT",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2021
         },
         {
           "id": 141249,
@@ -3378,23 +3216,29 @@
           "status": "NONE",
           "release": "FINISHED",
           "year": 2023
+        },
+        {
+          "id": 201667,
+          "name": "Bungo Stray Dogs WAN! 2",
+          "kind": "season",
+          "format": "TV_SHORT",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21311-hAXyT8Yoh6G9.jpg",
-      "addedAt": "2022-06-08",
-      "firstSeasonUrl": "https://anilist.co/anime/21311"
+      "addedAt": "2022-06-08"
     },
     {
       "id": "al-21290",
       "title": "And you thought there is never a girl online?",
       "anilistId": 21290,
       "url": "https://anilist.co/anime/21290",
+      "firstSeasonUrl": "https://anilist.co/anime/21290",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Ecchi",
-        "Romance"
-      ],
       "score": 6,
       "parts": [
         {
@@ -3407,28 +3251,20 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "repeat": 1,
-          "score": 6
+          "score": 6,
+          "repeat": 1
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21290-R6qYWnylwpbL.png",
-      "addedAt": "2022-05-23",
-      "firstSeasonUrl": "https://anilist.co/anime/21290"
+      "addedAt": "2022-05-23"
     },
     {
       "id": "al-20",
       "title": "Naruto",
       "anilistId": 20,
       "url": "https://anilist.co/anime/20",
+      "firstSeasonUrl": "https://anilist.co/anime/20",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Comedy",
-        "Drama",
-        "Fantasy",
-        "Supernatural"
-      ],
       "score": null,
       "parts": [
         {
@@ -3708,21 +3544,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20-dE6UHbFFg1A5.jpg",
-      "addedAt": "2022-05-19",
-      "firstSeasonUrl": "https://anilist.co/anime/20"
+      "addedAt": "2022-05-19"
     },
     {
       "id": "al-112301",
       "title": "The Misfit of Demon King Academy: History’s Strongest Demon King Reincarnates and Goes to School with His Descendants",
       "anilistId": 112301,
       "url": "https://anilist.co/anime/112301",
+      "firstSeasonUrl": "https://anilist.co/anime/112301",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Fantasy",
-        "Comedy"
-      ],
-      "score": 5.5,
+      "score": 4.3,
       "parts": [
         {
           "id": 112301,
@@ -3734,8 +3565,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "repeat": 1,
-          "score": 5.5
+          "score": 5.5,
+          "repeat": 1
         },
         {
           "id": 130588,
@@ -3746,7 +3577,8 @@
           "watched": 6,
           "status": "DROPPED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 3
         },
         {
           "id": 130590,
@@ -3761,23 +3593,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112301-f88Fs2es4pSr.jpg",
-      "addedAt": "2022-05-18",
-      "firstSeasonUrl": "https://anilist.co/anime/112301"
+      "addedAt": "2022-05-18"
     },
     {
       "id": "al-20613",
       "title": "Akame ga Kill!",
       "anilistId": 20613,
       "url": "https://anilist.co/anime/20613",
+      "firstSeasonUrl": "https://anilist.co/anime/20613",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Drama",
-        "Fantasy",
-        "Horror",
-        "Psychological"
-      ],
       "score": 6,
       "parts": [
         {
@@ -3794,18 +3618,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20613-HXHpec4bemk5.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/20613"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-131548",
       "title": "Akebi’s Sailor Uniform",
       "anilistId": 131548,
       "url": "https://anilist.co/anime/131548",
+      "firstSeasonUrl": "https://anilist.co/anime/131548",
       "status": "completed",
-      "genres": [
-        "Slice of Life"
-      ],
       "score": null,
       "parts": [
         {
@@ -3821,23 +3642,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131548-4OXik3SWOaee.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/131548"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-11111",
       "title": "Another",
       "anilistId": 11111,
       "url": "https://anilist.co/anime/11111",
+      "firstSeasonUrl": "https://anilist.co/anime/11111",
       "status": "completed",
-      "genres": [
-        "Horror",
-        "Mystery",
-        "Thriller",
-        "Psychological",
-        "Supernatural"
-      ],
-      "score": 7.3,
+      "score": 7.2,
       "parts": [
         {
           "id": 11111,
@@ -3860,27 +3674,21 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2012
+          "year": 2012,
+          "score": 6.5
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11111-gvvE5bBYsyFo.png",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/11111"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-16498",
       "title": "Attack on Titan",
       "anilistId": 16498,
       "url": "https://anilist.co/anime/16498",
+      "firstSeasonUrl": "https://anilist.co/anime/16498",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Drama",
-        "Fantasy",
-        "Mystery",
-        "Psychological",
-        "Romance"
-      ],
+      "next": true,
       "score": 8.7,
       "parts": [
         {
@@ -3904,7 +3712,8 @@
           "watched": 3,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 8
         },
         {
           "id": 20691,
@@ -3926,7 +3735,8 @@
           "watched": 2,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 8
         },
         {
           "id": 20692,
@@ -3934,6 +3744,17 @@
           "kind": "movie",
           "format": "MOVIE",
           "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
+          "id": 21281,
+          "name": "Attack on Titan: Junior High",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
           "watched": 0,
           "status": "NONE",
           "release": "FINISHED",
@@ -4041,7 +3862,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 8
         },
         {
           "id": 162314,
@@ -4052,25 +3874,20 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 10
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16498-buvcRTBx4NSm.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/16498"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-100388",
       "title": "BANANA FISH",
       "anilistId": 100388,
       "url": "https://anilist.co/anime/100388",
+      "firstSeasonUrl": "https://anilist.co/anime/100388",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Drama",
-        "Psychological",
-        "Thriller"
-      ],
       "score": 6,
       "parts": [
         {
@@ -4087,21 +3904,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100388-hjkg1AnlJR5z.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/100388"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-269",
       "title": "Bleach",
       "anilistId": 269,
       "url": "https://anilist.co/anime/269",
+      "firstSeasonUrl": "https://anilist.co/anime/269",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Adventure",
-        "Supernatural"
-      ],
       "score": 7,
       "parts": [
         {
@@ -4229,21 +4041,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx269-d2GmRkJbMopq.png",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/269"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-20596",
       "title": "Blue Spring Ride",
       "anilistId": 20596,
       "url": "https://anilist.co/anime/20596",
+      "firstSeasonUrl": "https://anilist.co/anime/20596",
       "status": "completed",
-      "genres": [
-        "Romance",
-        "Slice of Life",
-        "Drama"
-      ],
-      "score": 2.7,
+      "score": 2.8,
       "parts": [
         {
           "id": 20596,
@@ -4266,7 +4073,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 2
         },
         {
           "id": 20900,
@@ -4277,25 +4085,20 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2014
+          "year": 2014,
+          "score": 4
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20596-fJdMHV8xRMgY.png",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/20596"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-1535",
       "title": "Death Note",
       "anilistId": 1535,
       "url": "https://anilist.co/anime/1535",
+      "firstSeasonUrl": "https://anilist.co/anime/1535",
       "status": "completed",
-      "genres": [
-        "Mystery",
-        "Psychological",
-        "Supernatural",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -4308,8 +4111,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2006,
-          "repeat": 1,
-          "score": 10
+          "score": 10,
+          "repeat": 1
         },
         {
           "id": 2994,
@@ -4320,28 +4123,21 @@
           "watched": 2,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2007
+          "year": 2007,
+          "score": 10
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1535-kUgkcrfOrkUM.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/1535"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-101922",
       "title": "Demon Slayer: Kimetsu no Yaiba",
       "anilistId": 101922,
       "url": "https://anilist.co/anime/101922",
+      "firstSeasonUrl": "https://anilist.co/anime/101922",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Fantasy",
-        "Supernatural",
-        "Drama",
-        "Mystery"
-      ],
-      "score": 5.5,
+      "score": 4.9,
       "parts": [
         {
           "id": 101922,
@@ -4364,7 +4160,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2020
+          "year": 2020,
+          "score": 7
         },
         {
           "id": 129874,
@@ -4398,7 +4195,8 @@
           "watched": 6,
           "status": "DROPPED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 3
         },
         {
           "id": 166240,
@@ -4446,21 +4244,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101922-WBsBl0ClmgYL.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/101922"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-17513",
       "title": "Diabolik Lovers",
       "anilistId": 17513,
       "url": "https://anilist.co/anime/17513",
+      "firstSeasonUrl": "https://anilist.co/anime/17513",
       "status": "dropped",
-      "genres": [
-        "Drama",
-        "Horror",
-        "Romance",
-        "Supernatural"
-      ],
       "score": null,
       "parts": [
         {
@@ -4487,21 +4279,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx17513-gfqhEF7XYYvm.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/17513"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-101347",
       "title": "Dororo",
       "anilistId": 101347,
       "url": "https://anilist.co/anime/101347",
+      "firstSeasonUrl": "https://anilist.co/anime/101347",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Drama",
-        "Supernatural"
-      ],
       "score": 10,
       "parts": [
         {
@@ -4518,23 +4304,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101347-TGaDwEYqLfm1.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/101347"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-97682",
       "title": "Grimoire of Zero",
       "anilistId": 97682,
       "url": "https://anilist.co/anime/97682",
+      "firstSeasonUrl": "https://anilist.co/anime/97682",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Fantasy",
-        "Adventure",
-        "Comedy",
-        "Drama",
-        "Ecchi"
-      ],
+      "next": true,
       "score": 6.5,
       "parts": [
         {
@@ -4547,8 +4326,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "repeat": 1,
-          "score": 6.5
+          "score": 6.5,
+          "repeat": 1
         },
         {
           "id": 149099,
@@ -4575,19 +4354,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx97682-YRhTwV979zSr.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/97682"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-20987",
       "title": "Himouto! Umaru-chan",
       "anilistId": 20987,
       "url": "https://anilist.co/anime/20987",
+      "firstSeasonUrl": "https://anilist.co/anime/20987",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Slice of Life"
-      ],
       "score": 8.7,
       "parts": [
         {
@@ -4603,6 +4378,17 @@
           "score": 8.7
         },
         {
+          "id": 21328,
+          "name": "Himouto! Umaru-chanS",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2015
+        },
+        {
           "id": 21327,
           "name": "Himouto! Umaru-chan OVA",
           "kind": "other",
@@ -4611,7 +4397,8 @@
           "watched": 2,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2015
+          "year": 2015,
+          "score": 8
         },
         {
           "id": 98572,
@@ -4627,22 +4414,17 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20987-9Tq7kZTeJPMo.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/20987"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-113415",
       "title": "JUJUTSU KAISEN",
       "anilistId": 113415,
       "url": "https://anilist.co/anime/113415",
+      "firstSeasonUrl": "https://anilist.co/anime/113415",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Supernatural",
-        "Drama"
-      ],
-      "score": 3.7,
+      "score": 4,
       "parts": [
         {
           "id": 113415,
@@ -4665,7 +4447,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 6
         },
         {
           "id": 145064,
@@ -4725,23 +4508,17 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113415-LHBAeoZDIsnF.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/113415"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-101921",
       "title": "Kaguya-sama: Love is War",
       "anilistId": 101921,
       "url": "https://anilist.co/anime/101921",
+      "firstSeasonUrl": "https://anilist.co/anime/101921",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Romance",
-        "Slice of Life",
-        "Psychological",
-        "Ecchi"
-      ],
-      "score": 8.5,
+      "next": true,
+      "score": 8.4,
       "parts": [
         {
           "id": 101921,
@@ -4753,8 +4530,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "repeat": 2,
-          "score": 8.5
+          "score": 8.5,
+          "repeat": 2
         },
         {
           "id": 112641,
@@ -4766,8 +4543,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "repeat": 2,
-          "score": 8.5
+          "score": 8.5,
+          "repeat": 2
         },
         {
           "id": 125368,
@@ -4778,7 +4555,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 3
         },
         {
           "id": 165557,
@@ -4801,8 +4579,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 2,
-          "score": 8.5
+          "score": 8.5,
+          "repeat": 2
         },
         {
           "id": 151384,
@@ -4825,7 +4603,8 @@
           "watched": 2,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2025
+          "year": 2025,
+          "score": 10
         },
         {
           "id": 205081,
@@ -4840,20 +4619,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101921-ufrjLzhSz7L1.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/101921"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-98314",
       "title": "Kakegurui",
       "anilistId": 98314,
       "url": "https://anilist.co/anime/98314",
+      "firstSeasonUrl": "https://anilist.co/anime/98314",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological"
-      ],
+      "next": true,
       "score": 8,
       "parts": [
         {
@@ -4879,24 +4654,29 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 8
+        },
+        {
+          "id": 141351,
+          "name": "Kakegurui Twin",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 6,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b98314-TSJykxVwCCQN.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/98314"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-512",
       "title": "Kiki's Delivery Service",
       "anilistId": 512,
       "url": "https://anilist.co/anime/512",
+      "firstSeasonUrl": "https://anilist.co/anime/512",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Drama",
-        "Fantasy",
-        "Slice of Life"
-      ],
       "score": 6,
       "parts": [
         {
@@ -4913,20 +4693,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx512-UwP8X4BR8YoM.png",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/512"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-21421",
       "title": "Kiznaiver",
       "anilistId": 21421,
       "url": "https://anilist.co/anime/21421",
+      "firstSeasonUrl": "https://anilist.co/anime/21421",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Romance",
-        "Sci-Fi"
-      ],
       "score": 6,
       "parts": [
         {
@@ -4943,22 +4718,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21421-5y8ryXsMB7aJ.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/21421"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-132405",
       "title": "My Dress-Up Darling",
       "anilistId": 132405,
       "url": "https://anilist.co/anime/132405",
+      "firstSeasonUrl": "https://anilist.co/anime/132405",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Comedy",
-        "Ecchi",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 5,
       "parts": [
         {
@@ -4986,21 +4755,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx132405-qP7FQYGmNI3d.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/132405"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-523",
       "title": "My Neighbor Totoro",
       "anilistId": 523,
       "url": "https://anilist.co/anime/523",
+      "firstSeasonUrl": "https://anilist.co/anime/523",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Fantasy",
-        "Slice of Life",
-        "Supernatural"
-      ],
       "score": 5,
       "parts": [
         {
@@ -5028,22 +4791,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx523-fErBvxOHP7IX.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/523"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-21",
       "title": "ONE PIECE",
       "anilistId": 21,
       "url": "https://anilist.co/anime/21",
+      "firstSeasonUrl": "https://anilist.co/anime/21",
       "status": "watching",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Comedy",
-        "Drama",
-        "Fantasy"
-      ],
       "score": null,
       "parts": [
         {
@@ -5311,10 +5067,10 @@
           "year": 2012
         },
         {
-          "id": 16239,
-          "name": "One Piece: Episode of Luffy - Hand Island Adventure",
-          "kind": "other",
-          "format": "SPECIAL",
+          "id": 12859,
+          "name": "One Piece Film: Z",
+          "kind": "movie",
+          "format": "MOVIE",
           "episodes": 1,
           "watched": 0,
           "status": "NONE",
@@ -5322,10 +5078,10 @@
           "year": 2012
         },
         {
-          "id": 12859,
-          "name": "One Piece Film: Z",
-          "kind": "movie",
-          "format": "MOVIE",
+          "id": 16239,
+          "name": "One Piece: Episode of Luffy - Hand Island Adventure",
+          "kind": "other",
+          "format": "SPECIAL",
           "episodes": 1,
           "watched": 0,
           "status": "NONE",
@@ -5542,6 +5298,17 @@
           "year": 2025
         },
         {
+          "id": 204432,
+          "name": "CHOPPER's",
+          "kind": "season",
+          "format": "TV_SHORT",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
+        },
+        {
           "id": 197178,
           "name": "ONE PIECE HEROINES",
           "kind": "other",
@@ -5576,19 +5343,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/21"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-2890",
       "title": "Ponyo",
       "anilistId": 2890,
       "url": "https://anilist.co/anime/2890",
+      "firstSeasonUrl": "https://anilist.co/anime/2890",
       "status": "completed",
-      "genres": [
-        "Adventure",
-        "Fantasy"
-      ],
       "score": 6,
       "parts": [
         {
@@ -5605,25 +5368,17 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2890-wcNtFr6aUYOR.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/2890"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-101291",
       "title": "Rascal Does Not Dream of Bunny Girl Senpai",
       "anilistId": 101291,
       "url": "https://anilist.co/anime/101291",
+      "firstSeasonUrl": "https://anilist.co/anime/101291",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Drama",
-        "Psychological",
-        "Romance",
-        "Supernatural",
-        "Comedy",
-        "Mystery"
-      ],
-      "score": 8.5,
+      "score": 8.6,
       "parts": [
         {
           "id": 101291,
@@ -5635,8 +5390,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "repeat": 2,
-          "score": 8.5
+          "score": 8.5,
+          "repeat": 2
         },
         {
           "id": 104157,
@@ -5647,7 +5402,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 9
         },
         {
           "id": 154967,
@@ -5695,22 +5451,17 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101291-wfEdgPqtfU0l.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/101291"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-21049",
       "title": "ReLIFE",
       "anilistId": 21049,
       "url": "https://anilist.co/anime/21049",
+      "firstSeasonUrl": "https://anilist.co/anime/21049",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Drama",
-        "Romance",
-        "Slice of Life"
-      ],
-      "score": 7.5,
+      "next": true,
+      "score": 7.6,
       "parts": [
         {
           "id": 21049,
@@ -5733,7 +5484,8 @@
           "watched": 4,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 8
         },
         {
           "id": 108939,
@@ -5748,23 +5500,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21049-4AHSLeiDE9eg.png",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/21049"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-140960",
       "title": "SPY x FAMILY",
       "anilistId": 140960,
       "url": "https://anilist.co/anime/140960",
+      "firstSeasonUrl": "https://anilist.co/anime/140960",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Comedy",
-        "Slice of Life",
-        "Supernatural",
-        "Adventure"
-      ],
-      "score": 7.8,
+      "score": 7.7,
       "parts": [
         {
           "id": 140960,
@@ -5776,8 +5521,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 1,
-          "score": 7.8
+          "score": 7.8,
+          "repeat": 1
         },
         {
           "id": 142838,
@@ -5789,8 +5534,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 1,
-          "score": 7.8
+          "score": 7.8,
+          "repeat": 1
         },
         {
           "id": 158927,
@@ -5813,7 +5558,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 7
         },
         {
           "id": 177937,
@@ -5829,22 +5575,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140960-Kb6R5nYQfjmP.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/140960"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-129201",
       "title": "Summer Time Rendering",
       "anilistId": 129201,
       "url": "https://anilist.co/anime/129201",
+      "firstSeasonUrl": "https://anilist.co/anime/129201",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Drama",
-        "Mystery",
-        "Supernatural",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -5857,28 +5596,20 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 2,
-          "score": 10
+          "score": 10,
+          "repeat": 2
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129201-HJBauga2be8I.png",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/129201"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-101280",
       "title": "That Time I Got Reincarnated as a Slime",
       "anilistId": 101280,
       "url": "https://anilist.co/anime/101280",
+      "firstSeasonUrl": "https://anilist.co/anime/101280",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Fantasy",
-        "Adventure",
-        "Action",
-        "Ecchi",
-        "Slice of Life"
-      ],
       "score": 10,
       "parts": [
         {
@@ -5891,8 +5622,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "repeat": 21,
-          "score": 10
+          "score": 10,
+          "repeat": 21
         },
         {
           "id": 106509,
@@ -5904,6 +5635,7 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
+          "score": 10,
           "repeat": 5
         },
         {
@@ -5916,8 +5648,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "repeat": 21,
-          "score": 10
+          "score": 10,
+          "repeat": 21
         },
         {
           "id": 116741,
@@ -5929,8 +5661,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "repeat": 3,
-          "score": 10
+          "score": 10,
+          "repeat": 3
         },
         {
           "id": 116742,
@@ -5942,8 +5674,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "repeat": 20,
-          "score": 10
+          "score": 10,
+          "repeat": 20
         },
         {
           "id": 146503,
@@ -5967,6 +5699,7 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
+          "score": 10,
           "repeat": 5
         },
         {
@@ -5979,6 +5712,7 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
+          "score": 10,
           "repeat": 5
         },
         {
@@ -5991,8 +5725,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2024,
-          "repeat": 6,
-          "score": 10
+          "score": 10,
+          "repeat": 6
         },
         {
           "id": 182206,
@@ -6003,7 +5737,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2026
+          "year": 2026,
+          "score": 10
         },
         {
           "id": 182205,
@@ -6041,20 +5776,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101280-tDxCVJm714nt.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/101280"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-21804",
       "title": "The Disastrous Life of Saiki K.",
       "anilistId": 21804,
       "url": "https://anilist.co/anime/21804",
+      "firstSeasonUrl": "https://anilist.co/anime/21804",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Slice of Life",
-        "Supernatural"
-      ],
       "score": 5.4,
       "parts": [
         {
@@ -6090,7 +5820,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 5
         },
         {
           "id": 112625,
@@ -6106,21 +5837,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21804-As6tDLAvEvNY.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/21804"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-129193",
       "title": "The Executioner and Her Way of Life",
       "anilistId": 129193,
       "url": "https://anilist.co/anime/129193",
+      "firstSeasonUrl": "https://anilist.co/anime/129193",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Adventure",
-        "Drama",
-        "Fantasy"
-      ],
       "score": 8,
       "parts": [
         {
@@ -6137,24 +5862,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129193-pT3W5PpiMAUB.png",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/129193"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-10620",
       "title": "The Future Diary",
       "anilistId": 10620,
       "url": "https://anilist.co/anime/10620",
+      "firstSeasonUrl": "https://anilist.co/anime/10620",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Supernatural",
-        "Psychological",
-        "Horror",
-        "Mystery",
-        "Thriller"
-      ],
-      "score": 6.3,
+      "score": 6.2,
       "parts": [
         {
           "id": 8460,
@@ -6165,7 +5882,8 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2010
+          "year": 2010,
+          "score": 4
         },
         {
           "id": 10620,
@@ -6199,25 +5917,20 @@
           "watched": 1,
           "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2013
+          "year": 2013,
+          "score": 8
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10620-dUZeNej0W4QN.png",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/10620"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-130586",
       "title": "The Greatest Demon Lord Is Reborn as a Typical Nobody",
       "anilistId": 130586,
       "url": "https://anilist.co/anime/130586",
+      "firstSeasonUrl": "https://anilist.co/anime/130586",
       "status": "completed",
-      "genres": [
-        "Action",
-        "Ecchi",
-        "Fantasy",
-        "Romance"
-      ],
       "score": 6,
       "parts": [
         {
@@ -6234,24 +5947,16 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130586-vzoz4X37RZwc.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/130586"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-20605",
       "title": "Tokyo Ghoul",
       "anilistId": 20605,
       "url": "https://anilist.co/anime/20605",
+      "firstSeasonUrl": "https://anilist.co/anime/20605",
       "status": "completed",
       "next": true,
-      "genres": [
-        "Action",
-        "Drama",
-        "Horror",
-        "Mystery",
-        "Psychological",
-        "Supernatural"
-      ],
       "score": 4,
       "parts": [
         {
@@ -6324,18 +6029,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b20605-k665mVkSug8D.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/20605"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-6211",
       "title": "Tokyo Magnitude 8.0",
       "anilistId": 6211,
       "url": "https://anilist.co/anime/6211",
+      "firstSeasonUrl": "https://anilist.co/anime/6211",
       "status": "completed",
-      "genres": [
-        "Drama"
-      ],
       "score": 6,
       "parts": [
         {
@@ -6363,21 +6065,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6211-2MCqBUXvmBdB.png",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/6211"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-120120",
       "title": "Tokyo Revengers",
       "anilistId": 120120,
       "url": "https://anilist.co/anime/120120",
+      "firstSeasonUrl": "https://anilist.co/anime/120120",
       "status": "dropped",
-      "genres": [
-        "Action",
-        "Drama",
-        "Romance",
-        "Supernatural"
-      ],
       "score": 5,
       "parts": [
         {
@@ -6391,6 +6087,17 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 5
+        },
+        {
+          "id": 132467,
+          "name": "Tokyo Revengers: Chibi Reve",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 24,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2021
         },
         {
           "id": 142853,
@@ -6415,6 +6122,17 @@
           "year": 2023
         },
         {
+          "id": 178084,
+          "name": "Douwa Revengers",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 18,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
           "id": 178083,
           "name": "Tokyo Revengers: War of the Three Titans Arc",
           "kind": "season",
@@ -6427,21 +6145,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx120120-cWDmnmeEntSe.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/120120"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-141014",
       "title": "Tomodachi Game",
       "anilistId": 141014,
       "url": "https://anilist.co/anime/141014",
+      "firstSeasonUrl": "https://anilist.co/anime/141014",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Mystery",
-        "Psychological",
-        "Thriller"
-      ],
       "score": 10,
       "parts": [
         {
@@ -6454,26 +6166,20 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 3,
-          "score": 10
+          "score": 10,
+          "repeat": 3
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141014-bTWr7TtS0wt9.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/141014"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-141774",
       "title": "Ya Boy Kongming!",
       "anilistId": 141774,
       "url": "https://anilist.co/anime/141774",
+      "firstSeasonUrl": "https://anilist.co/anime/141774",
       "status": "completed",
-      "genres": [
-        "Comedy",
-        "Drama",
-        "Music",
-        "Supernatural"
-      ],
       "score": 10,
       "parts": [
         {
@@ -6486,8 +6192,8 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "repeat": 1,
-          "score": 10
+          "score": 10,
+          "repeat": 1
         },
         {
           "id": 171026,
@@ -6502,21 +6208,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141774-iteNFzPq2oGw.jpg",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/141774"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-20665",
       "title": "Your lie in April",
       "anilistId": 20665,
       "url": "https://anilist.co/anime/20665",
+      "firstSeasonUrl": "https://anilist.co/anime/20665",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Music",
-        "Romance",
-        "Slice of Life"
-      ],
       "score": 10,
       "parts": [
         {
@@ -6544,20 +6244,15 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20665-TLgkL8T8IRFd.png",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/20665"
+      "addedAt": "2022-04-29"
     },
     {
       "id": "al-21519",
       "title": "Your Name.",
       "anilistId": 21519,
       "url": "https://anilist.co/anime/21519",
+      "firstSeasonUrl": "https://anilist.co/anime/21519",
       "status": "completed",
-      "genres": [
-        "Drama",
-        "Romance",
-        "Supernatural"
-      ],
       "score": 7,
       "parts": [
         {
@@ -6574,13 +6269,7 @@
         }
       ],
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21519-SUo3ZQuCbYhJ.png",
-      "addedAt": "2022-04-29",
-      "firstSeasonUrl": "https://anilist.co/anime/21519"
+      "addedAt": "2022-04-29"
     }
-  ],
-  "statsConfig": {
-    "animeCountRule": "completed_season_or_movie",
-    "includeInProgressEpisodes": true,
-    "genreSourceRule": "custom_only"
-  }
+  ]
 }

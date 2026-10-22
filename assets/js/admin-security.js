@@ -480,6 +480,40 @@
     return await res.json();
   }
 
+  async function githubListFileCommits(path = 'data/anime.json', perPage = 20) {
+    resetIdleTimer();
+    const repoOwner = (activeSession && activeSession.repoOwner) || 'tempestian';
+    const repoName = (activeSession && activeSession.repoName) || 'tempestian.github.io';
+    const pat = activeSession && activeSession.pat;
+    const cleanPath = String(path).replace(/^\/+/, '');
+    const url = `https://api.github.com/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}/commits?path=${encodeURIComponent(cleanPath)}&per_page=${Number(perPage) || 20}`;
+    const headers = { Accept: 'application/vnd.github+json' };
+    if (pat) headers.Authorization = `Bearer ${pat}`;
+    const res = await fetch(url, { headers, cache: 'no-store' });
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(`GitHub commit geçmişi okunamadı (${res.status}): ${txt.slice(0, 180)}`);
+    }
+    return await res.json();
+  }
+
+  async function githubGetFileAtRef(path = 'data/anime.json', ref = 'main') {
+    resetIdleTimer();
+    const repoOwner = (activeSession && activeSession.repoOwner) || 'tempestian';
+    const repoName = (activeSession && activeSession.repoName) || 'tempestian.github.io';
+    const pat = activeSession && activeSession.pat;
+    const cleanPath = String(path).replace(/^\/+/, '');
+    const url = `https://api.github.com/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}/contents/${cleanPath}?ref=${encodeURIComponent(ref)}`;
+    const headers = { Accept: 'application/vnd.github.v3.raw' };
+    if (pat) headers.Authorization = `Bearer ${pat}`;
+    const res = await fetch(url, { headers, cache: 'no-store' });
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(`Commit içeriği okunamadı (${res.status}): ${txt.slice(0, 180)}`);
+    }
+    return await res.text();
+  }
+
   async function githubTriggerWorkflow(workflowFile = 'sync-anilist.yml', inputs = { sync_mode: 'hybrid' }) {
     if (!activeSession || !activeSession.pat) {
       throw new Error('GitHub Actions tetiklemek için yetkilendirilmiş oturum gereklidir.');
@@ -574,6 +608,8 @@
     githubGetFile,
     githubPutFile,
     githubTriggerWorkflow,
+    githubListFileCommits,
+    githubGetFileAtRef,
     sanitizeText,
     sanitizeUrl
   };

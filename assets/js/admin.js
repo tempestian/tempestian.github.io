@@ -785,6 +785,7 @@
                 <option value="book">📚 Bölüm: Kitap</option>
                 <option value="guide">🧭 Bölüm: Rehber (Technopat Katalog)</option>
               </select>
+              <button type="button" class="btn-secondary" id="openCommitRecoveryBtn" title="GitHub'daki önceki commit'lerinizden düzenlediğiniz kategori, puan ve başyapıt verilerini tek tıkla geri getirir">🕰️ Eski Commit'ten Verileri Kurtar</button>
               <button type="button" class="btn-subtle" id="scanAllRelationsBtn" title="Listedeki animelerin İlk Sezon AniList Linklerini tarayarak eksik sezon, film ve yan içerikleri AniList'ten çeker">Yan İçerikleri Sorgula</button>
               <button type="button" class="btn-subtle" id="triggerActionsBtn" title="GitHub Actions üzerindeki sync-anilist.yml iş akışını tetikler">GitHub Actions Çalıştır</button>
               <button type="button" class="btn-subtle" id="toggleOverridesBtn">Senkron Kuralları (overrides.json)</button>
@@ -1253,6 +1254,26 @@
 
       <!-- ADIM 14: VERİ SAĞLIĞI DENETÇİSİ VE TEK TIKLA TAM YEDEKLEME / GERİ YÜKLEME MERKEZİ -->
       <div id="panelHealth" class="admin-panel" hidden>
+        <div class="admin-card glass sq" id="commitRecoveryCard">
+          <div class="card-head split-head">
+            <div>
+              <h2>🕰️ GitHub Commit Geçmişinden Kategori ve Puan Kurtarma</h2>
+              <p>Yeni ZIP yüklemesi sonrasında üzerine yazılan <code>data/anime.json</code> (veya <code>data/sections.json</code>) verilerinizi, GitHub reponuzdaki önceki commit'lerden tek tıkla geri yükleyin veya birleştirin.</p>
+            </div>
+            <div class="form-actions" style="margin:0">
+              <select id="commitHistoryFileSelect" class="inp glass" style="width:auto;min-width:165px;font-weight:650">
+                <option value="data/anime.json">📺 data/anime.json</option>
+                <option value="data/sections.json">⚙️ data/sections.json</option>
+                <option value="data/overrides.json">🔧 data/overrides.json</option>
+              </select>
+              <button type="button" class="btn-primary" id="fetchCommitHistoryBtn">🕰️ Repondaki Son Commit'leri Listele</button>
+            </div>
+          </div>
+          <div id="commitHistoryList" class="editor-stack">
+            <p class="help-txt" style="margin:0">Yukarıdaki <b>"Repondaki Son Commit'leri Listele"</b> butonuna tıkladığınızda GitHub deponuzdaki son commit'ler tarih ve saatleriyle aşağıda listelenir. 1 saat önceki commit'inizin yanındaki <b>"Kategorileri &amp; Puanları Kurtar"</b> butonuna basmanız yeterlidir.</p>
+          </div>
+        </div>
+
         <div class="admin-card glass sq">
           <div class="card-head split-head">
             <div>
@@ -3427,6 +3448,170 @@
   // ============================================================================
   // [AI-MIMARI-NOTU: ADIM 14 — VERİ SAĞLIĞI DENETÇİSİ VE TAM YEDEKLEME MERKEZİ]
   // ============================================================================
+  // [AI-MIMARI-NOTU]: GitHub Commit Geçmişinden `data/anime.json` (veya `sections.json`)
+  // kurtarma ve akıllı birleştirme motoru. Eski bir commit'teki `customGenres`, `genres`,
+  // `score`, `parts` (ve sezon puanları), `favorite`, `title` ve `status` düzenlemelerini
+  // yeni şemayı hiç bozmadan mevcut veriye aktarır.
+  function mergeHistoricalAnimeData(oldData, replaceEntirely = false) {
+    const oldList = Array.isArray(oldData && oldData.anime) ? oldData.anime : [];
+    if (!oldList.length) throw new Error('Seçilen commit içinde anime listesi bulunamadı.');
+
+    if (Array.isArray(oldData.customGenreCatalog) && oldData.customGenreCatalog.length) {
+      const catSet = new Set([...(state.animeData.customGenreCatalog || []), ...oldData.customGenreCatalog]);
+      state.animeData.customGenreCatalog = [...catSet];
+    }
+
+    if (replaceEntirely) {
+      for (const a of oldList) {
+        const parsed = parseAnilistUrlOrId(a.firstSeasonUrl || a.url || a.anilistId || a.id);
+        if (parsed.id) {
+          a.anilistId = parsed.id;
+          if (!a.firstSeasonUrl) a.firstSeasonUrl = parsed.url;
+          if (!a.url) a.url = parsed.url;
+        }
+        a.score = resolveEffectiveScore(a);
+      }
+      state.animeData.anime = oldList;
+    } else {
+      const curById = new Map();
+      const curByAid = new Map();
+      for (const cur of state.animeData.anime || []) {
+        curById.set(cur.id, cur);
+        if (cur.anilistId) curByAid.set(Number(cur.anilistId), cur);
+      }
+
+      for (const oldItem of oldList) {
+        const aid = Number(oldItem.anilistId) || parseAnilistUrlOrId(oldItem.firstSeasonUrl || oldItem.url || oldItem.id).id;
+        const target = curById.get(oldItem.id) || (aid ? curByAid.get(aid) : null);
+        if (target) {
+          if (oldItem.title) target.title = oldItem.title;
+          if (oldItem.status) target.status = oldItem.status;
+          if (oldItem.favorite) target.favorite = true;
+          if (Array.isArray(oldItem.customGenres) && oldItem.customGenres.length) {
+            target.customGenres = [...oldItem.customGenres];
+            target.genres = [...oldItem.customGenres];
+          } else if (oldItem.adminModified && Array.isArray(oldItem.genres) && oldItem.genres.length) {
+            target.customGenres = [...oldItem.genres];
+            target.genres = [...oldItem.genres];
+          }
+          if (Array.isArray(oldItem.parts) && oldItem.parts.length) {
+            const oldPartsById = new Map(oldItem.parts.map(p => [String(p.id), p]));
+            for (const tp of target.parts || []) {
+              const op = oldPartsById.get(String(tp.id));
+              if (op) {
+                if (op.score != null) tp.score = op.score;
+                if (op.watched != null) tp.watched = op.watched;
+                if (op.status) tp.status = op.status;
+                if (op.repeat != null) tp.repeat = op.repeat;
+                if (op.adminModified) tp.adminModified = true;
+              }
+            }
+          }
+          if (oldItem.score != null) {
+            const anyPartSc = (target.parts || []).some(p => p && p.score != null && Number(p.score) > 0);
+            if (!anyPartSc) {
+              for (const p of (target.parts || []).filter(x => x.kind === 'season' && x.status === 'COMPLETED')) {
+                p.score = Number(oldItem.score);
+              }
+            }
+            target.score = resolveEffectiveScore(target) ?? oldItem.score;
+          } else {
+            target.score = resolveEffectiveScore(target);
+          }
+          if (oldItem.adminModified) target.adminModified = true;
+          if (Array.isArray(oldItem.lockedFields)) {
+            target.lockedFields = [...new Set([...(target.lockedFields || []), ...oldItem.lockedFields])];
+          }
+        } else {
+          oldItem.score = resolveEffectiveScore(oldItem);
+          state.animeData.anime.push(oldItem);
+        }
+      }
+    }
+
+    state.animeData.anime.sort((a, b) => (b.addedAt || '').localeCompare(a.addedAt || '') || (a.title || '').localeCompare(b.title || '', 'tr'));
+    state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
+    state.animeData.updated = new Date().toISOString().slice(0, 10);
+    markDirty('anime');
+    renderAnimeAdminPanel();
+    renderHealthAuditor();
+  }
+
+  async function fetchAndRenderCommitHistory() {
+    const listEl = $('#commitHistoryList');
+    const btn = $('#fetchCommitHistoryBtn');
+    const filePath = ($('#commitHistoryFileSelect') && $('#commitHistoryFileSelect').value) || 'data/anime.json';
+    if (!listEl || !btn) return;
+    const orig = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Commit Geçmişi Çekiliyor...';
+    try {
+      const commits = await AdminSecurity.githubListFileCommits(filePath, 20);
+      listEl.replaceChildren();
+      if (!Array.isArray(commits) || !commits.length) {
+        listEl.innerHTML = `<p class="help-txt" style="margin:0">Bu dosya için commit geçmişi bulunamadı.</p>`;
+        return;
+      }
+      for (const c of commits) {
+        const sha = c.sha || '';
+        const shortSha = sha.slice(0, 7);
+        const msg = (c.commit && c.commit.message) ? c.commit.message.split('\n')[0] : 'Commit';
+        const dateRaw = (c.commit && c.commit.author && c.commit.author.date) || '';
+        const dateStr = dateRaw ? new Date(dateRaw).toLocaleString('tr-TR') : '';
+        const author = (c.commit && c.commit.author && c.commit.author.name) || '';
+
+        const item = document.createElement('div');
+        item.className = 'editor-item';
+        item.style.padding = '12px 16px';
+        item.innerHTML = `
+          <div class="editor-item-head">
+            <div>
+              <strong style="font-size:.93rem"><code>${AdminSecurity.sanitizeText(shortSha, 12)}</code> · ${AdminSecurity.sanitizeText(msg, 120)}</strong>
+              <p class="meta" style="margin-top:2px">🕒 ${AdminSecurity.sanitizeText(dateStr, 60)} · Yazar: ${AdminSecurity.sanitizeText(author, 60)}</p>
+            </div>
+            <div class="form-actions" style="margin:0">
+              ${filePath === 'data/anime.json' ? `<button type="button" class="btn-primary commit-merge-btn">⚡ Kategorileri &amp; Puanları Kurtar (Birleştir)</button>` : ''}
+              <button type="button" class="btn-secondary commit-replace-btn">Tamamen Bu Commit'e Dön</button>
+            </div>
+          </div>
+        `;
+        const restoreFn = async (replaceAll) => {
+          try {
+            toast(`${shortSha} commit'inden ${filePath} çekiliyor...`);
+            const rawJsonStr = await AdminSecurity.githubGetFileAtRef(filePath, sha);
+            const parsed = JSON.parse(rawJsonStr);
+            if (filePath === 'data/anime.json') {
+              mergeHistoricalAnimeData(parsed, replaceAll);
+              toast(`"${shortSha}" (${dateStr}) commit'indeki tüm kategori ve puanlar başarıyla kurtarıldı! Şimdi üstten "GitHub'a Kaydet" butonuna basabilirsiniz.`);
+            } else if (filePath === 'data/sections.json') {
+              state.config = normalizeConfig(parsed);
+              populateEditorFields();
+              markDirty('config');
+              toast(`"${shortSha}" commit'indeki site ayarları geri yüklendi!`);
+            } else if (filePath === 'data/overrides.json') {
+              state.overrides = { ...state.overrides, ...parsed };
+              renderOverridesEditor();
+              markDirty('overrides');
+              toast(`"${shortSha}" commit'indeki kurallar geri yüklendi!`);
+            }
+          } catch (err) {
+            toast('Kurtarma hatası: ' + err.message, 'err');
+          }
+        };
+        const mBtn = item.querySelector('.commit-merge-btn');
+        if (mBtn) mBtn.onclick = () => restoreFn(false);
+        item.querySelector('.commit-replace-btn').onclick = () => restoreFn(true);
+        listEl.append(item);
+      }
+      toast(`${commits.length} geçmiş commit listelendi.`);
+    } catch (err) {
+      toast(err.message, 'err');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = orig;
+    }
+  }
+
   function computeHealthReport(typeId) {
     const adapter = CONTENT_ADAPTER_REGISTRY[typeId] || CONTENT_ADAPTER_REGISTRY.anime;
     const items = adapter.getItems() || [];
@@ -4429,6 +4614,21 @@
         toast(`${adapter.countKey}.json indirildi.`);
       }
     };
+    if ($('#openCommitRecoveryBtn')) {
+      $('#openCommitRecoveryBtn').onclick = () => {
+        $$('[data-panel]').forEach(b => b.setAttribute('aria-selected', b.dataset.panel === 'health'));
+        $('#panelAnime').hidden = true;
+        $('#panelHealth').hidden = false;
+        renderHealthAuditor();
+        fetchAndRenderCommitHistory();
+      };
+    }
+    if ($('#fetchCommitHistoryBtn')) {
+      $('#fetchCommitHistoryBtn').onclick = fetchAndRenderCommitHistory;
+    }
+    if ($('#commitHistoryFileSelect')) {
+      $('#commitHistoryFileSelect').onchange = fetchAndRenderCommitHistory;
+    }
     $('#healthSectionSelect').onchange = renderHealthAuditor;
     $('#refreshHealthBtn').onclick = renderHealthAuditor;
     $('#exportFullSnapshotBtn').onclick = exportFullBackupSnapshot;

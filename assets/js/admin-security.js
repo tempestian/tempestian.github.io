@@ -537,6 +537,36 @@
     return true;
   }
 
+  async function githubGetLatestWorkflowRun(workflowFile = 'sync-guides.yml') {
+    if (!activeSession || !activeSession.pat) {
+      throw new Error('GitHub Actions durumunu okumak için yetkilendirilmiş oturum gereklidir.');
+    }
+    resetIdleTimer();
+    const { repoOwner, repoName, pat } = activeSession;
+    const url = `https://api.github.com/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}/actions/workflows/${encodeURIComponent(workflowFile)}/runs?per_page=1`;
+    const res = await fetch(url, {
+      headers: {
+        Accept: 'application/vnd.github+json',
+        Authorization: `Bearer ${pat}`
+      },
+      cache: 'no-store'
+    });
+    if (!res.ok) {
+      return null;
+    }
+    const data = await res.json();
+    const run = Array.isArray(data.workflow_runs) && data.workflow_runs.length ? data.workflow_runs[0] : null;
+    if (!run) return null;
+    return {
+      id: run.id,
+      status: run.status,
+      conclusion: run.conclusion,
+      htmlUrl: run.html_url,
+      createdAt: run.created_at,
+      updatedAt: run.updated_at
+    };
+  }
+
   function sanitizeText(str, maxLen = 1000) {
     if (str == null) return '';
     return String(str).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, maxLen);
@@ -608,6 +638,7 @@
     githubGetFile,
     githubPutFile,
     githubTriggerWorkflow,
+    githubGetLatestWorkflowRun,
     githubListFileCommits,
     githubGetFileAtRef,
     sanitizeText,

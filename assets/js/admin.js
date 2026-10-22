@@ -1760,7 +1760,19 @@
     if ($('#addNewAnimeBtn')) $('#addNewAnimeBtn').textContent = `+ Yeni ${adapter.label} Ekle`;
     if ($('#downloadAnimeJsonBtn')) $('#downloadAnimeJsonBtn').textContent = `${adapter.id === 'anime' ? 'anime' : adapter.countKey}.json İndir`;
     if ($('#scanAllRelationsBtn')) $('#scanAllRelationsBtn').hidden = adapter.id !== 'anime';
-    if ($('#triggerActionsBtn')) $('#triggerActionsBtn').hidden = adapter.id !== 'anime';
+    const trigBtn = $('#triggerActionsBtn');
+    if (trigBtn) {
+      trigBtn.hidden = !(adapter.id === 'anime' || adapter.id === 'guide');
+      if (!trigBtn.disabled) {
+        if (adapter.id === 'guide') {
+          trigBtn.textContent = "🔄 Technopat'tan Rehberleri Çek (GitHub Actions)";
+          trigBtn.title = "Sadece siz tıkladığınızda çalışır: Technopat Sosyal'de Bayram Tempestian (#657641) tarafından açılan 'Rehber' ön ekli tüm konuları GitHub Actions ile çekip listeler";
+        } else {
+          trigBtn.textContent = 'GitHub Actions Çalıştır';
+          trigBtn.title = 'GitHub Actions üzerindeki sync-anilist.yml iş akışını tetikler';
+        }
+      }
+    }
     if ($('#toggleOverridesBtn')) $('#toggleOverridesBtn').hidden = adapter.id !== 'anime';
     if (adapter.id !== 'anime' && $('#overridesEditorSection')) $('#overridesEditorSection').hidden = true;
 
@@ -4822,6 +4834,74 @@
     $('#addNewAnimeBtn').onclick = () => openAnimeEditor('__new__');
     $('#scanAllRelationsBtn').onclick = scanAllAnimeForSideContent;
     $('#triggerActionsBtn').onclick = async () => {
+      const adapter = getActiveAdminAdapter();
+      const btn = $('#triggerActionsBtn');
+      if (adapter.id === 'guide') {
+        try {
+          if (btn) {
+            btn.disabled = true;
+            btn.textContent = '⏳ Technopat Rehberleri Çekiliyor...';
+          }
+          const triggerTime = Date.now() - 5000;
+          await AdminSecurity.githubTriggerWorkflow('sync-guides.yml', {
+            user_id: '657641',
+            username: 'Bayram Tempestian',
+            prefix_filter: 'Rehber'
+          });
+          toast("GitHub Actions (Technopat Sosyal 'Rehber' Senkronu) başlatıldı! Tamamlandığında liste otomatik güncellenecek...");
+
+          let attempts = 0;
+          const maxAttempts = 28;
+          const pollTimer = setInterval(async () => {
+            attempts++;
+            try {
+              const run = await AdminSecurity.githubGetLatestWorkflowRun('sync-guides.yml');
+              if (run && new Date(run.createdAt).getTime() >= triggerTime) {
+                if (btn) {
+                  btn.textContent = run.status === 'completed'
+                    ? "🔄 Technopat'tan Rehberleri Çek (GitHub Actions)"
+                    : `⏳ Technopat Taranıyor (${run.status})...`;
+                }
+                if (run.status === 'completed') {
+                  clearInterval(pollTimer);
+                  if (btn) btn.disabled = false;
+                  if (run.conclusion === 'success') {
+                    const session = AdminSecurity.getSessionInfo();
+                    const rawGuides = await AdminSecurity.githubGetFileAtRef('data/guides.json', (session && session.branch) || 'main');
+                    const parsedGuides = JSON.parse(rawGuides);
+                    const items = Array.isArray(parsedGuides.items) ? parsedGuides.items : (parsedGuides.guides || []);
+                    const store = ensureMultiMediaStore('guide');
+                    store.items = items;
+                    store.customGenreCatalog = Array.isArray(parsedGuides.customGenreCatalog) ? parsedGuides.customGenreCatalog : store.customGenreCatalog;
+                    store.stats = parsedGuides.stats || computeStatsClient(items, state.animeData.statsConfig);
+                    store.dirty = false;
+                    updateDirtyIndicator();
+                    renderAnimeAdminPanel();
+                    toast(`✅ Technopat Sosyal rehber senkronu tamamlandı! Toplam ${items.length} rehber listelendi.`);
+                  } else {
+                    toast(`GitHub Actions tamamlandı ancak durum: ${run.conclusion || 'bilinmiyor'}. Actions sekmesini kontrol edin.`, 'err');
+                  }
+                }
+              }
+            } catch (_) {}
+            if (attempts >= maxAttempts) {
+              clearInterval(pollTimer);
+              if (btn) {
+                btn.disabled = false;
+                btn.textContent = "🔄 Technopat'tan Rehberleri Çek (GitHub Actions)";
+              }
+            }
+          }, 6000);
+        } catch (err) {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = "🔄 Technopat'tan Rehberleri Çek (GitHub Actions)";
+          }
+          toast(err.message, 'err');
+        }
+        return;
+      }
+
       try {
         await AdminSecurity.githubTriggerWorkflow('sync-anilist.yml', { sync_mode: 'relations_only' });
         toast('GitHub Actions (AniList ve yan içerik senkronu) başarıyla tetiklendi!');

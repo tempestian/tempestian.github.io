@@ -84,15 +84,10 @@
       "description": "Tempestian'ın izlediği animeler: puanlar, sezonlar ve izleme durumu.",
       "searchPlaceholder": "Ara",
       "emptyText": "Eşleşen anime yok.",
-      "footerText": "AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir.",
       "detailsText": "Ayrıntılar",
       "resetFilterText": "Filtreleri sıfırla",
-      "anilistButtonText": "AniList'te aç"
-    },
-    "guide": {
-      "title": "Rehber",
-      "metaTitle": "Rehber · Tempestian",
-      "description": "Bayram Tempestian'ın Technopat Sosyal üzerinde yayınladığı rehberler ve teknik inceleme kataloğu."
+      "anilistButtonText": "AniList'te aç",
+      "footerText": "AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir."
     }
   }
 }

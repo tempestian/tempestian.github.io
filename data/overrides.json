@@ -1,8 +1,19 @@
 {
   "exclude": [],
   "titles": {
+    "1535": "Death Note",
+    "1575": "Code Geass: Lelouch of the Rebellion",
+    "14719": "JoJo's Bizarre Adventure (TV)",
+    "14813": "My Teen Romantic Comedy SNAFU",
     "15687": "Love, Chunibyo & Other Delusions",
-    "20829": "Seraph of the End: Vampire Reign"
+    "16498": "Attack on Titan",
+    "20665": "Your lie in April",
+    "20829": "Seraph of the End: Vampire Reign",
+    "21234": "ERASED",
+    "21355": "Re:ZERO -Starting Life in Another World-",
+    "101280": "That Time I Got Reincarnated as a Slime",
+    "108463": "Toilet-bound Hanako-kun",
+    "141014": "Tomodachi Game"
   },
   "merge": {
     "8460": 10620

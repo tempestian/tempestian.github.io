@@ -14,6 +14,25 @@
 //           bu link üzerinden sezon, film ve yan içeriklerin (`PREQUEL`, `SEQUEL`,
 //           `SIDE_STORY`, `PARENT`, `SUMMARY`, `SPIN_OFF`) hem tekil hem de mevcut tüm
 //           animeler için toplu sorgulanıp site verilerine çekilmesi.
+// - Adım 14 (VERİ SAĞLIĞI DENETÇİSİ VE TAM YEDEKLEME / GERİ YÜKLEME MERKEZİ):
+//   * Tüm medya bölümlerinde kategorisi eksik, puanı eksik, kapak URL'si eksik,
+//     kaynak linki eksik veya yeni sezonu çıkmış yapımları tek ekranda raporlar
+//     ve tek tıkla ⚡ Hızlı Sıralı Düzenleme kuyruğuna gönderir.
+//   * Tüm site JSON dosyalarını (`sections`, `anime`, `overrides`, `series`, `movies`,
+//     `manga`, `books`, `guides`) tek bir tarihli pakette indirir ve geri yükler.
+// - Adım 15 (TECHNOPAT SOSYAL YÖNLENDİRMELİ REHBER KATALOĞU `/rehber/`):
+//   * Rehberleri sitede makale olarak tutmak yerine başlık, özet, kategori ve
+//     Technopat Sosyal konu linkiyle (`url`) katalog olarak yönetir.
+// - Adım 10 (ANILIST PROFİLİNDEN KOPUŞ & SIFIR-DEPOLAMA UZAKTAN KAPAK/VERİ ÇEKİCİ):
+//   * GitHub Pages depolama sınırını korumak için kapak görselleri repoya indirilmez;
+//     dış katalogların (AniList, IMDb/TVMaze, OpenLibrary) CDN URL'leri kullanılır.
+//   * `ExternalCatalogFetcher` modülü; Anime ve Manga için AniList GraphQL'den,
+//     Dizi ve Film için IMDb linki/ID'si (`tt...`) üzerinden, Kitap için OpenLibrary'den
+//     yalnızca kapak URL'si, çıkış yılı ve sezon/bölüm/cilt/sayfa yapısını çeker;
+//     genel global puanları ASLA çekmez (puanlar %100 kullanıcının kendi puanlarıdır).
+// - Adım 11 (FAVORİLER / BAŞYAPITLAR VİTRİNİ — `favorite: true`):
+//   * Hem liste satırlarında hem düzenleme modalında hem de Hızlı Sıralı Düzenleme
+//     kuyruğunda tek tıkla "★ Başyapıt / Favori" işaretleme ve filtreleme.
 // - Adım 9 (EVRENSEL HIZLI SIRALI TOPLU DÜZENLEME MİMARİSİ — ContentAdapterRegistry & UniversalRapidQueue):
 //   * Bu mimari SADECE Anime için değil; ileride eklenecek Manga, Kitap, Dizi, Film ve Rehber
 //     bölümleri için ortak bir Adaptör Deseni (Adapter Pattern) üzerine kurulmuştur.
@@ -213,6 +232,7 @@
     animeFilterQ: '',
     animeFilterStatus: 'all',
     animeFilterSource: 'all',
+    activeAdminMediaType: 'anime',
     editingAnimeId: null,
     editingDraft: null,
     multiMediaStore: {},
@@ -320,6 +340,7 @@
       episodes: 0,
       completedEpisodes: 0,
       inProgressEpisodes: 0,
+      favorites: 0,
       avgScore: null,
       byStatus: {},
       genres: [],
@@ -331,6 +352,7 @@
     const genreCounts = new Map();
 
     for (const a of list) {
+      if (a.favorite) stats.favorites++;
       const st = a.status || 'watching';
       stats.byStatus[st] = (stats.byStatus[st] || 0) + 1;
 
@@ -442,7 +464,9 @@
   }
 
   function quickIncrementEpisode(animeId, completeSeason = false) {
-    const item = (state.animeData.anime || []).find(a => a.id === animeId);
+    const adapter = getActiveAdminAdapter();
+    const list = adapter.getItems();
+    const item = list.find(a => a.id === animeId);
     if (!item) return;
     if (!Array.isArray(item.parts) || !item.parts.length) {
       item.parts = [{
@@ -485,13 +509,24 @@
     item.status = deriveFranchiseStatusFromParts(item.parts);
     item.score = resolveEffectiveScore(item);
 
-    state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
-    state.animeData.updated = new Date().toISOString().slice(0, 10);
-    markDirty('anime');
+    adapter.saveItem(item);
     renderAnimeAdminPanel();
 
     const frac = part.episodes ? `${part.watched}/${part.episodes}` : `${part.watched} bölüm`;
     toast(`${item.title} (${part.name}): ${frac} · ${part.status === 'COMPLETED' ? 'Tamamlandı!' : 'Güncellendi'}`);
+  }
+
+  function quickToggleFavorite(animeId) {
+    const adapter = getActiveAdminAdapter();
+    const list = adapter.getItems();
+    const item = list.find(a => a.id === animeId);
+    if (!item) return;
+    item.favorite = !item.favorite;
+    if (!item.favorite) delete item.favorite;
+    item.adminModified = true;
+    adapter.saveItem(item);
+    renderAnimeAdminPanel();
+    toast(item.favorite ? `"${item.title}" ★ Başyapıt / Favori olarak işaretlendi!` : `"${item.title}" favorilerden çıkarıldı.`);
   }
 
   function toast(msg, type = 'ok') {
@@ -516,11 +551,7 @@
     }
   }
 
-  function updateDirtyIndicator() {
-    const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || state.pendingUploads.size > 0;
-    const ind = $('#dirtyIndicator');
-    if (ind) ind.hidden = !anyDirty;
-  }
+
 
   function markDirty(kind = 'config') {
     if (kind === 'config') state.dirtyConfig = true;
@@ -727,12 +758,13 @@
       </div>
 
       <nav class="admin-nav glass sq" role="tablist" aria-label="Yönetim Bölümleri">
-        <button type="button" class="nav-tab" role="tab" data-panel="anime" aria-selected="true">Anime &amp; İstatistik</button>
+        <button type="button" class="nav-tab" role="tab" data-panel="anime" aria-selected="true">Medya &amp; İstatistik (Anime/Dizi/Film/Kitap)</button>
         <button type="button" class="nav-tab" role="tab" data-panel="rapid" aria-selected="false">⚡ Hızlı Sıralı Düzenleme</button>
         <button type="button" class="nav-tab" role="tab" data-panel="texts" aria-selected="false">Metinler &amp; Sayfalar</button>
         <button type="button" class="nav-tab" role="tab" data-panel="images" aria-selected="false">Görseller &amp; İkonlar</button>
         <button type="button" class="nav-tab" role="tab" data-panel="categories" aria-selected="false">Kategoriler (Bölümler)</button>
         <button type="button" class="nav-tab" role="tab" data-panel="boxes" aria-selected="false">Kutucuklar &amp; Bağlantılar</button>
+        <button type="button" class="nav-tab" role="tab" data-panel="health" aria-selected="false">🛡️ Veri Sağlığı &amp; Yedek</button>
         <button type="button" class="nav-tab" role="tab" data-panel="security" aria-selected="false">Profil &amp; Güvenlik</button>
       </nav>
 
@@ -741,10 +773,18 @@
         <div class="admin-card glass sq">
           <div class="card-head split-head">
             <div>
-              <h2>Anime Verileri, Ağırlıklı Puanlama ve Özel Kategori Yönetimi</h2>
-              <p>Sezon (<b>×1.00</b>), Film (<b>×0.35</b>) ve Yan İçerik (<b>×0.15</b>) puanlarınız genel puanı otomatik belirler. İstatistiklerde yalnızca sizin seçtiğiniz özel kategoriler (Shounen, Seinen, Isekai, Rom-Com vb.) yer alır.</p>
+              <h2 id="admPanelMainTitle">Medya Verileri, Ağırlıklı Puanlama ve Özel Kategori Yönetimi</h2>
+              <p id="admPanelMainSub">Sezon (<b>×1.00</b>), Film (<b>×0.35</b>) ve Yan İçerik (<b>×0.15</b>) puanlarınız genel puanı otomatik belirler. İstatistiklerde yalnızca sizin seçtiğiniz özel kategoriler yer alır.</p>
             </div>
             <div class="form-actions">
+              <select id="admMediaTypeSelect" class="inp glass" style="width:auto;min-width:155px;font-weight:650" title="Yönetilecek Medya Bölümünü Seçin">
+                <option value="anime">📺 Bölüm: Anime</option>
+                <option value="series">🎬 Bölüm: Dizi</option>
+                <option value="movie">🍿 Bölüm: Film</option>
+                <option value="manga">📖 Bölüm: Manga</option>
+                <option value="book">📚 Bölüm: Kitap</option>
+                <option value="guide">🧭 Bölüm: Rehber (Technopat Katalog)</option>
+              </select>
               <button type="button" class="btn-subtle" id="scanAllRelationsBtn" title="Listedeki animelerin İlk Sezon AniList Linklerini tarayarak eksik sezon, film ve yan içerikleri AniList'ten çeker">Yan İçerikleri Sorgula</button>
               <button type="button" class="btn-subtle" id="triggerActionsBtn" title="GitHub Actions üzerindeki sync-anilist.yml iş akışını tetikler">GitHub Actions Çalıştır</button>
               <button type="button" class="btn-subtle" id="toggleOverridesBtn">Senkron Kuralları (overrides.json)</button>
@@ -825,6 +865,7 @@
                 <option value="dropped">Bırakıldı</option>
                 <option value="planned">Planlandı</option>
                 <option value="next">Devam Edilecekler</option>
+                <option value="fav">★ Başyapıtlar / Favoriler</option>
               </select>
             </label>
             <label class="field">
@@ -864,6 +905,7 @@
                 <select id="rqFilterSelect" class="inp glass">
                   <option value="uncategorized">Özel Kategorisi Seçilmemiş Olanlar (Önerilen)</option>
                   <option value="all">Tüm Girdiler (Baştan Sona Sırayla)</option>
+                  <option value="favorites">★ Sadece Başyapıtlar / Favoriler</option>
                   <option value="unscored">Puanı Girilmemiş Olanlar</option>
                   <option value="unmodified">Henüz Admin Düzenlemesi Olmayanlar</option>
                   <option value="watching">Devam Edenler (İzleniyor / Okunuyor)</option>
@@ -898,6 +940,7 @@
             <div class="rq-poster-col">
               <div class="rq-poster"><img id="rqPosterImg" alt=""></div>
               <div class="score-badge-big" id="rqWeightedScoreBadge" title="Ağırlıklı Genel Puan">Puansız</div>
+              <button type="button" class="fav-toggle-btn" id="rqFavoriteBtn" style="width:100%;justify-content:center">☆ Başyapıt İşaretle</button>
               <button type="button" class="btn-subtle" id="rqOpenFullModalBtn" style="width:100%">Detaylı Pencere</button>
             </div>
 
@@ -1208,6 +1251,48 @@
         </div>
       </div>
 
+      <!-- ADIM 14: VERİ SAĞLIĞI DENETÇİSİ VE TEK TIKLA TAM YEDEKLEME / GERİ YÜKLEME MERKEZİ -->
+      <div id="panelHealth" class="admin-panel" hidden>
+        <div class="admin-card glass sq">
+          <div class="card-head split-head">
+            <div>
+              <h2>Veri Sağlığı Denetçisi (Eksik Veri &amp; Devam Sezonu Taraması)</h2>
+              <p>Seçili bölümdeki kategorisi eksik, puanı girilmemiş, kapak URL'si olmayan veya yeni sezonu çıkmış yapımları tespit edip tek tıkla <b>⚡ Hızlı Sıralı Düzenleme</b> kuyruğuna aktarır.</p>
+            </div>
+            <div class="form-actions" style="margin:0">
+              <select id="healthSectionSelect" class="inp glass" style="width:auto;min-width:170px;font-weight:650">
+                <option value="anime">📺 Anime Verileri</option>
+                <option value="series">🎬 Dizi Verileri</option>
+                <option value="movie">🍿 Film Verileri</option>
+                <option value="manga">📖 Manga Verileri</option>
+                <option value="book">📚 Kitap Verileri</option>
+                <option value="guide">🧭 Rehber Kataloğu</option>
+              </select>
+              <button type="button" class="btn-subtle" id="refreshHealthBtn">Denetimi Yenile</button>
+            </div>
+          </div>
+          <div id="healthAuditGrid" class="health-grid"></div>
+        </div>
+
+        <div class="admin-card glass sq">
+          <div class="card-head split-head">
+            <div>
+              <h2>Tek Tıkla Tam Yedekleme (Snapshot) ve Geri Yükleme Merkezi</h2>
+              <p>Sitedeki tüm JSON dosyalarını (<code>sections</code>, <code>anime</code>, <code>overrides</code>, <code>series</code>, <code>movies</code>, <code>manga</code>, <code>books</code>, <code>guides</code>) tek bir tarihli yedek paketinde indirin veya mevcut bir yedeği geri yükleyin.</p>
+            </div>
+            <button type="button" class="btn-primary" id="exportFullSnapshotBtn">📦 Tüm Site Verilerini Tek Pakette İndir (.json)</button>
+          </div>
+          <div class="field-row align-end">
+            <label class="field" style="flex:2">
+              <span>Yedek Paketi Dosyası Seç (<code>tempestian-backup-*.json</code>)</span>
+              <input type="file" id="importSnapshotFile" accept=".json,application/json" class="inp glass file-inp">
+            </label>
+            <button type="button" class="btn-secondary" id="restoreSnapshotBtn">📂 Yedeği Geri Yükle ve Uygula</button>
+          </div>
+          <div id="snapshotSummaryBox" class="status-banner ok" hidden></div>
+        </div>
+      </div>
+
       <div id="panelSecurity" class="admin-panel" hidden>
         <div class="card-grid">
           <div class="admin-card glass sq">
@@ -1292,11 +1377,15 @@
               </div>
               <div class="field-row align-end">
                 <label class="field" style="flex:2">
-                  <span>İlk Sezonun AniList Linki (URL)</span>
-                  <input type="url" id="aeFirstSeasonUrl" class="inp glass" placeholder="https://anilist.co/anime/101280/...">
-                  <small>Animenin 1. sezonunun AniList URL'sini girin. Bağlantılı sezon, film ve yan içerikler bu link üzerinden bulunup siteye çekilir.</small>
+                  <span id="aeUrlFieldLabel">İlk Sezonun AniList Linki (URL)</span>
+                  <input type="text" id="aeFirstSeasonUrl" class="inp glass" placeholder="https://anilist.co/anime/101280/... veya IMDb tt...">
+                  <small id="aeUrlFieldHint">Animenin 1. sezonunun AniList URL'sini (Dizi/Film için IMDb linkini, Kitap için OpenLibrary/ISBN bilgisini) girin.</small>
                 </label>
-                <button type="button" class="btn-secondary" id="fetchAnilistMetaBtn" title="İlk sezonun AniList linkinden kapak görselini, sezonları, filmleri ve yan içerikleri sorgular">Linkten Bağlantılı Animeleri Çek</button>
+                <label class="field" id="aeExtraMetaWrap" hidden>
+                  <span id="aeExtraMetaLabel">Yazar / Yönetmen / Kanal</span>
+                  <input type="text" id="aeExtraMetaInput" class="inp glass" placeholder="">
+                </label>
+                <button type="button" class="btn-secondary" id="fetchAnilistMetaBtn" title="Dış katalogdan kapak görseli URL'sini ve sezon/bölüm yapısını (genel puan hariç) çeker">Linkten Kapak &amp; Bilgileri Çek</button>
               </div>
               <label class="field">
                 <span>Kapak Görseli URL veya Yolu</span>
@@ -1326,6 +1415,9 @@
                   <span>Eklenme Tarihi</span>
                   <input type="date" id="aeAddedAt" class="inp glass">
                 </label>
+                <div class="field" style="align-self:end">
+                  <button type="button" class="fav-toggle-btn" id="aeFavoriteBtn" style="height:42px;justify-content:center">☆ Başyapıt / Favori</button>
+                </div>
               </div>
             </div>
           </div>
@@ -1489,6 +1581,28 @@
       deletedIds: Array.isArray(rawOv && rawOv.deletedIds) ? [...rawOv.deletedIds] : []
     };
 
+    // Adım 12: Dizi, Film, Manga ve Kitap veri dosyalarını yükle
+    let prevMulti = {};
+    try { prevMulti = JSON.parse(localStorage.getItem('tp_multimedia_preview') || '{}') || {}; } catch (e) {}
+    for (const mType of ['series', 'movie', 'manga', 'book', 'guide']) {
+      const adapter = CONTENT_ADAPTER_REGISTRY[mType];
+      if (!adapter) continue;
+      let rawM = prevMulti[mType] || null;
+      if (!rawM) {
+        try {
+          const r = await fetch(root + adapter.dataFile, { cache: 'no-store' });
+          if (r.ok) rawM = await r.json();
+        } catch (e) {}
+      }
+      const items = (rawM && (rawM[adapter.countKey] || rawM.items)) || [];
+      state.multiMediaStore[mType] = {
+        items,
+        customGenreCatalog: Array.isArray(rawM && rawM.customGenreCatalog) ? rawM.customGenreCatalog : [],
+        stats: computeStatsClient(items, state.animeData.statsConfig),
+        dirty: false
+      };
+    }
+
     populateEditorFields();
     renderAnimeAdminPanel();
     renderOverridesEditor();
@@ -1503,9 +1617,16 @@
     const listEl = $('#animeAdminList');
     if (!statsBar || !listEl) return;
 
-    const list = state.animeData.anime || [];
-    state.animeData.stats = computeStatsClient(list, state.animeData.statsConfig);
-    const S = state.animeData.stats;
+    const adapter = getActiveAdminAdapter();
+    const list = adapter.getItems();
+    const S = computeStatsClient(list, state.animeData.statsConfig);
+    if (adapter.id === 'anime') state.animeData.stats = S;
+    else if (state.multiMediaStore[adapter.id]) state.multiMediaStore[adapter.id].stats = S;
+    if ($('#addNewAnimeBtn')) $('#addNewAnimeBtn').textContent = `+ Yeni ${adapter.label} Ekle`;
+    if ($('#downloadAnimeJsonBtn')) $('#downloadAnimeJsonBtn').textContent = `${adapter.id === 'anime' ? 'anime' : adapter.countKey}.json İndir`;
+    if ($('#scanAllRelationsBtn')) $('#scanAllRelationsBtn').hidden = adapter.id !== 'anime';
+    if ($('#triggerActionsBtn')) $('#triggerActionsBtn').hidden = adapter.id !== 'anime';
+    if ($('#toggleOverridesBtn')) $('#toggleOverridesBtn').hidden = adapter.id !== 'anime';
     const categorizedCount = list.filter(a => Array.isArray(a.customGenres) && a.customGenres.length > 0).length;
     const topGenreLabel = S.genres && S.genres.length ? `${S.genres[0].name} (${S.genres[0].count})` : 'Henüz seçilmedi';
 
@@ -1516,6 +1637,7 @@
       <div class="adm-stat-pill"><b>${S.film || 0}</b><span>Bitmiş Film</span></div>
       <div class="adm-stat-pill"><b>${S.episodes || 0}</b><span>İzlenen Bölüm</span></div>
       <div class="adm-stat-pill"><b>${S.avgScore ?? '-'}</b><span>Ort. Puan</span></div>
+      <div class="adm-stat-pill"><b>★ ${S.favorites || 0}</b><span>Başyapıt / Favori</span></div>
       <div class="adm-stat-pill"><b>${topGenreLabel}</b><span>Lider Kategori</span></div>
       <div class="adm-stat-pill"><b>${categorizedCount} / ${list.length}</b><span>Kategorisi Seçilen</span></div>
     `;
@@ -1528,8 +1650,9 @@
       const gText = resolveEffectiveGenres(it, 'custom_only').join(' ').toLocaleLowerCase('tr');
       if (q && !(it.title || '').toLocaleLowerCase('tr').includes(q) && !gText.includes(q) && !String(it.id || '').toLowerCase().includes(q) && !String(it.anilistId || '').includes(q) && !String(it.firstSeasonUrl || '').toLowerCase().includes(q)) return false;
       if (stF !== 'all') {
+        if (stF === 'fav' && !it.favorite) return false;
         if (stF === 'next' && !it.next) return false;
-        if (stF !== 'next' && it.status !== stF) return false;
+        if (stF !== 'next' && stF !== 'fav' && it.status !== stF) return false;
       }
       if (srcF !== 'all') {
         const isManual = it.source === 'manual' || String(it.id).startsWith('custom-');
@@ -1573,6 +1696,7 @@
           <div class="anime-adm-title">
             <span class="adm-row-t"></span>
             <span class="src-badge ${isManual ? 'manual' : it.adminModified ? 'modified' : ''}">${isManual ? 'Elle Eklendi' : it.adminModified ? 'Admin Düzenlemeli' : 'AniList'}</span>
+            ${it.favorite ? '<span class="src-badge fav">★ Başyapıt</span>' : ''}
             ${it.next ? '<span class="src-badge next">Devam edilecek</span>' : ''}
             <span class="adm-genre-pills"></span>
           </div>
@@ -1585,6 +1709,7 @@
           </div>
         </div>
         <div class="editor-item-actions">
+          <button type="button" class="fav-toggle-btn adm-fav-btn ${it.favorite ? 'on' : ''}" title="Favori / Başyapıt olarak işaretle">${it.favorite ? '★ Başyapıt' : '☆'}</button>
           <button type="button" class="quick-ep-btn adm-plus-ep-btn" title="Aktif sezona +1 izlenen bölüm ekler ve toplam bölüme anında yansıtır">+1 Bölüm</button>
           <button type="button" class="quick-ep-btn done adm-done-part-btn" title="Aktif sezonu tamamlandı olarak işaretler">Tamamla</button>
           <button type="button" class="btn-subtle adm-edit-btn">Düzenle</button>
@@ -1620,6 +1745,7 @@
         urlSlot.textContent = 'Salt Yerel';
       }
 
+      row.querySelector('.adm-fav-btn').onclick = () => quickToggleFavorite(it.id);
       row.querySelector('.adm-plus-ep-btn').onclick = () => quickIncrementEpisode(it.id, false);
       row.querySelector('.adm-done-part-btn').onclick = () => quickIncrementEpisode(it.id, true);
       row.querySelector('.adm-edit-btn').onclick = () => openAnimeEditor(it.id);
@@ -1630,22 +1756,29 @@
   }
 
   function deleteAnimeItem(animeId) {
-    const idx = state.animeData.anime.findIndex(a => a.id === animeId);
+    const adapter = getActiveAdminAdapter();
+    const list = adapter.getItems();
+    const idx = list.findIndex(a => a.id === animeId);
     if (idx < 0) return;
-    const target = state.animeData.anime[idx];
-    state.animeData.anime.splice(idx, 1);
-    if (target.anilistId && !state.overrides.exclude.includes(Number(target.anilistId))) {
-      state.overrides.exclude.push(Number(target.anilistId));
-      markDirty('overrides');
+    const target = list[idx];
+    list.splice(idx, 1);
+    if (adapter.id === 'anime') {
+      if (target.anilistId && !state.overrides.exclude.includes(Number(target.anilistId))) {
+        state.overrides.exclude.push(Number(target.anilistId));
+        markDirty('overrides');
+      }
+      if (!state.overrides.deletedIds.includes(target.id)) {
+        state.overrides.deletedIds.push(target.id);
+        markDirty('overrides');
+      }
+      markDirty('anime');
+      renderOverridesEditor();
+    } else {
+      ensureMultiMediaStore(adapter.id).dirty = true;
+      updateDirtyIndicator();
     }
-    if (!state.overrides.deletedIds.includes(target.id)) {
-      state.overrides.deletedIds.push(target.id);
-      markDirty('overrides');
-    }
-    markDirty('anime');
     renderAnimeAdminPanel();
-    renderOverridesEditor();
-    toast(`"${target.title}" listeden kaldırıldı ve tekrar senkronlanmaması için hariç tutulanlara eklendi.`);
+    toast(`"${target.title}" listeden kaldırıldı.`);
   }
 
   function renderOverridesEditor() {
@@ -1715,9 +1848,10 @@
   }
 
   function openAnimeEditor(animeId = '__new__') {
+    const adapter = getActiveAdminAdapter();
     state.editingAnimeId = animeId;
     const isNew = animeId === '__new__';
-    const existing = !isNew ? state.animeData.anime.find(a => a.id === animeId) : null;
+    const existing = !isNew ? adapter.getItems().find(a => a.id === animeId) : null;
 
     state.editingDraft = existing ? structuredClone(existing) : {
       id: 'custom-' + Date.now(),
@@ -1755,7 +1889,22 @@
     const parsed = parseAnilistUrlOrId(d.firstSeasonUrl || d.url || d.anilistId || d.id);
     const initialUrl = d.firstSeasonUrl || parsed.url || '';
 
-    $('#animeModalTitle').textContent = isNew ? 'Yeni Anime Ekle (İlk Sezon AniList Linki veya Elle)' : `Anime Düzenle: ${d.title}`;
+    $('#animeModalTitle').textContent = isNew ? `Yeni ${adapter.label} Ekle` : `${adapter.label} Düzenle: ${d.title}`;
+    $('#aeUrlFieldLabel').textContent = adapter.externalUrlLabel || 'Kaynak Linki (URL)';
+    $('#fetchAnilistMetaBtn').textContent = (adapter.id === 'series' || adapter.id === 'movie')
+      ? "IMDb'den Kapak & Sezon Çek"
+      : adapter.id === 'book'
+        ? "OpenLibrary'den Kapak & Bilgi Çek"
+        : "Linkten Kapak & Bağlantılı İçerikleri Çek";
+    const exWrap = $('#aeExtraMetaWrap');
+    if (adapter.extraMetaField) {
+      exWrap.hidden = false;
+      $('#aeExtraMetaLabel').textContent = adapter.extraMetaField.label;
+      $('#aeExtraMetaInput').placeholder = adapter.extraMetaField.placeholder || '';
+      $('#aeExtraMetaInput').value = d[adapter.extraMetaField.key] || '';
+    } else {
+      exWrap.hidden = true;
+    }
     $('#aeTitle').value = d.title || '';
     $('#aeFirstSeasonUrl').value = initialUrl;
     $('#aeAnilistId').value = parsed.id || '';
@@ -1770,11 +1919,20 @@
     $('#aeGenresInput').value = activeGenres.join(', ');
     $('#deleteAnimeModalBtn').hidden = isNew;
 
+    syncModalFavoriteBtn();
     syncScoreStudioUI();
     renderQuickScoreChips();
     renderAnimeGenreStudio();
     renderAnimePartsEditor();
     $('#animeEditModal').hidden = false;
+  }
+
+  function syncModalFavoriteBtn() {
+    const btn = $('#aeFavoriteBtn');
+    if (!btn || !state.editingDraft) return;
+    const isFav = Boolean(state.editingDraft.favorite);
+    btn.classList.toggle('on', isFav);
+    btn.textContent = isFav ? '★ Başyapıt (Seçili)' : '☆ Başyapıt İşaretle';
   }
 
   function syncScoreStudioUI() {
@@ -1835,8 +1993,9 @@
         .filter(Boolean)
     );
 
-    const groups = [...CURATED_GENRE_GROUPS];
-    const extraCustom = (state.animeData.customGenreCatalog || []).filter(Boolean);
+    const adapter = getActiveAdminAdapter();
+    const groups = [...(adapter.categoryGroups || CURATED_GENRE_GROUPS)];
+    const extraCustom = (adapter.getCustomCatalog() || []).filter(Boolean);
     if (extraCustom.length) {
       groups.push({ label: 'Sizin Eklediğiniz Özel Kategoriler', items: extraCustom });
     }
@@ -2083,6 +2242,48 @@
   }
 
   async function fetchAnilistRelationsForModal() {
+    const adapter = getActiveAdminAdapter();
+    const rawUrlOrQuery = $('#aeFirstSeasonUrl').value.trim() || $('#aeTitle').value.trim();
+    if (adapter.id !== 'anime') {
+      if (!rawUrlOrQuery) {
+        toast('Lütfen önce bir link (IMDb, OpenLibrary, AniList) veya başlık girin.', 'warn');
+        return;
+      }
+      const btn = $('#fetchAnilistMetaBtn');
+      const orig = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Sorgulanıyor...';
+      try {
+        let info = null;
+        if (adapter.id === 'manga') info = await ExternalCatalogFetcher.fetchMangaFromAnilist(rawUrlOrQuery);
+        else if (adapter.id === 'series' || adapter.id === 'movie') info = await ExternalCatalogFetcher.fetchSeriesOrMovieFromImdb(rawUrlOrQuery, adapter.id);
+        else if (adapter.id === 'book') info = await ExternalCatalogFetcher.fetchBookFromOpenLibrary(rawUrlOrQuery);
+        if (info) {
+          if (info.title && !$('#aeTitle').value.trim()) $('#aeTitle').value = info.title;
+          if (info.image) {
+            $('#aeImage').value = info.image;
+            $('#aeCoverPreview').src = resolvePreviewSrc(info.image);
+          }
+          if (info.url) $('#aeFirstSeasonUrl').value = info.url;
+          if (info.extraMeta && adapter.extraMetaField) {
+            $('#aeExtraMetaInput').value = info.extraMeta;
+            state.editingDraft[adapter.extraMetaField.key] = info.extraMeta;
+          }
+          if (Array.isArray(info.parts) && info.parts.length) {
+            state.editingDraft.parts = info.parts;
+            renderAnimePartsEditor();
+            syncScoreStudioUI();
+          }
+          toast(`${adapter.label} kapak URL'si ve bilgileri (puanlar hariç) çekildi!`);
+        }
+      } catch (err) {
+        toast('Sorgu başarısız: ' + err.message, 'err');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = orig;
+      }
+      return;
+    }
     const parsed = parseAnilistUrlOrId($('#aeFirstSeasonUrl').value.trim() || $('#aeAnilistId').value.trim());
     if (!parsed.id) {
       toast('Lütfen önce ilk sezonun AniList linkini (URL) veya ID\'sini girin.', 'warn');
@@ -2312,6 +2513,8 @@
     const nextSel = $('#aeNext').value;
     if (nextSel === 'yes') d.next = true;
     else if (nextSel === 'no') delete d.next;
+    if (d.favorite) d.favorite = true;
+    else delete d.favorite;
 
     d.addedAt = S($('#aeAddedAt').value, 20) || new Date().toISOString().slice(0, 10);
 
@@ -2338,29 +2541,33 @@
     if (nextSel !== 'auto') locked.add('next');
     d.lockedFields = [...locked];
 
-    if (d.anilistId) {
-      state.overrides.titles[String(d.anilistId)] = d.title;
-      state.overrides.exclude = (state.overrides.exclude || []).filter(x => Number(x) !== Number(d.anilistId));
-      markDirty('overrides');
+    const adapter = getActiveAdminAdapter();
+    if (adapter.extraMetaField) {
+      d[adapter.extraMetaField.key] = S($('#aeExtraMetaInput').value, 160);
     }
-    state.overrides.deletedIds = (state.overrides.deletedIds || []).filter(x => x !== d.id);
-
-    const existingIdx = state.animeData.anime.findIndex(a => a.id === state.editingAnimeId || a.id === d.id);
-    if (existingIdx >= 0) {
-      state.animeData.anime[existingIdx] = d;
-    } else {
-      state.animeData.anime.unshift(d);
+    if (adapter.id !== 'anime' && rawUrlInput) {
+      d.firstSeasonUrl = U(rawUrlInput, false);
+      d.url = d.firstSeasonUrl;
     }
+    if (adapter.id === 'anime') {
+      if (d.anilistId) {
+        state.overrides.titles[String(d.anilistId)] = d.title;
+        state.overrides.exclude = (state.overrides.exclude || []).filter(x => Number(x) !== Number(d.anilistId));
+        markDirty('overrides');
+      }
+      state.overrides.deletedIds = (state.overrides.deletedIds || []).filter(x => x !== d.id);
+    }
+    const list = adapter.getItems();
+    const existingIdx = list.findIndex(a => a.id === state.editingAnimeId || a.id === d.id);
+    if (existingIdx >= 0) list[existingIdx] = d;
+    else list.unshift(d);
+    list.sort((a, b) => (b.addedAt || '').localeCompare(a.addedAt || '') || (a.title || '').localeCompare(b.title || '', 'tr'));
+    adapter.saveItem(d);
 
-    state.animeData.anime.sort((a, b) => (b.addedAt || '').localeCompare(a.addedAt || '') || (a.title || '').localeCompare(b.title || '', 'tr'));
-    state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
-    state.animeData.updated = new Date().toISOString().slice(0, 10);
-
-    markDirty('anime');
     $('#animeEditModal').hidden = true;
     renderAnimeAdminPanel();
-    renderOverridesEditor();
-    toast(`"${d.title}" kaydedildi (Ağırlıklı Puan: ${d.score ?? 'Puansız'}).`);
+    if (adapter.id === 'anime') renderOverridesEditor();
+    toast(`"${d.title}" (${adapter.label}) kaydedildi (Ağırlıklı Puan: ${d.score ?? 'Puansız'}).`);
   }
 
   // ============================================================================
@@ -2383,6 +2590,183 @@
   // 3. Kuyruk motoruna (`buildRapidQueue`, `renderRapidQueueCard`, `saveRapidQueueCurrentAndAdvance`)
   //    DOKUNMAMAK — çünkü motor tamamen adaptör güdümlüdür!
   // ============================================================================
+  // ============================================================================
+  // [AI-MIMARI-NOTU: ADIM 10 — SIFIR-DEPOLAMA UZAKTAN KAPAK VE METADATA ÇEKİCİ]
+  // GitHub Pages depolama sınırını korumak için görseller repoya indirilmez.
+  // Bu servis; Anime/Manga için AniList'ten, Dizi/Film için IMDb linki/ID'si (`tt...`)
+  // üzerinden TVMaze & IMDb API'sinden, Kitap için OpenLibrary'den YALNIZCA kapak
+  // görseli CDN bağlantısını (`image`), çıkış yılını ve sezon/bölüm/cilt/sayfa yapısını
+  // çeker. Global puanları ASLA çekmez; puanlar %100 kullanıcının kendi verdiği puanlardır.
+  // ============================================================================
+  function parseImdbId(input) {
+    if (!input) return null;
+    const m = String(input).trim().match(/(tt\d{5,10})/i);
+    return m ? m[1].toLowerCase() : null;
+  }
+
+  const ExternalCatalogFetcher = {
+    async fetchMangaFromAnilist(urlOrIdOrQuery) {
+      const parsed = parseAnilistUrlOrId(urlOrIdOrQuery);
+      const isId = Boolean(parsed.id);
+      const query = isId
+        ? `query($id:Int){Media(id:$id,type:MANGA){id title{romaji english} status chapters volumes startDate{year} coverImage{large}}}`
+        : `query($q:String){Media(search:$q,type:MANGA){id title{romaji english} status chapters volumes startDate{year} coverImage{large}}}`;
+      const variables = isId ? { id: parsed.id } : { q: String(urlOrIdOrQuery).trim() };
+      const res = await fetch('https://graphql.anilist.co', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ query, variables })
+      });
+      if (!res.ok) throw new Error('AniList Manga HTTP ' + res.status);
+      const j = await res.json();
+      const m = j && j.data && j.data.Media;
+      if (!m) throw new Error('Manga bulunamadı.');
+      return {
+        externalId: m.id,
+        url: 'https://anilist.co/manga/' + m.id,
+        title: m.title.english || m.title.romaji || '',
+        image: (m.coverImage && m.coverImage.large) || '',
+        parts: [
+          {
+            id: m.id,
+            name: (m.title.english || m.title.romaji || 'Ana Seri') + (m.volumes ? ` (${m.volumes} Cilt)` : ''),
+            kind: 'season',
+            format: 'MANGA',
+            episodes: m.chapters || m.volumes || 0,
+            watched: m.chapters || m.volumes || 0,
+            status: 'COMPLETED',
+            release: m.status || 'FINISHED',
+            year: (m.startDate && m.startDate.year) || null
+          }
+        ]
+      };
+    },
+
+    async fetchSeriesOrMovieFromImdb(inputUrlOrQuery, mediaKind = 'series') {
+      const imdbId = parseImdbId(inputUrlOrQuery);
+      const cleanQuery = String(inputUrlOrQuery || '').trim();
+
+      // 1. Dizi (veya IMDb ID'li TV yapımı) için TVMaze Lookup / Seasons API (Sıfır anahtar, doğrudan IMDb tt... destekli)
+      if (mediaKind === 'series' || imdbId) {
+        try {
+          const lookupUrl = imdbId
+            ? `https://api.tvmaze.com/lookup/shows?imdb=${encodeURIComponent(imdbId)}`
+            : `https://api.tvmaze.com/singlesearch/shows?q=${encodeURIComponent(cleanQuery)}`;
+          const res = await fetch(lookupUrl);
+          if (res.ok) {
+            const show = await res.json();
+            if (show && show.id) {
+              const sRes = await fetch(`https://api.tvmaze.com/shows/${show.id}/seasons`);
+              const seasons = sRes.ok ? await sRes.json() : [];
+              const parts = (seasons || [])
+                .filter(s => s && (s.number || 0) > 0)
+                .map(s => ({
+                  id: `tvmaze-s-${s.id}`,
+                  name: s.name || `${s.number}. Sezon`,
+                  kind: 'season',
+                  format: 'TV',
+                  episodes: s.episodeOrder || 0,
+                  watched: 0,
+                  status: 'NONE',
+                  release: 'FINISHED',
+                  year: s.premiereDate ? Number(s.premiereDate.slice(0, 4)) : null
+                }));
+              if (parts.length) {
+                parts[0].status = 'COMPLETED';
+                parts[0].watched = parts[0].episodes || 1;
+              }
+              const resolvedImdb = (show.externals && show.externals.imdb) || imdbId || '';
+              return {
+                externalId: resolvedImdb || show.id,
+                url: resolvedImdb ? `https://www.imdb.com/title/${resolvedImdb}/` : (show.officialSite || ''),
+                title: show.name || '',
+                image: (show.image && (show.image.original || show.image.medium)) || '',
+                extraMeta: (show.network && show.network.name) || (show.webChannel && show.webChannel.name) || '',
+                parts: parts.length ? parts : [{
+                  id: resolvedImdb || ('part-' + Date.now()),
+                  name: '1. Sezon',
+                  kind: 'season',
+                  format: 'TV',
+                  episodes: 1,
+                  watched: 1,
+                  status: 'COMPLETED',
+                  release: 'FINISHED',
+                  year: show.premiered ? Number(show.premiered.slice(0, 4)) : null
+                }]
+              };
+            }
+          }
+        } catch (e) {}
+      }
+
+      // 2. Film veya IMDb yedek sorgusu (search.imdbot.workers.dev) — Genel IMDb puanı çekilmez, sadece kapak URL ve yıl alınır
+      const qParam = imdbId ? `tt=${encodeURIComponent(imdbId)}` : `q=${encodeURIComponent(cleanQuery)}`;
+      const res2 = await fetch(`https://search.imdbot.workers.dev/?${qParam}`);
+      if (!res2.ok) throw new Error('IMDb servisine ulaşılamadı.');
+      const j2 = await res2.json();
+      const desc = (j2 && j2.description && j2.description[0]) || (j2 && j2.short ? j2 : null);
+      if (!desc) throw new Error('IMDb üzerinde eşleşen dizi/film bulunamadı.');
+      const title = desc['#TITLE'] || (j2.short && j2.short.name) || '';
+      const year = desc['#YEAR'] || null;
+      const poster = desc['#IMG_POSTER'] || (j2.short && j2.short.image) || '';
+      const resolvedId = desc['#IMDB_ID'] || imdbId || ('imdb-' + Date.now());
+      const actors = desc['#ACTORS'] || '';
+      return {
+        externalId: resolvedId,
+        url: `https://www.imdb.com/title/${resolvedId}/`,
+        title,
+        image: poster,
+        extraMeta: actors,
+        parts: [
+          {
+            id: resolvedId,
+            name: mediaKind === 'movie' ? (title || 'Ana Film') : '1. Sezon',
+            kind: mediaKind === 'movie' ? 'movie' : 'season',
+            format: mediaKind === 'movie' ? 'MOVIE' : 'TV',
+            episodes: 1,
+            watched: 1,
+            status: 'COMPLETED',
+            release: 'FINISHED',
+            year: year ? Number(year) : null
+          }
+        ]
+      };
+    },
+
+    async fetchBookFromOpenLibrary(inputUrlOrQuery) {
+      const raw = String(inputUrlOrQuery || '').trim();
+      const isbnMatch = raw.match(/(?:isbn[/:=\s]*)?(97[89]\d{10}|\d{9}[\dXx])/i);
+      const q = isbnMatch ? `isbn:${isbnMatch[1]}` : raw.replace(/^https?:\/\/openlibrary\.org\/works\//i, '');
+      const res = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(q)}&limit=1`);
+      if (!res.ok) throw new Error('OpenLibrary HTTP ' + res.status);
+      const j = await res.json();
+      const doc = j && j.docs && j.docs[0];
+      if (!doc) throw new Error('Kitap bulunamadı.');
+      const coverUrl = doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg` : '';
+      const pages = doc.number_of_pages_median || 0;
+      return {
+        externalId: doc.key || ('book-' + Date.now()),
+        url: doc.key ? `https://openlibrary.org${doc.key}` : raw,
+        title: doc.title || '',
+        image: coverUrl,
+        extraMeta: (doc.author_name && doc.author_name[0]) || '',
+        parts: [
+          {
+            id: doc.key || ('book-part-' + Date.now()),
+            name: doc.title || '1. Kitap',
+            kind: 'season',
+            format: 'BOOK',
+            episodes: pages,
+            watched: pages,
+            status: 'COMPLETED',
+            release: 'FINISHED',
+            year: doc.first_publish_year || null
+          }
+        ]
+      };
+    }
+  };
+
   const CONTENT_ADAPTER_REGISTRY = {
     anime: {
       id: 'anime',
@@ -2444,7 +2828,7 @@
       externalUrlField: 'firstSeasonUrl',
       extraMetaField: { key: 'author', label: 'Mangaka / Yazar', placeholder: 'Örn: Kentaro Miura' },
       supportsNextBadge: true,
-      supportsAnilistGraph: false,
+      supportsAnilistGraph: true,
       statusOptions: [
         ['completed', 'Okundu'],
         ['watching', 'Okunuyor'],
@@ -2472,7 +2856,7 @@
       externalUrlField: 'url',
       extraMetaField: { key: 'author', label: 'Yazar', placeholder: 'Örn: Frank Herbert' },
       supportsNextBadge: false,
-      supportsAnilistGraph: false,
+      supportsAnilistGraph: true,
       statusOptions: [
         ['completed', 'Okundu'],
         ['watching', 'Okunuyor'],
@@ -2503,7 +2887,7 @@
       externalUrlField: 'firstSeasonUrl',
       extraMetaField: { key: 'network', label: 'Platform / Kanal', placeholder: 'Örn: HBO, Netflix...' },
       supportsNextBadge: true,
-      supportsAnilistGraph: false,
+      supportsAnilistGraph: true,
       statusOptions: [
         ['completed', 'İzlendi'],
         ['watching', 'İzleniyor'],
@@ -2533,7 +2917,7 @@
       externalUrlField: 'url',
       extraMetaField: { key: 'director', label: 'Yönetmen', placeholder: 'Örn: Christopher Nolan' },
       supportsNextBadge: false,
-      supportsAnilistGraph: false,
+      supportsAnilistGraph: true,
       statusOptions: [
         ['completed', 'İzlendi'],
         ['watching', 'İzleniyor'],
@@ -2558,9 +2942,9 @@
       dataFile: 'data/guides.json',
       countKey: 'guides',
       titleLabel: 'Rehber Başlığı',
-      externalUrlLabel: 'Rehber Bağlantısı / Kaynak URL',
+      externalUrlLabel: 'Technopat Sosyal Konu Linki (URL)',
       externalUrlField: 'url',
-      extraMetaField: { key: 'summary', label: 'Kısa Özet / Süre', placeholder: 'Örn: 10 dk okuma' },
+      extraMetaField: { key: 'summary', label: 'Rehber Kısa Özeti / Açıklaması', placeholder: 'Bu rehberde neler anlatılıyor? (Katalog kartında görünür)' },
       supportsNextBadge: false,
       supportsAnilistGraph: false,
       statusOptions: [
@@ -2607,12 +2991,33 @@
     updateDirtyIndicator();
   }
 
+  function getActiveAdminAdapter() {
+    const t = state.activeAdminMediaType || 'anime';
+    return CONTENT_ADAPTER_REGISTRY[t] || CONTENT_ADAPTER_REGISTRY.anime;
+  }
+
+  function getActiveAdminList() {
+    const adapter = getActiveAdminAdapter();
+    return adapter.getItems();
+  }
+
+  function updateDirtyIndicator() {
+    const anyMultiDirty = Object.values(state.multiMediaStore || {}).some(s => s && s.dirty);
+    const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || anyMultiDirty || state.pendingUploads.size > 0;
+    const ind = $('#dirtyIndicator');
+    if (ind) ind.hidden = !anyDirty;
+  }
+
   function getActiveAdapter() {
     const typeId = state.rapidQueue.activeType || 'anime';
     return CONTENT_ADAPTER_REGISTRY[typeId] || CONTENT_ADAPTER_REGISTRY.anime;
   }
 
   function filterItemsForRapidQueue(items, filterMode, adapter) {
+    if (filterMode === 'health_custom' && Array.isArray(state.rapidQueue.customTargetIds) && state.rapidQueue.customTargetIds.length) {
+      const allowed = new Set(state.rapidQueue.customTargetIds);
+      return items.filter(it => allowed.has(it.id));
+    }
     return items.filter(it => {
       if (filterMode === 'uncategorized') {
         return !Array.isArray(it.customGenres) || it.customGenres.length === 0;
@@ -2622,6 +3027,9 @@
       }
       if (filterMode === 'unmodified') {
         return !it.adminModified;
+      }
+      if (filterMode === 'favorites') {
+        return Boolean(it.favorite);
       }
       if (filterMode === 'watching') {
         return it.status === 'watching';
@@ -2768,6 +3176,20 @@
     const activeGenres = Array.isArray(d.customGenres) ? d.customGenres : [];
     $('#rqGenresInput').value = activeGenres.join(', ');
 
+    const favBtn = $('#rqFavoriteBtn');
+    if (favBtn) {
+      const isFav = Boolean(d.favorite);
+      favBtn.classList.toggle('on', isFav);
+      favBtn.textContent = isFav ? '★ Başyapıt (Seçili)' : '☆ Başyapıt İşaretle';
+    }
+    const fetchBtn = $('#rqFetchRelationsBtn');
+    if (fetchBtn) {
+      fetchBtn.textContent = adapter.id === 'anime'
+        ? 'Linkten Kapak & Yan İçerikleri Çek'
+        : adapter.id === 'series' || adapter.id === 'movie'
+          ? 'IMDb Linkinden Kapak & Sezon Çek'
+          : 'Linkten Kapak & Bilgi Çek';
+    }
     renderRapidQueueGenres();
     renderRapidQueueSubItems();
     syncRapidQueueScoreBadge();
@@ -2999,6 +3421,253 @@
     } else {
       renderRapidQueueProgressAndStrip();
       toast(`"${d.title}" kaydedildi.`);
+    }
+  }
+
+  // ============================================================================
+  // [AI-MIMARI-NOTU: ADIM 14 — VERİ SAĞLIĞI DENETÇİSİ VE TAM YEDEKLEME MERKEZİ]
+  // ============================================================================
+  function computeHealthReport(typeId) {
+    const adapter = CONTENT_ADAPTER_REGISTRY[typeId] || CONTENT_ADAPTER_REGISTRY.anime;
+    const items = adapter.getItems() || [];
+    const missingGenres = [];
+    const missingScore = [];
+    const missingCover = [];
+    const missingUrl = [];
+    const unwatchedSequels = [];
+
+    for (const it of items) {
+      const hasGenres = Array.isArray(it.customGenres) && it.customGenres.length > 0;
+      if (!hasGenres) missingGenres.push(it);
+
+      if (typeId !== 'guide') {
+        const effScore = adapter.computeScore(it);
+        if (effScore == null && (it.status === 'completed' || it.status === 'watching')) {
+          missingScore.push(it);
+        }
+        if (!it.image) missingCover.push(it);
+      }
+
+      const extUrl = it[adapter.externalUrlField || 'url'] || it.url || it.firstSeasonUrl || '';
+      if (!extUrl) missingUrl.push(it);
+
+      if (typeId === 'anime' || typeId === 'series') {
+        const parts = it.parts || [];
+        const hasUnwatched = parts.some(p => p.kind === 'season' && (p.watched || 0) === 0 && (p.release === 'FINISHED' || p.release === 'RELEASING'));
+        if (it.next || hasUnwatched) unwatchedSequels.push(it);
+      }
+    }
+
+    return [
+      {
+        key: 'missing_genres',
+        title: 'Özel Kategorisi Seçilmemiş Olanlar',
+        desc: 'Henüz özel tür/kategori (Shounen, Seinen, Isekai vb.) atanmamış kayıtlar.',
+        items: missingGenres
+      },
+      {
+        key: 'missing_score',
+        title: 'Puanı Girilmemiş Olanlar',
+        desc: 'İzlendi/Okundu veya devam ediyor olup henüz sezon/parça puanı verilmemiş kayıtlar.',
+        items: missingScore
+      },
+      {
+        key: 'missing_cover',
+        title: "Kapak Görseli URL'si Eksik Olanlar",
+        desc: 'Poster/kapak görseli bağlantısı boş olan kayıtlar.',
+        items: missingCover
+      },
+      {
+        key: 'missing_url',
+        title: `${adapter.externalUrlLabel || 'Kaynak Linki'} Eksik Olanlar`,
+        desc: 'Dış kaynak veya Technopat Sosyal bağlantısı girilmemiş kayıtlar.',
+        items: missingUrl
+      },
+      {
+        key: 'unwatched_sequels',
+        title: 'İzlenmemiş Devam Sezonu Bulunanlar',
+        desc: 'Yayınlanmış fakat henüz izlenmemiş sezonu bulunan yapımlar.',
+        items: unwatchedSequels
+      }
+    ];
+  }
+
+  function sendHealthItemsToRapidQueue(typeId, targetItems, issueTitle) {
+    if (!targetItems || !targetItems.length) return;
+    state.rapidQueue.activeType = typeId;
+    state.rapidQueue.customTargetIds = targetItems.map(x => x.id);
+    if ($('#rqContentTypeSelect')) $('#rqContentTypeSelect').value = typeId;
+
+    // Ensure custom option exists in #rqFilterSelect
+    const sel = $('#rqFilterSelect');
+    if (sel) {
+      let opt = sel.querySelector('option[value="health_custom"]');
+      if (!opt) {
+        opt = document.createElement('option');
+        opt.value = 'health_custom';
+        sel.prepend(opt);
+      }
+      opt.textContent = `🛡️ Denetim: ${issueTitle} (${targetItems.length})`;
+      sel.value = 'health_custom';
+    }
+
+    $$('[data-panel]').forEach(b => b.setAttribute('aria-selected', b.dataset.panel === 'rapid'));
+    $('#panelHealth').hidden = true;
+    $('#panelAnime').hidden = true;
+    $('#panelRapid').hidden = false;
+    initOrRefreshRapidQueue(false);
+    toast(`${targetItems.length} kayıt Hızlı Sıralı Düzenleme kuyruğuna aktarıldı.`);
+  }
+
+  function renderHealthAuditor() {
+    const grid = $('#healthAuditGrid');
+    if (!grid) return;
+    const typeId = ($('#healthSectionSelect') && $('#healthSectionSelect').value) || state.activeAdminMediaType || 'anime';
+    const adapter = CONTENT_ADAPTER_REGISTRY[typeId] || CONTENT_ADAPTER_REGISTRY.anime;
+    const totalCount = (adapter.getItems() || []).length;
+    const groups = computeHealthReport(typeId);
+
+    grid.replaceChildren();
+    for (const grp of groups) {
+      const card = document.createElement('div');
+      card.className = 'health-card';
+      const cnt = grp.items.length;
+      card.innerHTML = `
+        <div>
+          <div class="health-card-top">
+            <strong style="font-size:.95rem">${grp.title}</strong>
+            <span class="health-count ${cnt === 0 ? 'ok' : 'warn'}">${cnt} / ${totalCount}</span>
+          </div>
+          <p class="meta" style="margin-top:4px">${grp.desc}</p>
+        </div>
+        <div class="health-sample-list"></div>
+        <div class="form-actions" style="margin:0">
+          <button type="button" class="btn-secondary health-queue-btn" ${cnt === 0 ? 'disabled' : ''} style="width:100%">
+            ${cnt === 0 ? '✓ Eksik Kayıt Yok' : `⚡ ${cnt} Kaydı Hızlı Düzenleme Kuyruğuna Gönder`}
+          </button>
+        </div>
+      `;
+      const sampleBox = card.querySelector('.health-sample-list');
+      if (cnt === 0) {
+        sampleBox.innerHTML = `<div class="health-sample-item"><span>Tüm kayıtlar tam!</span><span>✓</span></div>`;
+      } else {
+        for (const it of grp.items.slice(0, 6)) {
+          const row = document.createElement('div');
+          row.className = 'health-sample-item';
+          const sp = document.createElement('span');
+          sp.textContent = it.title || it.id;
+          sp.style.overflow = 'hidden';
+          sp.style.textOverflow = 'ellipsis';
+          sp.style.whiteSpace = 'nowrap';
+          const editBtn = document.createElement('button');
+          editBtn.type = 'button';
+          editBtn.className = 'btn-subtle';
+          editBtn.style.padding = '3px 9px';
+          editBtn.style.fontSize = '.74rem';
+          editBtn.textContent = 'Düzenle';
+          editBtn.onclick = () => {
+            state.activeAdminMediaType = typeId;
+            if ($('#admMediaTypeSelect')) $('#admMediaTypeSelect').value = typeId;
+            renderAnimeAdminPanel();
+            openAnimeEditor(it.id);
+          };
+          row.append(sp, editBtn);
+          sampleBox.append(row);
+        }
+      }
+      card.querySelector('.health-queue-btn').onclick = () => sendHealthItemsToRapidQueue(typeId, grp.items, grp.title);
+      grid.append(card);
+    }
+  }
+
+  function exportFullBackupSnapshot() {
+    collectFormFieldsIntoConfig();
+    state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
+    const bundles = {
+      sections: state.config,
+      anime: state.animeData,
+      overrides: state.overrides
+    };
+    for (const mKey of ['series', 'movie', 'manga', 'book', 'guide']) {
+      const store = ensureMultiMediaStore(mKey);
+      bundles[mKey] = {
+        schemaVersion: 3,
+        updated: new Date().toISOString().slice(0, 10),
+        source: 'site-first:' + mKey,
+        customGenreCatalog: store.customGenreCatalog || [],
+        stats: computeStatsClient(store.items || [], state.animeData.statsConfig),
+        items: store.items || []
+      };
+    }
+    const snapshot = {
+      snapshotVersion: 1,
+      site: 'tempestian.github.io',
+      exportedAt: new Date().toISOString(),
+      counts: {
+        anime: (state.animeData.anime || []).length,
+        series: (bundles.series.items || []).length,
+        movie: (bundles.movie.items || []).length,
+        manga: (bundles.manga.items || []).length,
+        book: (bundles.book.items || []).length,
+        guide: (bundles.guide.items || []).length
+      },
+      bundles
+    };
+    const dateStr = new Date().toISOString().slice(0, 10);
+    downloadBlobJson(snapshot, `tempestian-backup-${dateStr}.json`);
+    toast('Tüm site verileri tek yedek paketinde indirildi!');
+  }
+
+  async function restoreFullBackupSnapshot() {
+    const fInp = $('#importSnapshotFile');
+    const f = fInp && fInp.files && fInp.files[0];
+    if (!f) {
+      toast('Lütfen önce bir yedek dosyası (.json) seçin.', 'warn');
+      return;
+    }
+    try {
+      const txt = await f.text();
+      const parsed = JSON.parse(txt);
+      if (!parsed || !parsed.bundles || typeof parsed.bundles !== 'object') {
+        throw new Error('Geçersiz yedek paketi formatı.');
+      }
+      const b = parsed.bundles;
+      if (b.sections) {
+        state.config = normalizeConfig(b.sections);
+        state.dirtyConfig = true;
+      }
+      if (b.anime && Array.isArray(b.anime.anime)) {
+        state.animeData = b.anime;
+        state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
+        state.dirtyAnime = true;
+      }
+      if (b.overrides) {
+        state.overrides = b.overrides;
+        state.dirtyOverrides = true;
+      }
+      for (const mKey of ['series', 'movie', 'manga', 'book', 'guide']) {
+        if (b[mKey] && Array.isArray(b[mKey].items)) {
+          state.multiMediaStore[mKey] = {
+            items: b[mKey].items,
+            customGenreCatalog: Array.isArray(b[mKey].customGenreCatalog) ? b[mKey].customGenreCatalog : [],
+            stats: computeStatsClient(b[mKey].items, state.animeData.statsConfig),
+            dirty: true
+          };
+        }
+      }
+      populateEditorFields();
+      renderAnimeAdminPanel();
+      renderOverridesEditor();
+      renderHealthAuditor();
+      updateDirtyIndicator();
+      const sumBox = $('#snapshotSummaryBox');
+      if (sumBox) {
+        sumBox.hidden = false;
+        sumBox.innerHTML = `<span>Yedek paketi (<b>${AdminSecurity.sanitizeText(parsed.exportedAt || '', 40)}</b>) başarıyla geri yüklendi! Üstteki <b>GitHub'a Kaydet (Commit)</b> butonuyla tüm dosyaları depoya yazabilirsiniz.</span>`;
+      }
+      toast('Yedek paketi başarıyla geri yüklendi!');
+    } catch (err) {
+      toast('Yedek geri yüklenemedi: ' + err.message, 'err');
     }
   }
 
@@ -3529,6 +4198,8 @@
         $('#panelImages').hidden = target !== 'images';
         $('#panelCategories').hidden = target !== 'categories';
         $('#panelBoxes').hidden = target !== 'boxes';
+        $('#panelHealth').hidden = target !== 'health';
+        if (target === 'health') renderHealthAuditor();
         $('#panelSecurity').hidden = target !== 'security';
       };
     });
@@ -3539,6 +4210,10 @@
     });
 
     // Adım 3–8: Anime Yönetimi ve İstatistik Olayları
+    $('#admMediaTypeSelect').onchange = e => {
+      state.activeAdminMediaType = e.target.value;
+      renderAnimeAdminPanel();
+    };
     $('#admAnimeSearch').oninput = e => { state.animeFilterQ = e.target.value; renderAnimeAdminPanel(); };
     $('#admAnimeStatusFilter').onchange = e => { state.animeFilterStatus = e.target.value; renderAnimeAdminPanel(); };
     $('#admAnimeSourceFilter').onchange = e => { state.animeFilterSource = e.target.value; renderAnimeAdminPanel(); };
@@ -3588,9 +4263,67 @@
         openAnimeEditor(state.rapidQueue.draftItem.id);
       }
     };
-    $('#rqFetchRelationsBtn').onclick = async () => {
+    $('#rqFavoriteBtn').onclick = () => {
       const d = state.rapidQueue.draftItem;
       if (!d) return;
+      d.favorite = !d.favorite;
+      if (!d.favorite) delete d.favorite;
+      const favBtn = $('#rqFavoriteBtn');
+      favBtn.classList.toggle('on', Boolean(d.favorite));
+      favBtn.textContent = d.favorite ? '★ Başyapıt (Seçili)' : '☆ Başyapıt İşaretle';
+    };
+
+    $('#rqFetchRelationsBtn').onclick = async () => {
+      const adapter = getActiveAdapter();
+      const d = state.rapidQueue.draftItem;
+      if (!d) return;
+      const rawInput = $('#rqExternalUrlInput').value.trim() || $('#rqTitleInput').value.trim();
+      if (adapter.id !== 'anime') {
+        if (!rawInput) {
+          toast('Lütfen bir link (IMDb, AniList, OpenLibrary) veya başlık girin.', 'warn');
+          return;
+        }
+        const btn = $('#rqFetchRelationsBtn');
+        const origTxt = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Çekiliyor...';
+        try {
+          let info = null;
+          if (adapter.id === 'manga') info = await ExternalCatalogFetcher.fetchMangaFromAnilist(rawInput);
+          else if (adapter.id === 'series' || adapter.id === 'movie') info = await ExternalCatalogFetcher.fetchSeriesOrMovieFromImdb(rawInput, adapter.id);
+          else if (adapter.id === 'book') info = await ExternalCatalogFetcher.fetchBookFromOpenLibrary(rawInput);
+          if (info) {
+            if (info.title && !$('#rqTitleInput').value.trim()) {
+              d.title = info.title;
+              $('#rqTitleInput').value = info.title;
+            }
+            if (info.image) {
+              d.image = info.image;
+              $('#rqPosterImg').src = resolvePreviewSrc(info.image);
+            }
+            if (info.url) {
+              $('#rqExternalUrlInput').value = info.url;
+              d[adapter.externalUrlField || 'url'] = info.url;
+            }
+            if (info.extraMeta && adapter.extraMetaField) {
+              d[adapter.extraMetaField.key] = info.extraMeta;
+              $('#rqExtraMetaInput').value = info.extraMeta;
+            }
+            if (Array.isArray(info.parts) && info.parts.length) {
+              d.parts = info.parts;
+              renderRapidQueueSubItems();
+              syncRapidQueueScoreBadge();
+            }
+            toast(`${adapter.label} kapak URL'si ve bilgileri (puanlar hariç) çekildi!`);
+          }
+        } catch (err) {
+          toast('Veri çekilemedi: ' + err.message, 'err');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = origTxt;
+        }
+        return;
+      }
       const parsed = parseAnilistUrlOrId($('#rqExternalUrlInput').value.trim() || d.anilistId || d.id);
       if (!parsed.id) {
         toast('Lütfen geçerli bir AniList ilk sezon linki girin.', 'warn');
@@ -3665,7 +4398,7 @@
     $('#scanAllRelationsBtn').onclick = scanAllAnimeForSideContent;
     $('#triggerActionsBtn').onclick = async () => {
       try {
-        await AdminSecurity.githubTriggerWorkflow('sync-anilist.yml', { sync_mode: 'hybrid' });
+        await AdminSecurity.githubTriggerWorkflow('sync-anilist.yml', { sync_mode: 'relations_only' });
         toast('GitHub Actions (AniList ve yan içerik senkronu) başarıyla tetiklendi!');
       } catch (err) {
         toast(err.message, 'err');
@@ -3677,10 +4410,30 @@
     };
 
     $('#downloadAnimeJsonBtn').onclick = () => {
-      state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
-      downloadBlobJson(state.animeData, 'anime.json');
-      toast('anime.json indirildi.');
+      const adapter = getActiveAdminAdapter();
+      if (adapter.id === 'anime') {
+        state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
+        downloadBlobJson(state.animeData, 'anime.json');
+        toast('anime.json indirildi.');
+      } else {
+        const store = ensureMultiMediaStore(adapter.id);
+        const payload = {
+          schemaVersion: 3,
+          updated: new Date().toISOString().slice(0, 10),
+          source: 'site-first:' + adapter.id,
+          customGenreCatalog: store.customGenreCatalog || [],
+          stats: computeStatsClient(store.items, state.animeData.statsConfig),
+          items: store.items
+        };
+        downloadBlobJson(payload, `${adapter.countKey}.json`);
+        toast(`${adapter.countKey}.json indirildi.`);
+      }
     };
+    $('#healthSectionSelect').onchange = renderHealthAuditor;
+    $('#refreshHealthBtn').onclick = renderHealthAuditor;
+    $('#exportFullSnapshotBtn').onclick = exportFullBackupSnapshot;
+    $('#restoreSnapshotBtn').onclick = restoreFullBackupSnapshot;
+
     $('#downloadOverridesBtn').onclick = () => {
       downloadBlobJson(state.overrides, 'overrides.json');
       toast('overrides.json indirildi.');
@@ -3740,6 +4493,12 @@
       if (parsed.id) $('#aeFirstSeasonUrl').value = parsed.url;
     };
 
+    $('#aeFavoriteBtn').onclick = () => {
+      if (!state.editingDraft) return;
+      state.editingDraft.favorite = !state.editingDraft.favorite;
+      if (!state.editingDraft.favorite) delete state.editingDraft.favorite;
+      syncModalFavoriteBtn();
+    };
     $('#aeImage').oninput = () => {
       $('#aeCoverPreview').src = resolvePreviewSrc(AdminSecurity.sanitizeUrl($('#aeImage').value, true));
     };
@@ -3751,13 +4510,10 @@
       renderAnimeGenreStudio();
     };
     $('#addCustomGenreToCatalogBtn').onclick = () => {
+      const adapter = getActiveAdminAdapter();
       const newG = AdminSecurity.sanitizeText($('#newCustomGenreInp').value, 40);
       if (!newG) return;
-      if (!Array.isArray(state.animeData.customGenreCatalog)) state.animeData.customGenreCatalog = [];
-      if (!state.animeData.customGenreCatalog.includes(newG)) {
-        state.animeData.customGenreCatalog.push(newG);
-        markDirty('anime');
-      }
+      adapter.addCustomCategory(newG);
       const cur = new Set(
         ($('#aeGenresInput').value || '')
           .split(',')
@@ -3880,6 +4636,17 @@
       state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
       localStorage.setItem('tp_site_preview', JSON.stringify(state.config, null, 2));
       localStorage.setItem('tp_anime_preview', JSON.stringify(state.animeData));
+      const multiPreview = {};
+      for (const [mKey, store] of Object.entries(state.multiMediaStore || {})) {
+        multiPreview[mKey] = {
+          schemaVersion: 3,
+          updated: new Date().toISOString().slice(0, 10),
+          customGenreCatalog: store.customGenreCatalog || [],
+          stats: computeStatsClient(store.items || [], state.animeData.statsConfig),
+          items: store.items || []
+        };
+      }
+      localStorage.setItem('tp_multimedia_preview', JSON.stringify(multiPreview));
       try {
         const S = state.animeData.stats;
         const animeSummary = {
@@ -3937,6 +4704,23 @@
           state.animeData.updated = new Date().toISOString().slice(0, 10);
           await AdminSecurity.githubPutFile('data/anime.json', JSON.stringify(state.animeData, null, 2) + '\n', 'Anime verileri ve istatistikler admin panelinden güncellendi', false);
           state.dirtyAnime = false;
+        }
+        for (const [mKey, store] of Object.entries(state.multiMediaStore || {})) {
+          if (store && store.dirty) {
+            const adapter = CONTENT_ADAPTER_REGISTRY[mKey];
+            if (adapter && adapter.dataFile) {
+              const payload = {
+                schemaVersion: 3,
+                updated: new Date().toISOString().slice(0, 10),
+                source: 'site-first:' + mKey,
+                customGenreCatalog: store.customGenreCatalog || [],
+                stats: computeStatsClient(store.items || [], state.animeData.statsConfig),
+                items: store.items || []
+              };
+              await AdminSecurity.githubPutFile(adapter.dataFile, JSON.stringify(payload, null, 2) + '\n', `${adapter.label} verileri admin panelinden güncellendi`, false);
+              store.dirty = false;
+            }
+          }
         }
 
         localStorage.removeItem('tp_site_preview');

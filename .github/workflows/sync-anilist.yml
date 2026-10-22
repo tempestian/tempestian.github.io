@@ -1,64 +1,84 @@
-name: AniList senkronu
+# ============================================================================
+# [AI-MIMARI-NOTU: ADIM 6 & 10 — ANILIST PROFİLİNDEN BAĞIMSIZ KAPAK & YAN İÇERİK SENKRONU]
+# Bu iş akışı (`sync-anilist.yml`) Adım 10 itibarıyla varsayılan olarak `relations_only`
+# modunda çalışır:
+# - Kullanıcının AniList profil listesine (`MediaListCollection`) bakmaz; yeni girdiler
+#   yalnızca sitenin kendi Admin Panelinden eklenir.
+# - `data/anime.json` içindeki her animenin İlk Sezon AniList Linki (`firstSeasonUrl`)
+#   üzerinden kapak görseli CDN URL'lerini ve yeni çıkan sezon, film ve yan içerikleri
+#   (`PREQUEL`, `SEQUEL`, `SIDE_STORY`, `PARENT`, `SUMMARY`, `SPIN_OFF`) çekip günceller.
+# ============================================================================
+name: Bağlantılı Anime & Kapak Senkronu
+
 on:
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
     inputs:
       sync_mode:
-        description: 'Senkronizasyon Modu (hybrid: Profil + İlk Sezon Linklerinden Bağlantılı Animeler, relations_only: Sadece Sitedeki İlk Sezon Linklerinden Bağlantılı Animeler & Kapaklar)'
+        description: 'Senkronizasyon modu (relations_only: Sadece sitedeki animelerin kapak ve yan içeriklerini çek | hybrid: AniList profil listesini de dahil et)'
         required: false
-        default: 'hybrid'
+        default: 'relations_only'
+        type: choice
+        options:
+          - relations_only
+          - hybrid
   push:
     branches: [main]
     paths:
-      - scripts/sync-anilist.mjs
-      - scripts/stats.mjs
-      - data/overrides.json
-      - data/anime.json
-      - .github/workflows/sync-anilist.yml
+      - 'data/anime.json'
+      - 'data/overrides.json'
+      - 'scripts/sync-anilist.mjs'
+      - 'scripts/stats.mjs'
+      - '.github/workflows/sync-anilist.yml'
+
 permissions:
   contents: write
-  pages: write
+
 concurrency:
   group: sync-anilist
   cancel-in-progress: false
+
 jobs:
   sync:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
-      - name: Bot commit döngüsünü engelle
-        id: check_commit
+
+      - name: Bot commit kontrolü (Sonsuz döngü koruması)
+        id: check_bot
         run: |
           LAST_AUTHOR=$(git log -1 --pretty=format:'%an')
-          if [ "$LAST_AUTHOR" = "github-actions[bot]" ] && [ "$GITHUB_EVENT_NAME" = "push" ]; then
-            echo "skip=true" >> "$GITHUB_OUTPUT"
+          if [ "$LAST_AUTHOR" = "github-actions[bot]" ] && [ "${{ github.event_name }}" = "push" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
           else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "skip=false" >> $GITHUB_OUTPUT
           fi
-      - name: İlk sezon linklerinden bağlantılı animeleri ve yan içerikleri çek
-        if: steps.check_commit.outputs.skip != 'true'
-        run: node scripts/sync-anilist.mjs
+
+      - uses: actions/setup-node@v4
+        if: steps.check_bot.outputs.skip != 'true'
+        with:
+          node-version: 22
+
+      - name: İlk sezon linklerinden kapak URL ve yan içerikleri çek
+        if: steps.check_bot.outputs.skip != 'true'
         env:
           ANILIST_USER: TurkTempestian
-          SYNC_MODE: ${{ github.event.inputs.sync_mode || 'hybrid' }}
-      - name: Değişiklik varsa kaydet ve yayınla
-        if: steps.check_commit.outputs.skip != 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
+          CUSTOM_LIST: ''
+          INCLUDE_PLANNED: '0'
+          SYNC_MODE: ${{ github.event.inputs.sync_mode || 'relations_only' }}
+        run: node scripts/sync-anilist.mjs
+
+      - name: Değişiklik varsa kaydet
+        if: steps.check_bot.outputs.skip != 'true'
         run: |
-          git config user.name "github-actions[bot]"
+          if git diff --quiet data/anime.json; then exit 0; fi
+          git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/anime.json
-          if git diff --cached --quiet; then
-            echo "Değişiklik yok."
-            exit 0
-          fi
-          git commit -m "AniList ve bağlantılı yan içerik verisi güncellendi"
-          git pull --rebase origin "$GITHUB_REF_NAME"
-          git push origin "HEAD:$GITHUB_REF_NAME"
-          gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" || echo "Pages derlemesi elle tetiklenemedi."
+          git commit -m "chore(anime): kapak ve yan içerik senkronu [skip ci]"
+          git pull --rebase origin main
+          git push

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#eceef3">
+<meta name="description" content="Tempestian'ın izlediği diziler: sezon puanları, kategoriler ve izleme durumu.">
+<title>Dizi · Tempestian</title>
+<link rel="icon" href="../assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<script src="../assets/js/theme.js"></script>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-root="../" data-section="series" data-data="../data/series.json">
+<header class="bar">
+  <div class="bar-in">
+    <a class="btn glass" href="../" data-icon="back" aria-label="Ana sayfa"></a>
+    <span class="bar-title">Dizi</span>
+    <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head"><h1>Dizi</h1></div>
+
+  <div id="stats" class="stats glass sq" hidden></div>
+
+  <div class="tools">
+    <label class="search glass">
+      <span data-icon="search"></span>
+      <input id="q" type="search" placeholder="Ara" autocomplete="off">
+    </label>
+    <div class="pick glass">
+      <select id="sort" aria-label="Sıralama">
+        <option value="added">Eklenme</option>
+        <option value="score">Puan</option>
+        <option value="title">Ad (A–Z)</option>
+        <option value="year">Çıkış yılı</option>
+        <option value="eps">İlerleme</option>
+      </select>
+      <span data-icon="chev"></span>
+    </div>
+    <div class="fw">
+      <button id="fbtn" class="btn glass" type="button" data-icon="filter" aria-label="Filtreler" aria-expanded="false"></button>
+      <i id="fdot" class="dotn" hidden></i>
+    </div>
+    <div class="view glass" role="group" aria-label="Görünüm">
+      <button type="button" data-view="grid" data-icon="grid" aria-label="Izgara görünümü" aria-pressed="true"></button>
+      <button type="button" data-view="list" data-icon="list" aria-label="Liste görünümü" aria-pressed="false"></button>
+    </div>
+  </div>
+
+  <div id="fp" class="fp"><div id="fpIn" class="fp-in"></div></div>
+
+  <div id="chips" class="chips" role="group" aria-label="Durum filtresi"></div>
+
+  <ul id="list" class="grid"></ul>
+  <p id="empty" class="note" hidden>Henüz kayıt yok.</p>
+
+  <p class="foot">Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir.</p>
+</main>
+
+<nav id="dock" class="dock glass" aria-label="Bölümler" hidden></nav>
+
+<script src="../assets/js/common.js"></script>
+<script src="../assets/js/media-page.js"></script>
+</body>
+</html>

@@ -1,23 +1,26 @@
 // ============================================================================
-// [AI-MIMARI-NOTU: ANİME LİSTESİ, İSTATİSTİK VE DETAY GÖRÜNÜMÜ MOTORU (ADIM 7 & 8)]
+// [AI-MIMARI-NOTU: ANİME LİSTESİ, GELİŞMİŞ İSTATİSTİK GRAFİKLERİ VE DETAY MOTORU (ADIM 7, 8, 11 & 13)]
 // Bu dosya `/anime/` sayfasını (`data/anime.json`) oluşturur.
 // - Puanlar: Sezon (×1.00), Film (×0.35) ve Yan İçerik (×0.15) ağırlıklı puan ortalamasından
 //   (`getEffectiveScore`) otomatik belirlenir.
 // - Türler: Yalnızca admin tarafından seçilen özel kategoriler (`customGenres`: Shounen,
 //   Seinen, Isekai, Rom-Com vb.) filtrelerde ve istatistiklerde yer alır.
-// - İzlenen Anime & Bölüm: En az 1 sezon veya film bitince izlenen anime sayısına yansır;
-//   izlenen her yeni bölüm (`+1 Bölüm`) anında toplam bölüm sayısına dahil edilir.
+// - Gelişmiş İstatistik Grafikleri (Adım 13):
+//   * Özel Kategori Yüzdesel Dağılım Çubukları (`.genre-bars`)
+//   * Format Bazlı Puan & İçerik Karşılaştırması (Sezon vs Film vs Yan İçerik ortalama puan ve adet)
+//   * İzleme / Eklenme Yılı Dağılımı ve Çıkış On Yılı Grafiği
 // ============================================================================
 const $ = s => document.querySelector(s);
 const ST = {completed:'İzlendi', watching:'İzleniyor', paused:'Beklemede', dropped:'Bırakıldı', planned:'Planlandı'};
 const NEXT = 'Devam edilecek';
+const FAV_LABEL = '★ Başyapıtlar';
 const FMT = {TV:'TV', TV_SHORT:'Kısa', MOVIE:'Film', OVA:'OVA', SPECIAL:'Özel', ONA:'ONA'};
 const own = p => p.status !== 'PLANNING' && p.status !== 'NONE';
 
 const pageTexts = {
   searchPlaceholder: 'Ara',
   emptyText: 'Eşleşen anime yok.',
-  footerText: "AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir.",
+  footerText: "Kapaklar sahiplerine aittir.",
   detailsText: 'Ayrıntılar',
   resetFilterText: 'Filtreleri sıfırla',
   anilistButtonText: "AniList'te aç"
@@ -68,7 +71,6 @@ const dec = y => !y ? 'old' : y>=2020 ? '2020' : y>=2010 ? '2010' : y>=2000 ? '2
 const DEC = {2020:"2020'ler",2010:"2010'lar",2000:"2000'ler",old:'Daha eski'};
 const DORD = ['2020','2010','2000','old'];
 
-// [AI-MIMARI-NOTU]: Sezon (×1.00), Film (×0.35), Yan İçerik/OVA (×0.15) ağırlıklı puan hesabı.
 function getPartWeight(p) {
   if (!p) return 0.15;
   if (p.kind === 'movie' || p.format === 'MOVIE') return 0.35;
@@ -96,7 +98,6 @@ function getEffectiveScore(it) {
   return !isNaN(s) && s > 0 ? Math.round(s * 10) / 10 : null;
 }
 
-// [AI-MIMARI-NOTU]: Yalnızca adminin elle seçtiği özel kategorileri (`customGenres`) döndürür.
 function getEffectiveGenres(it, genreSourceRule = 'custom_only') {
   if (!it) return [];
   if (Array.isArray(it.customGenres) && it.customGenres.length) {
@@ -108,12 +109,12 @@ function getEffectiveGenres(it, genreSourceRule = 'custom_only') {
 }
 
 const SCO = [['9','9 ve üstü'],['8','8–9'],['7','7–8'],['low','7 altı'],['none','Puansız']];
-const KIND = [['multi','2+ sezon'],['movie','Filmli'],['rewatch','Tekrar izlenen']];
+const KIND = [['fav','★ Başyapıt'],['multi','2+ sezon'],['movie','Filmli'],['rewatch','Tekrar izlenen']];
 const COL = {completed:'var(--accent)',watching:'#3ccf91',paused:'var(--warn)',dropped:'var(--bad)',planned:'var(--ink2)'};
 const scOk = (v,x) => v==='all' || (v==='none' ? !x : v==='low' ? x>0 && x<7 : v[0]==='b' ? Math.min(10,Math.floor(x))===+v.slice(1) : x>=+v && (+v===9 || x<+v+1));
-const kOk = (v,m) => v==='all' || (v==='multi' ? m.sn>1 : v==='movie' ? m.fl>0 : m.rp>0);
+const kOk = (v,m) => v==='all' || (v==='fav' ? Boolean(m.it.favorite) : v==='multi' ? m.sn>1 : v==='movie' ? m.fl>0 : m.rp>0);
 const h = (t,c,x) => { const e = document.createElement(t); if(c) e.className = c; if(x!=null) e.textContent = x; return e; };
-Object.assign(state, {sc:'all', dc:'all', kd:'all', gn:'all'});
+Object.assign(state, {sc:'all', dc:'all', kd:'all', gn:'all', ay:'all'});
 const SORTS = {
   added: byAdded,
   score: (a,b) => (nodes.get(b.id).sc||0)-(nodes.get(a.id).sc||0) || byAdded(a,b),
@@ -126,15 +127,22 @@ function build(it){
   const ps = UI.parts(it).filter(own), ep = sum(ps,'episodes'), w = sum(ps,'watched');
   const cnt = k => ps.filter(p => p.kind===k).length, sn = cnt('season'), fl = cnt('movie'), ot = cnt('other');
   const ys = ps.map(p => p.year).filter(Boolean), y = ys.length ? Math.min(...ys) : 0;
+  const addedYear = (it.addedAt && /^\d{4}/.test(it.addedAt)) ? it.addedAt.slice(0, 4) : '';
   const effScore = getEffectiveScore(it);
   const effGenres = getEffectiveGenres(it, (state.statsConfig && state.statsConfig.genreSourceRule) || 'custom_only');
   const li = h('li');
+  if (it.favorite) li.classList.add('is-fav');
   li.innerHTML = '<div class="poster"><img alt="" loading="lazy" decoding="async" width="142" height="213"></div><div class="t"><h3><a target="_blank" rel="noopener"></a></h3><p class="meta"></p><p class="st"></p></div>';
   const a = li.querySelector('a'); a.textContent = it.title;
   a.href = '#'+it.id; a.onclick = e => { if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; e.preventDefault(); openSheet(it.id, true); };
   const genrePreview = effGenres.slice(0, 2).join(' · ');
-  li.querySelector('.meta').textContent = [sn && sn+' sezon', fl && fl+' film', ot && ot+' ek', rew(ps), !ep ? w+' bölüm' : w===ep ? ep+' bölüm' : w+'/'+ep+' bölüm', genrePreview].filter(Boolean).join(', ');
+  li.querySelector('.meta').textContent = [it.favorite ? '★ Başyapıt' : '', sn && sn+' sezon', fl && fl+' film', ot && ot+' ek', rew(ps), !ep ? w+' bölüm' : w===ep ? ep+' bölüm' : w+'/'+ep+' bölüm', genrePreview].filter(Boolean).join(', ');
   const st = li.querySelector('.st'), po = li.querySelector('.poster');
+  if (it.favorite) {
+    const fb = h('span', 'fav-badge', '★');
+    fb.title = 'Favori / Başyapıt';
+    po.append(fb);
+  }
   const lab = it.status !== 'completed' ? (ST[it.status]||it.status) : it.next ? NEXT : '';
   if(lab){ st.textContent = lab; st.classList.add('st-'+(it.status !== 'completed' ? it.status : 'next')); const sb = h('span','sb st-'+(it.status !== 'completed' ? it.status : 'next'), lab); po.append(sb); } else st.remove();
   if(it.status !== 'completed' && ep && w < ep){ const pg = h('div','pg'); pg.innerHTML = '<i></i>'; pg.firstChild.style.setProperty('--w', Math.round(w/ep*100)+'%'); po.append(pg); }
@@ -145,10 +153,10 @@ function build(it){
   }
   const im = li.querySelector('img'); im.onload = () => im.classList.add('in');
   if(it.image) im.src = big(it.image);
-  const m = {li, it, sc: effScore || 0, key:it.title.toLocaleLowerCase('tr'), y, d:dec(y), sn, fl, rp:Math.max(0, ...ps.map(p => p.repeat||0)), ep:w, g:effGenres};
+  const m = {li, it, sc: effScore || 0, key:it.title.toLocaleLowerCase('tr'), y, ay:addedYear, d:dec(y), sn, fl, rp:Math.max(0, ...ps.map(p => p.repeat||0)), ep:w, g:effGenres};
   nodes.set(it.id, m); return li;
 }
-const active = () => ['sc','dc','kd','gn'].filter(k => state[k]!=='all').length;
+const active = () => ['sc','dc','kd','gn','ay'].filter(k => state[k]!=='all').length;
 function render(){
   const s = state, q = s.q.trim().toLocaleLowerCase('tr'), root = $('#list');
   root.className = s.view;
@@ -161,8 +169,10 @@ function render(){
   let shown = 0, first = null, last = null;
   for(const it of s.items){
     const n = nodes.get(it.id);
-    const ok = (s.filter==='all' || (s.filter==='next' ? it.next : it.status===s.filter)) && n.key.includes(q)
-      && scOk(s.sc, n.sc) && (s.gn==='all' || n.g.includes(s.gn)) && (s.dc==='all' || n.d===s.dc) && kOk(s.kd, n);
+    const filterMatch = s.filter==='all'
+      || (s.filter==='fav' ? Boolean(it.favorite) : s.filter==='next' ? it.next : it.status===s.filter);
+    const ok = filterMatch && n.key.includes(q)
+      && scOk(s.sc, n.sc) && (s.gn==='all' || n.g.includes(s.gn)) && (s.dc==='all' || n.d===s.dc) && (s.ay==='all' || n.ay===s.ay) && kOk(s.kd, n);
     n.li.hidden = !ok; n.li.classList.remove('f','l');
   }
   for(const li of root.children){ if(li.hidden) continue; shown++; if(!first) first = li; last = li; }
@@ -200,10 +210,12 @@ function filters(d){
   if(gs.length) grp('Tür / Kategori','gn',gs.map(g => [g,g]),gcount);
   grp('İçerik','kd',KIND,Object.fromEntries(KIND.map(([v]) => [v, ms.filter(m => kOk(v,m)).length])));
   const rs = h('button','more', pageTexts.resetFilterText || 'Filtreleri sıfırla'); rs.type = 'button';
-  rs.onclick = () => { Object.assign(state,{sc:'all',dc:'all',kd:'all',gn:'all',filter:'all',q:''}); $('#q').value = ''; go(); };
+  rs.onclick = () => { Object.assign(state,{sc:'all',dc:'all',kd:'all',gn:'all',ay:'all',filter:'all',q:''}); $('#q').value = ''; go(); };
   box.append(rs); fp.append(box);
   $('#fbtn').onclick = () => { const o = $('#fp').classList.toggle('open'); $('#fbtn').setAttribute('aria-expanded', o); };
 }
+
+// [AI-MIMARI-NOTU: ADIM 13 — GELİŞMİŞ İSTATİSTİK GRAFİKLERİ]
 function stats(d){
   const box = $('#stats'); box.replaceChildren();
   const cfg = { animeCountRule: 'completed_season_or_movie', includeInProgressEpisodes: true, genreSourceRule: 'custom_only', ...(d.statsConfig || {}) };
@@ -212,6 +224,7 @@ function stats(d){
   const t = S ? {anime:S.anime, season:S.season, film:S.film, ep:S.episodes} : UI.tally(d.anime, cfg);
   const scs = cn.map(i => getEffectiveScore(i)).filter(Boolean);
   const avg = S && S.avgScore != null ? S.avgScore : (scs.length ? (scs.reduce((a,b)=>a+b,0)/scs.length) : null);
+  const favCount = d.anime.filter(i => i.favorite).length;
   const row = h('div','stats-row');
   for(const [v,l,tip] of [
     [t.anime,'anime','En az 1 sezonu veya filmi tamamlanmış olan animeler sayılır'],
@@ -230,8 +243,49 @@ function stats(d){
   const hist = Array.from({length:10},(_,i) => [String(i+1), 0, 'sc', 'b'+(i+1)]);
   for(const x of scs) hist[Math.min(10,Math.max(1,Math.floor(x)))-1][1]++;
   blk('Puan dağılımı', bars(hist.slice(Math.min(...hist.map((x,i) => x[1] ? i : 9)))));
+
+  // Adım 13: Format Bazlı Puan & İçerik Analizi (Sezon vs Film vs Yan İçerik)
+  const formatBuckets = {
+    season: { label: 'Ana Sezonlar (×1.00)', count: 0, scores: [] },
+    movie: { label: 'Filmler (×0.35)', count: 0, scores: [] },
+    other: { label: 'Yan İçerikler / OVA (×0.15)', count: 0, scores: [] }
+  };
+  for (const it of cn) {
+    for (const p of UI.parts(it)) {
+      if (p.status !== 'COMPLETED' && !(p.watched > 0)) continue;
+      const k = p.kind === 'movie' ? 'movie' : p.kind === 'other' ? 'other' : 'season';
+      if (p.status === 'COMPLETED') formatBuckets[k].count++;
+      const psc = Number(p.score);
+      if (!isNaN(psc) && psc > 0) formatBuckets[k].scores.push(psc);
+    }
+  }
+  const fmtGrid = h('div', 'fmt-cmp-grid');
+  for (const [k, fb] of Object.entries(formatBuckets)) {
+    if (!fb.count && !fb.scores.length) continue;
+    const fAvg = fb.scores.length ? (fb.scores.reduce((a, b) => a + b, 0) / fb.scores.length).toFixed(1) : '-';
+    const card = h('div', 'fmt-cmp-card glass');
+    card.innerHTML = `<span class="fmt-cmp-lbl"></span><b class="fmt-cmp-val"></b><small class="fmt-cmp-sub"></small>`;
+    card.querySelector('.fmt-cmp-lbl').textContent = fb.label;
+    card.querySelector('.fmt-cmp-val').textContent = fAvg !== '-' ? `★ ${fAvg}` : `${fb.count} tamamlandı`;
+    card.querySelector('.fmt-cmp-sub').textContent = `${fb.count} tamamlanan · ${fb.scores.length} puanlı`;
+    fmtGrid.append(card);
+  }
+  if (fmtGrid.children.length) blk('Format & ağırlıklı puan analizi', fmtGrid);
+
   const dcs = [...DORD].reverse().map(k => [DEC[k].replace("'ler",'').replace("'lar",''), cn.filter(i => nodes.get(i.id).d===k).length, 'dc', k]);
   blk('Çıkış yılına göre', bars(dcs));
+
+  // Adım 13: İzleme / Eklenme Yılına Göre Dağılım
+  const ayCounts = {};
+  for (const i of cn) {
+    const ay = nodes.get(i.id) && nodes.get(i.id).ay;
+    if (ay) ayCounts[ay] = (ayCounts[ay] || 0) + 1;
+  }
+  const ayKeys = Object.keys(ayCounts).sort();
+  if (ayKeys.length > 1) {
+    blk('Eklenme / izleme yılına göre', bars(ayKeys.map(y => [y, ayCounts[y], 'ay', y])));
+  }
+
   const sg = h('div','seg'), lg = h('div','leg');
   for(const k of Object.keys(ST)){ const n = d.anime.filter(i => i.status===k).length; if(!n) continue;
     const b = h('button'); b.type = 'button'; b.title = ST[k]+': '+n; b.style.cssText = '--n:'+n+';--c:'+COL[k]; b.onclick = () => { setF('filter',k); jump(); }; sg.append(b);
@@ -246,14 +300,39 @@ function stats(d){
     add('En çok izlenen', H.mostWatched, H.mostWatched && H.mostWatched.episodes+' bölüm'+(H.mostWatched.status!=='completed' ? ' · '+(ST[H.mostWatched.status]||'').toLocaleLowerCase('tr') : ''));
     add('En çok tekrar', H.mostRewatched, H.mostRewatched && H.mostRewatched.times+' kez izlendi');
   }
+  if (favCount > 0) {
+    const r = h('div');
+    r.append(h('span', null, 'Favoriler / Başyapıtlar'), h('b', null, favCount + ' yapım'));
+    hl.append(r);
+  }
   if(hl.children.length) blk('Öne çıkanlar', hl);
+
+  // Adım 13: Özel Kategori Yüzdesel Dağılım Grafiği (.genre-bars)
   const gc = {};
   for(const i of cn){
     const gs = nodes.get(i.id) ? nodes.get(i.id).g : getEffectiveGenres(i, cfg.genreSourceRule);
     for(const g of gs) gc[g] = (gc[g]||0)+1;
   }
   const tg = Object.keys(gc).sort((a,b) => gc[b]-gc[a] || a.localeCompare(b,'tr')).slice(0,12);
-  if(tg.length){ const rowG = h('div','chips'); for(const g of tg) chip(rowG, g, gc[g], {g:'gn',v:g}, () => { setF('gn',g); jump(); }); blk('Türler & Kategoriler', rowG); }
+  if(tg.length){
+    const maxG = Math.max(1, ...tg.map(g => gc[g]));
+    const totalCounted = Math.max(1, cn.length);
+    const gBars = h('div', 'genre-bars');
+    for (const g of tg) {
+      const pct = Math.round((gc[g] / totalCounted) * 100);
+      const widthPct = Math.round((gc[g] / maxG) * 100);
+      const btn = h('button', 'genre-bar-row');
+      btn.type = 'button';
+      btn.dataset.g = 'gn';
+      btn.dataset.v = g;
+      btn.innerHTML = `<div class="gb-head"><span class="gb-name"></span><span class="gb-val"></span></div><div class="gb-track"><i style="--w:${widthPct}%"></i></div>`;
+      btn.querySelector('.gb-name').textContent = g;
+      btn.querySelector('.gb-val').textContent = `${gc[g]} anime (%${pct})`;
+      btn.onclick = () => { setF('gn', g); jump(); };
+      gBars.append(btn);
+    }
+    blk('Özel kategori & tür dağılımı', gBars);
+  }
   more.onclick = () => { const o = box.classList.toggle('open'); more.setAttribute('aria-expanded', o); };
   box.append(row, ins, more); box.hidden = false;
 }
@@ -276,8 +355,8 @@ function stats(d){
     root.append(fr);
     stats(d); filters(d);
     const chips = $('#chips');
-    for(const [k,label] of [['all','Hepsi'], ['next',NEXT], ...Object.entries(ST)]){
-      const n = k==='all' ? d.anime.length : k==='next' ? d.anime.filter(i => i.next).length : d.anime.filter(i => i.status===k).length;
+    for(const [k,label] of [['all','Hepsi'], ['fav',FAV_LABEL], ['next',NEXT], ...Object.entries(ST)]){
+      const n = k==='all' ? d.anime.length : k==='fav' ? d.anime.filter(i => i.favorite).length : k==='next' ? d.anime.filter(i => i.next).length : d.anime.filter(i => i.status===k).length;
       if(!n) continue;
       chip(chips,label,n,{filter:k},() => setF('filter',k));
     }
@@ -303,7 +382,9 @@ function fillSheet(it){
   const effScore = getEffectiveScore(it);
   const effGenres = getEffectiveGenres(it, (state.statsConfig && state.statsConfig.genreSourceRule) || 'custom_only');
   t('#sh-title').textContent = it.title;
-  const bits = [it.status==='completed' && it.next ? NEXT : (ST[it.status]||it.status)];
+  const bits = [];
+  if (it.favorite) bits.push('★ Başyapıt');
+  bits.push(it.status==='completed' && it.next ? NEXT : (ST[it.status]||it.status));
   if(effScore) bits.push('★ '+effScore);
   const cnt = k => ps.filter(p => p.kind===k && own(p)).length;
   const c = [cnt('season') && cnt('season')+' sezon', cnt('movie') && cnt('movie')+' film', cnt('other') && cnt('other')+' ek'].filter(Boolean).join(', ');

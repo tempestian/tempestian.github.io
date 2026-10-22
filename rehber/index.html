@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#eceef3">
+<meta name="description" content="Bayram Tempestian'ın Technopat Sosyal üzerinde yayınladığı rehberler ve teknik inceleme kataloğu.">
+<title>Rehber · Tempestian</title>
+<link rel="icon" href="../assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<script src="../assets/js/theme.js"></script>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-root="../" data-section="guide" data-data="../data/guides.json">
+<header class="bar">
+  <div class="bar-in">
+    <a class="btn glass" href="../" data-icon="back" aria-label="Ana sayfa"></a>
+    <span class="bar-title">Rehber</span>
+    <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <h1>Rehber</h1>
+    <p class="sub" id="guidePageSub" style="margin-top:4px;font-size:.98rem">Technopat Sosyal üzerinde yayınladığım rehber ve incelemelerin kataloğu.</p>
+  </div>
+
+  <div id="stats" class="stats glass sq" hidden></div>
+
+  <div class="tools">
+    <label class="search glass">
+      <span data-icon="search"></span>
+      <input id="q" type="search" placeholder="Rehber başlığı, konu veya kategori ara..." autocomplete="off">
+    </label>
+    <div class="pick glass">
+      <select id="sort" aria-label="Sıralama">
+        <option value="added">En yeni</option>
+        <option value="title">Başlık (A–Z)</option>
+        <option value="fav">Öne çıkanlar</option>
+      </select>
+      <span data-icon="chev"></span>
+    </div>
+  </div>
+
+  <div id="chips" class="chips" role="group" aria-label="Kategori filtresi"></div>
+
+  <ul id="guideList" class="tiles guide-catalog-grid"></ul>
+  <p id="empty" class="note" hidden>Henüz rehber eklenmemiş veya aramayla eşleşen rehber yok.</p>
+
+  <p class="foot">Rehber kartlarına tıkladığınızda Technopat Sosyal üzerindeki ilgili konuya yönlendirilirsiniz.</p>
+</main>
+
+<nav id="dock" class="dock glass" aria-label="Bölümler" hidden></nav>
+
+<script src="../assets/js/common.js"></script>
+<script src="../assets/js/guide.js"></script>
+</body>
+</html>

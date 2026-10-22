@@ -1,12 +1,20 @@
 // ============================================================================
-// [AI-MIMARI-NOTU: ORTAK KABUK, DİNAMİK SİTE YAPILANDIRMASI VE KUTUCUK MOTORU]
-// Bu dosya tüm sayfalarda (Ana sayfa, Anime ve ileride eklenecek Manga, Kitap,
-// Film, Dizi, Rehber vb. alt sayfalarda) çalışan ortak veri ve arayüz katmanıdır.
+// [AI-MIMARI-NOTU: ORTAK KABUK, ALT MENÜ (#DOCK), ÇOKLU-MEDYA ÖZETİ VE KUTUCUK MOTORU]
+// Bu dosya tüm sayfalarda (Ana sayfa, Anime, Dizi, Film, Manga, Kitap ve Rehber)
+// çalışan ortak veri ve arayüz katmanıdır.
 //
-// 1. Veri Kaynağı: `data/sections.json` (schemaVersion: 2).
-// 2. İstatistik Özeti (`UI.tally`): `scripts/stats.mjs` ile birebir uyumlu olarak:
-//    - En az 1 sezon veya film tamamlandığında (`completed_season_or_movie`) izlenen anime sayısını artırır.
-//    - Yeni bölüm izledikçe (`watched > 0`) devam eden sezonlardaki bölümleri de anında toplam bölüme dahil eder.
+// 1. Alt Menü (`#dock`) Mimari Notu:
+//    - HTML şablonlarında `<nav id="dock" class="dock glass">` doğrudan flex kapsayıcısıdır.
+//    - İçine ikinci bir `<nav>` EKLENMEMELİDİR; `<a>` öğeleri doğrudan `#dock` içine
+//      yerleştirilir ve aktif sekmenin (`it.id === cur`) içine `<span class="pill">`
+//      eklenerek yan yana (yatay) Liquid Glass sekme görünümü korunur.
+//
+// 2. Çoklu-Medya Arşiv Özeti (`summarize` — Adım 12 & 13):
+//    - `anime`, `series`, `movie`, `manga`, `book` ve `guide` bölümlerinin her biri için
+//      ilgili JSON dosyasındaki (`data/anime.json`, `data/series.json` vb.) `stats` ve
+//      kayıt dizisini okuyarak ana sayfadaki kategori kartlarında zengin sayaçları
+//      (ör. Dizi/Sezon/Bölüm, Film/Ort. Puan, Kitap/Sayfa, Manga/Bölüm) ve 4'lü kapak
+//      şeridini (`strip`) oluşturur.
 // ============================================================================
 (() => {
   const root = document.body.dataset.root || '', cur = document.body.dataset.section;
@@ -124,12 +132,24 @@
   const boxesTop = document.getElementById('boxesTop'), boxesBottom = document.getElementById('boxesBottom');
   const cover = x => x.image || null;
 
+  // [AI-MIMARI-NOTU: ADIM 12 & 13 — ÇOKLU-MEDYA KART ÖZETLEYİCİ]
   const summarize = (s, j) => {
-    const items = (j && j[s.countKey]) || [];
-    const t = j && j.stats ? { anime: j.stats.anime, season: j.stats.season, film: j.stats.film, ep: j.stats.episodes } : tally(items, j && j.statsConfig);
-    const nums = s.id === 'anime' && items.every(x => x.parts || x.seasons)
-      ? [[t.anime, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']]
-      : [[items.length, s.unit || '']];
+    const items = (j && (j[s.countKey] || j.items || j.anime)) || [];
+    const t = j && j.stats ? { anime: j.stats.anime, season: j.stats.season, film: j.stats.film, ep: j.stats.episodes, avg: j.stats.avgScore } : tally(items, j && j.statsConfig);
+    let nums;
+    if (s.id === 'anime') {
+      nums = [[t.anime, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']];
+    } else if (s.id === 'series') {
+      nums = [[t.anime, 'dizi'], [t.season, 'sezon'], [t.ep, 'bölüm']];
+    } else if (s.id === 'movie') {
+      nums = [[t.anime || items.filter(x => x.status === 'completed').length, 'film'], ...(t.avg ? [[t.avg, 'ort. puan']] : [])];
+    } else if (s.id === 'manga') {
+      nums = [[t.anime, 'manga'], [t.ep, 'bölüm']];
+    } else if (s.id === 'book') {
+      nums = [[t.anime, 'kitap'], [t.ep, 'sayfa']];
+    } else {
+      nums = [[items.length, s.unit || 'içerik']];
+    }
     return { nums: j ? nums : null, imgs: s.showStrip === false ? [] : items.map(cover).filter(Boolean).slice(0, 4) };
   };
 
@@ -245,20 +265,32 @@
     const visibleSections = (d.sections || []).filter(s => s && s.status !== 'hidden');
     const active = visibleSections.filter(s => s.status === 'active');
 
+    // [AI-MIMARI-NOTU]: #dock zaten <nav id="dock" class="dock glass"> olduğu için
+    // bağlantılar doğrudan #dock içine eklenir (iç içe <nav> kullanılmaz); böylece
+    // tüm alt menü öğeleri yan yana (yatay flex satırı halinde) dizilir.
     if (dock) {
       if (active.length) {
         const homeLabel = (d.site && d.site.homeLabel) || 'Ana sayfa';
         const items = [{ id: 'home', title: homeLabel, href: root || './', icon: 'home' }, ...active.map(s => ({ id: s.id, title: s.title, href: root + s.path, icon: s.icon || s.id }))];
-        const nav = el('nav', 'glass'); nav.setAttribute('aria-label', 'Bölümler');
+        const fr = document.createDocumentFragment();
         for (const it of items) {
-          const a = el('a'); a.href = it.href; a.innerHTML = icon(it.icon);
+          const a = el('a');
+          a.href = it.href;
+          if (it.id === cur) {
+            a.setAttribute('aria-current', 'page');
+            const pill = el('span', 'pill');
+            pill.setAttribute('aria-hidden', 'true');
+            a.append(pill);
+          }
+          a.insertAdjacentHTML('beforeend', icon(it.icon));
           a.append(el('span', '', it.title));
-          if (it.id === cur) a.setAttribute('aria-current', 'page');
-          nav.append(a);
+          fr.append(a);
         }
-        dock.replaceChildren(nav); dock.hidden = false;
+        dock.replaceChildren(fr);
+        dock.hidden = false;
       } else {
-        dock.replaceChildren(); dock.hidden = true;
+        dock.replaceChildren();
+        dock.hidden = true;
       }
     }
 
@@ -342,9 +374,12 @@
       render(d, sum);
       if (list) {
         const previewAnime = json('tp_anime_preview');
+        const previewMulti = json('tp_multimedia_preview') || {};
         await Promise.all((d.sections || []).filter(s => s.status === 'active' && s.data).map(async s => {
           try {
-            const j = (s.id === 'anime' && previewAnime) ? previewAnime : await fetch(root + s.data).then(r => r.json());
+            const j = (s.id === 'anime' && previewAnime)
+              ? previewAnime
+              : (previewMulti[s.id] ? previewMulti[s.id] : await fetch(root + s.data).then(r => r.json()));
             sum[s.id] = summarize(s, j);
           } catch (e) {}
         }));

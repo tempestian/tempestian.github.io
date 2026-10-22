@@ -361,3 +361,34 @@ h3 a:focus-visible{outline:0}
 .box-ic{width:38px;height:38px;border-radius:calc(11px*var(--k));background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
 .box-ic svg{width:20px;height:20px}
 .box-txt{color:var(--ink2);font-size:.94rem;line-height:1.45;white-space:pre-line}
+
+/* ---- v4: Alt Menü (#dock) Yatay Hizalama Garantisi, Başyapıt Rozeti ve Adım 13 İstatistik Grafikleri ---- */
+.dock{display:flex!important;flex-direction:row!important;align-items:center;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.dock::-webkit-scrollbar{display:none}
+.dock a{display:inline-flex!important;flex-direction:row!important;align-items:center;justify-content:center;gap:8px;white-space:nowrap;flex:0 0 auto}
+
+.fav-badge{position:absolute;right:8px;bottom:10px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.82rem;line-height:1;background:var(--glass-hi);color:#d98b00;box-shadow:inset 0 0 0 1px var(--line),0 3px 10px rgba(0,0,0,.25);z-index:2}
+:root[data-theme=dark] .fav-badge{color:#ffc247}
+.list .fav-badge{display:none}
+
+.fmt-cmp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.fmt-cmp-card{padding:12px 14px;border-radius:calc(16px*var(--k));background:var(--glass2);box-shadow:inset 0 0 0 1px var(--line);display:grid;gap:3px}
+.fmt-cmp-lbl{font-size:.74rem;font-weight:600;color:var(--ink2)}
+.fmt-cmp-val{font-size:1.25rem;font-weight:650;color:var(--accent);font-variant-numeric:tabular-nums}
+.fmt-cmp-sub{font-size:.73rem;color:var(--ink2)}
+
+.genre-bars{display:grid;gap:8px}
+.genre-bar-row{width:100%;border:0;background:var(--glass2);padding:9px 13px;border-radius:calc(14px*var(--k));box-shadow:inset 0 0 0 1px var(--line);cursor:pointer;display:grid;gap:6px;text-align:left;transition:background .2s,transform .2s}
+.genre-bar-row:hover,.genre-bar-row[aria-pressed=true]{background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.gb-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:.83rem}
+.gb-name{font-weight:620;color:var(--ink)}
+.gb-val{font-size:.76rem;color:var(--ink2);font-variant-numeric:tabular-nums}
+.gb-track{height:6px;border-radius:999px;background:var(--glass);overflow:hidden}
+.gb-track i{display:block;height:100%;width:var(--w);background:var(--accent);border-radius:999px}
+
+/* ---- v5: Adım 15 Technopat Sosyal Rehber Kataloğu Stilleri ---- */
+.guide-catalog-grid{margin-top:8px}
+.guide-card>a{gap:12px}
+.guide-out-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent);font-weight:620}
+.guide-out-badge svg{width:15px;height:15px}
+.guide-cat-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}

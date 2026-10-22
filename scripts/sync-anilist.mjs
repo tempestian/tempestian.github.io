@@ -1,27 +1,23 @@
 // ============================================================================
-// [AI-MIMARI-NOTU: HİBRİT ANILIST SENKRON VE BAĞLANTILI ANİME / YAN İÇERİK KEŞİF MOTORU]
-// Bu betik Adım 3, 4, 5, 6, 7 ve 8 kapsamında şu görevleri yerine getirir:
+// [AI-MIMARI-NOTU: ANILIST PROFİLİNDEN BAĞIMSIZ, SIFIR-DEPOLAMA KAPAK VE BAĞLANTILI ANİME MOTORU (ADIM 10 & 11)]
 //
-// 1. İlk Sezon AniList Linki (`firstSeasonUrl` / `url`) Çözümleme (Adım 5 & 6):
-//    - Admin panelinden yeni anime eklenirken veya mevcut bir anime düzenlenirken girilen
-//      "İlk Sezonun AniList Linki" (`https://anilist.co/anime/101280/...` veya doğrudan ID)
-//      `parseAnilistId` fonksiyonu ile çözümlenir.
-//    - Bu ID tohum (seed) kabul edilerek AniList GraphQL API'si üzerinden (`QM` sorgusu)
-//      10 tura kadar genişlik öncelikli arama (BFS) ile tüm bağlantılı içerikler:
-//      * Ana Sezonlar (`PREQUEL`, `SEQUEL`)
-//      * Filmler (`MOVIE`)
-//      * Yan İçerikler, OVA, ONA, Özel Bölümler (`SIDE_STORY`, `PARENT`, `SUMMARY`, `SPIN_OFF`)
-//      otomatik olarak bulunur ve ilgili animenin `parts` dizisine yayın sırasıyla eklenir.
-//
-// 2. Mevcut ve Yeni Eklenen Animeler İçin Yan İçerik Sorgulama:
-//    - Sadece yeni eklenen animeler değil, `data/anime.json` içinde halihazırda bulunan
-//      tüm animeler için de AniList'te yeni bir sezon, film veya yan içerik olup olmadığı
-//      her çalışmada sorgulanır ve eksik parçalar (`parts`) site verilerine çekilir.
-//
-// 3. Ağırlıklı Puan, Özel Tür (`customGenres`) ve Admin Düzenlemelerinin Korunması (Adım 7 & 8):
-//    - Animenin genel puanı her zaman parçalara (Sezon ×1.00, Film ×0.35, Yan İçerik ×0.15)
-//      verilen puanlardan (`parts[].score`) otomatik hesaplanır (`resolveEffectiveScore`).
-//    - Tür istatistiklerinde yalnızca adminin seçtiği özel kategoriler (`customGenres`) yer alır.
+// KULLANICI HEDEFİ (ADIM 10):
+// 1. AniList Profil Listesinden Tamamen Kopuş (`SYNC_MODE = 'relations_only'` varsayılan):
+//    - Kullanıcı artık AniList hesabına (`MediaListCollection`) yeni girdi eklememektedir.
+//    - Tüm yeni anime ekleme, puanlama, kategori seçimi, favori/başyapıt işaretleme ve bölüm
+//      takibi doğrudan `tempestian.github.io/admin/` panelinden yapılır.
+// 2. Sıfır-Depolama Uzaktan Kapak & Yan İçerik Çekimi:
+//    - GitHub Pages depolama sınırını doldurmamak için kapak görselleri repoya İNDİRİLMEZ;
+//      AniList'in resmi CDN bağlantıları (`coverImage.large`) doğrudan URL olarak kullanılır.
+//    - Bu betik çalıştığında yalnızca `data/anime.json` içindeki animelerin `firstSeasonUrl`
+//      (ilk sezon AniList linki) değerlerini tohum (`seed`) olarak alır ve AniList GraphQL
+//      API'sinden eksik kapak görseli URL'lerini, bölüm sayılarını ve yeni çıkan sezon, film
+//      ve yan içerikleri (`PREQUEL`, `SEQUEL`, `SIDE_STORY`, `PARENT`, `SUMMARY`, `SPIN_OFF`)
+//      sorgulayıp ilgili animenin `parts` dizisine ekler.
+// 3. Yerel Verilerin %100 Korunması (Adım 7, 8 & 11):
+//    - Sitede düzenlenen başlık, ağırlıklı parça puanları (`parts[].score`, `score`),
+//      özel kategoriler (`customGenres`), izleme durumu (`status`, `watched`, `repeat`) ve
+//      Favori/Başyapıt işareti (`favorite: true`) her zaman korunur.
 // ============================================================================
 import fs from 'node:fs';
 import { computeStats, resolveEffectiveScore, DEFAULT_STATS_CONFIG } from './stats.mjs';
@@ -31,7 +27,8 @@ const LIST = process.env.CUSTOM_LIST || '';
 const PLANNED = process.env.INCLUDE_PLANNED === '1';
 const OUT = process.env.OUT || 'data/anime.json';
 const OVERRIDES_FILE = process.env.OVERRIDES || 'data/overrides.json';
-const SYNC_MODE = (process.env.SYNC_MODE || 'hybrid').toLowerCase(); // 'hybrid' | 'relations_only'
+// Adım 10: Varsayılan mod artık 'relations_only' (AniList profil listesine bağımlı olmadan yalnızca sitedeki animelerin kapak ve yan içeriklerini günceller)
+const SYNC_MODE = (process.env.SYNC_MODE || 'relations_only').toLowerCase(); // 'relations_only' | 'hybrid'
 
 const SERIES = new Set(['TV', 'TV_SHORT', 'ONA']);
 const LINKS = new Set(['PREQUEL', 'SEQUEL', 'SIDE_STORY', 'PARENT', 'SUMMARY', 'SPIN_OFF']);
@@ -133,9 +130,9 @@ for (const item of existingAnimeList) {
   }
 }
 
-// 2. Kullanıcı profili senkronu (SYNC_MODE !== 'relations_only' ise)
+// 2. Kullanıcı profili senkronu (Yalnızca SYNC_MODE === 'hybrid' ise çalışır; varsayılan 'relations_only' modunda AniList profiline hiç bakılmaz)
 const entries = new Map();
-if (SYNC_MODE !== 'relations_only') {
+if (SYNC_MODE === 'hybrid') {
   try {
     for (let c = 1; ; c++) {
       const res = await gql(c);
@@ -158,8 +155,7 @@ if (SYNC_MODE !== 'relations_only') {
   }
 }
 
-// 3. Admin panelinden firstSeasonUrl / url ile eklenmiş veya halihazırda sitede bulunan
-// tüm animelerin AniList ID'lerini yan içerik / bağlantılı anime tarama havuzuna ekle
+// 3. Sitedeki tüm animelerin AniList ID'lerini yan içerik / bağlantılı anime ve kapak URL tarama havuzuna ekle
 const seedMediaIds = new Set();
 for (const item of existingAnimeList) {
   if (deletedFranchiseIds.has(item.id)) continue;
@@ -408,8 +404,6 @@ for (const [root, members] of groups) {
   const defaultTitle = (ov.titles || {})[head.id] || (hm && (hm.title.english || hm.title.romaji)) || (matchedExisting && matchedExisting.title) || head.name;
   const title = (isModified && locked.has('title') && matchedExisting.title) ? matchedExisting.title : defaultTitle;
 
-  // [AI-MIMARI-NOTU]: Puan hesaplaması her zaman parçalara (Sezon ×1.00, Film ×0.35, Yan İçerik ×0.15)
-  // verilen puanların ağırlıklı ortalamasından yapılır (`resolveEffectiveScore`).
   const score = resolveEffectiveScore({ ...(matchedExisting || {}), parts });
 
   const status = (isModified && locked.has('status') && matchedExisting.status) ? matchedExisting.status : computedStatus;
@@ -423,7 +417,6 @@ for (const [root, members] of groups) {
     && seas.slice(fw + 1).some(p => p.watched === 0 && p.format !== 'TV_SHORT' && (chain.has(p.id) || p.kind === 'season') && ['FINISHED', 'RELEASING'].includes(p.release));
   const next = (isModified && locked.has('next')) ? Boolean(matchedExisting.next) : computedNext;
 
-  // [AI-MIMARI-NOTU]: Türler (Adım 7 & 8): Yalnızca adminin seçtiği özel kategoriler (`customGenres`) korunur.
   const customGenres = (matchedExisting && Array.isArray(matchedExisting.customGenres) && matchedExisting.customGenres.length)
     ? matchedExisting.customGenres
     : null;
@@ -435,6 +428,7 @@ for (const [root, members] of groups) {
   const finalAnilistId = preferredSeedId || head.id;
   const canonicalUrl = 'https://anilist.co/anime/' + finalAnilistId;
   const firstSeasonUrl = (matchedExisting && matchedExisting.firstSeasonUrl) || canonicalUrl;
+  const isFavorite = Boolean(matchedExisting && matchedExisting.favorite);
 
   anime.push({
     id: (matchedExisting && matchedExisting.id && !String(matchedExisting.id).startsWith('custom-')) ? matchedExisting.id : ('al-' + finalAnilistId),
@@ -443,6 +437,7 @@ for (const [root, members] of groups) {
     url: canonicalUrl,
     firstSeasonUrl,
     status,
+    ...(isFavorite ? { favorite: true } : {}),
     ...(next ? { next: true } : {}),
     ...(customGenres && customGenres.length ? { genres: customGenres, customGenres } : {}),
     score: score ?? null,
@@ -467,7 +462,7 @@ for (const [root, members] of groups) {
   });
 }
 
-// 5. AniList linki olmayan (tamamen bağımsız elle eklenmiş) yerel kayıtları koru
+// 5. AniList linki olmayan veya grafikte eşleşmeyen yerel kayıtları eksiksiz koru
 for (const item of existingAnimeList) {
   if (deletedFranchiseIds.has(item.id)) continue;
   const seedId = extractSeedAnilistId(item);
@@ -496,7 +491,7 @@ if (old && JSON.stringify(old.anime) === JSON.stringify(anime) && JSON.stringify
 const outPayload = {
   schemaVersion: 3,
   updated: new Date().toISOString().slice(0, 10),
-  source: 'hybrid:' + USER,
+  source: 'site-first:' + SYNC_MODE,
   statsConfig,
   ...(Array.isArray(existingData.customGenreCatalog) ? { customGenreCatalog: existingData.customGenreCatalog } : {}),
   stats,
@@ -504,4 +499,4 @@ const outPayload = {
 };
 
 fs.writeFileSync(OUT, JSON.stringify(outPayload, null, 2) + '\n');
-console.log(`${anime.length} franchise yazıldı (${SYNC_MODE} modu); sayılan: ${stats.anime} anime, ${stats.season} sezon, ${stats.film} film, ${stats.other} ek, ${stats.episodes} bölüm.`);
+console.log(`${anime.length} franchise yazıldı (${SYNC_MODE} modu); sayılan: ${stats.anime} anime, ${stats.season} sezon, ${stats.film} film, ${stats.other} ek, ${stats.episodes} bölüm, ${stats.favorites || 0} favori.`);

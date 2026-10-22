@@ -119,7 +119,7 @@ textarea.inp{height:auto;padding:10px 13px;resize:vertical;font-family:inherit}
 .item-list{display:grid;gap:6px;font-size:.84rem}
 .item-list li{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-radius:8px;background:var(--glass)}
 
-/* Adım 3–8: Anime Yönetimi, Puanlama Stüdyosu, Özel Tür Kataloğu ve Hızlı Bölüm Takibi */
+/* Adım 3–11: Anime Yönetimi, Puanlama Stüdyosu, Özel Tür Kataloğu, Favori/Başyapıt ve Hızlı Bölüm Takibi */
 .anime-stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
 .adm-stat-pill{padding:12px 14px;border-radius:calc(16px*var(--k));background:var(--glass2);box-shadow:inset 0 0 0 1px var(--line);display:grid;gap:2px}
 .adm-stat-pill b{font-size:1.35rem;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
@@ -135,7 +135,15 @@ textarea.inp{height:auto;padding:10px 13px;resize:vertical;font-family:inherit}
 .src-badge.manual{background:rgba(43,182,115,.16);color:#2bb673}
 .src-badge.modified{background:var(--accent-soft);color:var(--accent)}
 .src-badge.next{background:rgba(255,194,71,.2);color:var(--warn)}
+.src-badge.fav{background:rgba(245,166,35,.18);color:#d98b00}
+:root[data-theme=dark] .src-badge.fav{color:#ffc247}
 .genre-mini-pill{font-size:.69rem;font-weight:600;padding:2px 7px;border-radius:999px;background:var(--glass);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+
+/* Adım 11: Favori / Başyapıt Yıldız Butonu */
+.fav-toggle-btn{border:0;border-radius:999px;padding:6px 11px;font-size:.78rem;font-weight:650;cursor:pointer;background:var(--glass);color:var(--ink2);box-shadow:inset 0 0 0 1px var(--line);transition:transform .2s,background .2s,color .2s;display:inline-flex;align-items:center;gap:4px}
+.fav-toggle-btn:hover{color:#d98b00;background:rgba(245,166,35,.12)}
+.fav-toggle-btn.on{background:rgba(245,166,35,.2);color:#d98b00;box-shadow:inset 0 0 0 1.5px #f5a623}
+:root[data-theme=dark] .fav-toggle-btn.on{color:#ffc247}
 
 .quick-ep-btn{border:0;border-radius:999px;padding:6px 11px;font-size:.77rem;font-weight:650;cursor:pointer;background:var(--accent-soft);color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);transition:transform .2s,background .2s}
 .quick-ep-btn:hover{background:var(--accent);color:#fff}
@@ -213,3 +221,13 @@ textarea.inp{height:auto;padding:10px 13px;resize:vertical;font-family:inherit}
   .anime-adm-row .editor-item-actions{grid-column:1 / -1;justify-content:flex-end}
   .rq-subitem-row{grid-template-columns:1fr;gap:8px}
 }
+
+/* Adım 14: Veri Sağlığı Denetçisi ve Yedekleme Merkezi Stilleri */
+.health-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px}
+.health-card{padding:16px;border-radius:var(--rm);background:var(--glass2);box-shadow:inset 0 0 0 1px var(--line);display:grid;gap:10px;align-content: space-between}
+.health-card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.health-count{font-size:1.45rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent)}
+.health-count.ok{color:#2bb673}
+.health-count.warn{color:var(--warn)}
+.health-sample-list{display:grid;gap:5px;max-height:145px;overflow-y:auto;font-size:.8rem;color:var(--ink2)}
+.health-sample-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;background:var(--glass)}

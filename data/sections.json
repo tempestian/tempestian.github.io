@@ -42,42 +42,6 @@
       "status": "active",
       "icon": "anime",
       "showStrip": true
-    },
-    {
-      "id": "series",
-      "title": "Dizi",
-      "path": "dizi/",
-      "description": "Yakında",
-      "data": "data/series.json",
-      "countKey": "series",
-      "unit": "dizi",
-      "status": "soon",
-      "icon": "series",
-      "showStrip": true
-    },
-    {
-      "id": "movie",
-      "title": "Film",
-      "path": "film/",
-      "description": "Yakında",
-      "data": "data/movies.json",
-      "countKey": "movies",
-      "unit": "film",
-      "status": "soon",
-      "icon": "movie",
-      "showStrip": true
-    },
-    {
-      "id": "book",
-      "title": "Kitap",
-      "path": "kitap/",
-      "description": "Yakında",
-      "data": "data/books.json",
-      "countKey": "books",
-      "unit": "kitap",
-      "status": "soon",
-      "icon": "book",
-      "showStrip": true
     }
   ],
   "links": [
@@ -107,10 +71,10 @@
       "description": "Tempestian'ın izlediği animeler: puanlar, sezonlar ve izleme durumu.",
       "searchPlaceholder": "Ara",
       "emptyText": "Eşleşen anime yok.",
+      "footerText": "AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir.",
       "detailsText": "Ayrıntılar",
       "resetFilterText": "Filtreleri sıfırla",
-      "anilistButtonText": "AniList'te aç",
-      "footerText": "AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir."
+      "anilistButtonText": "AniList'te aç"
     }
   }
 }

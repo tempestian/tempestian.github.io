@@ -1,19 +1,16 @@
 // ============================================================================
-// [AI-MIMARI-NOTU: ANILIST'TEN BAĞIMSIZ, SİTE VERİSİ ODAKLI İSTATİSTİK MOTORU (ADIM 8)]
+// [AI-MIMARI-NOTU: ANILIST'TEN BAĞIMSIZ, SİTE VERİSİ ODAKLI İSTATİSTİK MOTORU (ADIM 8 & 11)]
 // Bu modül (`scripts/stats.mjs`), `data/anime.json` içindeki istatistikleri hesaplayan
 // tek gerçek kaynaktır (Single Source of Truth) ve Admin Panelindeki `computeStatsClient`
 // ile birebir aynı algoritmayı çalıştırır.
 //
-// KULLANICI TARAFINDAN BELİRLENEN KESİN KURALLAR (ADIM 8):
+// KULLANICI TARAFINDAN BELİRLENEN KESİN KURALLAR (ADIM 8 & 11):
 // 1. Ağırlıklı Otomatik Puan Hesabı (`resolveEffectiveScore` & `PART_SCORE_WEIGHTS`):
 //    - Animenin genel puanı her zaman sezonlara, filmlere ve yan içeriklere verilen
 //      parça puanlarından (`parts[].score`) ağırlıklı ortalama ile otomatik hesaplanır:
 //      * Ana Sezon (`kind === 'season'`, TV / ONA): Ağırlık = 1.00 (%100 etki)
 //      * Film (`kind === 'movie'`, MOVIE):          Ağırlık = 0.35 (%35 etki)
 //      * Yan İçerik / OVA / Özel (`kind === 'other'` veya `TV_SHORT`/`OVA`/`SPECIAL`): Ağırlık = 0.15 (%15 etki)
-//    - Formül: Yuvarla1Ondalık( Toplam(parçaPuanı_i * ağırlık_i) / Toplam(ağırlık_i) )
-//    - Eğer parçalara henüz tek tek puan girilmemiş ancak üst düzey `a.score` mevcutsa,
-//      veri kaybı (boşluk) olmaması için `a.score` yedek olarak korunur.
 //
 // 2. İzlenen Bölüm Sayısı (`includeInProgressEpisodes: true`):
 //    - Yeni bölüm izledikçe (`+1 Bölüm` yapıldıkça) hem tamamlanan (`COMPLETED`) hem de
@@ -29,6 +26,10 @@
 //    - İstatistiklerde (`stats.genres`) ve filtrelerde AniList'ten gelen ham türler DEĞİL,
 //      yalnızca admin tarafından elle seçilen özel kategoriler (`customGenres`: Shounen,
 //      Seinen, Isekai, Rom-Com vb.) yer alır.
+//
+// 5. Favoriler / Başyapıtlar (`favorite: true` — Adım 11):
+//    - Admin tarafından "⭐ Favori / Başyapıt" olarak işaretlenen yapımlar `stats.favorites`
+//      sayacında toplanır ve vitrinde öne çıkarılır.
 // ============================================================================
 import fs from 'node:fs';
 import { pathToFileURL } from 'node:url';
@@ -47,11 +48,8 @@ export function getPartWeight(part) {
 }
 
 export const DEFAULT_STATS_CONFIG = {
-  // 'completed_season_or_movie': En az 1 sezon veya film bitince izlenen anime sayısına dahil eder (Varsayılan)
   animeCountRule: 'completed_season_or_movie',
-  // true: Yeni bölüm izledikçe (+1 Bölüm) izlenen bölüm sayısına anında dahil eder (Varsayılan)
   includeInProgressEpisodes: true,
-  // 'custom_only': İstatistikte yalnızca adminin elle seçtiği özel kategoriler (customGenres) yer alır (Varsayılan)
   genreSourceRule: 'custom_only'
 };
 
@@ -145,6 +143,7 @@ export function computeStats(anime, rawConfig = {}) {
     episodes: 0,
     completedEpisodes: 0,
     inProgressEpisodes: 0,
+    favorites: 0,
     avgScore: null,
     byStatus: {},
     genres: [],
@@ -156,6 +155,7 @@ export function computeStats(anime, rawConfig = {}) {
   const genreCounts = new Map();
 
   for (const a of list) {
+    if (a.favorite) stats.favorites++;
     const st = a.status || 'watching';
     stats.byStatus[st] = (stats.byStatus[st] || 0) + 1;
 
@@ -170,11 +170,9 @@ export function computeStats(anime, rawConfig = {}) {
     } else if (cfg.animeCountRule === 'any_watched') {
       isCounted = activeParts.length > 0 || doneParts.length > 0 || st === 'completed';
     } else {
-      // Varsayılan ('completed_season_or_movie'): En az 1 sezon veya film tamamlanmışsa (veya yalnızca OVA'dan oluşan bir seride tamamlanan parça varsa) sayılır
       isCounted = doneSeasonOrMovie.length > 0 || (doneParts.length > 0 && !normParts.some(p => p.kind === 'season' || p.kind === 'movie')) || st === 'completed';
     }
 
-    // Tamamlanan sezon, film ve yan içeriklerin sayıları + tamamlanan bölümler
     for (const p of doneParts) {
       if (isCounted) {
         stats[p.kind === 'season' ? 'season' : p.kind === 'movie' ? 'film' : 'other']++;
@@ -182,7 +180,6 @@ export function computeStats(anime, rawConfig = {}) {
       stats.completedEpisodes += p.watched;
     }
 
-    // Devam eden / beklemede / bırakılan parçalardaki izlenmiş bölümler (anında toplama yansır)
     for (const p of activeParts) {
       if (p.status !== 'COMPLETED') {
         stats.inProgressEpisodes += p.watched;
@@ -193,7 +190,6 @@ export function computeStats(anime, rawConfig = {}) {
     stats.anime++;
     counted.push(a);
 
-    // Sadece admin tarafından elle seçilen özel kategorileri (customGenres) say
     const gList = resolveEffectiveGenres(a, cfg.genreSourceRule);
     for (const g of gList) {
       genreCounts.set(g, (genreCounts.get(g) || 0) + 1);
@@ -209,7 +205,6 @@ export function computeStats(anime, rawConfig = {}) {
   stats.partial = counted.length - stats.completed;
   stats.excluded = list.length - counted.length;
 
-  // Puanlar: Sezon/film/yan içerik ağırlıklı puan ortalamasını kullan
   const rated = counted
     .map(a => ({ item: a, effScore: resolveEffectiveScore(a) }))
     .filter(x => x.effScore != null && x.effScore > 0);
@@ -251,8 +246,6 @@ export function computeStats(anime, rawConfig = {}) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const f = process.env.OUT || 'data/anime.json';
   const d = JSON.parse(fs.readFileSync(f, 'utf8'));
-  // Mevcut animelerde üst düzey puan varsa ancak tamamlanmış sezonlarda henüz parça puanı yoksa,
-  // ağırlıklı puan sistemine geçişte hiçbir puanın boşlukta kalmaması için tamamlanan ana sezonlara miras bırak:
   for (const a of d.anime || []) {
     if (a.score != null && Array.isArray(a.parts)) {
       const anyPartScored = a.parts.some(p => p && p.score != null && Number(p.score) > 0);

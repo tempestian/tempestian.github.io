@@ -268,15 +268,22 @@
     const box = $('#stats'); if (!box) return;
     box.replaceChildren();
     if (!items.length) { box.hidden = true; return; }
-    const cn = items.filter(i => UI.tally([i]).anime > 0);
+    const countedRaw = items.filter(i => UI.tally([i]).anime > 0 || i.status === 'completed');
+    const cn = countedRaw.length ? countedRaw : items;
+    const rawTally = UI.tally(items);
     const t = S && (S.watched != null || S.read != null || S.anime != null)
       ? {
-          anime: S.watched ?? S.read ?? S.anime ?? 0,
-          season: S.seasons ?? S.volumes ?? S.films ?? S.season ?? 0,
-          film: S.specials ?? S.extras ?? S.film ?? 0,
-          ep: S.episodes ?? S.pages ?? S.chapters ?? S.watchCount ?? 0
+          anime: (S.watched ?? S.read ?? S.anime) || cn.length,
+          season: (S.seasons ?? S.volumes ?? S.films ?? S.season ?? rawTally.season) || cn.length,
+          film: S.specials ?? S.extras ?? S.film ?? rawTally.film ?? 0,
+          ep: S.episodes ?? S.pages ?? S.chapters ?? S.watchCount ?? rawTally.ep ?? 0
         }
-      : UI.tally(items);
+      : {
+          anime: rawTally.anime || cn.length,
+          season: rawTally.season || cn.length,
+          film: rawTally.film,
+          ep: rawTally.ep
+        };
     const scs = cn.map(i => getEffectiveScore(i)).filter(Boolean);
     const avg = S && S.avgScore != null ? S.avgScore : (scs.length ? (scs.reduce((a, b) => a + b, 0) / scs.length) : null);
     const favCount = items.filter(i => i.favorite).length;
@@ -426,10 +433,10 @@
         const prevAll = JSON.parse(ls('tp_multimedia_preview') || '{}');
         if (prevAll && prevAll[sectionId]) previewDoc = prevAll[sectionId];
       } catch (e) {}
-      const remItems = (remoteDoc && (remoteDoc[sectionId] || remoteDoc.items || remoteDoc.books || remoteDoc.movies)) || [];
-      const prevItems = (previewDoc && (previewDoc[sectionId] || previewDoc.items || previewDoc.books || previewDoc.movies)) || [];
+      const remItems = (remoteDoc && (Array.isArray(remoteDoc.items) ? remoteDoc.items : Array.isArray(remoteDoc[sectionId]) ? remoteDoc[sectionId] : Array.isArray(remoteDoc.books) ? remoteDoc.books : Array.isArray(remoteDoc.movies) ? remoteDoc.movies : [])) || [];
+      const prevItems = (previewDoc && (Array.isArray(previewDoc.items) ? previewDoc.items : Array.isArray(previewDoc[sectionId]) ? previewDoc[sectionId] : Array.isArray(previewDoc.books) ? previewDoc.books : Array.isArray(previewDoc.movies) ? previewDoc.movies : [])) || [];
       const d = (prevItems.length > 0 && prevItems.length >= remItems.length) ? previewDoc : (remoteDoc || previewDoc);
-      const items = (d && (d[sectionId] || d.items || d.books || d.movies)) || [];
+      const items = (d && (Array.isArray(d.items) ? d.items : Array.isArray(d[sectionId]) ? d[sectionId] : Array.isArray(d.books) ? d.books : Array.isArray(d.movies) ? d.movies : Array.isArray(d.series) ? d.series : Array.isArray(d.manga) ? d.manga : [])) || [];
       state.items = items;
       const root = $('#list'), fr = document.createDocumentFragment();
       items.forEach(it => fr.append(build(it)));

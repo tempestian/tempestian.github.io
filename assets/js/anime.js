@@ -118,7 +118,7 @@ Object.assign(state, {sc:'all', dc:'all', kd:'all', gn:'all', ay:'all'});
 const SORTS = {
   added: byAdded,
   score: (a,b) => (nodes.get(b.id).sc||0)-(nodes.get(a.id).sc||0) || byAdded(a,b),
-  title: (a,b) => a.title.localeCompare(b.title,'tr'),
+  title: (a,b) => (a.title||'').localeCompare(b.title||'','tr'),
   year: (a,b) => (nodes.get(b.id).y||0)-(nodes.get(a.id).y||0),
   eps: (a,b) => nodes.get(b.id).ep-nodes.get(a.id).ep
 };
@@ -153,14 +153,14 @@ function build(it){
   }
   const im = li.querySelector('img'); im.onload = () => im.classList.add('in');
   if(it.image) im.src = big(it.image);
-  const m = {li, it, sc: effScore || 0, key:it.title.toLocaleLowerCase('tr'), y, ay:addedYear, d:dec(y), sn, fl, rp:Math.max(0, ...ps.map(p => p.repeat||0)), ep:w, g:effGenres};
+  const m = {li, it, sc: effScore || 0, key:(it.title||'').toLocaleLowerCase('tr'), y, ay:addedYear, d:dec(y), sn, fl, rp:Math.max(0, ...ps.map(p => p.repeat||0)), ep:w, g:effGenres};
   nodes.set(it.id, m); return li;
 }
 const active = () => ['sc','dc','kd','gn','ay'].filter(k => state[k]!=='all').length;
 function render(){
   const s = state, q = s.q.trim().toLocaleLowerCase('tr'), root = $('#list');
   root.className = s.view;
-  if(order !== s.sort){
+  if(order !== s.sort && s.items.length){
     order = s.sort;
     const fr = document.createDocumentFragment();
     [...s.items].sort(SORTS[s.sort]||byAdded).forEach(it => fr.append(nodes.get(it.id).li));
@@ -339,15 +339,21 @@ function stats(d){
 
 (async () => {
   try {
-    let d = null;
+    let remoteDoc = null;
+    try {
+      const r = await fetch('../data/anime.json', { cache: 'no-store' });
+      if (r.ok) remoteDoc = await r.json();
+    } catch (e) {}
+    let prevDoc = null;
     try {
       const prev = ls('tp_anime_preview');
-      if (prev) d = JSON.parse(prev);
+      if (prev) prevDoc = JSON.parse(prev);
     } catch (e) {}
-    if (!d) {
-      const r = await fetch('../data/anime.json');
-      d = await r.json();
-    }
+    const remLen = (remoteDoc && Array.isArray(remoteDoc.anime)) ? remoteDoc.anime.length : 0;
+    const prevLen = (prevDoc && Array.isArray(prevDoc.anime)) ? prevDoc.anime.length : 0;
+    const d = (prevLen > 0 && prevLen >= remLen && (prevDoc.updated || '') >= ((remoteDoc && remoteDoc.updated) || ''))
+      ? prevDoc
+      : (remoteDoc || prevDoc);
     state.items = d.anime;
     state.statsConfig = { animeCountRule: 'completed_season_or_movie', includeInProgressEpisodes: true, genreSourceRule: 'custom_only', ...(d.statsConfig || {}) };
     const root = $('#list'), fr = document.createDocumentFragment();

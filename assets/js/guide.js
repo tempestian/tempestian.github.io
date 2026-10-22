@@ -34,18 +34,21 @@
       box.hidden = true;
       return;
     }
-    const catSet = new Set();
+    const catCounts = {};
     let favCount = 0;
     for (const it of items) {
       if (it.favorite) favCount++;
-      for (const c of getCategories(it)) catSet.add(c);
+      for (const c of getCategories(it)) {
+        catCounts[c] = (catCounts[c] || 0) + 1;
+      }
     }
+    const sortedCats = Object.keys(catCounts).sort((a, b) => catCounts[b] - catCounts[a] || a.localeCompare(b, 'tr'));
 
     const row = h('div', 'stats-row');
     row.style.gridTemplateColumns = 'repeat(3, 1fr)';
     for (const [v, l] of [
       [items.length, 'rehber'],
-      [catSet.size, 'kategori'],
+      [sortedCats.length, 'kategori'],
       [favCount, '★ öne çıkan']
     ]) {
       const e = h('div', 'stat');
@@ -54,7 +57,51 @@
       e.lastChild.textContent = l;
       row.append(e);
     }
-    box.append(row);
+
+    if (sortedCats.length) {
+      const more = h('button', 'more', 'Ayrıntılar');
+      more.type = 'button';
+      more.setAttribute('aria-expanded', 'false');
+      more.insertAdjacentHTML('beforeend', UI.icon('down'));
+
+      const ins = h('div', 'ins');
+      const inn = h('div', 'ins-in');
+      ins.append(inn);
+
+      const blk = h('div', 'blk');
+      blk.append(h('h4', null, 'Rehber kategori dağılımı'));
+
+      const maxG = Math.max(1, ...sortedCats.map(c => catCounts[c]));
+      const totalItems = Math.max(1, items.length);
+      const gBars = h('div', 'genre-bars');
+      for (const c of sortedCats) {
+        const cnt = catCounts[c];
+        const pct = Math.round((cnt / totalItems) * 100);
+        const widthPct = Math.round((cnt / maxG) * 100);
+        const btn = h('button', 'genre-bar-row');
+        btn.type = 'button';
+        btn.innerHTML = `<div class="gb-head"><span class="gb-name"></span><span class="gb-val"></span></div><div class="gb-track"><i style="--w:${widthPct}%"></i></div>`;
+        btn.querySelector('.gb-name').textContent = c;
+        btn.querySelector('.gb-val').textContent = `${cnt} rehber (%${pct})`;
+        btn.onclick = () => {
+          state.filter = state.filter === c ? 'all' : c;
+          renderList();
+          const listEl = $('#guideList');
+          if (listEl) listEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+        gBars.append(btn);
+      }
+      blk.append(gBars);
+      inn.append(blk);
+
+      more.onclick = () => {
+        const o = box.classList.toggle('open');
+        more.setAttribute('aria-expanded', o);
+      };
+      box.append(row, ins, more);
+    } else {
+      box.append(row);
+    }
     box.hidden = false;
   }
 

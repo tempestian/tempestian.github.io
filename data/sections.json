@@ -55,6 +55,54 @@
       "status": "active",
       "icon": "guide",
       "showStrip": false
+    },
+    {
+      "id": "series",
+      "title": "Dizi",
+      "path": "dizi/",
+      "description": "Yakında",
+      "data": "data/series.json",
+      "countKey": "series",
+      "unit": "dizi",
+      "status": "soon",
+      "icon": "series",
+      "showStrip": true
+    },
+    {
+      "id": "movie",
+      "title": "Film",
+      "path": "film/",
+      "description": "Yakında",
+      "data": "data/movies.json",
+      "countKey": "movies",
+      "unit": "film",
+      "status": "soon",
+      "icon": "movie",
+      "showStrip": true
+    },
+    {
+      "id": "manga",
+      "title": "Manga",
+      "path": "manga/",
+      "description": "Yakında",
+      "data": "data/manga.json",
+      "countKey": "manga",
+      "unit": "manga",
+      "status": "soon",
+      "icon": "manga",
+      "showStrip": true
+    },
+    {
+      "id": "book",
+      "title": "Kitap",
+      "path": "kitap/",
+      "description": "Yakında",
+      "data": "data/books.json",
+      "countKey": "books",
+      "unit": "kitap",
+      "status": "soon",
+      "icon": "book",
+      "showStrip": true
     }
   ],
   "links": [

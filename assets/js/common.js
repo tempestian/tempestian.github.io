@@ -132,29 +132,59 @@
   const boxesTop = document.getElementById('boxesTop'), boxesBottom = document.getElementById('boxesBottom');
   const cover = x => x.image || null;
 
+  const CANONICAL_SECTION_META = {
+    anime: { path: 'anime/', data: 'data/anime.json', countKey: 'anime', unit: 'anime', icon: 'anime', showStrip: true },
+    guide: { path: 'rehber/', data: 'data/guides.json', countKey: 'guides', unit: 'rehber', icon: 'guide', showStrip: false },
+    series: { path: 'dizi/', data: 'data/series.json', countKey: 'series', unit: 'dizi', icon: 'series', showStrip: true },
+    movie: { path: 'film/', data: 'data/movies.json', countKey: 'movies', unit: 'film', icon: 'movie', showStrip: true },
+    manga: { path: 'manga/', data: 'data/manga.json', countKey: 'manga', unit: 'manga', icon: 'manga', showStrip: true },
+    book: { path: 'kitap/', data: 'data/books.json', countKey: 'books', unit: 'kitap', icon: 'book', showStrip: true }
+  };
+
+  function ensureSectionDefaults(s) {
+    if (!s || typeof s !== 'object') return s;
+    const def = CANONICAL_SECTION_META[s.id];
+    if (!def) return s;
+    return {
+      ...def,
+      ...s,
+      path: s.path || def.path,
+      data: s.data || def.data,
+      countKey: s.countKey || def.countKey,
+      unit: s.unit || def.unit,
+      icon: s.icon || def.icon,
+      showStrip: s.showStrip !== undefined ? s.showStrip : def.showStrip
+    };
+  }
+
   // [AI-MIMARI-NOTU: ADIM 12 & 13 — ÇOKLU-MEDYA KART ÖZETLEYİCİ]
-  const summarize = (s, j) => {
-    const items = (j && (j[s.countKey] || j.items || j.anime)) || [];
+  const summarize = (rawSec, j) => {
+    const s = ensureSectionDefaults(rawSec);
+    const items = (j && (Array.isArray(j.items) ? j.items : Array.isArray(j[s.countKey]) ? j[s.countKey] : Array.isArray(j[s.id]) ? j[s.id] : Array.isArray(j.anime) ? j.anime : [])) || [];
     const st = j && j.stats;
+    const rawTally = tally(items, j && j.statsConfig);
     const t = st
       ? {
-          main: st.watched ?? st.read ?? st.published ?? st.total ?? st.anime ?? 0,
-          season: st.seasons ?? st.volumes ?? st.films ?? st.season ?? 0,
-          film: st.film ?? st.specials ?? st.extras ?? 0,
-          ep: st.episodes ?? st.pages ?? st.chapters ?? st.watchCount ?? 0,
+          main: (st.watched ?? st.read ?? st.published ?? st.anime ?? rawTally.anime) || items.length,
+          season: (st.seasons ?? st.volumes ?? st.films ?? st.season ?? rawTally.season) || 0,
+          film: (st.film ?? st.specials ?? st.extras ?? rawTally.film) || 0,
+          ep: (st.episodes ?? st.pages ?? st.chapters ?? st.watchCount ?? rawTally.ep) || 0,
           avg: st.avgScore
         }
-      : (() => {
-          const raw = tally(items, j && j.statsConfig);
-          return { main: raw.anime, season: raw.season, film: raw.film, ep: raw.ep, avg: null };
-        })();
+      : {
+          main: rawTally.anime || items.length,
+          season: rawTally.season,
+          film: rawTally.film,
+          ep: rawTally.ep,
+          avg: null
+        };
     let nums;
     if (s.id === 'anime') {
-      nums = [[t.main, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']];
+      nums = [[st && st.anime != null ? st.anime : t.main, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']];
     } else if (s.id === 'series') {
       nums = [[t.main, 'dizi'], [t.season, 'sezon'], [t.ep, 'bölüm']];
     } else if (s.id === 'movie') {
-      nums = [[t.main || items.filter(x => x.status === 'completed').length, 'film'], ...(t.avg ? [[t.avg, 'ort. puan']] : [])];
+      nums = [[t.main, 'film'], ...(t.avg ? [[t.avg, 'ort. puan']] : [])];
     } else if (s.id === 'manga') {
       nums = [[t.main, 'manga'], [t.ep, 'bölüm']];
     } else if (s.id === 'book') {
@@ -277,7 +307,7 @@
     document.dispatchEvent(new CustomEvent('siteconfig', { detail: d }));
     applySiteIdentity(d);
 
-    const visibleSections = (d.sections || []).filter(s => s && s.status !== 'hidden');
+    const visibleSections = (d.sections || []).filter(Boolean).map(ensureSectionDefaults).filter(s => s.status !== 'hidden');
     const active = visibleSections.filter(s => s.status === 'active');
 
     // [AI-MIMARI-NOTU]: #dock zaten <nav id="dock" class="dock glass"> olduğu için
@@ -404,7 +434,7 @@
       if (list) {
         const previewAnime = json('tp_anime_preview');
         const previewMulti = json('tp_multimedia_preview') || {};
-        await Promise.all((d.sections || []).filter(s => s.status === 'active' && s.data).map(async s => {
+        await Promise.all((d.sections || []).filter(Boolean).map(ensureSectionDefaults).filter(s => s.status === 'active' && s.data).map(async s => {
           try {
             const remoteJ = await fetch(root + s.data, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null);
             let j = remoteJ;

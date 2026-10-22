@@ -109,6 +109,54 @@
         status: 'active',
         icon: 'guide',
         showStrip: false
+      },
+      {
+        id: 'series',
+        title: 'Dizi',
+        path: 'dizi/',
+        description: 'Yakında',
+        data: 'data/series.json',
+        countKey: 'series',
+        unit: 'dizi',
+        status: 'soon',
+        icon: 'series',
+        showStrip: true
+      },
+      {
+        id: 'movie',
+        title: 'Film',
+        path: 'film/',
+        description: 'Yakında',
+        data: 'data/movies.json',
+        countKey: 'movies',
+        unit: 'film',
+        status: 'soon',
+        icon: 'movie',
+        showStrip: true
+      },
+      {
+        id: 'manga',
+        title: 'Manga',
+        path: 'manga/',
+        description: 'Yakında',
+        data: 'data/manga.json',
+        countKey: 'manga',
+        unit: 'manga',
+        status: 'soon',
+        icon: 'manga',
+        showStrip: true
+      },
+      {
+        id: 'book',
+        title: 'Kitap',
+        path: 'kitap/',
+        description: 'Yakında',
+        data: 'data/books.json',
+        countKey: 'books',
+        unit: 'kitap',
+        status: 'soon',
+        icon: 'book',
+        showStrip: true
       }
     ],
     links: [
@@ -199,25 +247,27 @@
     return PART_SCORE_WEIGHTS.season;
   }
 
-  function parseAnilistUrlOrId(input) {
+  function parseAnilistUrlOrId(input, mediaType = 'anime') {
+    const kindPath = mediaType === 'manga' ? 'manga' : 'anime';
     if (input == null || input === '') return { id: null, url: '' };
     if (typeof input === 'number' && Number.isInteger(input) && input > 0) {
-      return { id: input, url: 'https://anilist.co/anime/' + input };
+      return { id: input, url: `https://anilist.co/${kindPath}/` + input };
     }
     const raw = String(input).trim();
-    const m = raw.match(/anilist\.co\/anime\/(\d+)/i);
+    const m = raw.match(/anilist\.co\/(anime|manga)\/(\d+)/i);
     if (m) {
-      const id = Number(m[1]);
-      return { id, url: 'https://anilist.co/anime/' + id };
+      const detectedKind = m[1].toLowerCase();
+      const id = Number(m[2]);
+      return { id, url: `https://anilist.co/${detectedKind}/` + id };
     }
     const al = raw.match(/^al-(\d+)$/i);
     if (al) {
       const id = Number(al[1]);
-      return { id, url: 'https://anilist.co/anime/' + id };
+      return { id, url: `https://anilist.co/${kindPath}/` + id };
     }
-    if (/^\d+$/.test(raw) && Number(raw) > 0) {
+    if (/^\d{1,8}$/.test(raw) && Number(raw) > 0) {
       const id = Number(raw);
-      return { id, url: 'https://anilist.co/anime/' + id };
+      return { id, url: `https://anilist.co/${kindPath}/` + id };
     }
     return { id: null, url: '' };
   }
@@ -910,6 +960,11 @@
                 <option value="book">📚 Bölüm: Kitap</option>
                 <option value="guide">🧭 Bölüm: Rehber (Technopat Katalog)</option>
               </select>
+              <select id="admSectionStatusSelect" class="inp glass" style="width:auto;min-width:165px;font-weight:600" title="Seçili bölümün sitedeki yayın durumu (Yayında olmasa bile girdi ekleyebilir, istediğiniz zaman Yayında yapabilirsiniz)">
+                <option value="active">🟢 Sitede: Yayında (Aktif)</option>
+                <option value="soon">🟡 Sitede: Yakında Kartı</option>
+                <option value="hidden">⚪ Sitede: Gizli (Taslak)</option>
+              </select>
               <button type="button" class="btn-secondary" id="openCommitRecoveryBtn" title="GitHub'daki önceki commit'lerinizden düzenlediğiniz kategori, puan ve başyapıt verilerini tek tıkla geri getirir">🕰️ Eski Commit'ten Verileri Kurtar</button>
               <button type="button" class="btn-subtle" id="scanAllRelationsBtn" title="Listedeki animelerin İlk Sezon AniList Linklerini tarayarak eksik sezon, film ve yan içerikleri AniList'ten çeker">Yan İçerikleri Sorgula</button>
               <button type="button" class="btn-subtle" id="triggerActionsBtn" title="GitHub Actions üzerindeki sync-anilist.yml iş akışını tetikler">GitHub Actions Çalıştır</button>
@@ -1388,6 +1443,11 @@
             <div class="form-actions" style="margin:0">
               <select id="commitHistoryFileSelect" class="inp glass" style="width:auto;min-width:165px;font-weight:650">
                 <option value="data/anime.json">📺 data/anime.json</option>
+                <option value="data/guides.json">🧭 data/guides.json</option>
+                <option value="data/series.json">🎬 data/series.json</option>
+                <option value="data/movies.json">🍿 data/movies.json</option>
+                <option value="data/manga.json">📖 data/manga.json</option>
+                <option value="data/books.json">📚 data/books.json</option>
                 <option value="data/sections.json">⚙️ data/sections.json</option>
                 <option value="data/overrides.json">🔧 data/overrides.json</option>
               </select>
@@ -1636,6 +1696,33 @@
     bindDashboardEvents();
   }
 
+  const ACTIVE_SECTION_DESCRIPTIONS = {
+    anime: 'İzlediğim animeler',
+    guide: 'Technopat Sosyal rehber kataloğum',
+    series: 'İzlediğim diziler',
+    movie: 'İzlediğim filmler',
+    manga: 'Okuduğum mangalar',
+    book: 'Okuduğum kitaplar'
+  };
+
+  function ensureSectionEntryInConfig(secId) {
+    if (!state.config || !Array.isArray(state.config.sections)) return null;
+    const def = DEFAULT_CONFIG.sections.find(s => s.id === secId) || SECTION_TEMPLATES[secId];
+    let entry = state.config.sections.find(s => s && s.id === secId);
+    if (!entry && def) {
+      entry = structuredClone(def);
+      state.config.sections.push(entry);
+    } else if (entry && def) {
+      if (!entry.path) entry.path = def.path;
+      if (!entry.data) entry.data = def.data;
+      if (!entry.countKey) entry.countKey = def.countKey;
+      if (!entry.unit) entry.unit = def.unit;
+      if (!entry.icon) entry.icon = def.icon;
+      if (entry.showStrip === undefined) entry.showStrip = def.showStrip;
+    }
+    return entry || null;
+  }
+
   function normalizeConfig(raw) {
     const merged = structuredClone(DEFAULT_CONFIG);
     if (!raw || typeof raw !== 'object') return merged;
@@ -1645,7 +1732,36 @@
       merged.gift.units = { ...DEFAULT_CONFIG.gift.units, ...(raw.gift.units || {}) };
     }
     if (Array.isArray(raw.boxes)) merged.boxes = raw.boxes;
-    if (Array.isArray(raw.sections)) merged.sections = raw.sections;
+    if (Array.isArray(raw.sections)) {
+      const defMap = new Map(DEFAULT_CONFIG.sections.map(s => [s.id, s]));
+      const seen = new Set();
+      const normalizedSecs = [];
+      for (const s of raw.sections) {
+        if (!s || !s.id) continue;
+        seen.add(s.id);
+        const def = defMap.get(s.id) || SECTION_TEMPLATES[s.id];
+        if (def) {
+          normalizedSecs.push({
+            ...def,
+            ...s,
+            path: s.path || def.path,
+            data: s.data || def.data,
+            countKey: s.countKey || def.countKey,
+            unit: s.unit || def.unit,
+            icon: s.icon || def.icon,
+            showStrip: s.showStrip !== undefined ? s.showStrip : def.showStrip
+          });
+        } else {
+          normalizedSecs.push(s);
+        }
+      }
+      for (const def of DEFAULT_CONFIG.sections) {
+        if (!seen.has(def.id)) {
+          normalizedSecs.push(structuredClone(def));
+        }
+      }
+      merged.sections = normalizedSecs;
+    }
     if (Array.isArray(raw.links)) merged.links = raw.links;
     if (raw.pages && raw.pages.anime) {
       merged.pages.anime = { ...DEFAULT_CONFIG.pages.anime, ...raw.pages.anime };
@@ -1876,6 +1992,10 @@
     if ($('#admMediaTypeSelect') && $('#admMediaTypeSelect').value !== adapter.id) {
       $('#admMediaTypeSelect').value = adapter.id;
     }
+    const secEntry = ensureSectionEntryInConfig(adapter.id);
+    if ($('#admSectionStatusSelect') && secEntry) {
+      $('#admSectionStatusSelect').value = secEntry.status || 'soon';
+    }
     if ($('#admPanelMainTitle')) $('#admPanelMainTitle').textContent = uiMeta.panelTitle;
     if ($('#admPanelMainSub')) $('#admPanelMainSub').innerHTML = uiMeta.panelSub;
     if ($('#admAnimeSearchLabel')) $('#admAnimeSearchLabel').textContent = uiMeta.searchLabel;
@@ -1961,7 +2081,23 @@
 
     const filtered = list.filter(it => {
       const gText = resolveEffectiveGenres(it, 'custom_only').join(' ').toLocaleLowerCase('tr');
-      if (q && !(it.title || '').toLocaleLowerCase('tr').includes(q) && !gText.includes(q) && !String(it.id || '').toLowerCase().includes(q) && !String(it.anilistId || '').includes(q) && !String(it.firstSeasonUrl || '').toLowerCase().includes(q)) return false;
+      if (q) {
+        const hay = [
+          it.title || '',
+          gText,
+          it.id || '',
+          it.anilistId || '',
+          it.threadId || '',
+          it.firstSeasonUrl || '',
+          it.url || '',
+          it.summary || '',
+          it.author || '',
+          it.director || '',
+          it.network || '',
+          it.forumSection || ''
+        ].join(' ').toLocaleLowerCase('tr');
+        if (!hay.includes(q)) return false;
+      }
       if (stF !== 'all') {
         if (stF === 'fav' && !it.favorite) return false;
         if (stF === 'next' && !it.next) return false;
@@ -2018,6 +2154,8 @@
           </div>
           <div class="anime-adm-sub">
             <span>Durum: <b>${statusText}</b></span>
+            ${adapter.id === 'guide' && it.forumSection ? `<span>Bölüm: <b>${AdminSecurity.sanitizeText(it.forumSection, 50)}</b></span>` : ''}
+            ${adapter.id === 'guide' && it.addedAt ? `<span>Tarih: <b>${AdminSecurity.sanitizeText(it.addedAt, 20)}</b></span>` : ''}
             ${adapter.id === 'guide' ? '' : `<span>Puan: <b>${effScore ? '★ ' + effScore : 'Puansız'}</b></span>`}
             ${adapter.id === 'guide' ? '' : `<span>Parça: <b>${(it.parts || []).length}</b> (${doneEps} ${uiMeta.rowUnitText})</span>`}
             ${activePartLabel && adapter.id !== 'guide' ? `<span class="adm-active-part">Aktif: <b></b></span>` : ''}
@@ -2033,7 +2171,11 @@
         </div>
       `;
       const img = row.querySelector('.anime-adm-poster');
-      if (it.image) img.src = resolvePreviewSrc(it.image);
+      if (it.image) {
+        img.src = resolvePreviewSrc(it.image);
+      } else if (adapter.id === 'guide') {
+        img.hidden = true;
+      }
       row.querySelector('.adm-row-t').textContent = it.title;
       const actPartEl = row.querySelector('.adm-active-part b');
       if (actPartEl) actPartEl.textContent = activePartLabel;
@@ -2225,8 +2367,16 @@
       ]
     };
 
+    if (isNew && adapter.id === 'guide') {
+      state.editingDraft.parts = [];
+      delete state.editingDraft.anilistId;
+      delete state.editingDraft.firstSeasonUrl;
+      delete state.editingDraft.score;
+      delete state.editingDraft.lockedFields;
+    }
     const d = state.editingDraft;
-    const parsed = parseAnilistUrlOrId(d.firstSeasonUrl || d.url || d.anilistId || d.id);
+    const isAnilistType = adapter.id === 'anime' || adapter.id === 'manga';
+    const parsed = isAnilistType ? parseAnilistUrlOrId(d.firstSeasonUrl || d.url || d.anilistId || d.id, adapter.id) : { id: null, url: '' };
     const initialUrl = d[adapter.externalUrlField || 'firstSeasonUrl'] || d.firstSeasonUrl || d.url || parsed.url || '';
 
     $('#animeModalTitle').textContent = isNew ? `Yeni ${adapter.label} Ekle` : `${adapter.label} Düzenle: ${d.title}`;
@@ -2292,10 +2442,10 @@
 
     const aeStatusEl = $('#aeStatus');
     if (aeStatusEl && Array.isArray(adapter.statusOptions)) {
-      aeStatusEl.innerHTML = [
-        ['auto', 'Otomatik (Parçalardan Hesapla)'],
-        ...adapter.statusOptions
-      ].map(([val, lbl]) => `<option value="${val}">${lbl}</option>`).join('');
+      const opts = adapter.id === 'guide'
+        ? [...adapter.statusOptions]
+        : [['auto', 'Otomatik (Parçalardan Hesapla)'], ...adapter.statusOptions];
+      aeStatusEl.innerHTML = opts.map(([val, lbl]) => `<option value="${val}">${lbl}</option>`).join('');
     }
     const nextFieldWrap = $('#aeNext')?.closest('.field');
     if (nextFieldWrap) nextFieldWrap.hidden = !adapter.supportsNextBadge;
@@ -2720,7 +2870,8 @@
             p[f] = AdminSecurity.sanitizeText(inp.value, 160);
           }
           if (f === 'name' || f === 'kind') {
-            const wl = p.kind === 'movie' ? 'Ağırlık ×0.35' : p.kind === 'other' ? 'Ağırlık ×0.15' : 'Ağırlık ×1.00';
+            const wValDyn = p.kind === 'movie' ? weights.movie : p.kind === 'other' ? weights.other : weights.season;
+            const wl = `Ağırlık ×${Number(wValDyn).toFixed(2)}`;
             row.querySelector('.part-edit-head span').innerHTML = `#${idx + 1} · ${AdminSecurity.sanitizeText(p.name || 'Parça', 80)} <small style="opacity:.75">(${wl})</small>`;
           }
         };
@@ -3001,73 +3152,110 @@
 
   function saveAnimeFromModal() {
     if (!state.editingDraft) return;
+    const adapter = getActiveAdminAdapter();
     const S = AdminSecurity.sanitizeText;
     const U = AdminSecurity.sanitizeUrl;
     const title = S($('#aeTitle').value, 200);
     if (!title) {
-      toast('Anime başlığı boş bırakılamaz.', 'warn');
+      toast(`${adapter.label} başlığı boş bırakılamaz.`, 'warn');
       return;
     }
 
     const rawUrlInput = $('#aeFirstSeasonUrl').value.trim();
     const rawAidInput = $('#aeAnilistId').value.trim();
-    const parsed = parseAnilistUrlOrId(rawUrlInput || rawAidInput);
+    const isAnilistType = adapter.id === 'anime' || adapter.id === 'manga';
+    const parsed = isAnilistType ? parseAnilistUrlOrId(rawUrlInput || rawAidInput, adapter.id) : { id: null, url: '' };
     const anilistId = parsed.id;
     const isNew = state.editingAnimeId === '__new__';
 
     const d = state.editingDraft;
     d.title = title;
-    if (anilistId && anilistId > 0) {
-      d.anilistId = anilistId;
-      if (isNew || String(d.id).startsWith('custom-')) d.id = 'al-' + anilistId;
-      d.url = parsed.url;
-      d.firstSeasonUrl = U(rawUrlInput, false) || parsed.url;
-      if (Array.isArray(d.parts) && d.parts.length === 1 && String(d.parts[0].id).startsWith('part-')) {
-        d.parts[0].id = anilistId;
+
+    if (isAnilistType) {
+      if (anilistId && anilistId > 0) {
+        d.anilistId = anilistId;
+        if (isNew || String(d.id).startsWith('custom-')) d.id = (adapter.id === 'manga' ? 'mg-' : 'al-') + anilistId;
+        d.url = parsed.url;
+        d.firstSeasonUrl = U(rawUrlInput, false) || parsed.url;
+        if (Array.isArray(d.parts) && d.parts.length === 1 && String(d.parts[0].id).startsWith('part-')) {
+          d.parts[0].id = anilistId;
+        }
+      } else {
+        d.anilistId = null;
+        if (isNew && !d.id) d.id = 'custom-' + Date.now();
+        const cleanExt = U(rawUrlInput, true);
+        d.url = cleanExt;
+        d.firstSeasonUrl = cleanExt;
+        if (!d.source) d.source = 'manual';
       }
     } else {
-      d.anilistId = null;
-      if (isNew && !d.id) d.id = 'custom-' + Date.now();
-      d.url = '';
-      d.firstSeasonUrl = '';
-      d.source = 'manual';
+      delete d.anilistId;
+      const cleanExt = U(rawUrlInput, true);
+      if (adapter.id === 'guide') {
+        const tpMatch = cleanExt.match(/\/sosyal\/konu\/[^/?#]*\.(\d+)(?:\/|$)/i);
+        if (tpMatch) {
+          d.threadId = Number(tpMatch[1]);
+          if (isNew || String(d.id).startsWith('custom-')) d.id = 'tp-konu-' + d.threadId;
+        }
+        d.url = cleanExt;
+        delete d.firstSeasonUrl;
+      } else {
+        const imdbId = parseImdbId(cleanExt || rawUrlInput);
+        if (imdbId) {
+          d.imdbId = imdbId;
+          if (isNew || String(d.id).startsWith('custom-')) d.id = 'imdb-' + imdbId;
+        }
+        const urlField = adapter.externalUrlField || 'url';
+        d[urlField] = cleanExt;
+        d.url = cleanExt;
+      }
+      if (!d.source) d.source = 'manual';
     }
 
-    d.image = U($('#aeImage').value, true) || null;
+    const cleanImg = U($('#aeImage').value, true);
+    if (cleanImg) d.image = cleanImg;
+    else if (adapter.id === 'guide') delete d.image;
+    else d.image = null;
 
-    d.parts = (d.parts || []).map(p => {
-      const ep = Number(p.episodes) || 0;
-      let w = Number(p.watched) || 0;
-      const st = p.status || 'COMPLETED';
-      if (st === 'COMPLETED' && w === 0 && ep > 0) w = ep;
-      const clean = {
-        id: p.id || ('part-' + Date.now()),
-        name: S(p.name, 180) || title,
-        kind: ['season', 'movie', 'other'].includes(p.kind) ? p.kind : 'season',
-        format: p.format || 'TV',
-        episodes: ep,
-        watched: w,
-        status: st,
-        release: p.release || 'FINISHED',
-        year: p.year ? Number(p.year) : null
-      };
-      if (p.score != null && p.score !== '' && !isNaN(Number(p.score)) && Number(p.score) > 0) {
-        clean.score = Math.min(10, Math.max(0, Math.round(Number(p.score) * 10) / 10));
-      }
-      if (p.repeat && Number(p.repeat) > 0) clean.repeat = Number(p.repeat);
-      if (p.adminModified) clean.adminModified = true;
-      return clean;
-    });
-
-    // Genel puan her zaman sezon, film ve yan içeriklerin ağırlıklı ortalamasından otomatik hesaplanır
-    d.score = resolveEffectiveScore(d);
-
-    const statusSel = $('#aeStatus').value;
-    d.status = statusSel === 'auto' ? deriveFranchiseStatusFromParts(d.parts) : statusSel;
+    if (adapter.id === 'guide') {
+      delete d.parts;
+      delete d.score;
+      delete d.lockedFields;
+      const statusSel = $('#aeStatus').value;
+      d.status = (!statusSel || statusSel === 'auto') ? 'completed' : statusSel;
+    } else {
+      d.parts = (d.parts || []).map(p => {
+        const ep = Number(p.episodes) || 0;
+        let w = Number(p.watched) || 0;
+        const st = p.status || 'COMPLETED';
+        if (st === 'COMPLETED' && w === 0 && ep > 0) w = ep;
+        const clean = {
+          id: p.id || ('part-' + Date.now()),
+          name: S(p.name, 180) || title,
+          kind: ['season', 'movie', 'other'].includes(p.kind) ? p.kind : 'season',
+          format: p.format || 'TV',
+          episodes: ep,
+          watched: w,
+          status: st,
+          release: p.release || 'FINISHED',
+          year: p.year ? Number(p.year) : null
+        };
+        if (p.score != null && p.score !== '' && !isNaN(Number(p.score)) && Number(p.score) > 0) {
+          clean.score = Math.min(10, Math.max(0, Math.round(Number(p.score) * 10) / 10));
+        }
+        if (p.repeat && Number(p.repeat) > 0) clean.repeat = Number(p.repeat);
+        if (p.adminModified) clean.adminModified = true;
+        return clean;
+      });
+      d.score = resolveEffectiveScore(d);
+      const statusSel = $('#aeStatus').value;
+      d.status = statusSel === 'auto' ? deriveFranchiseStatusFromParts(d.parts) : statusSel;
+    }
 
     const nextSel = $('#aeNext').value;
-    if (nextSel === 'yes') d.next = true;
-    else if (nextSel === 'no') delete d.next;
+    if (adapter.supportsNextBadge && nextSel === 'yes') d.next = true;
+    else if (!adapter.supportsNextBadge || nextSel === 'no') delete d.next;
+
     if (d.favorite) d.favorite = true;
     else delete d.favorite;
 
@@ -3083,27 +3271,26 @@
     ];
     if (customGenres.length) {
       d.customGenres = customGenres;
-      d.genres = customGenres;
+      if (adapter.id !== 'guide') d.genres = customGenres;
     } else {
       delete d.customGenres;
-      delete d.genres;
+      if (adapter.id !== 'guide') delete d.genres;
     }
 
     d.adminModified = true;
-    const locked = new Set(d.lockedFields || []);
-    ['title', 'score', 'status', 'genres', 'addedAt'].forEach(k => locked.add(k));
-    if (d.image) locked.add('image');
-    if (nextSel !== 'auto') locked.add('next');
-    d.lockedFields = [...locked];
+    if (adapter.id === 'anime') {
+      const locked = new Set(d.lockedFields || []);
+      ['title', 'score', 'status', 'genres', 'addedAt'].forEach(k => locked.add(k));
+      if (d.image) locked.add('image');
+      if (nextSel !== 'auto') locked.add('next');
+      d.lockedFields = [...locked];
+    }
 
-    const adapter = getActiveAdminAdapter();
     if (adapter.extraMetaField) {
-      d[adapter.extraMetaField.key] = S($('#aeExtraMetaInput').value, 160);
+      const maxExtraLen = adapter.id === 'guide' ? 500 : 160;
+      d[adapter.extraMetaField.key] = S($('#aeExtraMetaInput').value, maxExtraLen);
     }
-    if (adapter.id !== 'anime' && rawUrlInput) {
-      d.firstSeasonUrl = U(rawUrlInput, false);
-      d.url = d.firstSeasonUrl;
-    }
+
     if (adapter.id === 'anime') {
       if (d.anilistId) {
         state.overrides.titles[String(d.anilistId)] = d.title;
@@ -3112,6 +3299,7 @@
       }
       state.overrides.deletedIds = (state.overrides.deletedIds || []).filter(x => x !== d.id);
     }
+
     const list = adapter.getItems();
     const existingIdx = list.findIndex(a => a.id === state.editingAnimeId || a.id === d.id);
     if (existingIdx >= 0) list[existingIdx] = d;
@@ -3122,7 +3310,12 @@
     $('#animeEditModal').hidden = true;
     renderAnimeAdminPanel();
     if (adapter.id === 'anime') renderOverridesEditor();
-    toast(`"${d.title}" (${adapter.label}) kaydedildi (Ağırlıklı Puan: ${d.score ?? 'Puansız'}).`);
+    if ($('#panelHealth') && !$('#panelHealth').hidden) renderHealthAuditor();
+    if (adapter.id === 'guide') {
+      toast(`"${d.title}" (Rehber) kaydedildi.`);
+    } else {
+      toast(`"${d.title}" (${adapter.label}) kaydedildi (Puan: ${d.score ?? 'Puansız'}).`);
+    }
   }
 
   // ============================================================================
@@ -3538,10 +3731,19 @@
   function saveMultiMediaItem(typeId, updatedItem) {
     const store = ensureMultiMediaStore(typeId);
     const idx = store.items.findIndex(x => x.id === updatedItem.id);
-    updatedItem.score = resolveEffectiveScore(updatedItem);
+    if (typeId === 'guide') {
+      delete updatedItem.score;
+      delete updatedItem.parts;
+      delete updatedItem.anilistId;
+      delete updatedItem.firstSeasonUrl;
+      delete updatedItem.lockedFields;
+    } else {
+      updatedItem.score = resolveEffectiveScore(updatedItem);
+    }
     updatedItem.adminModified = true;
     if (idx >= 0) store.items[idx] = updatedItem;
     else store.items.unshift(updatedItem);
+    store.stats = computeMediaStatsClient(store.items, state.animeData.statsConfig, typeId);
     store.dirty = true;
     updateDirtyIndicator();
   }
@@ -3981,19 +4183,30 @@
     }
 
     const rawUrl = $('#rqExternalUrlInput').value.trim();
-    if (adapter.id === 'anime') {
-      const parsed = parseAnilistUrlOrId(rawUrl || d.anilistId || d.id);
+    if (adapter.id === 'anime' || adapter.id === 'manga') {
+      const parsed = parseAnilistUrlOrId(rawUrl || d.anilistId || d.id, adapter.id);
       if (parsed.id) {
         d.anilistId = parsed.id;
         d.url = parsed.url;
         d.firstSeasonUrl = U(rawUrl, false) || parsed.url;
+      } else {
+        const cleanU = U(rawUrl, true);
+        d.url = cleanU;
+        d.firstSeasonUrl = cleanU;
       }
     } else if (adapter.externalUrlField) {
-      d[adapter.externalUrlField] = U(rawUrl, true);
+      const cleanU = U(rawUrl, true);
+      d[adapter.externalUrlField] = cleanU;
+      d.url = cleanU;
+      if (adapter.id === 'guide') {
+        const tpMatch = cleanU.match(/\/sosyal\/konu\/[^/?#]*\.(\d+)(?:\/|$)/i);
+        if (tpMatch) d.threadId = Number(tpMatch[1]);
+      }
     }
 
     if (adapter.extraMetaField) {
-      d[adapter.extraMetaField.key] = S($('#rqExtraMetaInput').value, 160);
+      const maxLen = adapter.id === 'guide' ? 500 : 160;
+      d[adapter.extraMetaField.key] = S($('#rqExtraMetaInput').value, maxLen);
     }
 
     const customGenres = [
@@ -4166,9 +4379,29 @@
             toast(`${shortSha} commit'inden ${filePath} çekiliyor...`);
             const rawJsonStr = await AdminSecurity.githubGetFileAtRef(filePath, sha);
             const parsed = JSON.parse(rawJsonStr);
+            const mediaFileMap = {
+              'data/guides.json': 'guide',
+              'data/series.json': 'series',
+              'data/movies.json': 'movie',
+              'data/manga.json': 'manga',
+              'data/books.json': 'book'
+            };
             if (filePath === 'data/anime.json') {
               mergeHistoricalAnimeData(parsed, replaceAll);
               toast(`"${shortSha}" (${dateStr}) commit'indeki tüm kategori ve puanlar başarıyla kurtarıldı! Şimdi üstten "GitHub'a Kaydet" butonuna basabilirsiniz.`);
+            } else if (mediaFileMap[filePath]) {
+              const mType = mediaFileMap[filePath];
+              const adapter = CONTENT_ADAPTER_REGISTRY[mType];
+              const items = (parsed && (parsed.items || parsed[adapter.countKey])) || [];
+              const store = ensureMultiMediaStore(mType);
+              store.items = items;
+              store.customGenreCatalog = Array.isArray(parsed && parsed.customGenreCatalog) ? parsed.customGenreCatalog : store.customGenreCatalog;
+              store.stats = computeMediaStatsClient(items, state.animeData.statsConfig, mType);
+              store.dirty = true;
+              updateDirtyIndicator();
+              renderAnimeAdminPanel();
+              renderHealthAuditor();
+              toast(`"${shortSha}" commit'indeki ${adapter.label} verileri (${items.length} kayıt) geri yüklendi!`);
             } else if (filePath === 'data/sections.json') {
               state.config = normalizeConfig(parsed);
               populateEditorFields();
@@ -4229,17 +4462,41 @@
       }
     }
 
-    return [
+    if (typeId === 'guide') {
+      const missingSummary = items.filter(it => !it.summary || !String(it.summary).trim());
+      return [
+        {
+          key: 'missing_genres',
+          title: 'Özel Kategorisi Seçilmemiş Rehberler',
+          desc: 'Henüz konu kategorisi (Linux & Sistem, Paket Yönetimi vb.) atanmamış rehberler.',
+          items: missingGenres
+        },
+        {
+          key: 'missing_summary',
+          title: 'Kısa Özeti Eksik Rehberler',
+          desc: 'Katalog kartında görünecek açıklama/özet metni boş olan rehberler.',
+          items: missingSummary
+        },
+        {
+          key: 'missing_url',
+          title: 'Technopat Sosyal Linki Eksik Rehberler',
+          desc: 'Technopat Sosyal konu bağlantısı girilmemiş rehberler.',
+          items: missingUrl
+        }
+      ];
+    }
+
+    const cards = [
       {
         key: 'missing_genres',
         title: 'Özel Kategorisi Seçilmemiş Olanlar',
-        desc: 'Henüz özel tür/kategori (Shounen, Seinen, Isekai vb.) atanmamış kayıtlar.',
+        desc: `Henüz özel tür/kategori atanmamış ${adapter.label.toLocaleLowerCase('tr')} kayıtları.`,
         items: missingGenres
       },
       {
         key: 'missing_score',
         title: 'Puanı Girilmemiş Olanlar',
-        desc: 'İzlendi/Okundu veya devam ediyor olup henüz sezon/parça puanı verilmemiş kayıtlar.',
+        desc: 'Tamamlanmış veya devam ediyor olup henüz puan verilmemiş kayıtlar.',
         items: missingScore
       },
       {
@@ -4251,16 +4508,19 @@
       {
         key: 'missing_url',
         title: `${adapter.externalUrlLabel || 'Kaynak Linki'} Eksik Olanlar`,
-        desc: 'Dış kaynak veya Technopat Sosyal bağlantısı girilmemiş kayıtlar.',
+        desc: 'Dış kaynak bağlantısı girilmemiş kayıtlar.',
         items: missingUrl
-      },
-      {
+      }
+    ];
+    if (typeId === 'anime' || typeId === 'series') {
+      cards.push({
         key: 'unwatched_sequels',
         title: 'İzlenmemiş Devam Sezonu Bulunanlar',
         desc: 'Yayınlanmış fakat henüz izlenmemiş sezonu bulunan yapımlar.',
         items: unwatchedSequels
-      }
-    ];
+      });
+    }
+    return cards;
   }
 
   function sendHealthItemsToRapidQueue(typeId, targetItems, issueTitle) {
@@ -4366,8 +4626,8 @@
         updated: new Date().toISOString().slice(0, 10),
         source: 'site-first:' + mKey,
         customGenreCatalog: store.customGenreCatalog || [],
-        stats: computeStatsClient(store.items || [], state.animeData.statsConfig),
-        items: store.items || []
+        stats: computeMediaStatsClient(store.items || [], state.animeData.statsConfig, mKey),
+        items: cleanMediaItemsForSave(store.items || [], mKey)
       };
     }
     const snapshot = {
@@ -4419,9 +4679,9 @@
       for (const mKey of ['series', 'movie', 'manga', 'book', 'guide']) {
         if (b[mKey] && Array.isArray(b[mKey].items)) {
           state.multiMediaStore[mKey] = {
-            items: b[mKey].items,
+            items: cleanMediaItemsForSave(b[mKey].items, mKey),
             customGenreCatalog: Array.isArray(b[mKey].customGenreCatalog) ? b[mKey].customGenreCatalog : [],
-            stats: computeStatsClient(b[mKey].items, state.animeData.statsConfig),
+            stats: computeMediaStatsClient(b[mKey].items, state.animeData.statsConfig, mKey),
             dirty: true
           };
         }
@@ -4718,13 +4978,23 @@
           inp.onchange = () => { sec[f] = inp.checked; markDirty('config'); };
         } else {
           inp.value = sec[f] || '';
-          inp.oninput = () => {
+          const handleFieldChange = () => {
             sec[f] = f === 'path' || f === 'data'
               ? AdminSecurity.sanitizeUrl(inp.value, true)
               : AdminSecurity.sanitizeText(inp.value, 160);
+            if (f === 'status' && sec.status === 'active' && (!sec.description || sec.description === 'Yakında') && ACTIVE_SECTION_DESCRIPTIONS[sec.id]) {
+              sec.description = ACTIVE_SECTION_DESCRIPTIONS[sec.id];
+              const descInp = item.querySelector('[data-f="description"]');
+              if (descInp) descInp.value = sec.description;
+            }
+            if (f === 'status' && state.activeAdminMediaType === sec.id && $('#admSectionStatusSelect')) {
+              $('#admSectionStatusSelect').value = sec.status;
+            }
             updateHeader();
             markDirty('config');
           };
+          inp.oninput = handleFieldChange;
+          inp.onchange = handleFieldChange;
         }
       });
 
@@ -4985,6 +5255,21 @@
       state.activeAdminMediaType = e.target.value;
       renderAnimeAdminPanel();
     };
+    if ($('#admSectionStatusSelect')) {
+      $('#admSectionStatusSelect').onchange = e => {
+        const adapter = getActiveAdminAdapter();
+        const secEntry = ensureSectionEntryInConfig(adapter.id);
+        if (!secEntry) return;
+        secEntry.status = e.target.value;
+        if (secEntry.status === 'active' && (!secEntry.description || secEntry.description === 'Yakında') && ACTIVE_SECTION_DESCRIPTIONS[adapter.id]) {
+          secEntry.description = ACTIVE_SECTION_DESCRIPTIONS[adapter.id];
+        }
+        renderCategoriesEditor();
+        markDirty('config');
+        const stLabels = { active: 'Yayında (Aktif)', soon: 'Yakında Kartı', hidden: 'Gizli (Taslak)' };
+        toast(`${adapter.label} bölümünün yayın durumu "${stLabels[secEntry.status] || secEntry.status}" olarak ayarlandı.`);
+      };
+    }
     $('#admAnimeSearch').oninput = e => { state.animeFilterQ = e.target.value; renderAnimeAdminPanel(); };
     $('#admAnimeStatusFilter').onchange = e => { state.animeFilterStatus = e.target.value; renderAnimeAdminPanel(); };
     $('#admAnimeSourceFilter').onchange = e => { state.animeFilterSource = e.target.value; renderAnimeAdminPanel(); };
@@ -5031,18 +5316,27 @@
       toast(`"${newG}" kataloğa eklendi ve seçildi.`);
     };
     $('#rqOpenFullModalBtn').onclick = () => {
-      if (state.rapidQueue.draftItem && state.rapidQueue.activeType === 'anime') {
+      if (state.rapidQueue.draftItem) {
+        const activeType = state.rapidQueue.activeType || 'anime';
+        state.activeAdminMediaType = activeType;
+        if ($('#admMediaTypeSelect')) $('#admMediaTypeSelect').value = activeType;
+        renderAnimeAdminPanel();
         openAnimeEditor(state.rapidQueue.draftItem.id);
       }
     };
     $('#rqFavoriteBtn').onclick = () => {
       const d = state.rapidQueue.draftItem;
       if (!d) return;
+      const adapter = getActiveAdapter();
       d.favorite = !d.favorite;
       if (!d.favorite) delete d.favorite;
       const favBtn = $('#rqFavoriteBtn');
       favBtn.classList.toggle('on', Boolean(d.favorite));
-      favBtn.textContent = d.favorite ? '★ Başyapıt (Seçili)' : '☆ Başyapıt İşaretle';
+      if (adapter.id === 'guide') {
+        favBtn.textContent = d.favorite ? '★ Öne Çıkan Rehber (Seçili)' : '☆ Öne Çıkan İşaretle';
+      } else {
+        favBtn.textContent = d.favorite ? '★ Başyapıt (Seçili)' : '☆ Başyapıt İşaretle';
+      }
     };
 
     $('#rqFetchRelationsBtn').onclick = async () => {
@@ -5208,7 +5502,7 @@
                     const store = ensureMultiMediaStore('guide');
                     store.items = items;
                     store.customGenreCatalog = Array.isArray(parsedGuides.customGenreCatalog) ? parsedGuides.customGenreCatalog : store.customGenreCatalog;
-                    store.stats = parsedGuides.stats || computeStatsClient(items, state.animeData.statsConfig);
+                    store.stats = parsedGuides.stats || computeMediaStatsClient(items, state.animeData.statsConfig, 'guide');
                     store.dirty = false;
                     updateDirtyIndicator();
                     renderAnimeAdminPanel();
@@ -5340,11 +5634,15 @@
     $('#animeModalBg').onclick = closeAnimeModal;
 
     $('#aeFirstSeasonUrl').oninput = () => {
-      const parsed = parseAnilistUrlOrId($('#aeFirstSeasonUrl').value);
+      const mType = state.activeAdminMediaType || 'anime';
+      if (mType !== 'anime' && mType !== 'manga') return;
+      const parsed = parseAnilistUrlOrId($('#aeFirstSeasonUrl').value, mType);
       if (parsed.id) $('#aeAnilistId').value = parsed.id;
     };
     $('#aeAnilistId').oninput = () => {
-      const parsed = parseAnilistUrlOrId($('#aeAnilistId').value);
+      const mType = state.activeAdminMediaType || 'anime';
+      if (mType !== 'anime' && mType !== 'manga') return;
+      const parsed = parseAnilistUrlOrId($('#aeAnilistId').value, mType);
       if (parsed.id) $('#aeFirstSeasonUrl').value = parsed.url;
     };
 
@@ -5385,14 +5683,25 @@
     $('#fetchAnilistMetaBtn').onclick = fetchAnilistRelationsForModal;
     $('#addPartBtn').onclick = () => {
       if (!state.editingDraft) return;
-      const n = (state.editingDraft.parts || []).length + 1;
+      const adapter = getActiveAdminAdapter();
+      if (!Array.isArray(state.editingDraft.parts)) state.editingDraft.parts = [];
+      const n = state.editingDraft.parts.length + 1;
+      const pName = adapter.id === 'book'
+        ? `${n}. Kitap / Cilt`
+        : adapter.id === 'manga'
+          ? `${n}. Cilt / Kısım`
+          : adapter.id === 'movie'
+            ? `${n}. Film`
+            : `${n}. Sezon`;
+      const pFormat = adapter.id === 'book' ? 'BOOK' : adapter.id === 'manga' ? 'MANGA' : adapter.id === 'movie' ? 'MOVIE' : 'TV';
+      const pEps = adapter.id === 'book' ? 300 : adapter.id === 'movie' ? 1 : adapter.id === 'manga' ? 20 : 12;
       state.editingDraft.parts.push({
         id: 'part-' + Date.now() + '-' + n,
-        name: `${n}. Sezon`,
-        kind: 'season',
-        format: 'TV',
-        episodes: 12,
-        watched: 12,
+        name: pName,
+        kind: adapter.id === 'movie' ? 'movie' : 'season',
+        format: pFormat,
+        episodes: pEps,
+        watched: pEps,
         status: 'COMPLETED',
         release: 'FINISHED',
         year: new Date().getFullYear(),
@@ -5504,22 +5813,57 @@
       localStorage.setItem('tp_multimedia_preview', JSON.stringify(multiPreview));
       try {
         const S = state.animeData.stats;
-        const animeSummary = {
-          nums: [[S.anime, 'anime'], [S.season, 'sezon'], [S.film, 'film'], [S.episodes, 'bölüm']],
-          imgs: state.animeData.anime.map(x => x.image).filter(Boolean).slice(0, 4)
+        const summaries = {
+          anime: {
+            nums: [[S.anime || (state.animeData.anime || []).length, 'anime'], [S.season || 0, 'sezon'], [S.film || 0, 'film'], [S.episodes || 0, 'bölüm']],
+            imgs: (state.animeData.anime || []).map(x => x.image).filter(Boolean).slice(0, 4)
+          }
         };
-        localStorage.setItem('ui2', JSON.stringify({ d: state.config, s: { anime: animeSummary } }));
+        for (const mKey of ['guide', 'series', 'movie', 'manga', 'book']) {
+          const stStore = ensureMultiMediaStore(mKey);
+          const mItems = stStore.items || [];
+          const mStats = computeMediaStatsClient(mItems, state.animeData.statsConfig, mKey);
+          if (mKey === 'guide') {
+            summaries.guide = {
+              nums: [[mItems.length, 'rehber'], ...((mStats.genres && mStats.genres.length) ? [[mStats.genres.length, 'kategori']] : [])],
+              imgs: []
+            };
+          } else if (mKey === 'series') {
+            summaries.series = {
+              nums: [[mStats.watched || mItems.length, 'dizi'], [mStats.seasons || 0, 'sezon'], [mStats.episodes || 0, 'bölüm']],
+              imgs: mItems.map(x => x.image).filter(Boolean).slice(0, 4)
+            };
+          } else if (mKey === 'movie') {
+            summaries.movie = {
+              nums: [[mStats.watched || mItems.length, 'film'], ...(mStats.avgScore ? [[mStats.avgScore, 'ort. puan']] : [])],
+              imgs: mItems.map(x => x.image).filter(Boolean).slice(0, 4)
+            };
+          } else if (mKey === 'manga') {
+            summaries.manga = {
+              nums: [[mStats.read || mItems.length, 'manga'], [mStats.chapters || 0, 'bölüm']],
+              imgs: mItems.map(x => x.image).filter(Boolean).slice(0, 4)
+            };
+          } else if (mKey === 'book') {
+            summaries.book = {
+              nums: [[mStats.read || mItems.length, 'kitap'], [mStats.pages || 0, 'sayfa']],
+              imgs: mItems.map(x => x.image).filter(Boolean).slice(0, 4)
+            };
+          }
+        }
+        localStorage.setItem('ui2', JSON.stringify({ d: state.config, s: summaries }));
       } catch (e) {}
       $('#clearPreviewBtn').hidden = false;
-      toast('Tüm site ve anime değişiklikleri canlı önizlemeye uygulandı!');
+      toast('Tüm site ve medya değişiklikleri canlı önizlemeye uygulandı!');
     };
 
     $('#clearPreviewBtn').onclick = () => {
       localStorage.removeItem('tp_site_preview');
       localStorage.removeItem('tp_anime_preview');
+      localStorage.removeItem('tp_multimedia_preview');
       localStorage.removeItem('ui2');
       $('#clearPreviewBtn').hidden = true;
-      toast('Canlı önizleme sıfırlandı.');
+      loadAllData();
+      toast('Canlı önizleme sıfırlandı ve güncel depo verileri yüklendi.');
     };
 
     $('#downloadJsonBtn').onclick = () => {
@@ -5546,7 +5890,8 @@
         state.pendingUploads.clear();
         renderPendingUploadsList();
 
-        if (state.dirtyConfig || (!state.dirtyAnime && !state.dirtyOverrides)) {
+        const anyMultiDirty = Object.values(state.multiMediaStore || {}).some(s => s && s.dirty);
+        if (state.dirtyConfig || (!state.dirtyAnime && !state.dirtyOverrides && !anyMultiDirty)) {
           await AdminSecurity.githubPutFile('data/sections.json', JSON.stringify(state.config, null, 2) + '\n', 'Site içeriği admin panelinden güncellendi', false);
           state.dirtyConfig = false;
         }
@@ -5580,6 +5925,8 @@
 
         localStorage.removeItem('tp_site_preview');
         localStorage.removeItem('tp_anime_preview');
+        localStorage.removeItem('tp_multimedia_preview');
+        localStorage.removeItem('ui2');
         $('#clearPreviewBtn').hidden = true;
         updateDirtyIndicator();
         toast('Değişiklikler GitHub deposuna başarıyla kaydedildi!');

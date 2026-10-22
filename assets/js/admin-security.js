@@ -384,7 +384,7 @@
     return getSessionInfo();
   }
 
-  async function unlockWithVault(vaultObj, username, password, totpCode, bindDevice = true) {
+  async function unlockWithVault(vaultObj, username, password, totpCode, bindDevice = true, extraPat = '') {
     const rl = checkRateLimit();
     if (!rl.ok) throw new Error(`Çok fazla başarısız deneme. Lütfen ${rl.waitSec} saniye bekleyin.`);
     let data;
@@ -403,6 +403,11 @@
       recordFailedAttempt();
       throw new Error('Google Authenticator 6 haneli kodu doğrulanamadı veya süresi doldu.');
     }
+    const effectivePat = String(extraPat || data.pat || '').trim();
+    if (effectivePat) {
+      await verifyGithubWriteAccess(effectivePat, data.repoOwner || 'tempestian', data.repoName || 'tempestian.github.io');
+      data.pat = effectivePat;
+    }
     clearFailedAttempts();
     if (bindDevice && data.pat) {
       try { await saveDeviceVault(data); } catch (e) {}
@@ -418,6 +423,17 @@
     };
     resetIdleTimer();
     return getSessionInfo();
+  }
+
+  async function unlockWithEncryptedVault(opts = {}) {
+    return unlockWithVault(
+      opts.vaultObj,
+      opts.username,
+      opts.password,
+      opts.totpCode,
+      opts.saveToDevice !== false,
+      opts.pat || ''
+    );
   }
 
   async function githubGetFile(path) {
@@ -631,6 +647,7 @@
     verifyGithubWriteAccess,
     unlockWithDeviceTOTP,
     unlockWithVault,
+    unlockWithEncryptedVault,
     lockSession,
     setOnLock,
     getSessionInfo,

@@ -66,6 +66,18 @@
       "status": "soon",
       "icon": "movie",
       "showStrip": true
+    },
+    {
+      "id": "book",
+      "title": "Kitap",
+      "path": "kitap/",
+      "description": "Yakında",
+      "data": "data/books.json",
+      "countKey": "books",
+      "unit": "kitap",
+      "status": "soon",
+      "icon": "book",
+      "showStrip": true
     }
   ],
   "links": [

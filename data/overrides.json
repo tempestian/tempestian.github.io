@@ -1,6 +1,14 @@
 {
   "exclude": [],
-  "titles": {"15687": "Love, Chunibyo & Other Delusions"},
-  "merge": {"8460": 10620},
-  "noContinue": ["Mushoku Tensei"]
+  "titles": {
+    "15687": "Love, Chunibyo & Other Delusions",
+    "20829": "Seraph of the End: Vampire Reign"
+  },
+  "merge": {
+    "8460": 10620
+  },
+  "noContinue": [
+    "Mushoku Tensei"
+  ],
+  "deletedIds": []
 }

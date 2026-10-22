@@ -96,6 +96,19 @@
         status: 'active',
         icon: 'anime',
         showStrip: true
+      },
+      {
+        id: 'guide',
+        title: 'Rehber',
+        path: 'rehber/',
+        description: 'Technopat Sosyal rehber kataloğum',
+        subtitle: 'Technopat Sosyal üzerinde yayınladığım GNU/Linux, donanım ve yazılım rehberleri.',
+        data: 'data/guides.json',
+        countKey: 'guides',
+        unit: 'rehber',
+        status: 'active',
+        icon: 'guide',
+        showStrip: false
       }
     ],
     links: [
@@ -1641,20 +1654,32 @@
   }
 
   async function loadAllData() {
-    let rawCfg = null;
+    let remoteCfg = null;
+    try {
+      const res = await fetch(root + 'data/sections.json', { cache: 'no-store' });
+      if (res.ok) remoteCfg = await res.json();
+    } catch (e) {}
+    let previewCfg = null;
     try {
       const preview = localStorage.getItem('tp_site_preview');
       if (preview) {
-        rawCfg = JSON.parse(preview);
+        previewCfg = JSON.parse(preview);
         const clr = $('#clearPreviewBtn');
         if (clr) clr.hidden = false;
       }
     } catch (e) {}
-    if (!rawCfg) {
-      try {
-        const res = await fetch(root + 'data/sections.json', { cache: 'no-store' });
-        if (res.ok) rawCfg = await res.json();
-      } catch (e) {}
+    let rawCfg = remoteCfg || previewCfg;
+    if (previewCfg && remoteCfg && Array.isArray(remoteCfg.sections)) {
+      const prevIds = new Set((previewCfg.sections || []).map(s => s.id));
+      const mergedSecs = [...(previewCfg.sections || [])];
+      for (const rs of remoteCfg.sections) {
+        if (!prevIds.has(rs.id)) mergedSecs.push(rs);
+        else if (rs.status === 'active') {
+          const idx = mergedSecs.findIndex(x => x.id === rs.id);
+          if (idx >= 0 && mergedSecs[idx].status !== 'active') mergedSecs[idx].status = 'active';
+        }
+      }
+      rawCfg = { ...remoteCfg, ...previewCfg, sections: mergedSecs };
     }
     state.config = normalizeConfig(rawCfg);
 
@@ -1714,24 +1739,29 @@
       deletedIds: Array.isArray(rawOv && rawOv.deletedIds) ? [...rawOv.deletedIds] : []
     };
 
-    // Adım 12: Dizi, Film, Manga ve Kitap veri dosyalarını yükle
+    // Adım 12 & 15: Dizi, Film, Manga, Kitap ve Rehber veri dosyalarını yükle
+    // Not: Tarayıcı önbelleğindeki eski/boş `tp_multimedia_preview` verisinin depodaki
+    // gerçek veriyi (`data/guides.json` vb.) gizlememesi için önce her zaman depodaki
+    // güncel JSON dosyası (`cache: 'no-store'`) okunur.
     let prevMulti = {};
     try { prevMulti = JSON.parse(localStorage.getItem('tp_multimedia_preview') || '{}') || {}; } catch (e) {}
     for (const mType of ['series', 'movie', 'manga', 'book', 'guide']) {
       const adapter = CONTENT_ADAPTER_REGISTRY[mType];
       if (!adapter) continue;
-      let rawM = prevMulti[mType] || null;
-      if (!rawM) {
-        try {
-          const r = await fetch(root + adapter.dataFile, { cache: 'no-store' });
-          if (r.ok) rawM = await r.json();
-        } catch (e) {}
-      }
-      const items = (rawM && (rawM[adapter.countKey] || rawM.items)) || [];
+      let remoteM = null;
+      try {
+        const r = await fetch(root + adapter.dataFile, { cache: 'no-store' });
+        if (r.ok) remoteM = await r.json();
+      } catch (e) {}
+      const prevM = prevMulti[mType] || null;
+      const remoteItems = (remoteM && (remoteM.items || remoteM[adapter.countKey])) || [];
+      const prevItems = (prevM && (prevM.items || prevM[adapter.countKey])) || [];
+      const rawM = (prevItems.length > 0 && prevItems.length > remoteItems.length) ? prevM : (remoteM || prevM);
+      const items = (rawM && (rawM.items || rawM[adapter.countKey])) || [];
       state.multiMediaStore[mType] = {
         items,
         customGenreCatalog: Array.isArray(rawM && rawM.customGenreCatalog) ? rawM.customGenreCatalog : [],
-        stats: computeStatsClient(items, state.animeData.statsConfig),
+        stats: computeMediaStatsClient(items, state.animeData.statsConfig, mType),
         dirty: false
       };
     }

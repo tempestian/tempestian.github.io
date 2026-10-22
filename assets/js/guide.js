@@ -182,16 +182,25 @@
 
   (async () => {
     try {
-      let d = null;
+      let remoteDoc = null;
+      try {
+        const r = await fetch('../data/guides.json', { cache: 'no-store' });
+        if (r.ok) remoteDoc = await r.json();
+      } catch (e) {}
+
+      let previewDoc = null;
       try {
         const prevAll = JSON.parse(ls('tp_multimedia_preview') || '{}');
-        if (prevAll && prevAll.guide) d = prevAll.guide;
+        if (prevAll && prevAll.guide) previewDoc = prevAll.guide;
       } catch (e) {}
-      if (!d) {
-        const r = await fetch('../data/guides.json');
-        if (r.ok) d = await r.json();
-      }
-      const items = (d && (d.guides || d.items)) || [];
+
+      const remoteItems = (remoteDoc && (remoteDoc.items || remoteDoc.guides)) || [];
+      const previewItems = (previewDoc && (previewDoc.items || previewDoc.guides)) || [];
+
+      const items = (previewItems.length > 0 && previewItems.length >= remoteItems.length)
+        ? previewItems
+        : remoteItems;
+
       state.items = items;
       renderStats(items);
       renderChips(items);

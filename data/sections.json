@@ -47,13 +47,14 @@
       "id": "guide",
       "title": "Rehber",
       "path": "rehber/",
-      "description": "Yayınladığım rehberler",
+      "description": "Technopat Sosyal rehber kataloğum",
+      "subtitle": "Technopat Sosyal üzerinde yayınladığım GNU/Linux, donanım ve yazılım rehberleri.",
       "data": "data/guides.json",
       "countKey": "guides",
       "unit": "rehber",
       "status": "active",
       "icon": "guide",
-      "showStrip": true
+      "showStrip": false
     }
   ],
   "links": [
@@ -83,10 +84,15 @@
       "description": "Tempestian'ın izlediği animeler: puanlar, sezonlar ve izleme durumu.",
       "searchPlaceholder": "Ara",
       "emptyText": "Eşleşen anime yok.",
+      "footerText": "AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir.",
       "detailsText": "Ayrıntılar",
       "resetFilterText": "Filtreleri sıfırla",
-      "anilistButtonText": "AniList'te aç",
-      "footerText": "AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir."
+      "anilistButtonText": "AniList'te aç"
+    },
+    "guide": {
+      "title": "Rehber",
+      "metaTitle": "Rehber · Tempestian",
+      "description": "Bayram Tempestian'ın Technopat Sosyal üzerinde yayınladığı rehberler ve teknik inceleme kataloğu."
     }
   }
 }

@@ -384,7 +384,21 @@
 
   (async () => {
     try {
-      const d = previewCfg || await fetch(root + 'data/sections.json').then(r => r.json());
+      const remoteCfg = await fetch(root + 'data/sections.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null);
+      let d = remoteCfg || previewCfg;
+      if (previewCfg && remoteCfg && Array.isArray(remoteCfg.sections)) {
+        const prevIds = new Set((previewCfg.sections || []).map(s => s.id));
+        const mergedSecs = [...(previewCfg.sections || [])];
+        for (const rs of remoteCfg.sections) {
+          if (!prevIds.has(rs.id)) mergedSecs.push(rs);
+          else if (rs.status === 'active') {
+            const idx = mergedSecs.findIndex(x => x.id === rs.id);
+            if (idx >= 0 && mergedSecs[idx].status !== 'active') mergedSecs[idx].status = 'active';
+          }
+        }
+        d = { ...remoteCfg, ...previewCfg, sections: mergedSecs };
+      }
+      if (!d) return;
       const sum = (cached && cached.s) || {};
       render(d, sum);
       if (list) {
@@ -392,15 +406,19 @@
         const previewMulti = json('tp_multimedia_preview') || {};
         await Promise.all((d.sections || []).filter(s => s.status === 'active' && s.data).map(async s => {
           try {
-            const j = (s.id === 'anime' && previewAnime)
-              ? previewAnime
-              : (previewMulti[s.id] ? previewMulti[s.id] : await fetch(root + s.data).then(r => r.json()));
-            sum[s.id] = summarize(s, j);
+            const remoteJ = await fetch(root + s.data, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null);
+            let j = remoteJ;
+            if (s.id === 'anime' && previewAnime && Array.isArray(previewAnime.anime) && previewAnime.anime.length >= ((remoteJ && remoteJ.anime && remoteJ.anime.length) || 0)) {
+              j = previewAnime;
+            } else if (previewMulti[s.id] && Array.isArray(previewMulti[s.id].items) && previewMulti[s.id].items.length > 0 && previewMulti[s.id].items.length >= ((remoteJ && (remoteJ.items || remoteJ[s.countKey]) || []).length)) {
+              j = previewMulti[s.id];
+            }
+            if (j) sum[s.id] = summarize(s, j);
           } catch (e) {}
         }));
         render(d, sum);
       }
-      if (!previewCfg) ls('ui2', JSON.stringify({ d, s: sum }));
+      ls('ui2', JSON.stringify({ d, s: sum }));
     } catch (e) {}
   })();
 })();

@@ -416,15 +416,19 @@
 
   (async () => {
     try {
-      let d = null;
+      let remoteDoc = null;
+      try {
+        const r = await fetch(dataPath, { cache: 'no-store' });
+        if (r.ok) remoteDoc = await r.json();
+      } catch (e) {}
+      let previewDoc = null;
       try {
         const prevAll = JSON.parse(ls('tp_multimedia_preview') || '{}');
-        if (prevAll && prevAll[sectionId]) d = prevAll[sectionId];
+        if (prevAll && prevAll[sectionId]) previewDoc = prevAll[sectionId];
       } catch (e) {}
-      if (!d) {
-        const r = await fetch(dataPath);
-        if (r.ok) d = await r.json();
-      }
+      const remItems = (remoteDoc && (remoteDoc[sectionId] || remoteDoc.items || remoteDoc.books || remoteDoc.movies)) || [];
+      const prevItems = (previewDoc && (previewDoc[sectionId] || previewDoc.items || previewDoc.books || previewDoc.movies)) || [];
+      const d = (prevItems.length > 0 && prevItems.length >= remItems.length) ? previewDoc : (remoteDoc || previewDoc);
       const items = (d && (d[sectionId] || d.items || d.books || d.movies)) || [];
       state.items = items;
       const root = $('#list'), fr = document.createDocumentFragment();

@@ -2,17 +2,440 @@
   "schemaVersion": 3,
   "updated": "2026-10-22",
   "source": "site-first:guide",
-  "customGenreCatalog": [],
+  "technopatUser": {
+    "userId": "657641",
+    "username": "Bayram Tempestian",
+    "prefixFilter": "Rehber",
+    "lastSyncedAt": "2026-10-22T11:28:37.140Z"
+  },
+  "customGenreCatalog": [
+    "Linux & Sistem",
+    "Donanım",
+    "Yazılım & Kodlama",
+    "Oyun Rehberi",
+    "Yapay Zeka"
+  ],
   "stats": {
-    "anime": 0,
-    "season": 0,
+    "anime": 17,
+    "season": 17,
     "film": 0,
     "other": 0,
-    "episodes": 0,
+    "episodes": 17,
+    "completedEpisodes": 17,
+    "inProgressEpisodes": 0,
     "favorites": 0,
     "avgScore": null,
-    "byStatus": {},
-    "genres": []
+    "byStatus": {
+      "completed": 17
+    },
+    "genres": [
+      {
+        "name": "Linux & Sistem",
+        "count": 14
+      },
+      {
+        "name": "Yazılım & Kodlama",
+        "count": 5
+      },
+      {
+        "name": "Oyun Rehberi",
+        "count": 4
+      },
+      {
+        "name": "Donanım",
+        "count": 2
+      },
+      {
+        "name": "Yapay Zeka",
+        "count": 2
+      }
+    ],
+    "scoreHistogram": {},
+    "rules": {
+      "animeCountRule": "completed_season_or_movie",
+      "includeInProgressEpisodes": true,
+      "genreSourceRule": "custom_only"
+    },
+    "listed": 17,
+    "completed": 17,
+    "partial": 0,
+    "excluded": 0,
+    "highlights": {
+      "mostWatched": {
+        "id": "tp-konu-3776056",
+        "title": "GNOME WEB'te Firefox eklentileri nasıl kurulur?",
+        "episodes": 1,
+        "status": "completed"
+      }
+    }
   },
-  "items": []
+  "items": [
+    {
+      "id": "tp-konu-4170078",
+      "threadId": 4170078,
+      "title": "NixOS'te OMEN Space kurulumu",
+      "url": "https://www.technopat.net/sosyal/konu/nixoste-omen-space-kurulumu.4170078/",
+      "summary": "Hepinize iyi Sosyaller. Bugün GNU/Linux dağıtımlarında HP Victus ve Omen laptoplarda fan kontrolü, klavye RGB ayarlarını düzenleyebildiğimiz OMEN Space'in NixOS'te nasıl kurulabileceğini anlatacağım. OMEN Space yazılımını geliştirdiği için @yunusemre.yl 'ye teşekkür ederiz. Öncelikle Flakes...",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2026-09-02",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Donanım",
+        "Yazılım & Kodlama"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-4146287",
+      "threadId": 4146287,
+      "title": "Retro el konsollarında eski nesil Java oyunları nasıl oynanır?",
+      "url": "https://www.technopat.net/sosyal/konu/retro-el-konsollarinda-eski-nesil-java-oyunlari-nasil-oynanir.4146287/",
+      "summary": "Hepinize iyi Sosyaller dilerim sevgili Technopat Sosyal kullanıcıları. Bugün R36S başta olmak üzere Trimui Smart Pro, Miyoo (CFW ile) vb retro el konsollarında J2ME emülatörü çalıştırmayı ve retro Java oyunlarını nasıl oynayacağınızı anlatacağım. Bu rehberdeki işlemler, PortMaster adlı yazılım...",
+      "forumSection": "Diğer Konsollar",
+      "addedAt": "2026-07-22",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "Diğer Konsollar"
+      ],
+      "customGenres": [
+        "Oyun Rehberi",
+        "Yazılım & Kodlama"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-4146238",
+      "threadId": 4146238,
+      "title": "R36S için PortMaster kurulum rehberi",
+      "url": "https://www.technopat.net/sosyal/konu/r36s-icin-portmaster-kurulum-rehberi.4146238/",
+      "summary": "İyi akşamlar sevgili Technopat Sosyal kullanıcıları. Bugün sizlere R36S'e nasıl PortMaster kuracağınızı anlatacağım. Öncelikle bilmeyenler için PortMaster'ın ne olduğunu anlatayım. PortMaster Nedir? PortMaster, Linux tabanlı el konsolları için bir port yöneticisidir. PortMaster sayesinde el...",
+      "forumSection": "Diğer Konsollar",
+      "addedAt": "2026-07-22",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "Diğer Konsollar"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-4114470",
+      "threadId": 4114470,
+      "title": "R36S'e XFCE masaüstü ortamı nasıl kurulur?",
+      "url": "https://www.technopat.net/sosyal/konu/r36se-xfce-masaustu-ortami-nasil-kurulur.4114470/",
+      "summary": "Herkese iyi Sosyaller. Bugün retro el konsolu R36S'e XFCE masaüstü ortamının nasıl kurulacağını anlatacağım. Öncelikle R36S el konsolunuzda ArkOS veya dArkOS işletim sistemlerinden birinin kurulu olması gerekiyor. Debian 13 tabanlı olması nedeniyle dArkOS daha iyi bir deneyim sunacaktır...",
+      "forumSection": "Diğer Konsollar",
+      "addedAt": "2026-05-30",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "Diğer Konsollar"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-4107370",
+      "threadId": 4107370,
+      "title": "GNU/Linux'ta Adobe Lightroom CC nasıl kurulur?",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linuxta-adobe-lightroom-cc-nasil-kurulur.4107370/",
+      "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları. Bugün Claude Opus 4.7 ile Linux dağıtımlarında çalıştırılması sağlanmış olan Adobe Lightroom CC'yi nasıl kuracağınızı anlatacağım. Rehber sonunda: WINE ile uyumlu çalışan bir Creative Cloud uygulaması elde edeceksiniz. Bulutla senkronize edilmiş...",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2026-05-18",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Yapay Zeka"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-4100637",
+      "threadId": 4100637,
+      "title": "R36S ve klonları için dArkOS kurulum rehberi",
+      "url": "https://www.technopat.net/sosyal/konu/r36s-ve-klonlari-icin-darkos-kurulum-rehberi.4100637/",
+      "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları. Bugün R36S retro oyun konsoluna dArkOS'in nasıl kurulacağını anlatacağım. Öncelikle cihazdan ve işletim sisteminden bahsedeyim. R36S genellikle NES, SNES, GBA gibi eski nesil oyunları oynamaya yönelik bir el konsoludur. Orijinal R36S donanımı...",
+      "forumSection": "Diğer Konsollar",
+      "addedAt": "2026-05-06",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "Diğer Konsollar"
+      ],
+      "customGenres": [
+        "Oyun Rehberi"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-4085202",
+      "threadId": 4085202,
+      "title": "MangoJuice ile MangoHUD deneyiminizi iyileştirin!",
+      "url": "https://www.technopat.net/sosyal/konu/mangojuice-ile-mangohud-deneyiminizi-iyilestirin.4085202/",
+      "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları, bugün MangoJuice programını kullanarak MangoHUD'ı nasıl detaylı olarak özelleştirebileceğinizi anlatacağım. Kurulum ve ayar bölümüne geçmeden önce MangoHUD'un ne olduğunu bilmeyen kullanıcılar için kısaca anlatalım. MangoHUD, GNU/Linux'ta oyun...",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2026-04-11",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Oyun Rehberi",
+        "Donanım"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-4057878",
+      "threadId": 4057878,
+      "title": "GNU/Linux için HP Laptop Manager kurulumu",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linux-icin-hp-laptop-manager-kurulumu.4057878/",
+      "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları, bugün GNU/Linux kullanan HP Victus 15/16 kullanıcıları için özelleştirilmiş sürücü ve HP Laptop Manager kurulumu yapacağız. Hazırsanız başlayalım. HP Laptop Manager HP Laptop manager, HP Omen ve Victus serileri için hazırlanmış bir Omen Gaming HUB...",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2026-03-02",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-4044065",
+      "threadId": 4044065,
+      "title": "HyprSettings: Hyprland ayarlarınızı arayüzle yönetin!",
+      "url": "https://www.technopat.net/sosyal/konu/hyprsettings-hyprland-ayarlarinizi-arayuzle-yonetin.4044065/",
+      "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları. Hyprland, WM kullanmaya yeni başlayan insanlar için basit olsa da kullanıcılar config düzenlemeye alışık olmadıkları için öğrenmekte zorluk yaşayabilmekte. Bugün kullanımını anlatacağım HyprSettings, Hyprland config dosyasını arayüzle...",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2026-02-11",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-4035241",
+      "threadId": 4035241,
+      "title": "Linux'ta Gemini ile Türkçe dil desteği olmayan oyunları anlık olarak çevirme",
+      "url": "https://www.technopat.net/sosyal/konu/linuxta-gemini-ile-turkce-dil-destegi-olmayan-oyunlari-anlik-olarak-cevirme.4035241/",
+      "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları, bugün Linux'ta Türkçe dil desteği bulunmayan oyunlarda ekranda belirli bir kısmı seçerek yapay zekaya çevirmenizi sağlayan basit bir script tanıtacağım. Zamanla geliştirilebilir. Bash scripti olduğu için geliştirme seçeneği çok fazla. Ben şu an...",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2026-01-30",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Oyun Rehberi",
+        "Yapay Zeka"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-3999213",
+      "threadId": 3999213,
+      "title": "Kernel Panic hatası nasıl çözülür?",
+      "url": "https://www.technopat.net/sosyal/konu/kernel-panic-hatasi-nasil-cozulur.3999213/",
+      "summary": "Kernel Panic hatasının ne olduğundan, hatanın tespitinden ve çözümüne nasıl ulaşılacağından bahsedeceğim rehbere hoş geldiniz sevgili Technopat Sosyal kullanıcıları. 1- Kernel Panic nedir? Öncelikle Kernel Panic'in ne olduğundan bahsederek başlayalım. İşletim sisteminin verimli bir şekilde...",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2025-12-19",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-3947918",
+      "threadId": 3947918,
+      "title": "TLP-UI: GNU/Linux'ta güç yönetimi ile laptopunuzun pil ömrünü uzatın!",
+      "url": "https://www.technopat.net/sosyal/konu/tlp-ui-gnu-linuxta-guc-yonetimi-ile-laptopunuzun-pil-omrunu-uzatin.3947918/",
+      "summary": "Merhaba sevgili Technopat Sosyal üyeleri, bugün laptop kullanıcılarının GNU/Linux'ta şarj süresini uzatmasını sağlayabilecek, performansı arttırmayı veya sıcaklığı azaltmayı sağlayabileceğimiz TLP uygulamasında önemli ayarları öğreneceğiz. TLP, GNU/Linux dağıtımlarında güç yönetimini...",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2025-10-21",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-3918073",
+      "threadId": 3918073,
+      "title": "Tüm Linux dağıtımlarında manuel NVIDIA sürücü kurulumu",
+      "url": "https://www.technopat.net/sosyal/konu/tum-linux-dagitimlarinda-manuel-nvidia-surucu-kurulumu.3918073/",
+      "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları, Son kullanıcıya yönelik birçok dağıtımda NVIDIA sürücüsü hazır gelse de veya kurmak kolay olsa da bugün tüm dağıtımlar için ortak ve resmi kurulum yöntemi olan, basitçe manuel kurulum diyebileceğimiz adımları göstereceğim. Dağıtımınızın sunduğu...",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2025-09-15",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-3858764",
+      "threadId": 3858764,
+      "title": "Iconify ile AOSP temalandırma",
+      "url": "https://www.technopat.net/sosyal/konu/iconify-ile-aosp-temalandirma.3858764/",
+      "summary": "Merhaba sevgili Technopat Sosyal kullanıcıları. Bugün AOSP tabanlı ROM kullanan kullanıcılar için bir araç olan Iconify'ın nasıl kullanılacağını anlatacağım. Iconify, Android 12 ve üstü sürümlerde özelleştirme yapmanızı sağlar. Iconify için gereksinimler: Android 12 üzeri AOSP ROM. Magisk...",
+      "forumSection": "Android",
+      "addedAt": "2025-07-24",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "Android"
+      ],
+      "customGenres": [
+        "Yazılım & Kodlama"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-3783464",
+      "threadId": 3783464,
+      "title": "GNU/Linux'ta CLI ve GUI Wallpaper Engine kullanımı",
+      "url": "https://www.technopat.net/sosyal/konu/gnu-linuxta-cli-ve-gui-wallpaper-engine-kullanimi.3783464/",
+      "summary": "Hoşgeldiğiniz sevgili Technopat Sosyal kullanıcıları. Dün @Lejant 'ın Zorin OS Wallpaper Engine konusunu yanıtladıktan sonra aklıma rehber oluşturmak geldi ancak zaten orada ulaşılabilir çözümüm bulunuyordu. O nedenle araştırarak 2. bir yöntem daha öğrendim. Bu rehberde 2 yöntemi de...",
+      "forumSection": "GNU/Linux",
+      "addedAt": "2025-05-27",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "GNU/Linux"
+      ],
+      "customGenres": [
+        "Linux & Sistem"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-3776056",
+      "threadId": 3776056,
+      "title": "GNOME WEB'te Firefox eklentileri nasıl kurulur?",
+      "url": "https://www.technopat.net/sosyal/konu/gnome-webte-firefox-eklentileri-nasil-kurulur.3776056/",
+      "summary": "İyi akşamlar sevgili Technopat Sosyal kullanıcıları. GNOME WEB yani Epiphany, GNOME masaüstünün varsayılan internet tarayıcısıdır. Çoğumuz eklenti desteği olmadığı için Epiphany'i silerek Firefox kullanırız. Rehber tüm eklentiler için geçerli olmasa da bazı eklentileri Epiphany'de nasıl...",
+      "forumSection": "İnternet Araçları",
+      "addedAt": "2025-05-20",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "İnternet Araçları"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Yazılım & Kodlama"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    },
+    {
+      "id": "tp-konu-3749743",
+      "threadId": 3749743,
+      "title": "XenForo forumlarda OS'i Arch Linux olarak gösterme",
+      "url": "https://www.technopat.net/sosyal/konu/xenforo-forumlarda-osi-arch-linux-olarak-gosterme.3749743/",
+      "summary": "Hepinize iyi günler dilerim sevgili Technopat Sosyal kullanıcıları. XenForo'nun OS algılama sistemi Windows 11, Arch Linux, Fedora gibi işletim sistemlerini algılamayabiliyor. Örneğin: Windows 11 kullanıcıları Windows 10 kullanıyor gibi görünüyor. Ubuntu haricindeki Linux dağıtımları \"Linux\"...",
+      "forumSection": "İnternet Araçları",
+      "addedAt": "2025-04-28",
+      "status": "completed",
+      "favorite": false,
+      "genres": [
+        "İnternet Araçları"
+      ],
+      "customGenres": [
+        "Linux & Sistem",
+        "Yazılım & Kodlama"
+      ],
+      "source": "technopat-sync",
+      "adminModified": false,
+      "lockedFields": [],
+      "parts": []
+    }
+  ]
 }

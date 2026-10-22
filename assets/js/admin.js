@@ -296,6 +296,8 @@
     animeFilterStatus: 'all',
     animeFilterSource: 'all',
     activeAdminMediaType: 'anime',
+    selectedAdminIds: new Set(),
+    lastFilteredIds: [],
     editingAnimeId: null,
     editingDraft: null,
     multiMediaStore: {},
@@ -1059,6 +1061,34 @@
                 <option value="modified">Admin Düzenlemeli</option>
               </select>
             </label>
+          </div>
+
+          <!-- ADIM 18: ÇOKLU SEÇİM (BATCH ACTIONS) VE TOPLU YÖNETİM ÇUBUĞU -->
+          <div id="admBatchBar" class="adm-batch-bar">
+            <div class="adm-batch-left">
+              <label title="Listelenen tüm kayıtları seç veya seçimi kaldır">
+                <input type="checkbox" id="admSelectAllCheck">
+                <span id="admBatchCountText">Tümünü Seç (0)</span>
+              </label>
+              <button type="button" class="btn-subtle" id="admClearSelectionBtn" style="padding:4px 10px;font-size:.78rem" hidden>Seçimi Temizle</button>
+            </div>
+            <div id="admBatchActionsWrap" class="adm-batch-actions" hidden>
+              <div class="adm-batch-group">
+                <select id="admBatchCatSelect" class="inp glass adm-batch-inp" title="Seçili kayıtlara eklenecek veya çıkarılacak kategori"></select>
+                <input type="text" id="admBatchCustomCatInp" class="inp glass adm-batch-inp" placeholder="veya yeni kategori..." style="max-width:135px">
+                <button type="button" class="btn-secondary" id="admBatchAddCatBtn" style="padding:5px 10px;font-size:.78rem" title="Seçili tüm kayıtlara bu kategoriyi ekler">+ Kategori Ekle</button>
+                <button type="button" class="btn-subtle" id="admBatchRemoveCatBtn" style="padding:5px 10px;font-size:.78rem" title="Seçili tüm kayıtlardan bu kategoriyi çıkarır">− Çıkar</button>
+              </div>
+              <div class="adm-batch-group">
+                <select id="admBatchStatusSelect" class="inp glass adm-batch-inp" title="Seçili kayıtların yeni durumu"></select>
+                <button type="button" class="btn-secondary" id="admBatchApplyStatusBtn" style="padding:5px 10px;font-size:.78rem">Durumu Uygula</button>
+              </div>
+              <div class="adm-batch-group">
+                <button type="button" class="fav-toggle-btn" id="admBatchFavOnBtn" style="padding:5px 10px;font-size:.78rem">★ İşaretle</button>
+                <button type="button" class="btn-subtle" id="admBatchFavOffBtn" style="padding:5px 10px;font-size:.78rem">☆ Kaldır</button>
+              </div>
+              <button type="button" class="btn-danger" id="admBatchDeleteBtn" style="padding:5px 11px;font-size:.78rem">🗑️ Seçilenleri Sil</button>
+            </div>
           </div>
 
           <div id="animeAdminList" class="anime-admin-list"></div>
@@ -1891,6 +1921,69 @@
     updateDirtyIndicator();
   }
 
+  function syncBatchActionBar() {
+    const bar = $('#admBatchBar');
+    if (!bar) return;
+    const adapter = getActiveAdminAdapter();
+    const allItems = adapter.getItems() || [];
+    const validIds = new Set(allItems.map(x => x.id));
+    for (const id of [...state.selectedAdminIds]) {
+      if (!validIds.has(id)) state.selectedAdminIds.delete(id);
+    }
+
+    const selCount = state.selectedAdminIds.size;
+    const filteredIds = state.lastFilteredIds || [];
+    const allFilteredSelected = filteredIds.length > 0 && filteredIds.every(id => state.selectedAdminIds.has(id));
+
+    bar.classList.toggle('has-sel', selCount > 0);
+    const allChk = $('#admSelectAllCheck');
+    if (allChk) {
+      allChk.checked = allFilteredSelected;
+      allChk.indeterminate = selCount > 0 && !allFilteredSelected;
+    }
+    const cntTxt = $('#admBatchCountText');
+    if (cntTxt) {
+      cntTxt.textContent = selCount > 0
+        ? `⚡ ${selCount} ${adapter.label.toLocaleLowerCase('tr')} seçildi`
+        : `Filtrelenenlerin Tümünü Seç (${filteredIds.length})`;
+    }
+    const clrBtn = $('#admClearSelectionBtn');
+    if (clrBtn) clrBtn.hidden = selCount === 0;
+    const actWrap = $('#admBatchActionsWrap');
+    if (actWrap) actWrap.hidden = selCount === 0;
+
+    const catSel = $('#admBatchCatSelect');
+    if (catSel) {
+      const catSet = new Set();
+      for (const grp of (adapter.categoryGroups || CURATED_GENRE_GROUPS)) {
+        for (const g of (grp.items || [])) catSet.add(g);
+      }
+      for (const g of (adapter.getCustomCatalog() || [])) {
+        if (g) catSet.add(g);
+      }
+      const cats = [...catSet];
+      const sig = cats.join('|');
+      if (catSel.dataset.sig !== sig) {
+        catSel.dataset.sig = sig;
+        catSel.innerHTML = `<option value="">-- Kategori Seçin --</option>` + cats.map(c => `<option value="${AdminSecurity.sanitizeText(c, 50)}">${AdminSecurity.sanitizeText(c, 50)}</option>`).join('');
+      }
+    }
+
+    const stSel = $('#admBatchStatusSelect');
+    if (stSel && Array.isArray(adapter.statusOptions)) {
+      const stSig = adapter.statusOptions.map(x => `${x[0]}:${x[1]}`).join('|');
+      if (stSel.dataset.sig !== stSig) {
+        stSel.dataset.sig = stSig;
+        stSel.innerHTML = adapter.statusOptions.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+      }
+    }
+
+    const favOnBtn = $('#admBatchFavOnBtn');
+    if (favOnBtn) {
+      favOnBtn.textContent = adapter.id === 'guide' ? '★ Öne Çıkan Yap' : '★ Başyapıt Yap';
+    }
+  }
+
   function renderAnimeAdminPanel() {
     const statsBar = $('#animeStatsSummary');
     const listEl = $('#animeAdminList');
@@ -2114,6 +2207,9 @@
       return true;
     });
 
+    state.lastFilteredIds = filtered.map(x => x.id);
+    syncBatchActionBar();
+
     listEl.replaceChildren();
     if (!filtered.length) {
       const p = document.createElement('p');
@@ -2127,7 +2223,8 @@
     const fr = document.createDocumentFragment();
     for (const it of filtered) {
       const row = document.createElement('div');
-      row.className = 'anime-adm-row';
+      const isRowSelected = state.selectedAdminIds.has(it.id);
+      row.className = 'anime-adm-row' + (isRowSelected ? ' selected' : '');
       const isManual = it.source === 'manual' || String(it.id).startsWith('custom-');
       const normParts = normalizePartsForStats(it);
       const doneEps = normParts.reduce((n, p) => n + ((p.status !== 'NONE' && p.status !== 'PLANNING') ? (p.watched || 0) : 0), 0);
@@ -2143,6 +2240,9 @@
       const sourceBadgeText = isManual ? 'Elle Eklendi' : it.adminModified ? 'Admin Düzenlemeli' : (adapter.id === 'anime' || adapter.id === 'manga' ? 'AniList' : 'Katalog');
 
       row.innerHTML = `
+        <label class="adm-row-check-wrap" title="Toplu işlem için seç">
+          <input type="checkbox" class="adm-row-check" ${isRowSelected ? 'checked' : ''}>
+        </label>
         <img class="anime-adm-poster" alt="" loading="lazy">
         <div class="anime-adm-info">
           <div class="anime-adm-title">
@@ -2215,6 +2315,15 @@
         urlSlot.textContent = 'Salt Yerel';
       }
 
+      const rowChk = row.querySelector('.adm-row-check');
+      if (rowChk) {
+        rowChk.onchange = () => {
+          if (rowChk.checked) state.selectedAdminIds.add(it.id);
+          else state.selectedAdminIds.delete(it.id);
+          row.classList.toggle('selected', rowChk.checked);
+          syncBatchActionBar();
+        };
+      }
       row.querySelector('.adm-fav-btn').onclick = () => quickToggleFavorite(it.id);
       row.querySelector('.adm-plus-ep-btn').onclick = () => quickIncrementEpisode(it.id, false);
       row.querySelector('.adm-done-part-btn').onclick = () => quickIncrementEpisode(it.id, true);
@@ -5253,8 +5362,200 @@
     // Adım 3–8: Anime Yönetimi ve İstatistik Olayları
     $('#admMediaTypeSelect').onchange = e => {
       state.activeAdminMediaType = e.target.value;
+      state.selectedAdminIds.clear();
       renderAnimeAdminPanel();
     };
+
+    const persistBatchChanges = (adapter) => {
+      if (adapter.id === 'anime') {
+        state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
+        state.animeData.updated = new Date().toISOString().slice(0, 10);
+        markDirty('anime');
+      } else {
+        const store = ensureMultiMediaStore(adapter.id);
+        store.stats = computeMediaStatsClient(store.items, state.animeData.statsConfig, adapter.id);
+        store.dirty = true;
+        updateDirtyIndicator();
+      }
+      renderAnimeAdminPanel();
+    };
+
+    if ($('#admSelectAllCheck')) {
+      $('#admSelectAllCheck').onchange = e => {
+        const filteredIds = state.lastFilteredIds || [];
+        if (e.target.checked) {
+          for (const id of filteredIds) state.selectedAdminIds.add(id);
+        } else {
+          for (const id of filteredIds) state.selectedAdminIds.delete(id);
+        }
+        renderAnimeAdminPanel();
+      };
+    }
+    if ($('#admClearSelectionBtn')) {
+      $('#admClearSelectionBtn').onclick = () => {
+        state.selectedAdminIds.clear();
+        renderAnimeAdminPanel();
+      };
+    }
+    if ($('#admBatchAddCatBtn')) {
+      $('#admBatchAddCatBtn').onclick = () => {
+        const adapter = getActiveAdminAdapter();
+        const customVal = AdminSecurity.sanitizeText($('#admBatchCustomCatInp')?.value || '', 40);
+        const selVal = $('#admBatchCatSelect')?.value || '';
+        const cat = customVal || selVal;
+        if (!cat) {
+          toast('Lütfen eklenecek bir kategori seçin veya yazın.', 'warn');
+          return;
+        }
+        if (customVal) {
+          adapter.addCustomCategory(customVal);
+          if ($('#admBatchCustomCatInp')) $('#admBatchCustomCatInp').value = '';
+        }
+        const list = adapter.getItems();
+        let count = 0;
+        for (const it of list) {
+          if (!state.selectedAdminIds.has(it.id)) continue;
+          const cur = new Set(Array.isArray(it.customGenres) ? it.customGenres : []);
+          cur.add(cat);
+          it.customGenres = [...cur];
+          if (adapter.id !== 'guide') it.genres = [...cur];
+          it.adminModified = true;
+          count++;
+        }
+        if (count > 0) {
+          persistBatchChanges(adapter);
+          toast(`Seçili ${count} kayda "${cat}" kategorisi eklendi.`);
+        }
+      };
+    }
+    if ($('#admBatchRemoveCatBtn')) {
+      $('#admBatchRemoveCatBtn').onclick = () => {
+        const adapter = getActiveAdminAdapter();
+        const customVal = AdminSecurity.sanitizeText($('#admBatchCustomCatInp')?.value || '', 40);
+        const selVal = $('#admBatchCatSelect')?.value || '';
+        const cat = customVal || selVal;
+        if (!cat) {
+          toast('Lütfen çıkarılacak bir kategori seçin veya yazın.', 'warn');
+          return;
+        }
+        const list = adapter.getItems();
+        let count = 0;
+        for (const it of list) {
+          if (!state.selectedAdminIds.has(it.id)) continue;
+          const cur = new Set(Array.isArray(it.customGenres) ? it.customGenres : []);
+          if (cur.has(cat)) {
+            cur.delete(cat);
+            it.customGenres = [...cur];
+            if (adapter.id !== 'guide') it.genres = [...cur];
+            it.adminModified = true;
+            count++;
+          }
+        }
+        persistBatchChanges(adapter);
+        toast(`${count} kayıttan "${cat}" kategorisi çıkarıldı.`);
+      };
+    }
+    if ($('#admBatchApplyStatusBtn')) {
+      $('#admBatchApplyStatusBtn').onclick = () => {
+        const adapter = getActiveAdminAdapter();
+        const newSt = $('#admBatchStatusSelect')?.value;
+        if (!newSt) return;
+        const list = adapter.getItems();
+        let count = 0;
+        for (const it of list) {
+          if (!state.selectedAdminIds.has(it.id)) continue;
+          it.status = newSt;
+          it.adminModified = true;
+          count++;
+        }
+        if (count > 0) {
+          persistBatchChanges(adapter);
+          const stMap = Object.fromEntries(adapter.statusOptions || []);
+          toast(`Seçili ${count} kaydın durumu "${stMap[newSt] || newSt}" olarak güncellendi.`);
+        }
+      };
+    }
+    if ($('#admBatchFavOnBtn')) {
+      $('#admBatchFavOnBtn').onclick = () => {
+        const adapter = getActiveAdminAdapter();
+        const list = adapter.getItems();
+        let count = 0;
+        for (const it of list) {
+          if (!state.selectedAdminIds.has(it.id)) continue;
+          it.favorite = true;
+          it.adminModified = true;
+          count++;
+        }
+        if (count > 0) {
+          persistBatchChanges(adapter);
+          toast(`Seçili ${count} kayıt ${adapter.id === 'guide' ? '★ Öne Çıkan Rehber' : '★ Başyapıt'} olarak işaretlendi!`);
+        }
+      };
+    }
+    if ($('#admBatchFavOffBtn')) {
+      $('#admBatchFavOffBtn').onclick = () => {
+        const adapter = getActiveAdminAdapter();
+        const list = adapter.getItems();
+        let count = 0;
+        for (const it of list) {
+          if (!state.selectedAdminIds.has(it.id)) continue;
+          delete it.favorite;
+          it.adminModified = true;
+          count++;
+        }
+        if (count > 0) {
+          persistBatchChanges(adapter);
+          toast(`Seçili ${count} kaydın ★ işareti kaldırıldı.`);
+        }
+      };
+    }
+    if ($('#admBatchDeleteBtn')) {
+      $('#admBatchDeleteBtn').onclick = () => {
+        const adapter = getActiveAdminAdapter();
+        const selCount = state.selectedAdminIds.size;
+        if (!selCount) return;
+        const btn = $('#admBatchDeleteBtn');
+        if (btn.dataset.confirming !== 'yes') {
+          btn.dataset.confirming = 'yes';
+          btn.textContent = `⚠️ Emin misiniz? (${selCount} Kaydı Silmek İçin Tekrar Tıklayın)`;
+          setTimeout(() => {
+            if (btn) {
+              delete btn.dataset.confirming;
+              btn.textContent = '🗑️ Seçilenleri Sil';
+            }
+          }, 4000);
+          return;
+        }
+        delete btn.dataset.confirming;
+        btn.textContent = '🗑️ Seçilenleri Sil';
+
+        const list = adapter.getItems();
+        const kept = [];
+        let removedCount = 0;
+        for (const it of list) {
+          if (state.selectedAdminIds.has(it.id)) {
+            removedCount++;
+            if (adapter.id === 'anime') {
+              if (it.anilistId && !state.overrides.exclude.includes(Number(it.anilistId))) {
+                state.overrides.exclude.push(Number(it.anilistId));
+                markDirty('overrides');
+              }
+              if (!state.overrides.deletedIds.includes(it.id)) {
+                state.overrides.deletedIds.push(it.id);
+                markDirty('overrides');
+              }
+            }
+          } else {
+            kept.push(it);
+          }
+        }
+        list.splice(0, list.length, ...kept);
+        state.selectedAdminIds.clear();
+        if (adapter.id === 'anime') renderOverridesEditor();
+        persistBatchChanges(adapter);
+        toast(`${removedCount} kayıt listeden kaldırıldı.`);
+      };
+    }
     if ($('#admSectionStatusSelect')) {
       $('#admSectionStatusSelect').onchange = e => {
         const adapter = getActiveAdminAdapter();

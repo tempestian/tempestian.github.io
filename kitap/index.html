@@ -42,13 +42,15 @@
       </select>
       <span data-icon="chev"></span>
     </div>
+    <div class="view glass" role="group" aria-label="Görünüm">
+      <button type="button" data-view="grid" data-icon="grid" aria-label="Izgara görünümü" title="Izgara Görünümü" aria-pressed="true"></button>
+      <button type="button" data-view="list" data-icon="list" aria-label="Liste görünümü" title="Liste Görünümü" aria-pressed="false"></button>
+      <button type="button" data-view="tier" data-icon="tier" aria-label="Katman (Tier List) görünümü" title="Katman (Tier List) Görünümü" aria-pressed="false"></button>
+    </div>
+    <button class="btn glass" id="randomPickBtn" type="button" data-icon="dice" aria-label="Rastgele Seç" title="Rastgele bir yapım seç (🎲)" style="width:48px;height:48px"></button>
     <div class="fw">
       <button id="fbtn" class="btn glass" type="button" data-icon="filter" aria-label="Filtreler" aria-expanded="false"></button>
       <i id="fdot" class="dotn" hidden></i>
-    </div>
-    <div class="view glass" role="group" aria-label="Görünüm">
-      <button type="button" data-view="grid" data-icon="grid" aria-label="Izgara görünümü" aria-pressed="true"></button>
-      <button type="button" data-view="list" data-icon="list" aria-label="Liste görünümü" aria-pressed="false"></button>
     </div>
   </div>
 
@@ -56,6 +58,7 @@
 
   <div id="chips" class="chips" role="group" aria-label="Durum filtresi"></div>
 
+  <div id="tierBoard" class="tier-board" hidden></div>
   <ul id="list" class="grid"></ul>
   <p id="empty" class="note" hidden>Henüz kayıt yok.</p>
 

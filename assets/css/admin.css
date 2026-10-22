@@ -231,3 +231,23 @@ textarea.inp{height:auto;padding:10px 13px;resize:vertical;font-family:inherit}
 .health-count.warn{color:var(--warn)}
 .health-sample-list{display:grid;gap:5px;max-height:145px;overflow-y:auto;font-size:.8rem;color:var(--ink2)}
 .health-sample-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;background:var(--glass)}
+
+/* Adım 18: Çoklu Seçim (Batch Actions) ve Toplu Yönetim Çubuğu Stilleri */
+.adm-batch-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding:11px 15px;border-radius:var(--rm);background:var(--glass2);box-shadow:inset 0 0 0 1px var(--line);transition:background .2s,box-shadow .2s}
+.adm-batch-bar.has-sel{background:var(--accent-soft);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.adm-batch-left{display:flex;align-items:center;gap:10px;font-size:.86rem;font-weight:600}
+.adm-batch-left label{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.adm-batch-left input[type=checkbox],.adm-row-check{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;margin:0;flex:none}
+.adm-batch-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.adm-batch-actions[hidden]{display:none!important}
+.adm-batch-group{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:12px;background:var(--glass);box-shadow:inset 0 0 0 1px var(--line)}
+.adm-batch-inp{height:32px!important;padding:0 10px!important;font-size:.8rem!important;border-radius:9px!important;width:auto!important}
+
+.anime-adm-row{grid-template-columns:auto 46px 1fr auto}
+.anime-adm-row:has(.anime-adm-poster[hidden]){grid-template-columns:auto 1fr auto}
+.anime-adm-row.selected{background:var(--accent-soft);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.adm-row-check-wrap{display:grid;place-items:center;padding:4px;cursor:pointer}
+@media (max-width:700px){
+  .anime-adm-row{grid-template-columns:auto 40px 1fr;gap:10px}
+  .anime-adm-row:has(.anime-adm-poster[hidden]){grid-template-columns:auto 1fr;gap:10px}
+}

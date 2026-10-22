@@ -41,13 +41,16 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9.5 6 6 6-6"/></svg>
     </div>
     <div class="view glass" role="group" aria-label="Görünüm">
-      <button type="button" data-view="grid" data-icon="grid" aria-label="Kart"></button>
-      <button type="button" data-view="list" data-icon="list" aria-label="Liste"></button>
+      <button type="button" data-view="grid" data-icon="grid" aria-label="Kart" title="Izgara Görünümü"></button>
+      <button type="button" data-view="list" data-icon="list" aria-label="Liste" title="Liste Görünümü"></button>
+      <button type="button" data-view="tier" data-icon="tier" aria-label="Katman (Tier List)" title="Katman (Tier List) Görünümü"></button>
     </div>
+    <button class="btn glass" id="randomPickBtn" type="button" data-icon="dice" aria-label="Rastgele Seç" title="Rastgele bir anime seç (🎲)" style="width:48px;height:48px"></button>
     <span class="fw"><button class="btn glass" id="fbtn" type="button" aria-expanded="false" aria-controls="fp" aria-label="Filtreler" data-icon="filter"></button><i class="dotn" id="fdot" hidden></i></span>
   </div>
   <div class="fp" id="fp"><div class="fp-in" id="fpIn"></div></div>
   <div class="chips" id="chips" role="group" aria-label="Duruma göre filtre"></div>
+  <div id="tierBoard" class="tier-board" hidden></div>
   <ul id="list" class="grid"></ul>
   <p id="empty" class="note" hidden></p>
   <noscript><p class="note">Liste için JavaScript gerekiyor.</p></noscript>

@@ -260,4 +260,16 @@
 
   $('#q').oninput = e => { state.q = e.target.value; renderList(); };
   $('#sort').onchange = e => { state.sort = e.target.value; renderList(); };
+
+  const rndBtn = document.getElementById('randomPickBtn');
+  if (rndBtn) {
+    rndBtn.onclick = () => {
+      const cards = [...document.querySelectorAll('#guideList .guide-card')];
+      if (!cards.length) return;
+      cards.forEach(c => c.classList.remove('random-highlight'));
+      const pick = cards[Math.floor(Math.random() * cards.length)];
+      pick.classList.add('random-highlight');
+      pick.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+  }
 })();

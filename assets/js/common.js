@@ -48,7 +48,9 @@
     list: '<path d="M9.5 6.5H20M9.5 12H20M9.5 17.5H20"/><circle cx="5" cy="6.5" r=".6"/><circle cx="5" cy="12" r=".6"/><circle cx="5" cy="17.5" r=".6"/>',
     filter: '<path d="M4 7h16M7 12h10M10 17h4"/>',
     chev: '<path d="m6 9.5 6 6 6-6"/>',
-    star: '<path fill="currentColor" d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/>'
+    star: '<path fill="currentColor" d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/>',
+    tier: '<rect x="3.5" y="4.5" width="4.5" height="4.5" rx="1.2"/><path d="M11 6.8h9.5"/><rect x="3.5" y="10.8" width="4.5" height="4.5" rx="1.2"/><path d="M11 13h7.5"/><rect x="3.5" y="17" width="4.5" height="4.5" rx="1.2"/><path d="M11 19.2h5.5"/>',
+    dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/>'
   };
   const icon = n => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[n] || P.dot) + '</svg>';
 
@@ -518,6 +520,372 @@
       const bar = btn.closest('.chips');
       if (bar && bar.scrollWidth > bar.clientWidth && typeof btn.scrollIntoView === 'function') {
         btn.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+      }
+    });
+  })();
+
+
+  // ============================================================================
+  // [AI-MIMARI-NOTU: ADIM 16 — EVRENSEL KOMUT PALETİ VE GLOBAL ARAMA (Ctrl+K)]
+  // Tüm sayfalarda (`index.html`, `/anime/`, `/rehber/`, `/dizi/`, `/film/`, `/manga/`, `/kitap/`)
+  // üst çubuğa arama ikonu ekler ve `Ctrl+K` / `⌘K` kısayoluyla tüm arşivlerde eşzamanlı
+  // anlık arama ve hızlı gezinme sağlar.
+  // ============================================================================
+  (() => {
+    if (cur === 'admin') return;
+
+    const barIn = document.querySelector('.bar-in');
+    if (barIn && themeBtn && !document.getElementById('globalSearchBtn')) {
+      const sBtn = el('button', 'btn glass bar-search-btn');
+      sBtn.id = 'globalSearchBtn';
+      sBtn.type = 'button';
+      sBtn.title = 'Tüm sitede ara (Ctrl+K)';
+      sBtn.setAttribute('aria-label', 'Tüm sitede ara (Ctrl+K)');
+      sBtn.innerHTML = icon('search');
+      barIn.insertBefore(sBtn, themeBtn);
+      sBtn.onclick = () => openCommandPalette();
+    }
+
+    let modal = null;
+    let inp = null;
+    let listEl = null;
+    let scopeBar = null;
+    let indexedItems = null;
+    let loadingPromise = null;
+    let activeScope = 'all';
+    let activeIdx = 0;
+    let currentMatches = [];
+
+    const SECTION_DEFS = [
+      { id: 'anime', label: 'Anime', path: 'anime/', data: 'data/anime.json', key: 'anime', icon: 'anime' },
+      { id: 'guide', label: 'Rehber', path: 'rehber/', data: 'data/guides.json', key: 'items', icon: 'guide', isGuide: true },
+      { id: 'series', label: 'Dizi', path: 'dizi/', data: 'data/series.json', key: 'items', icon: 'series' },
+      { id: 'movie', label: 'Film', path: 'film/', data: 'data/movies.json', key: 'items', icon: 'movie' },
+      { id: 'manga', label: 'Manga', path: 'manga/', data: 'data/manga.json', key: 'items', icon: 'manga' },
+      { id: 'book', label: 'Kitap', path: 'kitap/', data: 'data/books.json', key: 'items', icon: 'book' }
+    ];
+
+    function computeQuickScore(it) {
+      if (!it || typeof it !== 'object') return null;
+      const ps = Array.isArray(it.parts) ? it.parts : [];
+      let wSum = 0, wTot = 0;
+      for (const p of ps) {
+        if (!p) continue;
+        const sc = Number(p.score);
+        if (!isNaN(sc) && sc > 0) {
+          const w = (p.kind === 'movie' || p.format === 'MOVIE') ? 0.35 : (p.kind === 'other' || ['OVA', 'SPECIAL', 'TV_SHORT'].includes(p.format)) ? 0.15 : 1.0;
+          wSum += sc * w;
+          wTot += w;
+        }
+      }
+      if (wTot > 0) return Math.round((wSum / wTot) * 10) / 10;
+      const d = Number(it.score);
+      return (!isNaN(d) && d > 0) ? Math.round(d * 10) / 10 : null;
+    }
+
+    async function ensureIndexLoaded() {
+      if (indexedItems) return indexedItems;
+      if (loadingPromise) return loadingPromise;
+      loadingPromise = (async () => {
+        const all = [];
+        const prevAnime = json('tp_anime_preview');
+        const prevMulti = json('tp_multimedia_preview') || {};
+
+        await Promise.all(SECTION_DEFS.map(async sec => {
+          try {
+            let doc = null;
+            const r = await fetch(root + sec.data, { cache: 'no-store' }).catch(() => null);
+            if (r && r.ok) doc = await r.json();
+            if (sec.id === 'anime' && prevAnime && Array.isArray(prevAnime.anime) && prevAnime.anime.length >= ((doc && doc.anime && doc.anime.length) || 0)) {
+              doc = prevAnime;
+            } else if (prevMulti[sec.id] && Array.isArray(prevMulti[sec.id].items) && prevMulti[sec.id].items.length > 0 && prevMulti[sec.id].items.length >= ((doc && (doc.items || doc[sec.key]) || []).length)) {
+              doc = prevMulti[sec.id];
+            }
+            const arr = (doc && (doc.items || doc[sec.key] || doc.anime || doc.guides)) || [];
+            for (const it of arr) {
+              if (!it || !it.title) continue;
+              const cats = Array.isArray(it.customGenres) && it.customGenres.length ? it.customGenres : (it.genres || []);
+              const sc = sec.isGuide ? null : computeQuickScore(it);
+              const extra = it.author || it.director || it.network || it.forumSection || '';
+              const hay = `${it.title} ${cats.join(' ')} ${extra} ${it.summary || ''}`.toLocaleLowerCase('tr');
+              all.push({
+                id: it.id,
+                title: it.title,
+                sectionId: sec.id,
+                sectionLabel: sec.label,
+                sectionPath: sec.path,
+                icon: sec.icon,
+                isGuide: Boolean(sec.isGuide),
+                url: it.url || it.firstSeasonUrl || '',
+                image: it.image || '',
+                score: sc,
+                favorite: Boolean(it.favorite),
+                categories: cats.slice(0, 3),
+                extra,
+                addedAt: it.addedAt || '',
+                hay
+              });
+            }
+          } catch (e) {}
+        }));
+
+        indexedItems = all;
+        return all;
+      })();
+      return loadingPromise;
+    }
+
+    function ensureModalDOM() {
+      if (modal) return;
+      modal = el('div', 'cmdk-modal');
+      modal.hidden = true;
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-label', 'Evrensel Arama ve Komut Paleti');
+      modal.innerHTML = `
+        <div class="cmdk-bg"></div>
+        <div class="cmdk-card sq">
+          <div class="cmdk-top">
+            ${icon('search')}
+            <input type="search" class="cmdk-inp" placeholder="Anime, rehber, dizi, film, manga, kitap veya komut ara..." autocomplete="off">
+            <button type="button" class="cmdk-kbd" data-cmdk-close>ESC</button>
+          </div>
+          <div class="cmdk-ScopeBar" role="group" aria-label="Bölüm filtresi"></div>
+          <div class="cmdk-list" role="listbox"></div>
+          <div class="cmdk-foot">
+            <span>↑↓ Gezin · Enter Aç · ESC Kapat</span>
+            <span id="cmdkCountLbl"></span>
+          </div>
+        </div>
+      `;
+      document.body.append(modal);
+      inp = modal.querySelector('.cmdk-inp');
+      listEl = modal.querySelector('.cmdk-list');
+      scopeBar = modal.querySelector('.cmdk-ScopeBar');
+
+      const scopes = [
+        ['all', 'Tümü'],
+        ['fav', '★ Başyapıt / Öne Çıkan'],
+        ['anime', 'Anime'],
+        ['guide', 'Rehber'],
+        ['series', 'Dizi'],
+        ['movie', 'Film'],
+        ['manga', 'Manga'],
+        ['book', 'Kitap']
+      ];
+      for (const [val, lbl] of scopes) {
+        const b = el('button', 'cmdk-scope-btn', lbl);
+        b.type = 'button';
+        b.dataset.scope = val;
+        b.setAttribute('aria-pressed', val === activeScope);
+        b.onclick = () => {
+          activeScope = val;
+          scopeBar.querySelectorAll('.cmdk-scope-btn').forEach(x => x.setAttribute('aria-pressed', x.dataset.scope === activeScope));
+          activeIdx = 0;
+          renderResults();
+          inp.focus();
+        };
+        scopeBar.append(b);
+      }
+
+      modal.querySelector('.cmdk-bg').onclick = closeCommandPalette;
+      modal.querySelector('[data-cmdk-close]').onclick = closeCommandPalette;
+      inp.oninput = () => {
+        activeIdx = 0;
+        renderResults();
+      };
+      inp.onkeydown = e => {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (currentMatches.length) {
+            activeIdx = (activeIdx + 1) % currentMatches.length;
+            syncActiveHighlight();
+          }
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (currentMatches.length) {
+            activeIdx = (activeIdx - 1 + currentMatches.length) % currentMatches.length;
+            syncActiveHighlight();
+          }
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (currentMatches[activeIdx]) {
+            triggerResultItem(currentMatches[activeIdx]);
+          }
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          closeCommandPalette();
+        }
+      };
+    }
+
+    function syncActiveHighlight() {
+      if (!listEl) return;
+      const rows = [...listEl.querySelectorAll('.cmdk-item')];
+      rows.forEach((r, i) => {
+        r.classList.toggle('active', i === activeIdx);
+        if (i === activeIdx && typeof r.scrollIntoView === 'function') {
+          r.scrollIntoView({ block: 'nearest' });
+        }
+      });
+    }
+
+    function triggerResultItem(entry) {
+      if (!entry) return;
+      if (entry.isCommand && typeof entry.run === 'function') {
+        closeCommandPalette();
+        entry.run();
+        return;
+      }
+      if (entry.isGuide) {
+        closeCommandPalette();
+        if (entry.url) {
+          window.open(entry.url, '_blank', 'noopener');
+        } else {
+          location.href = root + entry.sectionPath;
+        }
+        return;
+      }
+      closeCommandPalette();
+      if (cur === entry.sectionId) {
+        location.hash = '#' + encodeURIComponent(entry.id);
+      } else {
+        location.href = `${root}${entry.sectionPath}#${encodeURIComponent(entry.id)}`;
+      }
+    }
+
+    function renderResults() {
+      if (!listEl) return;
+      listEl.replaceChildren();
+      const q = (inp.value || '').trim().toLocaleLowerCase('tr');
+      const all = indexedItems || [];
+
+      const quickCommands = [];
+      if (activeScope === 'all' && (!q || 'rastgele seç ne izlesem okusam'.includes(q))) {
+        quickCommands.push({
+          isCommand: true,
+          title: '🎲 Rastgele Bir Yapım / Rehber Öner',
+          sub: 'Arşivdeki kayıtlar arasından rastgele birini seçip açar',
+          badge: 'Kısayol',
+          icon: 'dice',
+          run: () => {
+            const rndBtn = document.getElementById('randomPickBtn');
+            if (rndBtn) {
+              rndBtn.click();
+            } else if (all.length) {
+              const pick = all[Math.floor(Math.random() * all.length)];
+              triggerResultItem(pick);
+            }
+          }
+        });
+      }
+      if (activeScope === 'all' && (!q || 'tema değiştir karanlık açık koyu'.includes(q))) {
+        quickCommands.push({
+          isCommand: true,
+          title: '🌗 Temayı Değiştir (Açık / Koyu)',
+          sub: 'Görünüm temasını anında değiştirir',
+          badge: 'Komut',
+          icon: document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon',
+          run: () => window.toggleTheme && window.toggleTheme()
+        });
+      }
+
+      const matched = all.filter(item => {
+        if (activeScope === 'fav' && !item.favorite) return false;
+        if (activeScope !== 'all' && activeScope !== 'fav' && item.sectionId !== activeScope) return false;
+        if (q && !item.hay.includes(q)) return false;
+        return true;
+      });
+
+      matched.sort((a, b) => {
+        if (q) {
+          const aStarts = a.title.toLocaleLowerCase('tr').startsWith(q) ? 1 : 0;
+          const bStarts = b.title.toLocaleLowerCase('tr').startsWith(q) ? 1 : 0;
+          if (aStarts !== bStarts) return bStarts - aStarts;
+        }
+        return (Number(b.favorite) - Number(a.favorite)) || ((b.score || 0) - (a.score || 0)) || (b.addedAt || '').localeCompare(a.addedAt || '');
+      });
+
+      currentMatches = [...quickCommands, ...matched.slice(0, 45)];
+      const countLbl = document.getElementById('cmdkCountLbl');
+      if (countLbl) countLbl.textContent = `${matched.length} sonuç`;
+
+      if (!currentMatches.length) {
+        const empty = el('p', 'note', 'Eşleşen içerik bulunamadı.');
+        empty.style.padding = '28px 12px';
+        listEl.append(empty);
+        return;
+      }
+
+      const fr = document.createDocumentFragment();
+      currentMatches.forEach((m, idx) => {
+        const btn = el('button', 'cmdk-item' + (idx === activeIdx ? ' active' : ''));
+        btn.type = 'button';
+        if (m.image) {
+          const im = el('img', 'cmdk-thumb');
+          im.src = resolveAsset(m.image);
+          im.alt = '';
+          im.loading = 'lazy';
+          btn.append(im);
+        } else {
+          const ic = el('span', 'cmdk-ic');
+          ic.innerHTML = icon(m.icon || 'sparkle');
+          btn.append(ic);
+        }
+        const info = el('div', 'cmdk-info');
+        const tRow = el('div', 'cmdk-title', m.title);
+        info.append(tRow);
+        const subParts = m.isCommand
+          ? [m.sub]
+          : [m.sectionLabel, m.extra, ...(m.categories || [])].filter(Boolean);
+        info.append(el('div', 'cmdk-sub', subParts.join(' · ')));
+        btn.append(info);
+
+        if (m.favorite) {
+          btn.append(el('span', 'cmdk-badge fav', m.isGuide ? '★ Öne Çıkan' : '★ Başyapıt'));
+        }
+        if (m.score) {
+          btn.append(el('span', 'cmdk-badge', '★ ' + m.score));
+        } else if (m.badge) {
+          btn.append(el('span', 'cmdk-badge', m.badge));
+        } else {
+          btn.append(el('span', 'cmdk-badge', m.sectionLabel));
+        }
+
+        btn.onclick = () => triggerResultItem(m);
+        fr.append(btn);
+      });
+      listEl.append(fr);
+    }
+
+    async function openCommandPalette(initialScope = 'all') {
+      ensureModalDOM();
+      if (initialScope) {
+        activeScope = initialScope;
+        scopeBar.querySelectorAll('.cmdk-scope-btn').forEach(x => x.setAttribute('aria-pressed', x.dataset.scope === activeScope));
+      }
+      modal.hidden = false;
+      inp.focus();
+      inp.select();
+      await ensureIndexLoaded();
+      renderResults();
+    }
+
+    function closeCommandPalette() {
+      if (!modal || modal.hidden) return;
+      modal.hidden = true;
+    }
+
+    window.openCommandPalette = openCommandPalette;
+
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (modal && !modal.hidden) closeCommandPalette();
+        else openCommandPalette('all');
+      } else if (e.key === 'Escape' && modal && !modal.hidden) {
+        e.preventDefault();
+        closeCommandPalette();
       }
     });
   })();

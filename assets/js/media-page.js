@@ -87,7 +87,8 @@
   const sum = (a, k) => a.reduce((n, x) => n + (x[k] || 0), 0);
   const rew = ps => { const n = Math.max(0, ...ps.map(p => p.repeat || 0)); return n ? '↻ ' + n + '× tekrar' : ''; };
   function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} }
-  const state = { items: [], view: ls('view_' + sectionId) === 'list' ? 'list' : 'grid', filter: 'all', sort: 'added', q: '', sc: 'all', dc: 'all', kd: 'all', gn: 'all', ay: 'all' };
+  const savedV = ls('view_' + sectionId);
+  const state = { items: [], view: (savedV === 'list' || savedV === 'tier') ? savedV : 'grid', filter: 'all', sort: 'added', q: '', sc: 'all', dc: 'all', kd: 'all', gn: 'all', ay: 'all' };
 
   const byAdded = (a, b) => (b.addedAt || '').localeCompare(a.addedAt || '');
   const nodes = new Map();
@@ -202,6 +203,61 @@
     return li;
   }
 
+
+function renderTierBoard(visibleNodes) {
+  const board = $('#tierBoard');
+  if (!board) return;
+  board.replaceChildren();
+  const tiers = [
+    { key: 'S', name: '★ Başyapıt', bg: 'rgba(245,166,35,.18)', fg: '#d98b00', items: [] },
+    { key: 'A+', name: '9.0 – 10', bg: 'rgba(43,182,115,.16)', fg: '#2bb673', items: [] },
+    { key: 'A', name: '8.0 – 8.9', bg: 'rgba(0,112,243,.15)', fg: 'var(--accent)', items: [] },
+    { key: 'B', name: '7.0 – 7.9', bg: 'rgba(139,92,246,.15)', fg: '#8b5cf6', items: [] },
+    { key: 'C', name: '7.0 Altı', bg: 'rgba(249,115,22,.15)', fg: '#f97316', items: [] },
+    { key: '?', name: 'Puansız', bg: 'var(--glass2)', fg: 'var(--ink2)', items: [] }
+  ];
+  const sorted = [...visibleNodes].sort((a, b) => (b.sc || 0) - (a.sc || 0) || byAdded(a.it, b.it));
+  for (const n of sorted) {
+    if (n.it.favorite) tiers[0].items.push(n);
+    else if (n.sc >= 9) tiers[1].items.push(n);
+    else if (n.sc >= 8) tiers[2].items.push(n);
+    else if (n.sc >= 7) tiers[3].items.push(n);
+    else if (n.sc > 0) tiers[4].items.push(n);
+    else tiers[5].items.push(n);
+  }
+  const fr = document.createDocumentFragment();
+  for (const t of tiers) {
+    if (!t.items.length) continue;
+    const row = h('div', 'tier-row');
+    const head = h('div', 'tier-head');
+    head.style.setProperty('--tier-bg', t.bg);
+    head.style.setProperty('--tier-fg', t.fg);
+    head.append(h('span', 'tier-letter', t.key), h('span', 'tier-name', t.name), h('span', 'tier-cnt', t.items.length + ' yapım'));
+    const body = h('div', 'tier-items');
+    for (const n of t.items) {
+      const card = h('button', 'tier-card');
+      card.type = 'button';
+      card.title = n.it.title + (n.sc ? ` (★ ${n.sc})` : '');
+      const pWrap = h('div', 'tier-card-poster');
+      if (n.it.image) {
+        const im = h('img');
+        im.src = big(n.it.image);
+        im.alt = '';
+        im.loading = 'lazy';
+        pWrap.append(im);
+      }
+      if (n.sc) pWrap.append(h('span', 'tier-card-sc', '★ ' + n.sc));
+      if (n.it.favorite) pWrap.append(h('span', 'tier-card-fav', '★'));
+      card.append(pWrap, h('span', 'tier-card-title', n.it.title));
+      card.onclick = () => openSheet(n.it.id, true);
+      body.append(card);
+    }
+    row.append(head, body);
+    fr.append(row);
+  }
+  board.append(fr);
+}
+
   const active = () => ['sc', 'dc', 'kd', 'gn', 'ay'].filter(k => state[k] !== 'all').length;
   function render() {
     const s = state, q = s.q.trim().toLocaleLowerCase('tr'), root = $('#list');
@@ -221,8 +277,17 @@
         && scOk(s.sc, n.sc) && (s.gn === 'all' || n.g.includes(s.gn)) && (s.dc === 'all' || n.d === s.dc) && (s.ay === 'all' || n.ay === s.ay) && kOk(s.kd, n);
       n.li.hidden = !ok; n.li.classList.remove('f', 'l');
     }
+    const visibleNodes = [];
     for (const li of root.children) { if (li.hidden) continue; shown++; if (!first) first = li; last = li; }
+    for (const it of s.items) { const n = nodes.get(it.id); if (n && !n.li.hidden) visibleNodes.push(n); }
     if (first) { first.classList.add('f'); last.classList.add('l'); }
+    const isTier = s.view === 'tier';
+    const tierBoard = $('#tierBoard');
+    if (tierBoard) {
+      tierBoard.hidden = !isTier || shown === 0;
+      root.hidden = isTier;
+      if (isTier && shown > 0) renderTierBoard(visibleNodes);
+    }
     $('#empty').hidden = shown > 0;
     $('#empty').textContent = P.emptyText;
     const n = active(), dot = $('#fdot');
@@ -459,4 +524,18 @@
   $('#q').oninput = e => { state.q = e.target.value; go(); };
   $('#sort').onchange = e => { state.sort = e.target.value; go(); };
   document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => { state.view = b.dataset.view; ls('view_' + sectionId, state.view); go(); });
+
+  const rndBtn = document.getElementById('randomPickBtn');
+  if (rndBtn) {
+    rndBtn.onclick = () => {
+      const visible = state.items.filter(it => {
+        const n = nodes.get(it.id);
+        return n && !n.li.hidden;
+      });
+      const pool = visible.length ? visible : state.items;
+      if (!pool.length) return;
+      const pick = pool[Math.floor(Math.random() * pool.length)];
+      openSheet(pick.id, true);
+    };
+  }
 })();

@@ -7,6 +7,9 @@
     "includeInProgressEpisodes": true,
     "genreSourceRule": "custom_only"
   },
+  "customGenreCatalog": [
+    "Siyaset"
+  ],
   "stats": {
     "anime": 78,
     "season": 126,
@@ -214,6 +217,7 @@
       "url": "https://anilist.co/anime/101280",
       "firstSeasonUrl": "https://anilist.co/anime/101280",
       "status": "completed",
+      "favorite": true,
       "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/101280-9t7J3774n955.jpg",
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx182205-q2AeO1owuQbO.jpg",
       "genres": [
@@ -247,8 +251,8 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 10,
-          "adminModified": true,
-          "repeat": 21
+          "repeat": 21,
+          "adminModified": true
         },
         {
           "id": 106509,
@@ -409,8 +413,7 @@
         "genres",
         "addedAt",
         "image"
-      ],
-      "favorite": true
+      ]
     },
     {
       "id": "al-127399",
@@ -3092,8 +3095,8 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 8,
-          "adminModified": true,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 166531,
@@ -3771,8 +3774,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 6,
-          "adminModified": true,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 198726,
@@ -3861,8 +3864,8 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 10,
-          "adminModified": true,
-          "repeat": 2
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 18753,
@@ -3888,8 +3891,8 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 10,
-          "adminModified": true,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 21769,
@@ -3915,8 +3918,8 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 10,
-          "adminModified": true,
-          "repeat": 2
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 128643,
@@ -4372,8 +4375,8 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "adminModified": true,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 21780,
@@ -4865,8 +4868,8 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 5,
-          "adminModified": true,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         }
       ],
       "addedAt": "2022-05-23",
@@ -5229,8 +5232,8 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 6,
-          "adminModified": true,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 130588,
@@ -5994,8 +5997,8 @@
           "release": "FINISHED",
           "year": 2006,
           "score": 9,
-          "adminModified": true,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 2994,
@@ -6308,8 +6311,8 @@
           "release": "FINISHED",
           "year": 2017,
           "score": 6,
-          "adminModified": true,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 149099,
@@ -6583,8 +6586,8 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 8,
-          "adminModified": true,
-          "repeat": 2
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 112641,
@@ -6597,8 +6600,8 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 8,
-          "adminModified": true,
-          "repeat": 2
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 125368,
@@ -6635,8 +6638,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 9,
-          "adminModified": true,
-          "repeat": 2
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 151384,
@@ -7642,8 +7645,8 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 7,
-          "adminModified": true,
-          "repeat": 2
+          "repeat": 2,
+          "adminModified": true
         },
         {
           "id": 104157,
@@ -7829,8 +7832,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 7,
-          "adminModified": true,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 142838,
@@ -7843,8 +7846,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 7,
-          "adminModified": true,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 158927,
@@ -7934,8 +7937,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 9.5,
-          "adminModified": true,
-          "repeat": 2
+          "repeat": 2,
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04-29",
@@ -8534,8 +8537,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 8,
-          "adminModified": true,
-          "repeat": 3
+          "repeat": 3,
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04-29",
@@ -8583,8 +8586,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 9,
-          "adminModified": true,
-          "repeat": 1
+          "repeat": 1,
+          "adminModified": true
         },
         {
           "id": 171026,
@@ -8716,8 +8719,5 @@
         "addedAt"
       ]
     }
-  ],
-  "customGenreCatalog": [
-    "Siyaset"
   ]
 }

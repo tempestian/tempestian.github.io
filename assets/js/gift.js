@@ -32,8 +32,28 @@
   const pad = n => String(n).padStart(2, '0');
   let timer = 0;
 
-  if ('IntersectionObserver' in window) new IntersectionObserver(e => card.classList.toggle('vis', e[0].isIntersecting)).observe(card);
-  else card.classList.add('vis');
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        card.classList.toggle('vis', entry.isIntersecting);
+      }
+    }, { threshold: 0.1, rootMargin: '60px' }).observe(card);
+  } else {
+    card.classList.add('vis');
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      card.classList.remove('vis');
+      if (timer) { clearInterval(timer); timer = 0; }
+    } else {
+      card.classList.add('vis');
+      if (card.classList.contains('open') && targetMs > Date.now()) {
+        render();
+        if (!timer) timer = setInterval(render, 1000);
+      }
+    }
+  });
 
   const render = () => {
     const left = targetMs - Date.now();
@@ -55,17 +75,25 @@
       return;
     }
     cd.hidden = false;
-    lead.textContent = cfg.leadText || 'Hediyenin açılmasına kalan süre';
-    date.textContent = cfg.dateLabel || '';
+    if (lead.textContent !== (cfg.leadText || 'Hediyenin açılmasına kalan süre')) {
+      lead.textContent = cfg.leadText || 'Hediyenin açılmasına kalan süre';
+    }
+    if (date.textContent !== (cfg.dateLabel || '')) {
+      date.textContent = cfg.dateLabel || '';
+    }
     const s = Math.floor(left / 1000);
-    out.d.textContent = Math.floor(s / 86400);
-    out.h.textContent = pad(Math.floor(s % 86400 / 3600));
-    out.m.textContent = pad(Math.floor(s % 3600 / 60));
-    out.s.textContent = pad(s % 60);
+    const dVal = String(Math.floor(s / 86400));
+    const hVal = pad(Math.floor(s % 86400 / 3600));
+    const mVal = pad(Math.floor(s % 3600 / 60));
+    const sVal = pad(s % 60);
+    if (out.d && out.d.textContent !== dVal) out.d.textContent = dVal;
+    if (out.h && out.h.textContent !== hVal) out.h.textContent = hVal;
+    if (out.m && out.m.textContent !== mVal) out.m.textContent = mVal;
+    if (out.s && out.s.textContent !== sVal) out.s.textContent = sVal;
   };
 
   const start = () => { render(); if (!timer && targetMs > Date.now()) timer = setInterval(render, 1000); };
-  const stop = () => { clearInterval(timer); timer = 0; };
+  const stop = () => { if (timer) clearInterval(timer); timer = 0; };
 
   function applyGiftConfig(newGift) {
     if (!newGift) return;

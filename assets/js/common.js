@@ -958,4 +958,99 @@
     });
   })();
 
+  // ============================================================================
+  // [YENİ ÖZELLİK 1]: AKILLI YUKARI ÇIK (BACK TO TOP) BUTONU
+  // ============================================================================
+  (() => {
+    let topBtn = null;
+    function ensureBackToTopBtn() {
+      if (topBtn) return topBtn;
+      topBtn = document.createElement('button');
+      topBtn.type = 'button';
+      topBtn.className = 'back-to-top glass';
+      topBtn.id = 'backToTopBtn';
+      topBtn.setAttribute('aria-label', 'Yukarı Çık');
+      topBtn.setAttribute('title', 'Yukarı Çık');
+      topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>';
+      topBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.body.appendChild(topBtn);
+      return topBtn;
+    }
+
+    let isScrolling = false;
+    window.addEventListener('scroll', () => {
+      if (isScrolling) return;
+      isScrolling = true;
+      requestAnimationFrame(() => {
+        const btn = ensureBackToTopBtn();
+        if (window.scrollY > 320) {
+          btn.classList.add('visible');
+        } else {
+          btn.classList.remove('visible');
+        }
+        isScrolling = false;
+      });
+    }, { passive: true });
+  })();
+
+  // ============================================================================
+  // [YENİ ÖZELLİK 2]: HIZLI ARAMA KISAYOLU (/ İLE ODAKLANMA & ESC İLE TEMİZLEME)
+  // ============================================================================
+  (() => {
+    document.addEventListener('keydown', e => {
+      const activeTag = document.activeElement && document.activeElement.tagName;
+      const isInputActive = activeTag === 'INPUT' || activeTag === 'TEXTAREA' || (document.activeElement && document.activeElement.isContentEditable);
+      
+      // '/' Tuşu: Arama kutusuna odaklan
+      if (e.key === '/' && !isInputActive && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const searchInp = document.getElementById('search') || document.querySelector('input[type="search"]');
+        if (searchInp) {
+          e.preventDefault();
+          searchInp.focus();
+          searchInp.select();
+        }
+      }
+      // 'Escape' Tuşu: Arama kutusundaysa metni temizle ve odaktan çık
+      else if (e.key === 'Escape' && isInputActive && document.activeElement && document.activeElement.id === 'search') {
+        const searchInp = document.activeElement;
+        if (searchInp.value) {
+          searchInp.value = '';
+          searchInp.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        searchInp.blur();
+      }
+    });
+
+    const mountHint = () => {
+      const searchInp = document.getElementById('search');
+      if (searchInp && searchInp.parentElement && !searchInp.parentElement.querySelector('.search-kbd-hint')) {
+        searchInp.parentElement.classList.add('search-wrap');
+        const hint = document.createElement('kbd');
+        hint.className = 'search-kbd-hint';
+        hint.textContent = '/';
+        hint.setAttribute('title', 'Aramak için / tuşuna basın');
+        searchInp.parentElement.appendChild(hint);
+      }
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountHint);
+    else mountHint();
+  })();
+
+  // ============================================================================
+  // [YENİ ÖZELLİK 3]: KIRIK GÖRSEL FALLBACK POSTERİ (SVG DİNAMİK YEDEKLEME)
+  // ============================================================================
+  (() => {
+    window.addEventListener('error', e => {
+      const target = e.target;
+      if (target && target.tagName === 'IMG' && !target.dataset.fallbackApplied) {
+        target.dataset.fallbackApplied = 'true';
+        const altText = target.alt || target.title || 'Tempestian';
+        const initial = (altText.trim()[0] || 'T').toUpperCase();
+        const svgFallback = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="420" viewBox="0 0 300 420"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%231a1e2e"/><stop offset="100%" stop-color="%230f121d"/></linearGradient></defs><rect width="100%" height="100%" fill="url(%23g)"/><rect x="12" y="12" width="276" height="396" rx="16" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/><text x="50%" y="46%" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="54" fill="rgba(255,255,255,0.35)" text-anchor="middle" dominant-baseline="central">${encodeURIComponent(initial)}</text><text x="50%" y="60%" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="14" fill="rgba(255,255,255,0.45)" text-anchor="middle" dominant-baseline="central">Görsel Yok</text></svg>`;
+        target.src = svgFallback;
+        target.classList.add('img-fallback-applied');
+      }
+    }, true);
+  })();
+
 })();

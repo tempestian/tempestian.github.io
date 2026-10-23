@@ -1655,7 +1655,10 @@
               <h2>Tek Tıkla Tam Yedekleme (Snapshot) ve Geri Yükleme Merkezi</h2>
               <p>Sitedeki tüm JSON dosyalarını (<code>sections</code>, <code>anime</code>, <code>overrides</code>, <code>series</code>, <code>movies</code>, <code>manga</code>, <code>books</code>, <code>guides</code>) tek bir tarihli yedek paketinde indirin veya mevcut bir yedeği geri yükleyin.</p>
             </div>
-            <button type="button" class="btn-primary" id="exportFullSnapshotBtn">📦 Tüm Site Verilerini Tek Pakette İndir (.json)</button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button type="button" class="btn-subtle" id="copyActiveSectionJsonBtn" title="Şu an seçili olan medya bölümünün güncel JSON verisini panoya kopyalar">📋 Seçili Bölümün JSON'unu Kopyala</button>
+              <button type="button" class="btn-primary" id="exportFullSnapshotBtn">📦 Tüm Site Verilerini Tek Pakette İndir (.json)</button>
+            </div>
           </div>
           <div class="field-row align-end">
             <label class="field" style="flex:2">
@@ -5838,6 +5841,52 @@
     toast('Tüm site verileri tek yedek paketinde indirildi!');
   }
 
+  function copyActiveSectionJsonToClipboard() {
+    try {
+      const adapter = getActiveAdminAdapter();
+      let dataToCopy = null;
+      if (adapter.id === 'anime') {
+        dataToCopy = state.animeData;
+      } else {
+        const store = ensureMultiMediaStore(adapter.id);
+        dataToCopy = {
+          schemaVersion: 3,
+          updated: new Date().toISOString().slice(0, 10),
+          source: 'site-first:' + adapter.id,
+          customGenreCatalog: store.customGenreCatalog || [],
+          stats: computeMediaStatsClient(store.items || [], state.animeData.statsConfig, adapter.id),
+          items: cleanMediaItemsForSave(store.items || [], adapter.id)
+        };
+      }
+      const jsonStr = JSON.stringify(dataToCopy, null, 2);
+      const count = (dataToCopy.anime || dataToCopy.items || []).length;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(jsonStr)
+          .then(() => toast(`"${adapter.label || adapter.id}" verisi (${count} kayıt) panoya kopyalandı!`, 'ok'))
+          .catch(() => {
+            fallbackCopy(jsonStr);
+            toast(`"${adapter.label || adapter.id}" verisi (${count} kayıt) panoya kopyalandı!`, 'ok');
+          });
+      } else {
+        fallbackCopy(jsonStr);
+        toast(`"${adapter.label || adapter.id}" verisi (${count} kayıt) panoya kopyalandı!`, 'ok');
+      }
+    } catch (err) {
+      toast('Kopyalama sırasında hata oluştu: ' + (err.message || err), 'err');
+    }
+  }
+
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+  }
+
   async function restoreFullBackupSnapshot() {
     const fInp = $('#importSnapshotFile');
     const f = fInp && fInp.files && fInp.files[0];
@@ -7380,6 +7429,7 @@
     $('#healthSectionSelect').onchange = renderHealthAuditor;
     $('#refreshHealthBtn').onclick = renderHealthAuditor;
     $('#exportFullSnapshotBtn').onclick = exportFullBackupSnapshot;
+    if ($('#copyActiveSectionJsonBtn')) $('#copyActiveSectionJsonBtn').onclick = copyActiveSectionJsonToClipboard;
     $('#restoreSnapshotBtn').onclick = restoreFullBackupSnapshot;
 
     $('#downloadOverridesBtn').onclick = () => {

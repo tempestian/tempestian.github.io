@@ -576,7 +576,7 @@ function renderTierBoard(visibleNodes) {
 
   const sheet = document.createElement('div');
   sheet.className = 'sheet'; sheet.hidden = true; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true'); sheet.setAttribute('aria-labelledby', 'sh-title');
-  sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-backdrop" hidden><img class="sheet-backdrop-img" alt="" decoding="async"><div class="sheet-backdrop-grad"></div></div><div class="sheet-head"><img class="sheet-cover" alt="" decoding="async"><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-trailer-btn" data-sh-trailer title="Resmi fragmanı izle">🎬 Fragman</button><button type="button" class="sheet-share-btn" data-sh-share title="Bağlantıyı kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
+  sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-backdrop" hidden><img class="sheet-backdrop-img" alt="" decoding="async"><div class="sheet-backdrop-grad"></div></div><div class="sheet-head"><img class="sheet-cover" alt="" decoding="async"><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-share-btn" data-sh-share title="Bağlantıyı kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
   document.body.append(sheet);
   const closeBtn = sheet.querySelector('[data-close]'); closeBtn.innerHTML = UI.icon('close');
   let opener = null, pushed = false;
@@ -687,15 +687,7 @@ function renderTierBoard(visibleNodes) {
     }
     const orderedIds = getVisibleOrderedIds();
     const curIdx = orderedIds.indexOf(it.id);
-    const prevBtn = t('[data-sh-prev]'), nextBtn = t('[data-sh-next]'), posLbl = t('[data-sh-pos]'), shareBtn = t('[data-sh-share]'), trailerBtn = t('[data-sh-trailer]');
-    if (trailerBtn) {
-      if (sectionId === 'book') {
-        trailerBtn.hidden = true;
-      } else {
-        trailerBtn.hidden = false;
-        trailerBtn.onclick = () => UI.openTrailer(it);
-      }
-    }
+    const prevBtn = t('[data-sh-prev]'), nextBtn = t('[data-sh-next]'), posLbl = t('[data-sh-pos]'), shareBtn = t('[data-sh-share]');
     if (posLbl) posLbl.textContent = curIdx >= 0 ? `${curIdx + 1} / ${orderedIds.length}` : '';
     if (prevBtn) {
       prevBtn.disabled = curIdx <= 0;
@@ -794,10 +786,7 @@ function renderTierBoard(visibleNodes) {
   addEventListener('hashchange', syncSheet);
   addEventListener('keydown', e => {
     if (sheet.hidden) return;
-    // [AI-MIMARI-NOTU: ADIM 6 — FRAGMAN MODALI AÇIKKEN ESC ÇAKIŞMASINI ÖNLEME]
     if (e.key === 'Escape') {
-      const tr = document.getElementById('trailerModal');
-      if (tr && !tr.hidden) return;
       closeSheet();
     }
     else if (e.key === 'ArrowLeft') {

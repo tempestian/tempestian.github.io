@@ -148,82 +148,8 @@
   function updateAmbientGlow() {}
   function hideAmbientGlow() {}
 
-  let trailerModalEl = null;
-  // [AI-MIMARI-NOTU: ADIM 6 — FRAGMAN MODALI VE ESC OLAY YAKALAMA (CAPTURE: TRUE)]
-  function getTrailerModalEl() {
-    if (!trailerModalEl) {
-      trailerModalEl = document.getElementById('trailerModal');
-      if (!trailerModalEl) {
-        trailerModalEl = document.createElement('div');
-        trailerModalEl.id = 'trailerModal';
-        trailerModalEl.className = 'trailer-modal';
-        trailerModalEl.hidden = true;
-        trailerModalEl.setAttribute('role', 'dialog');
-        trailerModalEl.setAttribute('aria-modal', 'true');
-        trailerModalEl.innerHTML = `
-          <div class="trailer-bg" data-trailer-close></div>
-          <div class="trailer-card glass sq">
-            <div class="trailer-head">
-              <span class="trailer-title" id="trailerTitle">Fragman</span>
-              <button type="button" class="btn glass" data-trailer-close aria-label="Kapat" style="padding:6px;width:34px;height:34px">${icon('close')}</button>
-            </div>
-            <div class="trailer-frame-box">
-              <iframe id="trailerFrame" src="" title="Fragman Oynatıcı" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-            </div>
-          </div>
-        `;
-        document.body.appendChild(trailerModalEl);
-        trailerModalEl.querySelectorAll('[data-trailer-close]').forEach(b => {
-          b.onclick = () => closeTrailer();
-        });
-        document.addEventListener('keydown', e => {
-          if (e.key === 'Escape' && trailerModalEl && !trailerModalEl.hidden) {
-            e.preventDefault();
-            e.stopPropagation();
-            closeTrailer();
-          }
-        }, { capture: true });
-      }
-    }
-    return trailerModalEl;
-  }
-
-  function openTrailer(item) {
-    if (!item || !item.title) return;
-    const modal = getTrailerModalEl();
-    const titleEl = modal.querySelector('#trailerTitle');
-    const frameEl = modal.querySelector('#trailerFrame');
-    if (titleEl) titleEl.textContent = `${item.title} · Resmi Fragman`;
-
-    let embedUrl = '';
-    const rawTrailer = item.trailer;
-    if (rawTrailer) {
-      if (typeof rawTrailer === 'string') {
-        if (rawTrailer.startsWith('http')) {
-          const match = rawTrailer.match(/(?:watch\?v=|embed\/|youtu\.be\/)([\w-]+)/);
-          if (match) embedUrl = `https://www.youtube-nocookie.com/embed/${match[1]}?autoplay=1`;
-        } else {
-          embedUrl = `https://www.youtube-nocookie.com/embed/${rawTrailer}?autoplay=1`;
-        }
-      } else if (typeof rawTrailer === 'object' && rawTrailer.id) {
-        embedUrl = `https://www.youtube-nocookie.com/embed/${rawTrailer.id}?autoplay=1`;
-      }
-    }
-    if (!embedUrl) {
-      const query = encodeURIComponent(`${item.title} official trailer`);
-      embedUrl = `https://www.youtube-nocookie.com/embed?listType=search&list=${query}&autoplay=1`;
-    }
-
-    if (frameEl) frameEl.src = embedUrl;
-    modal.hidden = false;
-  }
-
-  function closeTrailer() {
-    if (!trailerModalEl) return;
-    const frameEl = trailerModalEl.querySelector('#trailerFrame');
-    if (frameEl) frameEl.src = '';
-    trailerModalEl.hidden = true;
-  }
+  function openTrailer() {}
+  function closeTrailer() {}
 
   window.UI = { icon, el, parts, tally, resolveAsset, esc, icons: Object.keys(P), updateAmbientGlow, hideAmbientGlow, openTrailer, closeTrailer };
   try { localStorage.removeItem('wall'); } catch (e) {}

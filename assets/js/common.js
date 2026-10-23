@@ -134,96 +134,19 @@
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
   // ============================================================================
-  // [AI-MIMARI-NOTU: ADIM 5 & 6 — DİNAMİK AMBİENT GLOW (AURA) VE RESMİ FRAGMAN OYNATICI]
-  // Modal açıldığında afişin rengini Canvas ile hafifçe okuyup arka plana Spotify/Apple Music
-  // tarzı yumuşak bir ışık hüzmesi (aurora) yayar. Fragman oynatıcı ise sıfır depolama ile
-  // YouTube üzerinden resmi fragmanı temiz bir cam modalda çalar ve kapatıldığında sesi anında keser.
+  // [AI-MIMARI-NOTU: AMBİENT GLOW (AURA IŞIK) TAMAMEN KALDIRILDI & FRAGMAN OYNATICI]
+  // Kullanıcı talebi doğrultusunda arka planı kaplayan rahatsız edici sarı/renkli ışık hüzmesi
+  // tamamen kaldırılmış; temiz, sade ve göz yormayan karanlık cam (dark glass) görünüme dönülmüştür.
+  // Geriye dönük uyumluluk için UI.updateAmbientGlow ve UI.hideAmbientGlow güvenli boş fonksiyon yapılmıştır.
   // ============================================================================
-  let ambientGlowEl = null;
-  function getAmbientGlowEl() {
-    if (!ambientGlowEl) {
-      ambientGlowEl = document.querySelector('.sheet-ambient-glow');
-      if (!ambientGlowEl) {
-        ambientGlowEl = document.createElement('div');
-        ambientGlowEl.className = 'sheet-ambient-glow';
-        ambientGlowEl.setAttribute('aria-hidden', 'true');
-        document.body.appendChild(ambientGlowEl);
-      }
-    }
-    return ambientGlowEl;
-  }
-
-  // [AI-MIMARI-NOTU: ADIM 5 — DİNAMİK AMBİENT GLOW (AKILLI TÜRE GÖRE RENK PALETİ VE CANVAS ÖRNEKLEMESİ)]
-  function getGenreFallbackAura(item) {
-    const rawGenres = [...(item.customGenres || []), ...(item.genres || [])].map(g => String(g).toLowerCase());
-    if (rawGenres.some(g => g.includes('aksiyon') || g.includes('action') || g.includes('shounen') || g.includes('gerilim'))) {
-      return 'rgba(225, 29, 72, 0.42)'; // Rose Red
-    }
-    if (rawGenres.some(g => g.includes('romantik') || g.includes('romance') || g.includes('aşk'))) {
-      return 'rgba(236, 72, 153, 0.42)'; // Pink
-    }
-    if (rawGenres.some(g => g.includes('bilim') || g.includes('sci-fi') || g.includes('mecha') || g.includes('cyber'))) {
-      return 'rgba(6, 182, 212, 0.42)'; // Cyan
-    }
-    if (rawGenres.some(g => g.includes('fantastik') || g.includes('fantasy') || g.includes('büyü') || g.includes('magic'))) {
-      return 'rgba(168, 85, 247, 0.42)'; // Violet
-    }
-    if (rawGenres.some(g => g.includes('komedi') || g.includes('comedy'))) {
-      return 'rgba(245, 158, 11, 0.42)'; // Amber
-    }
-    if (rawGenres.some(g => g.includes('dram') || g.includes('drama') || g.includes('yaşam') || g.includes('slice'))) {
-      return 'rgba(16, 185, 129, 0.42)'; // Emerald
-    }
-    return 'rgba(14, 116, 219, 0.42)'; // Modern Deep Blue
-  }
-
-  function updateAmbientGlow(item, imgEl) {
-    const el = getAmbientGlowEl();
-    if (!item) {
-      el.style.opacity = '0';
-      return;
-    }
-    document.body.classList.add('has-sheet-open');
-    if (item.favorite) {
-      el.style.setProperty('--aura-color', 'rgba(245, 166, 35, 0.46)');
-      el.style.opacity = '0.95';
-      return;
-    }
-    if (imgEl && imgEl.complete && imgEl.naturalWidth > 0) {
-      try {
-        const canvas = document.createElement('canvas');
-        canvas.width = 16;
-        canvas.height = 24;
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        ctx.drawImage(imgEl, 0, 0, 16, 24);
-        const data = ctx.getImageData(0, 0, 16, 24).data;
-        let r = 0, g = 0, b = 0, count = 0;
-        for (let i = 0; i < data.length; i += 16) {
-          const pr = data[i], pg = data[i+1], pb = data[i+2];
-          const lum = (pr * 299 + pg * 587 + pb * 114) / 1000;
-          if (lum > 25 && lum < 230) {
-            r += pr; g += pg; b += pb; count++;
-          }
-        }
-        if (count > 0) {
-          r = Math.round(r / count);
-          g = Math.round(g / count);
-          b = Math.round(b / count);
-          el.style.setProperty('--aura-color', `rgba(${r}, ${g}, ${b}, 0.5)`);
-          el.style.opacity = '0.95';
-          return;
-        }
-      } catch (_) {}
-    }
-    el.style.setProperty('--aura-color', getGenreFallbackAura(item));
-    el.style.opacity = '0.95';
-  }
-
-  function hideAmbientGlow() {
-    const el = getAmbientGlowEl();
-    el.style.opacity = '0';
+  try {
+    const staleGlow = document.querySelector('.sheet-ambient-glow');
+    if (staleGlow) staleGlow.remove();
     document.body.classList.remove('has-sheet-open');
-  }
+  } catch (_) {}
+
+  function updateAmbientGlow() {}
+  function hideAmbientGlow() {}
 
   let trailerModalEl = null;
   // [AI-MIMARI-NOTU: ADIM 6 — FRAGMAN MODALI VE ESC OLAY YAKALAMA (CAPTURE: TRUE)]

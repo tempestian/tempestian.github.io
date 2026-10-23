@@ -547,14 +547,7 @@ function fillSheet(it){
   const im = t('.sheet-cover');
   im.hidden = !it.image;
   if(it.image) {
-    // [AI-MIMARI-NOTU: ADIM 5 — CANVAS CORS TAINTING GÜVENLİK DÜZELTMESİ]
-    // crossOrigin = 'anonymous' atanmadan src verilirse, Canvas.getImageData() SecurityError fırlatır.
-    im.crossOrigin = 'anonymous';
     im.src = big(it.image);
-    im.onload = () => UI.updateAmbientGlow(it, im);
-    if (im.complete) UI.updateAmbientGlow(it, im);
-  } else {
-    UI.updateAmbientGlow(it, null);
   }
   const own2 = ps.filter(own), te = sum(own2,'episodes'), tw = sum(own2,'watched'), pg = t('.sh-pg');
   pg.hidden = !(te && tw < te); if(!pg.hidden) pg.firstChild.style.setProperty('--w', Math.round(tw/te*100)+'%');

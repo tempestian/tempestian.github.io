@@ -501,23 +501,7 @@ h3 a:focus-visible{outline:0}
   height: 18px;
 }
 
-/* ---- v10: Adım 5 Dinamik Ambient Glow (Aura) & Adım 6 Hızlı Fragman Oynatıcı Stilleri ---- */
-.sheet-ambient-glow {
-  position: fixed;
-  inset: -15%;
-  width: 130%;
-  height: 130%;
-  pointer-events: none;
-  background: radial-gradient(circle at 50% 40%, var(--aura-color, rgba(10, 127, 209, 0.35)), transparent 60%);
-  filter: blur(75px);
-  opacity: 0;
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease;
-  z-index: 68;
-}
-.sheet.open ~ .sheet-ambient-glow,
-body.has-sheet-open .sheet-ambient-glow {
-  opacity: 0.95;
-}
+/* ---- v10: Adım 6 Hızlı Fragman Oynatıcı Stilleri ---- */
 
 .sheet-trailer-btn {
   border: 0;

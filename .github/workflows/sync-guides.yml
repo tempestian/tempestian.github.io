@@ -64,6 +64,9 @@ jobs:
           FLARESOLVERR_URL: 'http://127.0.0.1:8191/v1'
         run: node scripts/sync-technopat-guides.mjs
 
+      - name: Veri ve İçerik Bütünlüğü Doğrulaması (Güvenlik Ön Koşulu)
+        run: node scripts/validate-data.mjs
+
       - name: Değişiklik varsa data/guides.json dosyasını kaydet ve gönder
         run: |
           if git diff --quiet data/guides.json; then

@@ -59,6 +59,10 @@ jobs:
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         run: node scripts/sync-multimedia.mjs
 
+      - name: Veri ve İçerik Bütünlüğü Doğrulaması (Güvenlik Ön Koşulu)
+        if: steps.check_bot.outputs.skip != 'true'
+        run: node scripts/validate-data.mjs
+
       - name: Değişiklik varsa commit at ve pushla
         if: steps.check_bot.outputs.skip != 'true'
         run: |

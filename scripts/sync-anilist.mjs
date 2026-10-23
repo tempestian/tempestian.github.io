@@ -481,8 +481,9 @@ for (const item of existingAnimeList) {
   }
 }
 
-if (!anime.length) {
-  throw new Error('Senkronizasyon sonucunda hiç anime kaydı oluşmadı; mevcut veri korundu.');
+const expectedMinCount = existingAnimeList.length - deletedFranchiseIds.size;
+if (anime.length < expectedMinCount) {
+  throw new Error(`[GÜVENLİK KORUMASI]: Senkronizasyon kayıt kaybı tespit etti (${anime.length} < ${expectedMinCount}); veri bütünlüğünü korumak için işlem durduruldu.`);
 }
 
 anime.sort((a, b) => (b.addedAt || '').localeCompare(a.addedAt || '') || a.title.localeCompare(b.title));

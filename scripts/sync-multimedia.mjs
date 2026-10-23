@@ -278,6 +278,10 @@ export async function syncAllMultimedia() {
       newItems.push(resItem);
     }
 
+    if (newItems.length < items.length) {
+      throw new Error(`[GÜVENLİK KORUMASI]: ${sec.key} için kayıt kaybı tespit edildi (${newItems.length} < ${items.length}). Yazma iptal edildi.`);
+    }
+
     jsonDoc.items = newItems;
     jsonDoc.updated = new Date().toISOString().slice(0, 10);
 

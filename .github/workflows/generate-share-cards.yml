@@ -1,0 +1,69 @@
+name: Sosyal Medya Paylaşım Kartları
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/anime.json'
+      - 'data/series.json'
+      - 'data/movies.json'
+      - 'data/books.json'
+      - 'data/manga.json'
+      - 'scripts/generate-share-cards.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-share-cards
+  cancel-in-progress: false
+
+jobs:
+  cards:
+    if: github.actor != 'github-actions[bot]'
+    name: Statik Kartları Üret
+    runs-on: ubuntu-latest
+    steps:
+      - name: Depoyu Klonla
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Bot Commit Kontrolü
+        id: check_bot
+        run: |
+          LAST_AUTHOR=$(git log -1 --pretty=format:'%an')
+          if [ "$LAST_AUTHOR" = "github-actions[bot]" ] && [ "${{ github.event_name }}" = "push" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Node.js 22 Kurulumu
+        if: steps.check_bot.outputs.skip != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Veri Bütünlüğü Doğrulaması (Güvenlik Ön Koşulu)
+        if: steps.check_bot.outputs.skip != 'true'
+        run: node scripts/validate-data.mjs
+
+      - name: Paylaşım Kartlarını Üret
+        if: steps.check_bot.outputs.skip != 'true'
+        run: node scripts/generate-share-cards.mjs
+
+      - name: Değişen Kartları Kaydet ve Gönder
+        if: steps.check_bot.outputs.skip != 'true'
+        run: |
+          if git diff --quiet a/ d/ f/ m/ k/ 2>/dev/null; then
+            echo "Kartlarda değişiklik yok."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add a/ d/ f/ m/ k/ 2>/dev/null || true
+          git commit -m "chore(cards): statik sosyal medya paylasim kartlari guncellendi [skip ci]"
+          git pull --rebase origin main
+          git push

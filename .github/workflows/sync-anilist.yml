@@ -23,14 +23,6 @@ on:
         options:
           - relations_only
           - hybrid
-  push:
-    branches: [main]
-    paths:
-      - 'data/anime.json'
-      - 'data/overrides.json'
-      - 'scripts/sync-anilist.mjs'
-      - 'scripts/stats.mjs'
-      - '.github/workflows/sync-anilist.yml'
 
 permissions:
   contents: write
@@ -71,6 +63,10 @@ jobs:
           INCLUDE_PLANNED: '0'
           SYNC_MODE: ${{ github.event.inputs.sync_mode || 'relations_only' }}
         run: node scripts/sync-anilist.mjs
+
+      - name: Veri ve İçerik Bütünlüğü Doğrulaması (Güvenlik Ön Koşulu)
+        if: steps.check_bot.outputs.skip != 'true'
+        run: node scripts/validate-data.mjs
 
       - name: Değişiklik varsa kaydet
         if: steps.check_bot.outputs.skip != 'true'

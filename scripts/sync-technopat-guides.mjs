@@ -515,6 +515,10 @@ async function main() {
     return (b.addedAt || '').localeCompare(a.addedAt || '') || (b.threadId || 0) - (a.threadId || 0) || (a.title || '').localeCompare(b.title || '', 'tr');
   });
 
+  if (finalItems.length < currentItems.length) {
+    throw new Error(`[GÜVENLİK KORUMASI]: Rehber senkronizasyonunda kayıt kaybı tespit edildi (${finalItems.length} < ${currentItems.length}). Yazma iptal edildi.`);
+  }
+
   const stats = computeMediaStats(finalItems, { genreSourceRule: 'custom_only' }, 'guide');
 
   const outPayload = {

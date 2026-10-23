@@ -1,0 +1,35 @@
+name: Veri ve İçerik Bütünlüğü Doğrulaması
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/**'
+      - 'scripts/**'
+      - '*.html'
+      - 'admin/**'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: content-integrity-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Veri Bütünlüğü ve Şema Kontrolü
+    runs-on: ubuntu-latest
+    steps:
+      - name: Depoyu Klonla
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Node.js 22 Kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Veri Bütünlüğü ve İçerik Güvenlik Doğrulaması
+        run: node scripts/validate-data.mjs

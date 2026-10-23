@@ -1,0 +1,35 @@
+name: Günlük Veri Yedeklemesi (90 Günlük Arşiv)
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Her gece 02:00 UTC (senkronizasyon öncesi)
+  workflow_dispatch:
+
+jobs:
+  backup:
+    name: Veri Dosyalarını Arşivle
+    runs-on: ubuntu-latest
+    steps:
+      - name: Depoyu Klonla
+        uses: actions/checkout@v4
+
+      - name: Node.js 22 Kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Veri Bütünlüğü Doğrulaması
+        run: node scripts/validate-data.mjs
+
+      - name: Veri Klasörünü Paketle
+        run: |
+          mkdir -p backup-dist
+          tar -czf "backup-dist/tempestian-data-$(date +'%Y-%m-%d').tar.gz" data/
+
+      - name: 90 Günlük Güvenli Artifact Olarak Sakla
+        uses: actions/upload-artifact@v4
+        with:
+          name: tempestian-data-backup-${{ github.run_id }}
+          path: backup-dist/
+          retention-days: 90
+          if-no-files-found: error

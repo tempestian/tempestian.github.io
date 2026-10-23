@@ -21,6 +21,7 @@
 // ============================================================================
 import fs from 'node:fs';
 import { computeStats, resolveEffectiveScore, DEFAULT_STATS_CONFIG } from './stats.mjs';
+import { generateShareCards } from './generate-share-cards.mjs';
 
 const USER = process.env.ANILIST_USER || 'TurkTempestian';
 const LIST = process.env.CUSTOM_LIST || '';
@@ -500,3 +501,11 @@ const outPayload = {
 
 fs.writeFileSync(OUT, JSON.stringify(outPayload, null, 2) + '\n');
 console.log(`${anime.length} franchise yazıldı (${SYNC_MODE} modu); sayılan: ${stats.anime} anime, ${stats.season} sezon, ${stats.film} film, ${stats.other} ek, ${stats.episodes} bölüm, ${stats.favorites || 0} favori.`);
+
+// [AI-MIMARI-NOTU: ADIM 22 — SOSYAL MEDYA PAYLAŞIM KARTLARI]:
+// Güncellenen anime verileri doğrultusunda `a/<id>.html` statik Open Graph ve Twitter kartlarını yeniden üretir.
+try {
+  generateShareCards();
+} catch (e) {
+  console.warn('Paylaşım kartları üretimi atlandı:', e.message);
+}

@@ -1,5 +1,5 @@
 // ============================================================================
-// [AI-MIMARI-NOTU: ADIM 15 — TECHNOPAT SOSYAL YÖNLENDİRMELİ REHBER KATALOĞU MOTORU]
+// [AI-MIMARI-NOTU: ADIM 15 & 21 — TECHNOPAT SOSYAL YÖNLENDİRMELİ REHBER KATALOĞU MOTORU]
 // Bu dosya `/rehber/` sayfasını (`data/guides.json`) oluşturur.
 // - Rehber içerikleri sitede uzun makaleler olarak tutulmaz; her rehber kartı bir
 //   Katalog Kartı (`.tile.glass.sq.guide-card`) olarak sunulur ve tıklandığında
@@ -7,6 +7,7 @@
 //   yeni sekmede (`target="_blank" rel="noopener"`) yönlendirir.
 // - Kategori çipleri (`customGenres` / `genres`), arama kutusu (`#q`), sıralama (`#sort`)
 //   ve "★ Öne Çıkanlar" (`favorite: true`) filtrelemesi içerir.
+// - Adım 21: Rastgele rehber seç (🎲) butonunda mikro-dönme animasyonu tetiklenir.
 // ============================================================================
 (() => {
   const $ = s => document.querySelector(s);
@@ -298,6 +299,10 @@
   const rndBtn = document.getElementById('randomPickBtn');
   if (rndBtn) {
     rndBtn.onclick = () => {
+      // [AI-MIMARI-NOTU: ADIM 21]: Butona mikro-dönme animasyonu ekler
+      rndBtn.classList.remove('is-rolling');
+      void rndBtn.offsetWidth;
+      rndBtn.classList.add('is-rolling');
       const cards = [...document.querySelectorAll('#guideList .guide-card')];
       if (!cards.length) return;
       cards.forEach(c => c.classList.remove('random-highlight'));

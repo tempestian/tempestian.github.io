@@ -75,10 +75,10 @@ jobs:
       - name: Değişiklik varsa kaydet
         if: steps.check_bot.outputs.skip != 'true'
         run: |
-          if git diff --quiet data/anime.json; then exit 0; fi
+          if git diff --quiet data/anime.json a/; then exit 0; fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/anime.json
-          git commit -m "chore(anime): kapak ve yan içerik senkronu [skip ci]"
+          git add data/anime.json a/
+          git commit -m "chore(anime): kapak, yan icerik ve paylasim kartlari senkronu [skip ci]"
           git pull --rebase origin main
           git push

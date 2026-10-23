@@ -1,5 +1,5 @@
 // ============================================================================
-// [AI-MIMARI-NOTU: ANİME LİSTESİ, GELİŞMİŞ İSTATİSTİK GRAFİKLERİ VE DETAY MOTORU (ADIM 7, 8, 11 & 13)]
+// [AI-MIMARI-NOTU: ANİME LİSTESİ, GELİŞMİŞ İSTATİSTİK GRAFİKLERİ VE DETAY MOTORU (ADIM 7, 8, 11, 13 & 21)]
 // Bu dosya `/anime/` sayfasını (`data/anime.json`) oluşturur.
 // - Puanlar: Sezon (×1.00), Film (×0.35) ve Yan İçerik (×0.15) ağırlıklı puan ortalamasından
 //   (`getEffectiveScore`) otomatik belirlenir.
@@ -9,6 +9,10 @@
 //   * Özel Kategori Yüzdesel Dağılım Çubukları (`.genre-bars`)
 //   * Format Bazlı Puan & İçerik Karşılaştırması (Sezon vs Film vs Yan İçerik ortalama puan ve adet)
 //   * İzleme / Eklenme Yılı Dağılımı ve Çıkış On Yılı Grafiği
+// - Adım 21 (KATMAN SIRALI DETAY GEZİNMESİ VE ZAR MİKRO-ANİMASYONU):
+//   * Katman (Tier List) görünümünde detay penceresi açıldığında Önceki/Sonraki butonları
+//     ve ok tuşları doğrudan ekrandaki Katman (S, A+, A, B, C...) görsel sırasını izler.
+//   * Rastgele seç (🎲) butonuna tıklandığında pürüzsüz dönme animasyonu tetiklenir.
 // ============================================================================
 const $ = s => document.querySelector(s);
 const ST = {completed:'İzlendi', watching:'İzleniyor', paused:'Beklemede', dropped:'Bırakıldı', planned:'Planlandı'};
@@ -192,6 +196,7 @@ function renderTierBoard(visibleNodes) {
     for (const n of t.items) {
       const card = h('button', 'tier-card');
       card.type = 'button';
+      card.dataset.id = n.it.id;
       card.title = n.it.title + (n.sc ? ` (★ ${n.sc})` : '');
       const pWrap = h('div', 'tier-card-poster');
       if (n.it.image) {
@@ -509,7 +514,13 @@ function fillSheet(it){
   if (shareBtn) {
     shareBtn.textContent = '🔗 Bağlantıyı Kopyala';
     shareBtn.onclick = async () => {
-      const shareUrl = `${location.origin}${location.pathname}#${encodeURIComponent(it.id)}`;
+      // [AI-MIMARI-NOTU: ADIM 22 — SOSYAL MEDYA PAYLAŞIM KARTI BAĞLANTISI]:
+      // Doğrudan `a/<id>.html` adresi kopyalanır; böylece Discord, WhatsApp, Twitter gibi
+      // platformların crawler botları kullanıcının puanını, sezon/bölüm sayısını ve afişini
+      // estetik büyük kart olarak çekerken, tıklayan kişi 0ms içinde `anime/#<id>` detayına yönlendirilir.
+      const rootPath = document.body.dataset.root || '../';
+      const cleanBase = new URL(rootPath, location.href).href;
+      const shareUrl = `${cleanBase}a/${encodeURIComponent(it.id)}.html`;
       try {
         await navigator.clipboard.writeText(shareUrl);
         shareBtn.textContent = '✓ Kopyalandı!';
@@ -521,6 +532,14 @@ function fillSheet(it){
 }
 
 function getVisibleOrderedIds() {
+  // [AI-MIMARI-NOTU: ADIM 21]: Katman (Tier List) modundayken ekrandaki S -> A+ -> A -> B... görsel sırasını izler.
+  if (state.view === 'tier') {
+    const tb = $('#tierBoard');
+    if (tb && !tb.hidden) {
+      const tierIds = [...tb.querySelectorAll('.tier-card')].map(c => c.dataset.id).filter(Boolean);
+      if (tierIds.length) return tierIds;
+    }
+  }
   const root = $('#list');
   const domIds = [];
   if (root && root.children.length) {
@@ -576,6 +595,10 @@ addEventListener('keydown', e => {
 const rndBtn = document.getElementById('randomPickBtn');
 if (rndBtn) {
   rndBtn.onclick = () => {
+    // [AI-MIMARI-NOTU: ADIM 21]: Butona mikro-dönme animasyonu ekler
+    rndBtn.classList.remove('is-rolling');
+    void rndBtn.offsetWidth;
+    rndBtn.classList.add('is-rolling');
     const visible = state.items.filter(it => {
       const n = nodes.get(it.id);
       return n && !n.li.hidden;

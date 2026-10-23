@@ -1,5 +1,5 @@
 // ============================================================================
-// [AI-MIMARI-NOTU: ADIM 12 & 13 — ORTAK ÇOKLU-MEDYA VİTRİN VE İSTATİSTİK MOTORU]
+// [AI-MIMARI-NOTU: ADIM 12, 13 & 21 — ORTAK ÇOKLU-MEDYA VİTRİN VE İSTATİSTİK MOTORU]
 // Bu dosya `/dizi/`, `/film/`, `/manga/` ve `/kitap/` sayfalarını tek bir ortak
 // mimariyle çalıştırır.
 // - Hangi sayfada çalıştığını `<body data-section="series|movie|manga|book">`
@@ -9,6 +9,10 @@
 //   (`customGenres`) gösterilir.
 // - Adım 11 ("★ Başyapıtlar") ve Adım 13 (Özel Kategori Yüzdesel Dağılım Grafikleri,
 //   Format Puan Analizi, Eklenme Yılı Dağılımı) tüm medya sayfalarında aktiftir.
+// - Adım 21 (KATMAN SIRALI DETAY GEZİNMESİ VE ZAR MİKRO-ANİMASYONU):
+//   * Katman (Tier List) modunda detay penceresi açıldığında Önceki/Sonraki ve klavye ok tuşları
+//     ekrandaki Katman sıralamasını izler.
+//   * Rastgele seç (🎲) butonunda mikro-dönme animasyonu tetiklenir.
 // ============================================================================
 (() => {
   const $ = s => document.querySelector(s);
@@ -274,6 +278,7 @@ function renderTierBoard(visibleNodes) {
     for (const n of t.items) {
       const card = h('button', 'tier-card');
       card.type = 'button';
+      card.dataset.id = n.it.id;
       card.title = n.it.title + (n.sc ? ` (★ ${n.sc})` : '');
       const pWrap = h('div', 'tier-card-poster');
       if (n.it.image) {
@@ -567,7 +572,10 @@ function renderTierBoard(visibleNodes) {
     if (shareBtn) {
       shareBtn.textContent = '🔗 Bağlantıyı Kopyala';
       shareBtn.onclick = async () => {
-        const shareUrl = `${location.origin}${location.pathname}#${encodeURIComponent(it.id)}`;
+        // [AI-MIMARI-NOTU: ADIM 22 — SOSYAL MEDYA PAYLAŞIM KARTI BAĞLANTISI]:
+        const rootPath = document.body.dataset.root || '../';
+        const cleanBase = new URL(rootPath, location.href).href;
+        const shareUrl = `${cleanBase}a/${encodeURIComponent(it.id)}.html`;
         try {
           await navigator.clipboard.writeText(shareUrl);
           shareBtn.textContent = '✓ Kopyalandı!';
@@ -579,6 +587,14 @@ function renderTierBoard(visibleNodes) {
   }
 
   function getVisibleOrderedIds() {
+    // [AI-MIMARI-NOTU: ADIM 21]: Katman (Tier List) modundayken ekrandaki S -> A+ -> A -> B... görsel sırasını izler.
+    if (state.view === 'tier') {
+      const tb = $('#tierBoard');
+      if (tb && !tb.hidden) {
+        const tierIds = [...tb.querySelectorAll('.tier-card')].map(c => c.dataset.id).filter(Boolean);
+        if (tierIds.length) return tierIds;
+      }
+    }
     const root = $('#list');
     const domIds = [];
     if (root && root.children.length) {
@@ -666,6 +682,10 @@ function renderTierBoard(visibleNodes) {
   const rndBtn = document.getElementById('randomPickBtn');
   if (rndBtn) {
     rndBtn.onclick = () => {
+      // [AI-MIMARI-NOTU: ADIM 21]: Butona mikro-dönme animasyonu ekler
+      rndBtn.classList.remove('is-rolling');
+      void rndBtn.offsetWidth;
+      rndBtn.classList.add('is-rolling');
       const visible = state.items.filter(it => {
         const n = nodes.get(it.id);
         return n && !n.li.hidden;

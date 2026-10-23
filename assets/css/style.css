@@ -469,3 +469,19 @@ h3 a:focus-visible{outline:0}
 .sheet-pos-lbl{font-size:.75rem;font-weight:600;color:var(--ink2);padding:0 4px;font-variant-numeric:tabular-nums}
 .sheet-act-grp{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
 .sheet-card .sh-al{margin-top:0}
+
+/* ---- v8: Adım 21 Zar (Random Pick) Dönme Animasyonu ve Mikro-Görsel Geri Bildirim ---- */
+@keyframes dice-spin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.15); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+#randomPickBtn {
+  transition: transform .2s var(--spring), background .2s, color .2s;
+}
+#randomPickBtn:active {
+  transform: scale(0.92);
+}
+#randomPickBtn.is-rolling svg {
+  animation: dice-spin .45s cubic-bezier(.34, 1.56, .64, 1);
+}

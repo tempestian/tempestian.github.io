@@ -128,7 +128,9 @@
     }
     return t;
   };
-  window.UI = { icon, el, parts, tally, resolveAsset, icons: Object.keys(P) };
+  // [AI-MIMARI-NOTU: ADIM 21 — EVRENSEL GÜVENLİ METİN KAÇIŞI (UI.esc), GELİŞMİŞ ALTYAZI/PARÇA ARAMASI VE MODAL YATAY KAYDIRMA]
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  window.UI = { icon, el, parts, tally, resolveAsset, esc, icons: Object.keys(P) };
   try { localStorage.removeItem('wall'); } catch (e) {}
 
   const dock = document.getElementById('dock'), list = document.getElementById('sections'), links = document.getElementById('links');
@@ -473,7 +475,8 @@
   // hem fareyle basılı tutup sürükleyerek (drag-to-scroll) hem de fare tekerleğiyle (wheel)
   // kaydırılabilmesini sağlayan evrensel olay dinleyicisi.
   (() => {
-    const SELECTOR = '.chips, .dock, .rq-strip';
+    // [AI-MIMARI-NOTU: ADIM 21]: .cmdk-ScopeBar sekme şeridi de dahil edilerek arama modalında pürüzsüz kaydırma sağlandı.
+    const SELECTOR = '.chips, .dock, .rq-strip, .cmdk-ScopeBar';
 
     document.addEventListener('wheel', e => {
       const el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
@@ -622,7 +625,10 @@
               const cats = Array.isArray(it.customGenres) && it.customGenres.length ? it.customGenres : (it.genres || []);
               const sc = sec.isGuide ? null : computeQuickScore(it);
               const extra = it.author || it.director || it.network || it.forumSection || '';
-              const hay = `${it.title} ${cats.join(' ')} ${extra} ${it.summary || ''}`.toLocaleLowerCase('tr');
+              // [AI-MIMARI-NOTU: ADIM 21]: Sezon/film/yan içerik alt başlıkları (ör. Mugen Train) ve çıkış yılları da arama indeksine eklendi.
+              const partNames = Array.isArray(it.parts) ? it.parts.map(p => (p && p.name) || '').filter(Boolean).join(' ') : '';
+              const yearStr = it.year || (Array.isArray(it.parts) && it.parts.find(p => p && p.year) ? String(it.parts.find(p => p && p.year).year) : '');
+              const hay = `${it.title} ${cats.join(' ')} ${extra} ${it.summary || ''} ${partNames} ${yearStr}`.toLocaleLowerCase('tr');
               all.push({
                 id: it.id,
                 title: it.title,
@@ -763,7 +769,13 @@
       }
       closeCommandPalette();
       if (cur === entry.sectionId) {
-        location.hash = '#' + encodeURIComponent(entry.id);
+        // [AI-MIMARI-NOTU: ADIM 21]: Hash zaten hedef yapıma aitse tarayıcı hashchange tetiklemeyebilir; yapay HashChangeEvent ile modal açılışı garantiye alınır.
+        const targetHash = '#' + encodeURIComponent(entry.id);
+        if (location.hash === targetHash) {
+          window.dispatchEvent(new HashChangeEvent('hashchange'));
+        } else {
+          location.hash = targetHash;
+        }
       } else {
         location.href = `${root}${entry.sectionPath}#${encodeURIComponent(entry.id)}`;
       }

@@ -14,7 +14,7 @@ on:
       force_sync:
         description: 'Tüm kategorileri zorla tara'
         required: false
-        default: 'true'
+        default: true
         type: boolean
   push:
     branches: [main]
@@ -56,7 +56,7 @@ jobs:
       - name: Multi-Provider API Senkronu (TVMaze, OpenLibrary, AniList, TMDB)
         if: steps.check_bot.outputs.skip != 'true'
         env:
-          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY || '' }}
         run: node scripts/sync-multimedia.mjs
 
       - name: Veri ve İçerik Bütünlüğü Doğrulaması (Güvenlik Ön Koşulu)

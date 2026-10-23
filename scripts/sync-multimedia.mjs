@@ -1,18 +1,21 @@
 // ============================================================================
-// [AI-MIMARI-NOTU: ADIM 9 — DİZİ, FİLM, KİTAP, MANGA OTOMASYONU (MULTI-PROVIDER API WORKFLOW)]
+// [AI-MIMARI-NOTU: DİZİ, FİLM, KİTAP, MANGA OTOMASYONU (MULTI-PROVIDER API WORKFLOW)]
 // Bu betik (`scripts/sync-multimedia.mjs`), `data/series.json`, `data/movies.json`,
-// `data/books.json` ve `data/manga.json` dosyalarını çoklu harici API sağlayıcıları üzerinden
-// sıfır depolama şartıyla senkronize eder:
+// `data/books.json` ve `data/manga.json` dosyalarını tamamen ücretsiz ve API KEY GEREKTİRMEYEN
+// açık sağlayıcılar üzerinden sıfır depolama şartıyla senkronize eder:
 //
-// SAĞLAYICILAR VE SIFIR-DEPOLAMA PRENSİBİ:
+// SAĞLAYICILAR VE SIFIR-DEPOLAMA PRENSİBİ (100% KEYLESS / SIFIR API KEY):
 // 1. Dizi (TV Series):
 //    - TVMaze API (ÜCRETSİZ / API KEY İSTEMEZ): `https://api.tvmaze.com/singlesearch/shows`
-//      Sezon sayıları, toplam bölüm sayısı, yayın durumu ve yüksek çözünürlüklü kapak linklerini çeker.
-//    - TMDB API (Opsiyonel / `TMDB_API_KEY` varsa): Yüksek kaliteli sinematik sahne görselleri (`backdrop_path`) çeker.
+//      Sezon sayıları, toplam bölüm sayısı, yayın durumu ve kapak linklerini çeker.
+//    - IMDb Suggestion Motoru (ÜCRETSİZ / API KEY İSTEMEZ):
+//      Yüksek çözünürlüklü Amazon CDN afişi ve yayın yılı tamamlaması.
 //
 // 2. Film (Movies):
-//    - TMDB API (veya TVMaze/Open Search fallback): Süre, çıkış yılı, yüksek çözünürlüklü sinematik
-//      sahne görseli (`backdrop_path` -> `https://image.tmdb.org/t/p/w1280/...`) ve afiş linkini çeker.
+//    - IMDb Suggestion Motoru (ÜCRETSİZ / API KEY İSTEMEZ): `https://v3.sg.media-imdb.com/suggestion/`
+//      Doğrudan Amazon CDN üzerinden yüksek çözünürlüklü film afişi (`m.media-amazon.com`),
+//      çıkış yılı ve IMDb ID (`tt...`) çeker.
+//    - TVMaze API Fallback (ÜCRETSİZ / API KEY İSTEMEZ): Mini dizi / TV filmleri için yedek sağlayıcı.
 //
 // 3. Kitap (Books):
 //    - OpenLibrary API (ÜCRETSİZ / API KEY İSTEMEZ): `https://openlibrary.org/search.json`
@@ -35,8 +38,6 @@ import { generateShareCards } from './generate-share-cards.mjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
-const TMDB_API_KEY = process.env.TMDB_API_KEY || '';
-
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 async function safeFetchJson(url, options = {}) {
@@ -44,7 +45,7 @@ async function safeFetchJson(url, options = {}) {
     const res = await fetch(url, {
       ...options,
       headers: {
-        'User-Agent': 'Tempestian-Media-Sync/1.0',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Tempestian-Media-Sync/1.0',
         Accept: 'application/json',
         ...(options.headers || {})
       }
@@ -58,7 +59,31 @@ async function safeFetchJson(url, options = {}) {
 }
 
 // ----------------------------------------------------------------------------
-// 1. DİZİ (SERIES) — TVMaze & TMDB Entegrasyonu
+// IMDB ÖNERİ MOTORU (100% ÜCRETSİZ / SIFIR API KEY / AMAZON MEDIA CDN)
+// ----------------------------------------------------------------------------
+function toIMDbSlug(text) {
+  const trMap = { 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'i': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u', 'İ': 'i', 'I': 'i' };
+  const normalized = (text || '')
+    .toLowerCase()
+    .replace(/[çğıöşüİI]/g, c => trMap[c] || c);
+  return normalized.replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+}
+
+async function fetchIMDbSuggestion(query) {
+  const slug = toIMDbSlug(query);
+  if (!slug) return null;
+  const first = slug[0] || 'a';
+  const url = `https://v3.sg.media-imdb.com/suggestion/${first}/${slug}.json`;
+  const data = await safeFetchJson(url);
+  if (!data || !Array.isArray(data.d) || data.d.length === 0) return null;
+
+  // En iyi eşleşmeyi bul (film veya dizi öncelikli)
+  const match = data.d.find(it => it.i && it.i.imageUrl && (it.qid === 'movie' || it.qid === 'tvSeries' || it.qid === 'tvMiniSeries' || it.q === 'feature')) || data.d[0];
+  return match;
+}
+
+// ----------------------------------------------------------------------------
+// 1. DİZİ (SERIES) — TVMaze & IMDb Suggestion Entegrasyonu (Keyless)
 // ----------------------------------------------------------------------------
 async function syncSeriesItem(item) {
   if (!item || !item.title) return item;
@@ -103,13 +128,14 @@ async function syncSeriesItem(item) {
     }
   }
 
-  // TMDB API Entegrasyonu (Geniş Açılı Sinematik Backdrop için)
-  if (TMDB_API_KEY) {
-    await sleep(250);
-    const tmdbRes = await safeFetchJson(`https://api.themoviedb.org/3/search/tv?api_key=${TMDB_API_KEY}&query=${query}&language=tr-TR`);
-    const tmdbFirst = tmdbRes && tmdbRes.results && tmdbRes.results[0];
-    if (tmdbFirst && tmdbFirst.backdrop_path) {
-      updated.banner = `https://image.tmdb.org/t/p/w1280${tmdbFirst.backdrop_path}`;
+  // Eğer kapak, banner veya yıl eksikse, IMDb ile tamamla (Sıfır Key / Amazon CDN)
+  if (!updated.image || !updated.banner || !updated.year) {
+    await sleep(200);
+    const imdb = await fetchIMDbSuggestion(item.title);
+    if (imdb) {
+      if (!updated.image && imdb.i?.imageUrl) updated.image = imdb.i.imageUrl;
+      if (!updated.banner && imdb.i?.imageUrl) updated.banner = imdb.i.imageUrl;
+      if (!updated.year && imdb.y) updated.year = imdb.y;
     }
   }
 
@@ -117,46 +143,58 @@ async function syncSeriesItem(item) {
 }
 
 // ----------------------------------------------------------------------------
-// 2. FİLM (MOVIES) — TMDB & Açık Dizin Entegrasyonu
+// 2. FİLM (MOVIES) — IMDb Suggestion & TVMaze Entegrasyonu (Keyless)
 // ----------------------------------------------------------------------------
 async function syncMovieItem(item) {
   if (!item || !item.title) return item;
   console.log(`  🍿 [Film]: "${item.title}" taranıyor...`);
-  const query = encodeURIComponent(item.title);
   let updated = { ...item };
 
-  if (TMDB_API_KEY) {
-    const tmdbRes = await safeFetchJson(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${query}&language=tr-TR`);
-    const movie = tmdbRes && tmdbRes.results && tmdbRes.results[0];
-    if (movie) {
-      if (!updated.image && movie.poster_path) {
-        updated.image = `https://image.tmdb.org/t/p/w780${movie.poster_path}`;
-      }
-      if (movie.backdrop_path) {
-        updated.banner = `https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`;
-      }
-      if (!updated.year && movie.release_date) {
-        updated.year = parseInt(movie.release_date.slice(0, 4), 10);
-      }
+  // 1. IMDb Öneri Motoru (API Key Gerekmez - Amazon Media CDN)
+  const imdb = await fetchIMDbSuggestion(item.title);
+  if (imdb) {
+    if (!updated.image && imdb.i?.imageUrl) {
+      updated.image = imdb.i.imageUrl;
+    }
+    if (!updated.banner && imdb.i?.imageUrl) {
+      updated.banner = imdb.i.imageUrl;
+    }
+    if (!updated.year && imdb.y) {
+      updated.year = imdb.y;
+    }
+    if (!updated.parts || !updated.parts.length) {
+      updated.parts = [{
+        id: 'm-1',
+        name: updated.title,
+        kind: 'movie',
+        episodes: 1,
+        watched: updated.status === 'completed' ? 1 : 0,
+        status: updated.status === 'completed' ? 'COMPLETED' : 'CURRENT',
+        year: updated.year || imdb.y || null
+      }];
+    }
+  }
+
+  // 2. TVMaze Fallback (IMDb'de bulunamadıysa veya eksik kalan alanlar varsa)
+  if (!updated.image || !updated.year) {
+    await sleep(200);
+    const query = encodeURIComponent(item.title);
+    const tvData = await safeFetchJson(`https://api.tvmaze.com/singlesearch/shows?q=${query}`);
+    if (tvData) {
+      if (!updated.image && tvData.image) updated.image = tvData.image.original || tvData.image.medium;
+      if (!updated.banner && tvData.image) updated.banner = tvData.image.original || tvData.image.medium;
+      if (!updated.year && tvData.premiered) updated.year = parseInt(tvData.premiered.slice(0, 4), 10);
       if (!updated.parts || !updated.parts.length) {
         updated.parts = [{
-          id: `m-1`,
+          id: 'm-1',
           name: updated.title,
           kind: 'movie',
           episodes: 1,
           watched: updated.status === 'completed' ? 1 : 0,
           status: updated.status === 'completed' ? 'COMPLETED' : 'CURRENT',
-          year: updated.year || (movie.release_date ? parseInt(movie.release_date.slice(0, 4), 10) : null)
+          year: updated.year || null
         }];
       }
-    }
-  } else {
-    // TVMaze arama fallback (bazı TV filmleri ve mini yapımlar için)
-    const tvData = await safeFetchJson(`https://api.tvmaze.com/singlesearch/shows?q=${query}`);
-    if (tvData && tvData.image) {
-      if (!updated.image) updated.image = tvData.image.original || tvData.image.medium;
-      if (!updated.banner) updated.banner = tvData.image.original;
-      if (!updated.year && tvData.premiered) updated.year = parseInt(tvData.premiered.slice(0, 4), 10);
     }
   }
 

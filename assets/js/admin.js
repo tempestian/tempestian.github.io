@@ -1853,8 +1853,8 @@
               </div>
               <div class="field-row" id="aeBannerFieldWrap">
                 <label class="field" style="flex:2">
-                  <span>🖼️ Sinematik Geniş Sahne Görseli (Backdrop Banner) URL <small>(Sıfır depolama: TMDB / AniList CDN)</small></span>
-                  <input type="text" id="aeBanner" class="inp glass" placeholder="https://image.tmdb.org/t/p/w1280/... veya https://s4.anilist.co/file/anilistcdn/media/anime/banner/...">
+                  <span>🖼️ Sinematik Geniş Sahne Görseli (Backdrop Banner) URL <small>(Sıfır depolama: IMDb / AniList / TVMaze CDN)</small></span>
+                  <input type="text" id="aeBanner" class="inp glass" placeholder="https://m.media-amazon.com/... veya https://s4.anilist.co/file/anilistcdn/media/anime/banner/...">
                 </label>
               </div>
               <div id="aeCoverPickerWrap" class="cover-picker-drawer" hidden></div>
@@ -2376,8 +2376,8 @@
           scanBtn.textContent = '🔄 Sezonları & Kapakları Güncelle (IMDb/TVMaze)';
           scanBtn.title = "Listedeki dizilerin IMDb/TVMaze bağlantıları üzerinden yeni çıkan sezonları, bölüm sayılarını ve eksik kapakları tarar";
         } else if (adapter.id === 'movie') {
-          scanBtn.textContent = '🔄 Eksik Kapak & Sahne Görselleri (IMDb/TMDB)';
-          scanBtn.title = "Listedeki filmlerin IMDb/TMDB bağlantıları üzerinden eksik afiş ve sahne görsellerini tamamlar";
+          scanBtn.textContent = '🔄 Eksik Kapak & Sahne Görselleri (IMDb/TVMaze)';
+          scanBtn.title = "Listedeki filmlerin IMDb ve TVMaze bağlantıları üzerinden eksik afiş ve sahne görsellerini tamamlar";
         } else if (adapter.id === 'manga') {
           scanBtn.textContent = '🔄 Bölüm, Cilt & Banner Güncelle (AniList)';
           scanBtn.title = "Listedeki mangaların AniList bağlantıları üzerinden güncel bölüm/cilt sayılarını ve bannerlarını günceller";
@@ -2402,7 +2402,7 @@
           trigBtn.title = 'GitHub Actions üzerindeki sync-anilist.yml iş akışını tetikler';
         } else {
           trigBtn.textContent = `⚡ Çoklu API Senkronu (${adapter.label} · sync-multimedia.yml)`;
-          trigBtn.title = `${adapter.label} için TVMaze, OpenLibrary, AniList veya TMDB iş akışını (sync-multimedia.yml) tetikler`;
+          trigBtn.title = `${adapter.label} için TVMaze, OpenLibrary, AniList veya IMDb iş akışını (sync-multimedia.yml) tetikler`;
         }
       }
     }
@@ -4775,7 +4775,7 @@
       dataFile: 'data/series.json',
       countKey: 'series',
       titleLabel: 'Dizi Başlığı',
-      externalUrlLabel: 'IMDb / TMDB Linki (URL)',
+      externalUrlLabel: 'IMDb Linki (URL)',
       externalUrlField: 'firstSeasonUrl',
       extraMetaField: { key: 'network', label: 'Platform / Kanal', placeholder: 'Örn: HBO, Netflix...' },
       supportsNextBadge: true,
@@ -4805,7 +4805,7 @@
       dataFile: 'data/movies.json',
       countKey: 'movies',
       titleLabel: 'Film Adı',
-      externalUrlLabel: 'IMDb / Letterboxd / TMDB Linki',
+      externalUrlLabel: 'IMDb / Letterboxd Linki',
       externalUrlField: 'url',
       extraMetaField: { key: 'director', label: 'Yönetmen', placeholder: 'Örn: Christopher Nolan' },
       supportsNextBadge: false,

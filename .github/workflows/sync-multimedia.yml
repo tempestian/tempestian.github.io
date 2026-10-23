@@ -1,8 +1,8 @@
 # ============================================================================
-# [AI-MIMARI-NOTU: ADIM 9 — DİZİ, FİLM, KİTAP, MANGA ÇOKLU-SAĞLAYICI İŞ AKIŞI]
-# Bu iş akışı (`sync-multimedia.yml`), TVMaze, OpenLibrary, AniList ve opsiyonel TMDB
-# API'lerini kullanarak sitedeki dizi, film, kitap ve mangaların bölüm sayılarını,
-# durumlarını ve sıfır-depolama CDN kapak/backdrop linklerini otomatik günceller.
+# [AI-MIMARI-NOTU: DİZİ, FİLM, KİTAP, MANGA ÇOKLU-SAĞLAYICI İŞ AKIŞI]
+# Bu iş akışı (`sync-multimedia.yml`), IMDb, TVMaze, OpenLibrary ve AniList
+# API'lerini (100% keyless / sıfır API key) kullanarak sitedeki dizi, film, kitap
+# ve mangaların bölüm sayılarını, durumlarını ve kapak linklerini otomatik günceller.
 # ============================================================================
 name: Dizi, Film, Kitap & Manga Senkronu
 
@@ -53,10 +53,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Multi-Provider API Senkronu (TVMaze, OpenLibrary, AniList, TMDB)
+      - name: Multi-Provider API Senkronu (IMDb, TVMaze, OpenLibrary, AniList)
         if: steps.check_bot.outputs.skip != 'true'
-        env:
-          TMDB_API_KEY: ${{ secrets['TMDB_API_KEY'] }}
         run: node scripts/sync-multimedia.mjs
 
       - name: Veri ve İçerik Bütünlüğü Doğrulaması (Güvenlik Ön Koşulu)

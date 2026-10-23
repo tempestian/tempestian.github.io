@@ -8,18 +8,18 @@
     "genreSourceRule": "custom_only"
   },
   "stats": {
-    "anime": 77,
-    "season": 119,
+    "anime": 78,
+    "season": 128,
     "film": 23,
     "other": 23,
-    "episodes": 3246,
-    "completedEpisodes": 3151,
-    "inProgressEpisodes": 95,
-    "favorites": 9,
+    "episodes": 3357,
+    "completedEpisodes": 3263,
+    "inProgressEpisodes": 94,
+    "favorites": 10,
     "avgScore": 6.3,
     "byStatus": {
-      "watching": 6,
-      "completed": 70,
+      "completed": 71,
+      "watching": 5,
       "dropped": 8,
       "paused": 5
     },
@@ -149,7 +149,23 @@
         "count": 2
       },
       {
+        "name": "Action",
+        "count": 1
+      },
+      {
+        "name": "Adventure",
+        "count": 1
+      },
+      {
         "name": "Büyülü Kız",
+        "count": 1
+      },
+      {
+        "name": "Comedy",
+        "count": 1
+      },
+      {
+        "name": "Fantasy",
         "count": 1
       },
       {
@@ -171,7 +187,7 @@
       "7": 11,
       "8": 7,
       "9": 6,
-      "10": 7
+      "10": 8
     },
     "rules": {
       "animeCountRule": "completed_season_or_movie",
@@ -179,15 +195,15 @@
       "genreSourceRule": "custom_only"
     },
     "listed": 89,
-    "completed": 70,
+    "completed": 71,
     "partial": 7,
-    "excluded": 12,
+    "excluded": 11,
     "highlights": {
       "topScore": {
         "id": "al-14719",
         "title": "JoJo's Bizarre Adventure (TV)",
         "score": 10,
-        "ties": 6
+        "ties": 7
       },
       "mostWatched": {
         "id": "al-21",
@@ -204,9 +220,9 @@
       "anilistId": 101280,
       "url": "https://anilist.co/anime/101280",
       "firstSeasonUrl": "https://anilist.co/anime/101280",
-      "status": "watching",
+      "status": "completed",
       "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/101280-9t7J3774n955.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101280-tDxCVJm714nt.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx182205-q2AeO1owuQbO.jpg",
       "genres": [
         "Action",
         "Adventure",
@@ -219,19 +235,8 @@
         "Comedy",
         "Fantasy"
       ],
-      "score": 8,
+      "score": 10,
       "parts": [
-        {
-          "id": 211738,
-          "name": "Tensei Shitara Slime Datta Ken",
-          "kind": "season",
-          "episodes": 24,
-          "watched": 1,
-          "status": "CURRENT",
-          "year": 2018,
-          "score": 8,
-          "adminModified": true
-        },
         {
           "id": 101280,
           "name": "That Time I Got Reincarnated as a Slime",
@@ -241,7 +246,9 @@
           "watched": 0,
           "status": "NONE",
           "release": "FINISHED",
-          "year": 2018
+          "year": 2018,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 106509,
@@ -367,7 +374,15 @@
       ],
       "addedAt": "2026-10-23",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt",
+        "image"
+      ],
+      "favorite": true
     },
     {
       "id": "al-127399",
@@ -8123,5 +8138,6 @@
       "adminModified": true,
       "lockedFields": []
     }
-  ]
+  ],
+  "customGenreCatalog": []
 }

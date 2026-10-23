@@ -64,3 +64,11 @@ Sayılar (`stats` alanı dahil) AniList'in toplam veya özel liste sayılarında
 - Hatalı sonuçlar için `data/overrides.json`: `exclude` (AniList ID listesi), `titles` (`{"ID": "Başlık"}`; ID, franchise'ın ilk izlenen sezonudur), `merge` (`{"ID": "hedef ID"}`; AniList'te bağlı görünmeyen bir girişi, hedef ID'nin franchise'ına katar) ve `noContinue` (yukarıya bakın).
 - Puan, AniList'teki puanın 10 üzerinden (ondalıklı) halidir.
 - Senkron bozulursa son `anime.json` yerinde kalır, site etkilenmez.
+
+---
+
+## 👥 Katkıda Bulunanlar (Contributors)
+
+- **[Bayram (Tempestian)](https://github.com/tempestian)** — Proje sahibi, mimari & vizyon
+- **[Gemini (Google DeepMind)](https://deepmind.google/technologies/gemini/)** — AI Pair Programmer (Arayüz & performans optimizasyonu, mobil uygulama One UI mimarisi, admin paneli)
+

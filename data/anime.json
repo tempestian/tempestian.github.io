@@ -7,14 +7,13 @@
     "includeInProgressEpisodes": true,
     "genreSourceRule": "custom_only"
   },
-  "customGenreCatalog": [],
   "stats": {
     "anime": 78,
-    "season": 128,
-    "film": 23,
-    "other": 23,
-    "episodes": 3357,
-    "completedEpisodes": 3263,
+    "season": 126,
+    "film": 24,
+    "other": 25,
+    "episodes": 3364,
+    "completedEpisodes": 3270,
     "inProgressEpisodes": 94,
     "favorites": 10,
     "avgScore": 6.3,
@@ -35,11 +34,11 @@
       },
       {
         "name": "Aksiyon",
-        "count": 26
+        "count": 27
       },
       {
         "name": "Fantastik",
-        "count": 25
+        "count": 26
       },
       {
         "name": "Komedi",
@@ -66,20 +65,20 @@
         "count": 20
       },
       {
+        "name": "Seinen",
+        "count": 19
+      },
+      {
         "name": "Gizem",
         "count": 18
       },
       {
-        "name": "Seinen",
-        "count": 18
+        "name": "Macera",
+        "count": 14
       },
       {
         "name": "Rom-Com",
         "count": 14
-      },
-      {
-        "name": "Macera",
-        "count": 13
       },
       {
         "name": "Shoujo",
@@ -99,11 +98,11 @@
       },
       {
         "name": "Reenkarnasyon",
-        "count": 6
+        "count": 7
       },
       {
         "name": "Isekai",
-        "count": 5
+        "count": 6
       },
       {
         "name": "Korku",
@@ -150,27 +149,15 @@
         "count": 2
       },
       {
-        "name": "Action",
-        "count": 1
-      },
-      {
-        "name": "Adventure",
-        "count": 1
-      },
-      {
         "name": "Büyülü Kız",
         "count": 1
       },
       {
-        "name": "Comedy",
-        "count": 1
-      },
-      {
-        "name": "Fantasy",
-        "count": 1
-      },
-      {
         "name": "Mecha",
+        "count": 1
+      },
+      {
+        "name": "Siyaset",
         "count": 1
       },
       {
@@ -211,6 +198,11 @@
         "title": "ONE PIECE",
         "episodes": 846,
         "status": "watching"
+      },
+      "mostRewatched": {
+        "id": "al-101280",
+        "title": "That Time I Got Reincarnated as a Slime",
+        "times": 22
       }
     }
   },
@@ -222,20 +214,25 @@
       "url": "https://anilist.co/anime/101280",
       "firstSeasonUrl": "https://anilist.co/anime/101280",
       "status": "completed",
-      "favorite": true,
       "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/101280-9t7J3774n955.jpg",
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx182205-q2AeO1owuQbO.jpg",
       "genres": [
-        "Action",
-        "Adventure",
-        "Comedy",
-        "Fantasy"
+        "Seinen",
+        "Isekai",
+        "Reenkarnasyon",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Siyaset"
       ],
       "customGenres": [
-        "Action",
-        "Adventure",
-        "Comedy",
-        "Fantasy"
+        "Seinen",
+        "Isekai",
+        "Reenkarnasyon",
+        "Aksiyon",
+        "Macera",
+        "Fantastik",
+        "Siyaset"
       ],
       "score": 10,
       "parts": [
@@ -245,12 +242,13 @@
           "kind": "season",
           "format": "TV",
           "episodes": 24,
-          "watched": 0,
-          "status": "NONE",
+          "watched": 24,
+          "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 21
         },
         {
           "id": 106509,
@@ -258,10 +256,13 @@
           "kind": "other",
           "format": "OVA",
           "episodes": 5,
-          "watched": 0,
-          "status": "NONE",
+          "watched": 5,
+          "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2019
+          "year": 2019,
+          "score": 10,
+          "repeat": 5,
+          "adminModified": true
         },
         {
           "id": 108511,
@@ -269,10 +270,13 @@
           "kind": "season",
           "format": "TV",
           "episodes": 12,
-          "watched": 0,
-          "status": "NONE",
+          "watched": 12,
+          "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 10,
+          "repeat": 21,
+          "adminModified": true
         },
         {
           "id": 116741,
@@ -280,10 +284,13 @@
           "kind": "season",
           "format": "TV",
           "episodes": 12,
-          "watched": 0,
-          "status": "NONE",
+          "watched": 12,
+          "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 10,
+          "repeat": 3,
+          "adminModified": true
         },
         {
           "id": 116742,
@@ -291,10 +298,13 @@
           "kind": "season",
           "format": "TV",
           "episodes": 12,
-          "watched": 0,
-          "status": "NONE",
+          "watched": 12,
+          "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2021
+          "year": 2021,
+          "score": 10,
+          "repeat": 20,
+          "adminModified": true
         },
         {
           "id": 146503,
@@ -302,10 +312,12 @@
           "kind": "season",
           "format": "ONA",
           "episodes": 2,
-          "watched": 0,
-          "status": "NONE",
+          "watched": 2,
+          "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2022
+          "year": 2022,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 161802,
@@ -313,10 +325,13 @@
           "kind": "other",
           "format": "OVA",
           "episodes": 3,
-          "watched": 0,
-          "status": "NONE",
+          "watched": 3,
+          "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2023
+          "year": 2023,
+          "score": 10,
+          "repeat": 5,
+          "adminModified": true
         },
         {
           "id": 156822,
@@ -324,10 +339,13 @@
           "kind": "season",
           "format": "TV",
           "episodes": 24,
-          "watched": 0,
-          "status": "NONE",
+          "watched": 24,
+          "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2024
+          "year": 2024,
+          "score": 10,
+          "repeat": 6,
+          "adminModified": true
         },
         {
           "id": 182206,
@@ -335,10 +353,12 @@
           "kind": "movie",
           "format": "MOVIE",
           "episodes": 1,
-          "watched": 0,
-          "status": "NONE",
+          "watched": 1,
+          "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2026
+          "year": 2026,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 182205,
@@ -346,10 +366,12 @@
           "kind": "season",
           "format": "TV",
           "episodes": 24,
-          "watched": 0,
-          "status": "NONE",
+          "watched": 24,
+          "status": "COMPLETED",
           "release": "FINISHED",
-          "year": 2026
+          "year": 2026,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 217330,
@@ -358,9 +380,11 @@
           "format": "TV",
           "episodes": 0,
           "watched": 0,
-          "status": "NONE",
+          "status": "PLANNING",
           "release": "NOT_YET_RELEASED",
-          "year": 2027
+          "year": 2027,
+          "score": 10,
+          "adminModified": true
         },
         {
           "id": 217331,
@@ -369,9 +393,11 @@
           "format": "TV",
           "episodes": 0,
           "watched": 0,
-          "status": "NONE",
+          "status": "PLANNING",
           "release": "NOT_YET_RELEASED",
-          "year": 2027
+          "year": 2027,
+          "score": 10,
+          "adminModified": true
         }
       ],
       "addedAt": "2026-10-23",
@@ -383,7 +409,8 @@
         "genres",
         "addedAt",
         "image"
-      ]
+      ],
+      "favorite": true
     },
     {
       "id": "al-127399",
@@ -494,7 +521,14 @@
       ],
       "addedAt": "2026-10-02",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt",
+        "image"
+      ]
     },
     {
       "id": "al-162804",
@@ -549,7 +583,13 @@
       ],
       "addedAt": "2026-09-11",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20931",
@@ -596,7 +636,13 @@
       ],
       "addedAt": "2026-05-30",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-98503",
@@ -652,7 +698,13 @@
       ],
       "addedAt": "2026-02-02",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20555",
@@ -693,7 +745,13 @@
       ],
       "addedAt": "2026-02-02",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-108463",
@@ -791,7 +849,13 @@
       ],
       "addedAt": "2026-01-26",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-199",
@@ -832,7 +896,13 @@
       ],
       "addedAt": "2026-01-21",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-2981",
@@ -879,7 +949,13 @@
       ],
       "addedAt": "2026-01-20",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-114124",
@@ -944,7 +1020,13 @@
       ],
       "addedAt": "2026-01-20",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21613",
@@ -1049,7 +1131,13 @@
       ],
       "addedAt": "2026-01-18",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-181447",
@@ -1090,7 +1178,13 @@
       ],
       "addedAt": "2026-01-01",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-1575",
@@ -1323,7 +1417,13 @@
       ],
       "addedAt": "2025-12-31",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-179696",
@@ -1366,7 +1466,13 @@
       ],
       "addedAt": "2025-12-13",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-126288",
@@ -1433,7 +1539,13 @@
       ],
       "addedAt": "2025-12-02",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-16417",
@@ -1509,7 +1621,13 @@
       ],
       "addedAt": "2025-10-26",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-181444",
@@ -1554,7 +1672,13 @@
       ],
       "addedAt": "2025-09-27",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-163623",
@@ -1599,7 +1723,13 @@
       ],
       "addedAt": "2025-09-04",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-116267",
@@ -1689,7 +1819,13 @@
       ],
       "addedAt": "2025-06-14",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-66",
@@ -1751,7 +1887,13 @@
       ],
       "addedAt": "2025-06-12",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101001",
@@ -1813,7 +1955,13 @@
       ],
       "addedAt": "2025-06-02",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-6574",
@@ -1865,7 +2013,13 @@
       ],
       "addedAt": "2025-05-25",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21196",
@@ -1944,7 +2098,13 @@
       ],
       "addedAt": "2025-05-24",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-15687",
@@ -2111,7 +2271,13 @@
       ],
       "addedAt": "2025-05-12",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-98659",
@@ -2202,7 +2368,13 @@
       ],
       "addedAt": "2025-03-28",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-5081",
@@ -2433,7 +2605,13 @@
       ],
       "addedAt": "2024-09-19",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-124080",
@@ -2491,7 +2669,13 @@
       ],
       "addedAt": "2024-08-01",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20464",
@@ -2692,7 +2876,13 @@
       ],
       "addedAt": "2024-04-16",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-1614",
@@ -2729,7 +2919,13 @@
       ],
       "addedAt": "2024-03-19",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21827",
@@ -2800,7 +2996,13 @@
       ],
       "addedAt": "2024-03-15",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-142770",
@@ -2843,7 +3045,13 @@
       ],
       "addedAt": "2024-02-14",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-150672",
@@ -2884,7 +3092,8 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 8,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 1
         },
         {
           "id": 166531,
@@ -2925,7 +3134,13 @@
       ],
       "addedAt": "2023-06-25",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20829",
@@ -3017,7 +3232,14 @@
       ],
       "addedAt": "2023-05-21",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt",
+        "image"
+      ]
     },
     {
       "id": "al-7088",
@@ -3077,7 +3299,13 @@
       ],
       "addedAt": "2023-05-18",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-19",
@@ -3122,7 +3350,13 @@
       ],
       "addedAt": "2023-02-24",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-99750",
@@ -3163,7 +3397,13 @@
       ],
       "addedAt": "2023-01-19",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20832",
@@ -3363,7 +3603,13 @@
       ],
       "addedAt": "2023-01-06",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-108465",
@@ -3478,7 +3724,13 @@
       ],
       "addedAt": "2022-12-22",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-127230",
@@ -3519,7 +3771,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 6,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 1
         },
         {
           "id": 198726,
@@ -3559,7 +3812,13 @@
       ],
       "addedAt": "2022-10-12",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-14813",
@@ -3602,7 +3861,8 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 2
         },
         {
           "id": 18753,
@@ -3628,7 +3888,8 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 1
         },
         {
           "id": 21769,
@@ -3654,7 +3915,8 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 2
         },
         {
           "id": 128643,
@@ -3672,7 +3934,13 @@
       ],
       "addedAt": "2022-09-28",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-98460",
@@ -3721,7 +3989,13 @@
       ],
       "addedAt": "2022-09-17",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-98549",
@@ -3783,7 +4057,13 @@
       ],
       "addedAt": "2022-09-08",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-114963",
@@ -3824,7 +4104,13 @@
       ],
       "addedAt": "2022-07-23",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21234",
@@ -3870,7 +4156,13 @@
       ],
       "addedAt": "2022-07-16",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-14719",
@@ -4030,7 +4322,13 @@
       ],
       "addedAt": "2022-07-16",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21355",
@@ -4074,7 +4372,8 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 1
         },
         {
           "id": 21780,
@@ -4207,7 +4506,13 @@
       ],
       "addedAt": "2022-07-16",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-5680",
@@ -4315,7 +4620,13 @@
       ],
       "addedAt": "2022-07-06",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20954",
@@ -4356,7 +4667,13 @@
       ],
       "addedAt": "2022-06-17",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21311",
@@ -4500,7 +4817,13 @@
       ],
       "addedAt": "2022-06-08",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21290",
@@ -4542,12 +4865,19 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 5,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 1
         }
       ],
       "addedAt": "2022-05-23",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20",
@@ -4853,7 +5183,13 @@
       ],
       "addedAt": "2022-05-19",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-112301",
@@ -4893,7 +5229,8 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 6,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 1
         },
         {
           "id": 130588,
@@ -4922,7 +5259,13 @@
       ],
       "addedAt": "2022-05-18",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20613",
@@ -4969,7 +5312,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-131548",
@@ -5008,7 +5357,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-11111",
@@ -5066,7 +5421,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-16498",
@@ -5300,7 +5661,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-100388",
@@ -5343,7 +5710,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-269",
@@ -5501,7 +5874,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20596",
@@ -5568,7 +5947,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-1535",
@@ -5609,7 +5994,8 @@
           "release": "FINISHED",
           "year": 2006,
           "score": 9,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 1
         },
         {
           "id": 2994,
@@ -5627,7 +6013,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101922",
@@ -5762,7 +6154,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-17513",
@@ -5814,7 +6212,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101347",
@@ -5859,7 +6263,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-97682",
@@ -5898,7 +6308,8 @@
           "release": "FINISHED",
           "year": 2017,
           "score": 6,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 1
         },
         {
           "id": 149099,
@@ -5927,7 +6338,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20987",
@@ -6003,7 +6420,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-113415",
@@ -6115,7 +6538,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101921",
@@ -6154,7 +6583,8 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 8,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 2
         },
         {
           "id": 112641,
@@ -6167,7 +6597,8 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 8,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 2
         },
         {
           "id": 125368,
@@ -6204,7 +6635,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 9,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 2
         },
         {
           "id": 151384,
@@ -6247,7 +6679,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-98314",
@@ -6313,7 +6751,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-512",
@@ -6356,7 +6800,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21421",
@@ -6397,7 +6847,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-132405",
@@ -6453,7 +6909,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-523",
@@ -6507,7 +6969,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21",
@@ -7080,7 +7548,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-2890",
@@ -7121,7 +7595,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101291",
@@ -7162,7 +7642,8 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 7,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 2
         },
         {
           "id": 104157,
@@ -7224,7 +7705,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21049",
@@ -7296,7 +7783,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-140960",
@@ -7336,7 +7829,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 7,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 1
         },
         {
           "id": 142838,
@@ -7349,7 +7843,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 7,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 1
         },
         {
           "id": 158927,
@@ -7393,7 +7888,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-129201",
@@ -7433,12 +7934,19 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 9.5,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 2
         }
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21804",
@@ -7522,7 +8030,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-129193",
@@ -7567,7 +8081,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-10620",
@@ -7651,7 +8171,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-130586",
@@ -7698,7 +8224,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20605",
@@ -7801,7 +8333,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-6211",
@@ -7853,7 +8391,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-120120",
@@ -7948,7 +8492,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-141014",
@@ -7984,12 +8534,20 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 8,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 3
         }
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt",
+        "image"
+      ]
     },
     {
       "id": "al-141774",
@@ -8025,7 +8583,8 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 9,
-          "adminModified": true
+          "adminModified": true,
+          "repeat": 1
         },
         {
           "id": 171026,
@@ -8041,7 +8600,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20665",
@@ -8094,7 +8659,13 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-21519",
@@ -8137,7 +8708,16 @@
       ],
       "addedAt": "2022-04-29",
       "adminModified": true,
-      "lockedFields": []
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     }
+  ],
+  "customGenreCatalog": [
+    "Siyaset"
   ]
 }

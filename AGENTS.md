@@ -17,3 +17,8 @@
 - For every commit in `tempestian.github.io`, always append the Gemini co-author trailer to the commit message:
   `Co-authored-by: Gemini <200291788+gemini-code-assist@users.noreply.github.com>`
 
+## 5. Project Contributor Scope
+- `tempestian.github.io` is the ONLY project where Gemini may be listed as a contributor.
+- NEVER add Gemini as developer, author, or contributor to any other repository (such as `tempestian-mobile`, fork projects, tools, or scripts).
+- Always use the `github-workflow` skill for Git and GitHub operations.
+

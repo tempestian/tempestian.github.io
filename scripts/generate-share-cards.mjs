@@ -1,19 +1,18 @@
 // ============================================================================
-// [AI-MIMARI-NOTU: ADIM 22 — STATİK SOSYAL MEDYA PAYLAŞIM KARTLARI (OPEN GRAPH & TWITTER CARDS)]
-// Bu modül (`scripts/generate-share-cards.mjs`), `data/anime.json` ve diğer çoklu-medya
-// dosyalarındaki yapımlar için `a/<id>.html` statik paylaşım kartları üretir.
+// [AI-MIMARI-NOTU: ADIM 2 — ÇOKLU KATEGORİ STATİK SOSYAL MEDYA PAYLAŞIM KARTLARI (OPEN GRAPH & TWITTER CARDS)]
+// Bu modül (`scripts/generate-share-cards.mjs`), `data/anime.json`, `data/series.json`,
+// `data/movies.json`, `data/manga.json` ve `data/books.json` dosyalarındaki yapımlar için:
+// - Anime: `a/<id>.html` -> `../anime/#<id>`
+// - Dizi:  `d/<id>.html` -> `../dizi/#<id>`
+// - Film:  `f/<id>.html` -> `../film/#<id>`
+// - Manga: `m/<id>.html` -> `../manga/#<id>`
+// - Kitap: `k/<id>.html` -> `../kitap/#<id>`
+// statik paylaşım kartları üretir.
 //
-// NEDEN BU MİMARİ SEÇİLDİ?
-// 1. Discord, WhatsApp, Telegram, X (Twitter), Facebook ve iMessage gibi platformların
-//    web crawler botları JavaScript ÇALIŞTIRMAZ ve URL'deki `#hash` fragmentını okuyamaz.
-// 2. Bir kullanıcı bir animeyi veya yapımı paylaştığında (`https://tempestian.github.io/a/al-16498.html`),
-//    crawler botu bu HTML dosyasındaki `<meta property="og:...">` etiketlerinden:
-//    - Kullanıcının kendi verdiği ağırlıklı puanı (`★ 9.5 / 10`),
-//    - Sezon ve bölüm sayısını (`4 Sezon · 87 Bölüm`),
-//    - Özel kategorileri (`Shounen, Aksiyon, Gizem`) ve izleme durumunu,
-//    - Resmi kapak görselini devasa ve estetik bir kart (`summary_large_image`) olarak çeker.
-// 3. İnsan bir kullanıcı bu linke tıkladığında ise `<script>` ve `<meta http-equiv="refresh">`
-//    sayesinde 0 milisaniyede `../anime/#al-16498` sayfasına yönlendirilir ve detay penceresi açılır.
+// DEPOLAMA AVANTAJI:
+// - Her HTML dosyası yalnızca ~1 KB metin etiketinden ibarettir.
+// - Görseller sunucuda saklanmaz; doğrudan AniList, TMDB veya OpenLibrary CDN'lerinden çekilir.
+// - Yüzlerce yapım dahi toplamda 1 MB depolama alanı tutmaz; GitHub Pages için sıfır yüktür.
 // ============================================================================
 
 import fs from 'node:fs';
@@ -23,12 +22,11 @@ import { resolveEffectiveScore, resolveEffectiveGenres, normalizePartsForStats }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const OUT_DIR = path.join(ROOT, 'a');
 const BASE_ORIGIN = 'https://tempestian.github.io';
 
 const STATUS_LABELS = {
-  completed: 'İzlendi',
-  watching: 'İzleniyor',
+  completed: 'İzlendi / Okundu',
+  watching: 'İzleniyor / Okunuyor',
   paused: 'Beklemede',
   dropped: 'Bırakıldı',
   planned: 'Planlandı'
@@ -52,7 +50,7 @@ function resolveLargeImage(imgUrl) {
   return `${BASE_ORIGIN}/${imgUrl.replace(/^\.?\//, '')}`;
 }
 
-export function buildShareCardHtml(item, sectionMeta = { id: 'anime', path: 'anime/', label: 'Anime' }) {
+export function buildShareCardHtml(item, sectionMeta = { id: 'anime', folder: 'a', path: 'anime/', label: 'Anime' }) {
   const effScore = resolveEffectiveScore(item);
   const effGenres = resolveEffectiveGenres(item, 'custom_only');
   const parts = normalizePartsForStats(item);
@@ -87,9 +85,30 @@ export function buildShareCardHtml(item, sectionMeta = { id: 'anime', path: 'ani
   const descParts = [];
   if (effScore) descParts.push(`Puan: ★ ${effScore}/10`);
   if (item.favorite) descParts.push('★ Başyapıt');
-  if (partsSummary) descParts.push(partsSummary);
-  if (epSummary) descParts.push(epSummary);
-  if (maxRepeat > 0) descParts.push(`↻ ${maxRepeat + 1} kez izlendi`);
+
+  // Kategoriye Özel Detaylar
+  if (sectionMeta.id === 'anime') {
+    if (partsSummary) descParts.push(partsSummary);
+    if (epSummary) descParts.push(epSummary);
+    if (maxRepeat > 0) descParts.push(`↻ ${maxRepeat + 1} kez izlendi`);
+  } else if (sectionMeta.id === 'series') {
+    if (item.seasons) descParts.push(`${item.seasons} Sezon`);
+    if (item.episodes) descParts.push(`${item.episodes} Bölüm`);
+    if (item.network) descParts.push(item.network);
+  } else if (sectionMeta.id === 'movie') {
+    if (item.director) descParts.push(`Yönetmen: ${item.director}`);
+    if (item.runtime) descParts.push(`${item.runtime} Dk.`);
+    if (item.year) descParts.push(`${item.year}`);
+  } else if (sectionMeta.id === 'book') {
+    if (item.author) descParts.push(`Yazar: ${item.author}`);
+    if (item.pages) descParts.push(`${item.pages} Sayfa`);
+    if (item.volumes) descParts.push(`${item.volumes} Cilt`);
+  } else if (sectionMeta.id === 'manga') {
+    if (item.author) descParts.push(`Çizer/Yazar: ${item.author}`);
+    if (item.volumes) descParts.push(`${item.volumes} Cilt`);
+    if (item.chapters) descParts.push(`${item.chapters} Bölüm`);
+  }
+
   if (effGenres.length) descParts.push(effGenres.slice(0, 3).join(', '));
   if (statusText) descParts.push(statusText);
 
@@ -98,9 +117,13 @@ export function buildShareCardHtml(item, sectionMeta = { id: 'anime', path: 'ani
     : `Bayram Tempestian'ın ${sectionMeta.label} arşivinde yer alan ${item.title} incelemesi ve detayları.`;
 
   const coverUrl = resolveLargeImage(item.image);
+  // [AI-MIMARI-NOTU: ADIM 8 — SİNEMATİK GENİŞ SAHNE GÖRSELİNİ PAYLAŞIM KARTINA TAŞIMA]
+  // Banner veya backdrop mevcutsa 16:9 oranında sinematik Twitter & Discord büyük önizlemesi sunar.
+  const shareImageUrl = resolveLargeImage(item.banner || item.backdrop || item.image);
   const targetAppUrl = `../${sectionMeta.path}#${encodeURIComponent(item.id)}`;
   const canonicalUrl = `${BASE_ORIGIN}/${sectionMeta.path}#${encodeURIComponent(item.id)}`;
-  const sharePageUrl = `${BASE_ORIGIN}/a/${encodeURIComponent(item.id)}.html`;
+  const folder = sectionMeta.folder || 'a';
+  const sharePageUrl = `${BASE_ORIGIN}/${folder}/${encodeURIComponent(item.id)}.html`;
   const themeColor = item.favorite ? '#f5a623' : '#0a7fd1';
 
   return `<!doctype html>
@@ -117,18 +140,18 @@ export function buildShareCardHtml(item, sectionMeta = { id: 'anime', path: 'ani
 
 <!-- Open Graph / Facebook / Discord / WhatsApp -->
 <meta property="og:site_name" content="Tempestian">
-<meta property="og:type" content="video.tv_show">
+<meta property="og:type" content="${sectionMeta.id === 'book' ? 'book' : 'video.tv_show'}">
 <meta property="og:url" content="${esc(sharePageUrl)}">
 <meta property="og:title" content="${esc(ogTitle)}">
 <meta property="og:description" content="${esc(ogDescription)}">
-<meta property="og:image" content="${esc(coverUrl)}">
-<meta property="og:image:alt" content="${esc(item.title)} Posteri">
+<meta property="og:image" content="${esc(shareImageUrl)}">
+<meta property="og:image:alt" content="${esc(item.title)} Önizlemesi">
 
 <!-- Twitter Card (Büyük Görsel Modu) -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(ogTitle)}">
 <meta name="twitter:description" content="${esc(ogDescription)}">
-<meta name="twitter:image" content="${esc(coverUrl)}">
+<meta name="twitter:image" content="${esc(shareImageUrl)}">
 
 <!-- 0ms İstemci Tarafı Otomatik Yönlendirme -->
 <meta http-equiv="refresh" content="0; url=${esc(targetAppUrl)}">
@@ -225,34 +248,58 @@ export function buildShareCardHtml(item, sectionMeta = { id: 'anime', path: 'ani
 `;
 }
 
+// [AI-MIMARI-NOTU: ADIM 2 — SİLİNEN VEYA YENİDEN ADLANDIRILAN YAPIMLARIN TEMİZLİĞİ (ORPHAN CLEANUP)]
+function cleanOrphanCards(directory, activeFileNames) {
+  if (!fs.existsSync(directory)) return;
+  const existingFiles = fs.readdirSync(directory);
+  for (const f of existingFiles) {
+    if (f.endsWith('.html') && !activeFileNames.has(f)) {
+      try {
+        fs.unlinkSync(path.join(directory, f));
+      } catch (_) {}
+    }
+  }
+}
+
 export function generateShareCards() {
-  if (!fs.existsSync(OUT_DIR)) {
-    fs.mkdirSync(OUT_DIR, { recursive: true });
+  const animeOutDir = path.join(ROOT, 'a');
+  if (!fs.existsSync(animeOutDir)) {
+    fs.mkdirSync(animeOutDir, { recursive: true });
   }
 
   let animeCount = 0;
+  const activeAnimeFiles = new Set();
   const animeFile = path.join(ROOT, 'data', 'anime.json');
   if (fs.existsSync(animeFile)) {
     const raw = JSON.parse(fs.readFileSync(animeFile, 'utf8'));
     const list = Array.isArray(raw.anime) ? raw.anime : [];
     for (const a of list) {
       if (!a || !a.id) continue;
-      const html = buildShareCardHtml(a, { id: 'anime', path: 'anime/', label: 'Anime' });
-      fs.writeFileSync(path.join(OUT_DIR, `${a.id}.html`), html, 'utf8');
+      const fileName = `${a.id}.html`;
+      activeAnimeFiles.add(fileName);
+      const html = buildShareCardHtml(a, { id: 'anime', folder: 'a', path: 'anime/', label: 'Anime' });
+      fs.writeFileSync(path.join(animeOutDir, fileName), html, 'utf8');
       animeCount++;
     }
   }
+  cleanOrphanCards(animeOutDir, activeAnimeFiles);
 
-  // Çoklu Medya Bölümleri (Dizi, Film, Manga, Kitap)
+  // Çoklu Medya Bölümleri (Dizi: d/, Film: f/, Manga: m/, Kitap: k/)
   const multimediaConfigs = [
-    { file: 'data/series.json', meta: { id: 'series', path: 'dizi/', label: 'Dizi' } },
-    { file: 'data/movies.json', meta: { id: 'movie', path: 'film/', label: 'Film' } },
-    { file: 'data/manga.json', meta: { id: 'manga', path: 'manga/', label: 'Manga' } },
-    { file: 'data/books.json', meta: { id: 'book', path: 'kitap/', label: 'Kitap' } }
+    { file: 'data/series.json', meta: { id: 'series', folder: 'd', path: 'dizi/', label: 'Dizi' } },
+    { file: 'data/movies.json', meta: { id: 'movie', folder: 'f', path: 'film/', label: 'Film' } },
+    { file: 'data/manga.json', meta: { id: 'manga', folder: 'm', path: 'manga/', label: 'Manga' } },
+    { file: 'data/books.json', meta: { id: 'book', folder: 'k', path: 'kitap/', label: 'Kitap' } }
   ];
 
   let multiCount = 0;
   for (const mCfg of multimediaConfigs) {
+    const targetDir = path.join(ROOT, mCfg.meta.folder);
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir, { recursive: true });
+    }
+
+    const activeMultiFiles = new Set();
     const mPath = path.join(ROOT, mCfg.file);
     if (fs.existsSync(mPath)) {
       try {
@@ -260,15 +307,18 @@ export function generateShareCards() {
         const mItems = Array.isArray(rawM.items) ? rawM.items : [];
         for (const it of mItems) {
           if (!it || !it.id) continue;
+          const fileName = `${it.id}.html`;
+          activeMultiFiles.add(fileName);
           const html = buildShareCardHtml(it, mCfg.meta);
-          fs.writeFileSync(path.join(OUT_DIR, `${it.id}.html`), html, 'utf8');
+          fs.writeFileSync(path.join(targetDir, fileName), html, 'utf8');
           multiCount++;
         }
       } catch (_) {}
     }
+    cleanOrphanCards(targetDir, activeMultiFiles);
   }
 
-  console.log(`[ShareCards]: ${animeCount} anime ve ${multiCount} diğer medya için statik sosyal medya paylaşım kartları üretildi -> /a/`);
+  console.log(`[ShareCards]: ${animeCount} anime (a/) ve ${multiCount} diğer medya (d/, f/, m/, k/) için statik sosyal medya paylaşım kartları üretildi.`);
 }
 
 if (process.argv[1] && process.argv[1].endsWith('generate-share-cards.mjs')) {

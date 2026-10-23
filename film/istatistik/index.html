@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#eceef3">
+<title>Film İstatistikleri · Tempestian</title>
+<meta name="description" content="Bayram Tempestian kişisel film arşivi istatistikleri: İzlenen film sayıları, toplam süre, puanlama ve tür dağılımı.">
+
+<!-- Open Graph & Twitter Cards -->
+<meta property="og:site_name" content="Tempestian">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tempestian.github.io/film/istatistik/">
+<meta property="og:title" content="Film İstatistikleri · Tempestian">
+<meta property="og:description" content="Bayram Tempestian kişisel film arşivi istatistikleri: İzlenen film sayıları, toplam süre, puanlama ve tür dağılımı.">
+<meta property="og:image" content="https://tempestian.github.io/assets/img/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Film İstatistikleri · Tempestian">
+<meta name="twitter:description" content="Bayram Tempestian kişisel film arşivi istatistikleri: İzlenen film sayıları, toplam süre, puanlama ve tür dağılımı.">
+<meta name="twitter:image" content="https://tempestian.github.io/assets/img/icon-512.png">
+
+<link rel="icon" href="../../assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
+<script src="../../assets/js/theme.js"></script>
+<link rel="stylesheet" href="../../assets/css/style.css">
+<link rel="stylesheet" href="../../assets/css/stats.css">
+</head>
+<body data-root="../../" data-section="movie" data-data="../../data/movies.json">
+<!-- [AI-MIMARI-NOTU: ADIM 1 — FİLM İSTATİSTİK SAYFASI] -->
+<header class="bar">
+  <div class="bar-in">
+    <a class="btn glass" href="../" data-icon="back" aria-label="Film Sayfasına Dön" title="Film Sayfasına Dön"></a>
+    <span class="bar-title">Film İstatistikleri</span>
+    <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
+  </div>
+</header>
+
+<main class="wrap stats-wrap">
+  <div id="statsApp"></div>
+</main>
+<nav id="dock" class="dock glass" aria-label="Bölümler" hidden></nav>
+
+<script src="../../assets/js/common.js"></script>
+<script src="../../assets/js/stats-page.js"></script>
+</body>
+</html>

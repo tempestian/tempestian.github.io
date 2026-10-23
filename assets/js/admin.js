@@ -777,6 +777,26 @@
     area.append(t);
     setTimeout(() => { t.remove(); }, 4200);
   }
+  // [AI-MIMARI-NOTU: ADIM 3 & ADIM 9 — ADMİN PANELİ GLOBAL ENTEGRASYON KÖPRÜSÜ]
+  // Admin modülündeki anlık düzenlemelerin Instagram Studio tarafından canlı okunabilmesi ve
+  // toast bildirimlerinin harici modüllerde çalışması için window nesnesine bağlanır.
+  window.toast = toast;
+  window.getAdminCategoryData = function(catKey) {
+    if (catKey === 'anime') {
+      return {
+        items: state.animeData.anime || [],
+        stats: state.animeData.stats || {}
+      };
+    }
+    const store = state.multiMediaStore && state.multiMediaStore[catKey];
+    if (store && Array.isArray(store.items) && store.items.length) {
+      return {
+        items: store.items,
+        stats: store.stats || {}
+      };
+    }
+    return null;
+  };
 
   function showAuthAlert(msg) {
     const el = $('#authAlert');
@@ -1005,6 +1025,7 @@
         <button type="button" class="nav-tab" role="tab" data-panel="categories" aria-selected="false">Kategoriler (Bölümler)</button>
         <button type="button" class="nav-tab" role="tab" data-panel="boxes" aria-selected="false">Kutucuklar &amp; Bağlantılar</button>
         <button type="button" class="nav-tab" role="tab" data-panel="health" aria-selected="false">🛡️ Veri Sağlığı &amp; Yedek</button>
+        <button type="button" class="nav-tab" role="tab" data-panel="instagram" aria-selected="false">📸 Instagram Görsel Üretici</button>
         <button type="button" class="nav-tab" role="tab" data-panel="security" aria-selected="false">Profil &amp; Güvenlik</button>
       </nav>
 
@@ -1707,6 +1728,85 @@
         </div>
       </div>
 
+      <!-- [AI-MIMARI-NOTU: ADIM 3 — ADMİN İÇİ INSTAGRAM POST VE STORY GÖRSEL ÜRETİCİSİ] -->
+      <div id="panelInstagram" class="admin-panel" hidden>
+        <div class="admin-card glass sq">
+          <div class="card-head split-head">
+            <div>
+              <h2>📸 Instagram Görsel ve Paylaşım Üreticisi (Canvas Studio)</h2>
+              <p>Ziyaretçilerden gizli, yalnızca sizin kullanımınıza özel görsel motoru. Favori yapımlarınızı veya kategori istatistiklerinizi tek tıkla Instagram Story (9:16) veya Kare/Dikey Post (1:1 / 4:5) formatında yüksek çözünürlüklü PNG olarak indirin.</p>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-subtle" id="renderInstaBtn">🎨 Görseli Yenile / Oluştur</button>
+              <button type="button" class="btn-primary" id="downloadInstaBtn">💾 Yüksek Çözünürlüklü PNG İndir</button>
+            </div>
+          </div>
+
+          <div class="setup-grid" style="grid-template-columns: 340px 1fr; gap: 24px; align-items: start; margin-top: 16px">
+            <div class="field-stack glass" style="padding: 20px; border-radius: var(--rm)">
+              <label class="field">
+                <span>📱 Paylaşım Formatı &amp; Boyut</span>
+                <select id="instaFormatSelect" class="inp glass">
+                  <option value="story">📱 Instagram Story (9:16 — 1080 × 1920)</option>
+                  <option value="square">🖼️ Instagram Kare Gönderi (1:1 — 1080 × 1080)</option>
+                  <option value="portrait">📐 Instagram Dikey Gönderi (4:5 — 1080 × 1350)</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>📺 Medya Kategorisi</span>
+                <select id="instaCategorySelect" class="inp glass">
+                  <option value="anime">📺 Anime</option>
+                  <option value="series">🎬 Dizi</option>
+                  <option value="movie">🍿 Film</option>
+                  <option value="manga">📖 Manga</option>
+                  <option value="book">📚 Kitap</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>🎨 Şablon / Düzen Türü</span>
+                <select id="instaTemplateSelect" class="inp glass">
+                  <option value="topPicks">🏆 En Yüksek Puanlılar &amp; Favorilerim (Top Picks)</option>
+                  <option value="statsSummary">📊 Kategori &amp; İstatistik Özeti (Wrapped)</option>
+                  <option value="tierCollage">🎯 Katman (Tier List) Özeti</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>✍️ Başlık Metni</span>
+                <input type="text" id="instaTitleInput" class="inp glass" value="BAYRAM TEMPESTIAN · EN İYİLER">
+              </label>
+
+              <label class="field">
+                <span>📝 Alt Başlık Metni</span>
+                <input type="text" id="instaSubInput" class="inp glass" value="Kişisel Arşiv ve Seçkilerim · tempestian.github.io">
+              </label>
+
+              <label class="field">
+                <span>✨ Vurgu Rengi Teması</span>
+                <select id="instaThemeSelect" class="inp glass">
+                  <option value="gold">🌟 Altın &amp; Amber (#f5a623)</option>
+                  <option value="neonBlue">⚡ Neon Mavi (#00a8ff)</option>
+                  <option value="emerald">🍀 Zümrüt Yeşili (#52e3a4)</option>
+                  <option value="violet">🔮 Büyülü Mor (#a855f7)</option>
+                  <option value="rose">💖 Canlı Pembe (#f23d8f)</option>
+                </select>
+              </label>
+
+              <div class="form-actions" style="margin-top: 10px">
+                <button type="button" class="btn-primary" id="renderInstaBtnSide" style="width:100%">Görseli Güncelle</button>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background: rgba(0,0,0,0.3); padding: 24px; border-radius: var(--rl); min-height: 480px">
+              <canvas id="instaCanvas" style="max-width: 100%; max-height: 580px; width: auto; height: auto; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.12)"></canvas>
+              <p style="margin-top: 14px; font-size: 0.8rem; color: var(--txt-sub); text-align: center">Yukarıdaki önizleme küçültülmüş ekrandır; indirdiğinizde tam 1080p yüksek çözünürlüklü ve keskin kalitede kaydedilir.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- ADIM 5, 7 & 8: ANİME EKLEME / DÜZENLEME MODALI -->
       <div id="animeEditModal" class="adm-modal" role="dialog" aria-modal="true" aria-labelledby="animeModalTitle" hidden>
         <div class="adm-modal-bg" id="animeModalBg"></div>
@@ -1747,6 +1847,12 @@
                   <input type="text" id="aeImage" class="inp glass" placeholder="https://s4.anilist.co/... veya assets/img/...">
                 </label>
                 <button type="button" class="btn-secondary" id="aeOpenCoverPickerBtn" title="Sezonların, filmlerin veya alternatif basımların kapak görsellerini listeler ve seçtiğinizi otomatik uygular">🖼️ Sezon / Kapak Seçici Menüsü</button>
+              </div>
+              <div class="field-row" id="aeBannerFieldWrap">
+                <label class="field" style="flex:2">
+                  <span>🖼️ Sinematik Geniş Sahne Görseli (Backdrop Banner) URL <small>(Sıfır depolama: TMDB / AniList CDN)</small></span>
+                  <input type="text" id="aeBanner" class="inp glass" placeholder="https://image.tmdb.org/t/p/w1280/... veya https://s4.anilist.co/file/anilistcdn/media/anime/banner/...">
+                </label>
               </div>
               <div id="aeCoverPickerWrap" class="cover-picker-drawer" hidden></div>
               <div class="field-row">
@@ -2264,14 +2370,17 @@
       scanBtn.hidden = !['anime', 'series', 'movie', 'manga'].includes(adapter.id);
       if (!scanBtn.disabled) {
         if (adapter.id === 'series') {
-          scanBtn.textContent = '🔄 Sezonları & Kapakları Güncelle (IMDb)';
-          scanBtn.title = "Listedeki dizilerin IMDb (tt...) bağlantıları üzerinden yeni çıkan sezonları, bölüm sayılarını ve eksik kapakları tarar";
+          scanBtn.textContent = '🔄 Sezonları & Kapakları Güncelle (IMDb/TVMaze)';
+          scanBtn.title = "Listedeki dizilerin IMDb/TVMaze bağlantıları üzerinden yeni çıkan sezonları, bölüm sayılarını ve eksik kapakları tarar";
         } else if (adapter.id === 'movie') {
-          scanBtn.textContent = '🔄 Eksik Kapak & Yılları Tamamla (IMDb)';
-          scanBtn.title = "Listedeki filmlerin IMDb bağlantıları üzerinden eksik afiş görsellerini ve çıkış yıllarını tamamlar";
+          scanBtn.textContent = '🔄 Eksik Kapak & Sahne Görselleri (IMDb/TMDB)';
+          scanBtn.title = "Listedeki filmlerin IMDb/TMDB bağlantıları üzerinden eksik afiş ve sahne görsellerini tamamlar";
         } else if (adapter.id === 'manga') {
-          scanBtn.textContent = '🔄 Bölüm & Ciltleri Güncelle (AniList)';
-          scanBtn.title = "Listedeki mangaların AniList bağlantıları üzerinden güncel bölüm/cilt sayılarını ve kapaklarını günceller";
+          scanBtn.textContent = '🔄 Bölüm, Cilt & Banner Güncelle (AniList)';
+          scanBtn.title = "Listedeki mangaların AniList bağlantıları üzerinden güncel bölüm/cilt sayılarını ve bannerlarını günceller";
+        } else if (adapter.id === 'book') {
+          scanBtn.textContent = '🔄 Sayfa & Kapakları Güncelle (OpenLibrary)';
+          scanBtn.title = "Listedeki kitapların OpenLibrary üzerinden güncel sayfa sayılarını, yazarlarını ve kapaklarını çeker";
         } else {
           scanBtn.textContent = 'Yan İçerikleri Sorgula';
           scanBtn.title = "Listedeki animelerin İlk Sezon AniList Linklerini tarayarak eksik sezon, film ve yan içerikleri AniList'ten çeker";
@@ -2280,14 +2389,17 @@
     }
     const trigBtn = $('#triggerActionsBtn');
     if (trigBtn) {
-      trigBtn.hidden = !(adapter.id === 'anime' || adapter.id === 'guide');
+      trigBtn.hidden = false;
       if (!trigBtn.disabled) {
         if (adapter.id === 'guide') {
           trigBtn.textContent = "🔄 Technopat'tan Rehberleri Çek (GitHub Actions)";
           trigBtn.title = "Sadece siz tıkladığınızda çalışır: Technopat Sosyal'de Bayram Tempestian (#657641) tarafından açılan 'Rehber' ön ekli tüm konuları GitHub Actions ile çekip listeler";
-        } else {
-          trigBtn.textContent = 'GitHub Actions Çalıştır';
+        } else if (adapter.id === 'anime') {
+          trigBtn.textContent = '⚡ Anime & Yan İçerik Senkronu (sync-anilist.yml)';
           trigBtn.title = 'GitHub Actions üzerindeki sync-anilist.yml iş akışını tetikler';
+        } else {
+          trigBtn.textContent = `⚡ Çoklu API Senkronu (${adapter.label} · sync-multimedia.yml)`;
+          trigBtn.title = `${adapter.label} için TVMaze, OpenLibrary, AniList veya TMDB iş akışını (sync-multimedia.yml) tetikler`;
         }
       }
     }
@@ -2862,11 +2974,13 @@
     $('#aeAnilistId').value = parsed.id || '';
     $('#aeImage').value = d.image || '';
     $('#aeCoverPreview').src = d.image ? resolvePreviewSrc(d.image) : '';
+    if ($('#aeBanner')) $('#aeBanner').value = d.banner || '';
     const coverBoxEl = $('#aeCoverPreview')?.closest('.anime-edit-cover');
     if (coverBoxEl) coverBoxEl.hidden = adapter.id === 'guide';
     const topGridEl = $('#aeCoverPreview')?.closest('.anime-edit-top');
     if (topGridEl) topGridEl.style.gridTemplateColumns = adapter.id === 'guide' ? '1fr' : '';
     if ($('#aeImageFieldWrap')) $('#aeImageFieldWrap').hidden = adapter.id === 'guide';
+    if ($('#aeBannerFieldWrap')) $('#aeBannerFieldWrap').hidden = adapter.id === 'guide';
     if ($('#aeCoverPickerWrap')) {
       $('#aeCoverPickerWrap').hidden = true;
       $('#aeCoverPickerWrap').replaceChildren();
@@ -3250,7 +3364,7 @@
 
   async function queryConnectedAnilistGraph(seedIds) {
     const LINKS = new Set(['PREQUEL', 'SEQUEL', 'SIDE_STORY', 'PARENT', 'SUMMARY', 'SPIN_OFF']);
-    const QM = `query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){id format status episodes startDate{year month day} genres title{romaji english} coverImage{extraLarge large} relations{edges{relationType node{id}}}}}}`;
+    const QM = `query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){id format status episodes startDate{year month day} genres title{romaji english} coverImage{extraLarge large} bannerImage relations{edges{relationType node{id}}}}}}`;
     const seen = new Set(seedIds.map(Number).filter(Boolean));
     let frontier = [...seen];
     const mediaMap = new Map();
@@ -3303,6 +3417,10 @@
             $('#aeImage').value = info.image;
             $('#aeCoverPreview').src = resolvePreviewSrc(info.image);
             state.editingDraft.image = info.image;
+          }
+          if (info.banner && $('#aeBanner')) {
+            $('#aeBanner').value = info.banner;
+            state.editingDraft.banner = info.banner;
           }
           if (info.url) $('#aeFirstSeasonUrl').value = info.url;
           if (adapter.id === 'manga' && info.externalId) $('#aeAnilistId').value = info.externalId;
@@ -3399,6 +3517,10 @@
 
       const cands = ExternalCatalogFetcher.buildAnimeCoverCandidates(sortedMedia, parsed.id, extraSearchMedia);
       state.modalCoverCandidates = cands;
+      if (rootMedia && rootMedia.bannerImage && $('#aeBanner') && !$('#aeBanner').value.trim()) {
+        $('#aeBanner').value = rootMedia.bannerImage;
+        state.editingDraft.banner = rootMedia.bannerImage;
+      }
       if (cands.length > 0) {
         if (!$('#aeImage').value.trim()) {
           $('#aeImage').value = cands[0].url;
@@ -3439,35 +3561,37 @@
           if (!query) continue;
           try {
             const info = await ExternalCatalogFetcher.fetchSeriesOrMovieFromImdb(query, adapter.id);
-            if (!info) continue;
-            if (!item.image && info.image) item.image = info.image;
-            if (!item.url && info.url) item.url = info.url;
-            if (adapter.id === 'series' && !item.firstSeasonUrl && info.url) item.firstSeasonUrl = info.url;
-            if (adapter.extraMetaField && !item[adapter.extraMetaField.key] && info.extraMeta) {
-              item[adapter.extraMetaField.key] = info.extraMeta;
+            if (info) {
+              if (!item.image && info.image) item.image = info.image;
+              if (!item.banner && info.banner) item.banner = info.banner;
+              if (!item.url && info.url) item.url = info.url;
+              if (adapter.id === 'series' && !item.firstSeasonUrl && info.url) item.firstSeasonUrl = info.url;
+              if (adapter.extraMetaField && !item[adapter.extraMetaField.key] && info.extraMeta) {
+                item[adapter.extraMetaField.key] = info.extraMeta;
+              }
+              if (adapter.id === 'series' && Array.isArray(info.parts) && info.parts.length) {
+                const existingParts = Array.isArray(item.parts) ? item.parts : [];
+                const byNameOrIdx = new Map();
+                existingParts.forEach((ep, i) => {
+                  byNameOrIdx.set(String(ep.id), ep);
+                  byNameOrIdx.set(`idx:${i}`, ep);
+                });
+                const mergedParts = info.parts.map((fp, i) => {
+                  const prev = byNameOrIdx.get(String(fp.id)) || byNameOrIdx.get(`idx:${i}`);
+                  if (prev) {
+                    if (!prev.episodes && fp.episodes) prev.episodes = fp.episodes;
+                    if (!prev.year && fp.year) prev.year = fp.year;
+                    return prev;
+                  }
+                  addedSeasons++;
+                  return fp;
+                });
+                item.parts = mergedParts;
+                const hasUnwatchedSeason = mergedParts.some(p => p.kind === 'season' && (p.watched || 0) === 0);
+                if (item.status === 'completed' && hasUnwatchedSeason) item.next = true;
+              }
+              updatedItems++;
             }
-            if (adapter.id === 'series' && Array.isArray(info.parts) && info.parts.length) {
-              const existingParts = Array.isArray(item.parts) ? item.parts : [];
-              const byNameOrIdx = new Map();
-              existingParts.forEach((ep, i) => {
-                byNameOrIdx.set(String(ep.id), ep);
-                byNameOrIdx.set(`idx:${i}`, ep);
-              });
-              const mergedParts = info.parts.map((fp, i) => {
-                const prev = byNameOrIdx.get(String(fp.id)) || byNameOrIdx.get(`idx:${i}`);
-                if (prev) {
-                  if (!prev.episodes && fp.episodes) prev.episodes = fp.episodes;
-                  if (!prev.year && fp.year) prev.year = fp.year;
-                  return prev;
-                }
-                addedSeasons++;
-                return fp;
-              });
-              item.parts = mergedParts;
-              const hasUnwatchedSeason = mergedParts.some(p => p.kind === 'season' && (p.watched || 0) === 0);
-              if (item.status === 'completed' && hasUnwatchedSeason) item.next = true;
-            }
-            updatedItems++;
           } catch (_) {}
         }
         const store = ensureMultiMediaStore(adapter.id);
@@ -3503,6 +3627,7 @@
             const info = await ExternalCatalogFetcher.fetchMangaFromAnilist(q);
             if (!info) continue;
             if (!item.image && info.image) item.image = info.image;
+            if (!item.banner && info.banner) item.banner = info.banner;
             if (!item.url && info.url) {
               item.url = info.url;
               item.firstSeasonUrl = info.url;
@@ -3523,6 +3648,47 @@
         toast(`${updatedCount} manga kaydı AniList üzerinden güncellendi!`);
       } catch (err) {
         toast('Manga tarama hatası: ' + err.message, 'err');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = orig;
+      }
+      return;
+    }
+
+    if (adapter.id === 'book') {
+      const list = adapter.getItems();
+      if (!list.length) {
+        toast('Taranacak kitap kaydı bulunamadı.', 'warn');
+        return;
+      }
+      const orig = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'OpenLibrary Kitapları Taranıyor...';
+      let updatedCount = 0;
+      try {
+        for (const item of list) {
+          const q = item.title;
+          if (!q) continue;
+          try {
+            const info = await ExternalCatalogFetcher.fetchBookFromOpenLibrary(q);
+            if (!info) continue;
+            if (!item.image && info.image) item.image = info.image;
+            if (!item.banner && info.banner) item.banner = info.banner;
+            if (!item.author && info.extraMeta) item.author = info.extraMeta;
+            if (Array.isArray(info.parts) && info.parts[0] && (!item.parts || !item.parts.length || !item.parts[0].episodes)) {
+              item.parts = info.parts;
+            }
+            updatedCount++;
+          } catch (_) {}
+        }
+        const store = ensureMultiMediaStore('book');
+        store.stats = computeMediaStatsClient(store.items, state.animeData.statsConfig, 'book');
+        store.dirty = true;
+        updateDirtyIndicator();
+        renderAnimeAdminPanel();
+        toast(`${updatedCount} kitap kaydı OpenLibrary üzerinden güncellendi!`);
+      } catch (err) {
+        toast('Kitap tarama hatası: ' + err.message, 'err');
       } finally {
         btn.disabled = false;
         btn.textContent = orig;
@@ -3688,6 +3854,10 @@
     if (cleanImg) d.image = cleanImg;
     else if (adapter.id === 'guide') delete d.image;
     else d.image = null;
+
+    const cleanBanner = $('#aeBanner') ? U($('#aeBanner').value, true) : '';
+    if (cleanBanner) d.banner = cleanBanner;
+    else delete d.banner;
 
     if (adapter.id === 'guide') {
       delete d.parts;
@@ -3901,8 +4071,8 @@
       const isId = Boolean(parsed.id);
       const cleanQ = String(urlOrIdOrQuery || '').trim();
       const query = isId
-        ? `query($id:Int){Media(id:$id,type:MANGA){id format title{romaji english} status chapters volumes startDate{year} coverImage{extraLarge large} relations{edges{relationType node{id type format title{romaji english} chapters volumes startDate{year} coverImage{extraLarge large}}}}}}`
-        : `query($q:String){Page(perPage:10){media(search:$q,type:MANGA){id format title{romaji english} status chapters volumes startDate{year} coverImage{extraLarge large} relations{edges{relationType node{id type format title{romaji english} chapters volumes startDate{year} coverImage{extraLarge large}}}}}}}`;
+        ? `query($id:Int){Media(id:$id,type:MANGA){id format title{romaji english} status chapters volumes startDate{year} coverImage{extraLarge large} bannerImage relations{edges{relationType node{id type format title{romaji english} chapters volumes startDate{year} coverImage{extraLarge large}}}}}}`
+        : `query($q:String){Page(perPage:10){media(search:$q,type:MANGA){id format title{romaji english} status chapters volumes startDate{year} coverImage{extraLarge large} bannerImage relations{edges{relationType node{id type format title{romaji english} chapters volumes startDate{year} coverImage{extraLarge large}}}}}}}`;
       const variables = isId ? { id: parsed.id } : { q: cleanQ };
       const res = await fetch('https://graphql.anilist.co', {
         method: 'POST',
@@ -3964,6 +4134,7 @@
         url: 'https://anilist.co/manga/' + m.id,
         title: m.title.english || m.title.romaji || '',
         image: mainImg || (coverCandidates[0] && coverCandidates[0].url) || '',
+        banner: m.bannerImage || null,
         coverCandidates,
         parts: [
           {
@@ -4085,11 +4256,14 @@
               }
               const resolvedImdb = (show.externals && show.externals.imdb) || imdbId || '';
               const coverCandidates = this.dedupeCoverCandidates(rawCands);
+              const bgImg = (showImages || []).find(gi => gi && gi.type === 'background');
+              const banner = (bgImg && bgImg.resolutions && ((bgImg.resolutions.original && bgImg.resolutions.original.url) || (bgImg.resolutions.medium && bgImg.resolutions.medium.url))) || (show.image && show.image.original) || null;
               return {
                 externalId: resolvedImdb || show.id,
                 url: resolvedImdb ? `https://www.imdb.com/title/${resolvedImdb}/` : (show.officialSite || ''),
                 title: show.name || '',
                 image: mainImg || (coverCandidates[0] && coverCandidates[0].url) || '',
+                banner,
                 coverCandidates,
                 extraMeta: (show.network && show.network.name) || (show.webChannel && show.webChannel.name) || '',
                 parts: parts.length ? parts : [{
@@ -4172,6 +4346,7 @@
         url: `https://www.imdb.com/title/${resolvedId}/`,
         title,
         image: poster || (coverCandidates[0] && coverCandidates[0].url) || '',
+        banner: poster || null,
         coverCandidates,
         extraMeta: actors,
         parts: [
@@ -4254,6 +4429,7 @@
         url: doc.key ? `https://openlibrary.org${doc.key}` : raw,
         title: doc.title || '',
         image: coverUrl || (coverCandidates[0] && coverCandidates[0].url) || '',
+        banner: coverUrl || null,
         coverCandidates,
         extraMeta: (doc.author_name && doc.author_name[0]) || '',
         parts: [
@@ -6507,6 +6683,8 @@
         $('#panelHealth').hidden = target !== 'health';
         if (target === 'health') renderHealthAuditor();
         $('#panelSecurity').hidden = target !== 'security';
+        $('#panelInstagram').hidden = target !== 'instagram';
+        if (target === 'instagram' && window.AdminInstagram) window.AdminInstagram.init();
       };
     });
 
@@ -7133,11 +7311,30 @@
         return;
       }
 
-      try {
-        await AdminSecurity.githubTriggerWorkflow('sync-anilist.yml', { sync_mode: 'relations_only' });
-        toast('GitHub Actions (AniList ve yan içerik senkronu) başarıyla tetiklendi!');
-      } catch (err) {
-        toast(err.message, 'err');
+      if (adapter.id === 'anime') {
+        try {
+          await AdminSecurity.githubTriggerWorkflow('sync-anilist.yml', { sync_mode: 'relations_only' });
+          toast('GitHub Actions (AniList ve yan içerik senkronu) başarıyla tetiklendi!');
+        } catch (err) {
+          toast(err.message, 'err');
+        }
+      } else {
+        // [AI-MIMARI-NOTU: ADIM 9 — DİZİ, FİLM, KİTAP, MANGA WORKFLOW TETİKLEME]
+        try {
+          if (btn) {
+            btn.disabled = true;
+            btn.textContent = '⏳ GitHub Actions Tetikleniyor...';
+          }
+          await AdminSecurity.githubTriggerWorkflow('sync-multimedia.yml', { force_sync: 'true' });
+          toast(`GitHub Actions (sync-multimedia.yml - ${adapter.label}) başarıyla tetiklendi!`);
+        } catch (err) {
+          toast(err.message, 'err');
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = `⚡ Çoklu API Senkronu (${adapter.label} · sync-multimedia.yml)`;
+          }
+        }
       }
     };
     $('#toggleOverridesBtn').onclick = () => {

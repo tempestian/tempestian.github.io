@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#eceef3">
+<title>Zaman Tüneli · Tempestian</title>
+<meta name="description" content="Bayram Tempestian kişisel medya tüketim yolculuğu: Yıllara ve dönemlere göre izlenen ve okunan animeler, diziler, filmler ve kitaplar.">
+
+<!-- Open Graph & Twitter Cards -->
+<meta property="og:site_name" content="Tempestian">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tempestian.github.io/zaman-tuneli/">
+<meta property="og:title" content="Zaman Tüneli · Tempestian">
+<meta property="og:description" content="Bayram Tempestian kişisel medya tüketim yolculuğu: Yıllara ve dönemlere göre izlenen ve okunan yapımlar.">
+<meta property="og:image" content="https://tempestian.github.io/assets/img/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zaman Tüneli · Tempestian">
+<meta name="twitter:description" content="Bayram Tempestian kişisel medya tüketim yolculuğu: Yıllara ve dönemlere göre izlenen ve okunan yapımlar.">
+<meta name="twitter:image" content="https://tempestian.github.io/assets/img/icon-512.png">
+
+<link rel="icon" href="../assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<script src="../assets/js/theme.js"></script>
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/timeline.css">
+</head>
+<body data-root="../" data-section="timeline">
+<!-- [AI-MIMARI-NOTU: ADIM 4 — KİŞİSEL İZLEME & OKUMA ZAMAN TÜNELİ] -->
+<header class="bar">
+  <div class="bar-in">
+    <a class="btn glass" href="../" data-icon="back" aria-label="Ana Sayfaya Dön" title="Ana Sayfaya Dön"></a>
+    <span class="bar-title">Zaman Tüneli</span>
+    <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
+  </div>
+</header>
+
+<main class="wrap timeline-wrap" id="timelineApp">
+  <div class="timeline-hero">
+    <h1>⏳ Zaman Tüneli</h1>
+    <p class="sub">Bayram Tempestian kişisel medya yolculuğu: Yıllara ve dönemlere göre izlenen ve okunan tüm yapımlar kronolojik bir akış halinde.</p>
+  </div>
+
+  <div class="timeline-controls">
+    <nav class="timeline-cat-nav glass sq" aria-label="Kategori Süzgeci">
+      <button type="button" class="timeline-cat-btn is-active" data-cat="all">Tümü</button>
+      <button type="button" class="timeline-cat-btn" data-cat="anime">📺 Anime</button>
+      <button type="button" class="timeline-cat-btn" data-cat="series">🎬 Dizi</button>
+      <button type="button" class="timeline-cat-btn" data-cat="movie">🍿 Film</button>
+      <button type="button" class="timeline-cat-btn" data-cat="manga">📖 Manga</button>
+      <button type="button" class="timeline-cat-btn" data-cat="book">📚 Kitap</button>
+    </nav>
+
+    <div class="timeline-mode-toggle" role="group" aria-label="Zamanlama Türü">
+      <button type="button" class="timeline-mode-btn is-active" data-mode="added">🗓️ İzleme / Okuma Yılına Göre</button>
+      <button type="button" class="timeline-mode-btn" data-mode="release">🎬 Yapım Çıkış Yılına Göre</button>
+    </div>
+  </div>
+
+  <div class="timeline-container" id="timelineMount">
+    <!-- Zaman tüneli omurgası ve kartları timeline.js tarafından çizilir -->
+  </div>
+</main>
+<nav id="dock" class="dock glass" aria-label="Bölümler" hidden></nav>
+
+<script src="../assets/js/common.js"></script>
+<script src="../assets/js/timeline.js"></script>
+</body>
+</html>

@@ -185,6 +185,7 @@
   const SORTS = {
     added: byAdded,
     score: (a, b) => (nodes.get(b.id).sc || 0) - (nodes.get(a.id).sc || 0) || byAdded(a, b),
+    'score-asc': (a, b) => (nodes.get(a.id).sc || 0) - (nodes.get(b.id).sc || 0) || byAdded(a, b),
     title: (a, b) => (a.title || '').localeCompare(b.title || '', 'tr'),
     year: (a, b) => (nodes.get(b.id).y || 0) - (nodes.get(a.id).y || 0),
     eps: (a, b) => nodes.get(b.id).ep - nodes.get(a.id).ep
@@ -338,7 +339,55 @@ function renderTierBoard(visibleNodes) {
     document.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', b.dataset.filter === s.filter));
     document.querySelectorAll('[data-g]').forEach(b => b.setAttribute('aria-pressed', state[b.dataset.g] === b.dataset.v));
   }
-  const go = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(render); };
+  // [AI-MIMARI-NOTU: ADIM 7 — SADE VE İŞLEVSEL FİLTRELEME + URL SENKRONİZASYONU]
+  function syncStateToUrl() {
+    try {
+      const p = new URLSearchParams();
+      if (state.gn && state.gn !== 'all') p.set('tur', state.gn);
+      if (state.sc && state.sc !== 'all') p.set('puan', state.sc);
+      if (state.filter && state.filter !== 'all') p.set('durum', state.filter);
+      if (state.sort && state.sort !== 'added') p.set('sirala', state.sort);
+      if (state.view && state.view !== 'grid') p.set('gorunum', state.view);
+      if (state.q && state.q.trim()) p.set('q', state.q.trim());
+      const qs = p.toString();
+      const newUrl = location.pathname + (qs ? '?' + qs : '') + (location.hash || '');
+      history.replaceState(null, '', newUrl);
+    } catch (_) {}
+  }
+
+  function syncUrlToState() {
+    try {
+      const p = new URLSearchParams(location.search);
+      const tur = p.get('tur') || p.get('gn');
+      if (tur) state.gn = tur;
+      const puan = p.get('puan') || p.get('sc');
+      if (puan) state.sc = puan;
+      const durum = p.get('durum') || p.get('filter');
+      if (durum) state.filter = durum;
+      const sirala = p.get('sirala') || p.get('sort');
+      if (sirala && SORTS[sirala]) {
+        state.sort = sirala;
+        const sEl = $('#sort');
+        if (sEl) sEl.value = sirala;
+      }
+      const gorunum = p.get('gorunum') || p.get('view');
+      if (gorunum) state.view = gorunum;
+      const q = p.get('q') || p.get('ara');
+      if (q) {
+        state.q = q;
+        const qEl = $('#q');
+        if (qEl) qEl.value = q;
+      }
+    } catch (_) {}
+  }
+
+  const go = () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      render();
+      syncStateToUrl();
+    });
+  };
   const setF = (k, v) => { state[k] = v; go(); };
   const jump = () => { $('#list').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
 
@@ -505,6 +554,12 @@ function renderTierBoard(visibleNodes) {
       blk('Özel kategori & tür dağılımı', gBars);
     }
 
+    // [AI-MIMARI-NOTU: ADIM 1 — KAPSAMLI İSTATİSTİK SAYFASINA BAĞLANTI]
+    const fullStatsLink = h('a', 'btn glass', `📊 Kapsamlı ${P.barTitle || ''} İstatistikleri Sayfası →`);
+    fullStatsLink.href = 'istatistik/';
+    fullStatsLink.style.cssText = 'display:inline-flex;margin:12px 0 4px;font-size:0.85rem;font-weight:650;text-decoration:none';
+    inn.append(fullStatsLink);
+
     more.onclick = () => { const o = box.classList.toggle('open'); more.setAttribute('aria-expanded', o); };
     box.append(row, ins, more);
     box.hidden = false;
@@ -512,7 +567,7 @@ function renderTierBoard(visibleNodes) {
 
   const sheet = document.createElement('div');
   sheet.className = 'sheet'; sheet.hidden = true; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true'); sheet.setAttribute('aria-labelledby', 'sh-title');
-  sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-head"><img class="sheet-cover" alt=""><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-share-btn" data-sh-share title="Bağlantıyı kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
+  sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-backdrop" hidden><img class="sheet-backdrop-img" alt="" loading="lazy"><div class="sheet-backdrop-grad"></div></div><div class="sheet-head"><img class="sheet-cover" alt=""><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-trailer-btn" data-sh-trailer title="Resmi fragmanı izle">🎬 Fragman</button><button type="button" class="sheet-share-btn" data-sh-share title="Bağlantıyı kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
   document.body.append(sheet);
   const closeBtn = sheet.querySelector('[data-close]'); closeBtn.innerHTML = UI.icon('close');
   let opener = null, pushed = false;
@@ -522,6 +577,19 @@ function renderTierBoard(visibleNodes) {
     const effScore = getEffectiveScore(it);
     const effGenres = getEffectiveGenres(it);
     const extraMeta = P.metaKey && it[P.metaKey] ? it[P.metaKey] : '';
+    const cardEl = t('.sheet-card');
+    const bdEl = t('.sheet-backdrop');
+    const bdImg = t('.sheet-backdrop-img');
+    // [AI-MIMARI-NOTU: ADIM 8 — SİNEMATİK GENİŞ SAHNE GÖRSELİ (BACKDROP BANNER)]
+    const backdropUrl = it.banner || it.backdrop || null;
+    if (backdropUrl) {
+      bdImg.src = backdropUrl;
+      bdEl.hidden = false;
+      cardEl.classList.add('has-backdrop');
+    } else {
+      bdEl.hidden = true;
+      cardEl.classList.remove('has-backdrop');
+    }
     t('#sh-title').textContent = it.title;
     const bits = [];
     if (it.favorite) bits.push('★ Başyapıt');
@@ -535,7 +603,17 @@ function renderTierBoard(visibleNodes) {
       gEl.textContent = effGenres.join(' · ');
       gEl.hidden = !effGenres.length;
     }
-    const im = t('.sheet-cover'); im.hidden = !it.image; if (it.image) im.src = big(it.image);
+    const im = t('.sheet-cover');
+    im.hidden = !it.image;
+    if (it.image) {
+      // [AI-MIMARI-NOTU: ADIM 5 — CANVAS CORS TAINTING GÜVENLİK DÜZELTMESİ]
+      im.crossOrigin = 'anonymous';
+      im.src = big(it.image);
+      im.onload = () => UI.updateAmbientGlow(it, im);
+      if (im.complete) UI.updateAmbientGlow(it, im);
+    } else {
+      UI.updateAmbientGlow(it, null);
+    }
     const own2 = ps.filter(own), te = sum(own2, 'episodes'), tw = sum(own2, 'watched'), pg = t('.sh-pg');
     pg.hidden = !(te && tw < te); if (!pg.hidden) pg.firstChild.style.setProperty('--w', Math.round(tw / te * 100) + '%');
     const ol = t('.parts'); ol.replaceChildren();
@@ -559,7 +637,15 @@ function renderTierBoard(visibleNodes) {
     }
     const orderedIds = getVisibleOrderedIds();
     const curIdx = orderedIds.indexOf(it.id);
-    const prevBtn = t('[data-sh-prev]'), nextBtn = t('[data-sh-next]'), posLbl = t('[data-sh-pos]'), shareBtn = t('[data-sh-share]');
+    const prevBtn = t('[data-sh-prev]'), nextBtn = t('[data-sh-next]'), posLbl = t('[data-sh-pos]'), shareBtn = t('[data-sh-share]'), trailerBtn = t('[data-sh-trailer]');
+    if (trailerBtn) {
+      if (sectionId === 'book') {
+        trailerBtn.hidden = true;
+      } else {
+        trailerBtn.hidden = false;
+        trailerBtn.onclick = () => UI.openTrailer(it);
+      }
+    }
     if (posLbl) posLbl.textContent = curIdx >= 0 ? `${curIdx + 1} / ${orderedIds.length}` : '';
     if (prevBtn) {
       prevBtn.disabled = curIdx <= 0;
@@ -572,10 +658,12 @@ function renderTierBoard(visibleNodes) {
     if (shareBtn) {
       shareBtn.textContent = '🔗 Bağlantıyı Kopyala';
       shareBtn.onclick = async () => {
-        // [AI-MIMARI-NOTU: ADIM 22 — SOSYAL MEDYA PAYLAŞIM KARTI BAĞLANTISI]:
+        // [AI-MIMARI-NOTU: ADIM 2 — ÇOKLU KATEGORİ SOSYAL MEDYA PAYLAŞIM KARTI BAĞLANTISI]:
         const rootPath = document.body.dataset.root || '../';
         const cleanBase = new URL(rootPath, location.href).href;
-        const shareUrl = `${cleanBase}a/${encodeURIComponent(it.id)}.html`;
+        const prefixMap = { anime: 'a', series: 'd', movie: 'f', manga: 'm', book: 'k' };
+        const folder = prefixMap[sectionId] || 'a';
+        const shareUrl = `${cleanBase}${folder}/${encodeURIComponent(it.id)}.html`;
         try {
           await navigator.clipboard.writeText(shareUrl);
           shareBtn.textContent = '✓ Kopyalandı!';
@@ -607,9 +695,10 @@ function renderTierBoard(visibleNodes) {
     return domIds.length ? domIds : state.items.map(x => x.id);
   }
 
+  // [AI-MIMARI-NOTU: İLERİ/GERİ GEZİNMEDE URL VE QUERY PARAMETRELERİNİN KORUNMASI]
   function navigateSheetTo(targetId) {
     if (!targetId) return;
-    history.replaceState(null, '', '#' + encodeURIComponent(targetId));
+    history.replaceState(null, '', location.pathname + location.search + '#' + encodeURIComponent(targetId));
     syncSheet();
   }
 
@@ -621,16 +710,26 @@ function renderTierBoard(visibleNodes) {
       fillSheet(it); sheet.hidden = false; document.body.style.overflow = 'hidden'; closeBtn.focus({ preventScroll: true });
     } else if (!sheet.hidden) {
       sheet.hidden = true; document.body.style.overflow = ''; pushed = false;
+      UI.hideAmbientGlow();
       if (opener && opener.focus) opener.focus({ preventScroll: true }); opener = null;
     }
   }
   function openSheet(id, viaClick) { pushed = !!viaClick; location.hash = id; }
-  function closeSheet() { if (pushed) history.back(); else { history.replaceState(null, '', location.pathname + location.search); syncSheet(); } }
+  function closeSheet() {
+    UI.hideAmbientGlow();
+    if (pushed) history.back();
+    else { history.replaceState(null, '', location.pathname + location.search); syncSheet(); }
+  }
   sheet.querySelector('.sheet-bg').onclick = closeSheet; closeBtn.onclick = closeSheet;
   addEventListener('hashchange', syncSheet);
   addEventListener('keydown', e => {
     if (sheet.hidden) return;
-    if (e.key === 'Escape') closeSheet();
+    // [AI-MIMARI-NOTU: ADIM 6 — FRAGMAN MODALI AÇIKKEN ESC ÇAKIŞMASINI ÖNLEME]
+    if (e.key === 'Escape') {
+      const tr = document.getElementById('trailerModal');
+      if (tr && !tr.hidden) return;
+      closeSheet();
+    }
     else if (e.key === 'ArrowLeft') {
       const prevBtn = sheet.querySelector('[data-sh-prev]');
       if (prevBtn && !prevBtn.disabled) { e.preventDefault(); prevBtn.click(); }
@@ -668,6 +767,7 @@ function renderTierBoard(visibleNodes) {
         if (!n) continue;
         chip(chips, label, n, { filter: k }, () => setF('filter', k));
       }
+      syncUrlToState();
       render();
       syncSheet();
     } catch (err) {

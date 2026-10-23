@@ -1,0 +1,74 @@
+# ============================================================================
+# [AI-MIMARI-NOTU: ADIM 9 — DİZİ, FİLM, KİTAP, MANGA ÇOKLU-SAĞLAYICI İŞ AKIŞI]
+# Bu iş akışı (`sync-multimedia.yml`), TVMaze, OpenLibrary, AniList ve opsiyonel TMDB
+# API'lerini kullanarak sitedeki dizi, film, kitap ve mangaların bölüm sayılarını,
+# durumlarını ve sıfır-depolama CDN kapak/backdrop linklerini otomatik günceller.
+# ============================================================================
+name: Dizi, Film, Kitap & Manga Senkronu
+
+on:
+  schedule:
+    - cron: '30 4 * * 0' # Her Pazar 04:30 UTC
+  workflow_dispatch:
+    inputs:
+      force_sync:
+        description: 'Tüm kategorileri zorla tara'
+        required: false
+        default: 'true'
+        type: boolean
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/sync-multimedia.mjs'
+      - '.github/workflows/sync-multimedia.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-multimedia
+  cancel-in-progress: false
+
+jobs:
+  sync-multimedia:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Bot commit kontrolü (Sonsuz döngü koruması)
+        id: check_bot
+        run: |
+          LAST_AUTHOR=$(git log -1 --pretty=format:'%an')
+          if [ "$LAST_AUTHOR" = "github-actions[bot]" ] && [ "${{ github.event_name }}" = "push" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.check_bot.outputs.skip != 'true'
+        with:
+          node-version: 22
+
+      - name: Multi-Provider API Senkronu (TVMaze, OpenLibrary, AniList, TMDB)
+        if: steps.check_bot.outputs.skip != 'true'
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        run: node scripts/sync-multimedia.mjs
+
+      - name: Değişiklik varsa commit at ve pushla
+        if: steps.check_bot.outputs.skip != 'true'
+        run: |
+          if git diff --quiet data/ d/ f/ m/ k/ 2>/dev/null; then
+            echo "Değişiklik yok, commit atlanıyor."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/series.json data/movies.json data/books.json data/manga.json d/ f/ m/ k/ 2>/dev/null || true
+          git commit -m "chore(multimedia): dizi, film, kitap, manga verileri ve kartlari guncellendi [skip ci]"
+          git pull --rebase origin main
+          git push

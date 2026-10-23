@@ -485,3 +485,208 @@ h3 a:focus-visible{outline:0}
 #randomPickBtn.is-rolling svg {
   animation: dice-spin .45s cubic-bezier(.34, 1.56, .64, 1);
 }
+
+/* ---- v9: Adım 1 Kategori İstatistikleri Butonu ---- */
+.bar-stats-btn {
+  margin-right: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.bar-in > .bar-stats-btn:first-child {
+  margin-left: auto;
+}
+.bar-stats-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---- v10: Adım 5 Dinamik Ambient Glow (Aura) & Adım 6 Hızlı Fragman Oynatıcı Stilleri ---- */
+.sheet-ambient-glow {
+  position: fixed;
+  inset: -15%;
+  width: 130%;
+  height: 130%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 40%, var(--aura-color, rgba(10, 127, 209, 0.35)), transparent 60%);
+  filter: blur(75px);
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.5s ease;
+  z-index: 68;
+}
+.sheet.open ~ .sheet-ambient-glow,
+body.has-sheet-open .sheet-ambient-glow {
+  opacity: 0.95;
+}
+
+.sheet-trailer-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--glass2);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background .2s, color .2s, transform .2s;
+}
+.sheet-trailer-btn:hover {
+  background: rgba(239, 68, 68, 0.16);
+  color: #ff6b6b;
+  transform: scale(1.02);
+}
+.sheet-trailer-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Fragman Video Modalı */
+.trailer-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  padding: clamp(16px, 4vw, 32px);
+}
+.trailer-modal[hidden] {
+  display: none !important;
+}
+.trailer-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 7, 12, 0.78);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.trailer-card {
+  position: relative;
+  width: min(880px, 100%);
+  border-radius: var(--rl);
+  background: var(--glass-hi);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8);
+  backdrop-filter: blur(28px) saturate(1.8);
+  box-shadow: inset 0 0 0 1px var(--line), 0 24px 60px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  animation: modal-pop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modal-pop {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.trailer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.trailer-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 12px;
+}
+.trailer-frame-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+.trailer-frame-box iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* ============================================================================
+   [AI-MIMARI-NOTU: ADIM 8 — SİNEMATİK GENİŞ SAHNE GÖRSELLERİ (BACKDROP BANNER)]
+   Letterboxd / IMDb elit standartlarında geniş açılı sahne görseli (backdrop).
+   Sıfır depolama: Görseller repoya indirilmez, AniList/TMDB CDN'den stream edilir.
+   ============================================================================ */
+.sheet-backdrop {
+  position: relative;
+  margin: -18px -18px 10px;
+  height: 195px;
+  overflow: hidden;
+  border-radius: var(--rl) var(--rl) 0 0;
+  background: #080a0f;
+}
+@media (min-width: 640px) {
+  .sheet-backdrop {
+    height: 230px;
+  }
+}
+.sheet-backdrop[hidden] {
+  display: none !important;
+}
+.sheet-backdrop-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+  transform: scale(1.02);
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+.sheet-backdrop-grad {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 13, 20, 0.2) 0%,
+    rgba(10, 13, 20, 0.45) 50%,
+    var(--glass-hi, #131722) 100%
+  );
+  pointer-events: none;
+}
+
+/* Backdrop aktifken modal başlık ve poster hiyerarşisi (Letterboxd / IMDb tarzı) */
+.sheet-card.has-backdrop {
+  padding-top: 18px;
+}
+.sheet-card.has-backdrop [data-close] {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 12;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+.sheet-card.has-backdrop [data-close]:hover {
+  background: rgba(0, 0, 0, 0.85);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+.sheet-card.has-backdrop .sheet-head {
+  position: relative;
+  z-index: 5;
+  margin-top: -56px;
+  margin-bottom: 12px;
+}
+.sheet-card.has-backdrop .sheet-cover {
+  width: 78px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), 0 0 0 2px rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+}
+@media (min-width: 640px) {
+  .sheet-card.has-backdrop .sheet-cover {
+    width: 88px;
+  }
+}
+.sheet-card.has-backdrop .sheet-t h2 {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+}
+

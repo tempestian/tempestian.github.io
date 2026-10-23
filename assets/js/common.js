@@ -51,7 +51,9 @@
     star: '<path fill="currentColor" d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/>',
     tier: '<rect x="3.5" y="4.5" width="4.5" height="4.5" rx="1.2"/><path d="M11 6.8h9.5"/><rect x="3.5" y="10.8" width="4.5" height="4.5" rx="1.2"/><path d="M11 13h7.5"/><rect x="3.5" y="17" width="4.5" height="4.5" rx="1.2"/><path d="M11 19.2h5.5"/>',
     link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
-    dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/>'
+    dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/>',
+    clock: '<circle cx="12" cy="12" r="8.5"/><polyline points="12 7 12 12 15 14"/>',
+    chart: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>'
   };
   const icon = n => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[n] || P.dot) + '</svg>';
 
@@ -130,7 +132,177 @@
   };
   // [AI-MIMARI-NOTU: ADIM 21 — EVRENSEL GÜVENLİ METİN KAÇIŞI (UI.esc), GELİŞMİŞ ALTYAZI/PARÇA ARAMASI VE MODAL YATAY KAYDIRMA]
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-  window.UI = { icon, el, parts, tally, resolveAsset, esc, icons: Object.keys(P) };
+
+  // ============================================================================
+  // [AI-MIMARI-NOTU: ADIM 5 & 6 — DİNAMİK AMBİENT GLOW (AURA) VE RESMİ FRAGMAN OYNATICI]
+  // Modal açıldığında afişin rengini Canvas ile hafifçe okuyup arka plana Spotify/Apple Music
+  // tarzı yumuşak bir ışık hüzmesi (aurora) yayar. Fragman oynatıcı ise sıfır depolama ile
+  // YouTube üzerinden resmi fragmanı temiz bir cam modalda çalar ve kapatıldığında sesi anında keser.
+  // ============================================================================
+  let ambientGlowEl = null;
+  function getAmbientGlowEl() {
+    if (!ambientGlowEl) {
+      ambientGlowEl = document.querySelector('.sheet-ambient-glow');
+      if (!ambientGlowEl) {
+        ambientGlowEl = document.createElement('div');
+        ambientGlowEl.className = 'sheet-ambient-glow';
+        ambientGlowEl.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(ambientGlowEl);
+      }
+    }
+    return ambientGlowEl;
+  }
+
+  // [AI-MIMARI-NOTU: ADIM 5 — DİNAMİK AMBİENT GLOW (AKILLI TÜRE GÖRE RENK PALETİ VE CANVAS ÖRNEKLEMESİ)]
+  function getGenreFallbackAura(item) {
+    const rawGenres = [...(item.customGenres || []), ...(item.genres || [])].map(g => String(g).toLowerCase());
+    if (rawGenres.some(g => g.includes('aksiyon') || g.includes('action') || g.includes('shounen') || g.includes('gerilim'))) {
+      return 'rgba(225, 29, 72, 0.42)'; // Rose Red
+    }
+    if (rawGenres.some(g => g.includes('romantik') || g.includes('romance') || g.includes('aşk'))) {
+      return 'rgba(236, 72, 153, 0.42)'; // Pink
+    }
+    if (rawGenres.some(g => g.includes('bilim') || g.includes('sci-fi') || g.includes('mecha') || g.includes('cyber'))) {
+      return 'rgba(6, 182, 212, 0.42)'; // Cyan
+    }
+    if (rawGenres.some(g => g.includes('fantastik') || g.includes('fantasy') || g.includes('büyü') || g.includes('magic'))) {
+      return 'rgba(168, 85, 247, 0.42)'; // Violet
+    }
+    if (rawGenres.some(g => g.includes('komedi') || g.includes('comedy'))) {
+      return 'rgba(245, 158, 11, 0.42)'; // Amber
+    }
+    if (rawGenres.some(g => g.includes('dram') || g.includes('drama') || g.includes('yaşam') || g.includes('slice'))) {
+      return 'rgba(16, 185, 129, 0.42)'; // Emerald
+    }
+    return 'rgba(14, 116, 219, 0.42)'; // Modern Deep Blue
+  }
+
+  function updateAmbientGlow(item, imgEl) {
+    const el = getAmbientGlowEl();
+    if (!item) {
+      el.style.opacity = '0';
+      return;
+    }
+    document.body.classList.add('has-sheet-open');
+    if (item.favorite) {
+      el.style.setProperty('--aura-color', 'rgba(245, 166, 35, 0.46)');
+      el.style.opacity = '0.95';
+      return;
+    }
+    if (imgEl && imgEl.complete && imgEl.naturalWidth > 0) {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = 16;
+        canvas.height = 24;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(imgEl, 0, 0, 16, 24);
+        const data = ctx.getImageData(0, 0, 16, 24).data;
+        let r = 0, g = 0, b = 0, count = 0;
+        for (let i = 0; i < data.length; i += 16) {
+          const pr = data[i], pg = data[i+1], pb = data[i+2];
+          const lum = (pr * 299 + pg * 587 + pb * 114) / 1000;
+          if (lum > 25 && lum < 230) {
+            r += pr; g += pg; b += pb; count++;
+          }
+        }
+        if (count > 0) {
+          r = Math.round(r / count);
+          g = Math.round(g / count);
+          b = Math.round(b / count);
+          el.style.setProperty('--aura-color', `rgba(${r}, ${g}, ${b}, 0.5)`);
+          el.style.opacity = '0.95';
+          return;
+        }
+      } catch (_) {}
+    }
+    el.style.setProperty('--aura-color', getGenreFallbackAura(item));
+    el.style.opacity = '0.95';
+  }
+
+  function hideAmbientGlow() {
+    const el = getAmbientGlowEl();
+    el.style.opacity = '0';
+    document.body.classList.remove('has-sheet-open');
+  }
+
+  let trailerModalEl = null;
+  // [AI-MIMARI-NOTU: ADIM 6 — FRAGMAN MODALI VE ESC OLAY YAKALAMA (CAPTURE: TRUE)]
+  function getTrailerModalEl() {
+    if (!trailerModalEl) {
+      trailerModalEl = document.getElementById('trailerModal');
+      if (!trailerModalEl) {
+        trailerModalEl = document.createElement('div');
+        trailerModalEl.id = 'trailerModal';
+        trailerModalEl.className = 'trailer-modal';
+        trailerModalEl.hidden = true;
+        trailerModalEl.setAttribute('role', 'dialog');
+        trailerModalEl.setAttribute('aria-modal', 'true');
+        trailerModalEl.innerHTML = `
+          <div class="trailer-bg" data-trailer-close></div>
+          <div class="trailer-card glass sq">
+            <div class="trailer-head">
+              <span class="trailer-title" id="trailerTitle">Fragman</span>
+              <button type="button" class="btn glass" data-trailer-close aria-label="Kapat" style="padding:6px;width:34px;height:34px">${icon('close')}</button>
+            </div>
+            <div class="trailer-frame-box">
+              <iframe id="trailerFrame" src="" title="Fragman Oynatıcı" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(trailerModalEl);
+        trailerModalEl.querySelectorAll('[data-trailer-close]').forEach(b => {
+          b.onclick = () => closeTrailer();
+        });
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape' && trailerModalEl && !trailerModalEl.hidden) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeTrailer();
+          }
+        }, { capture: true });
+      }
+    }
+    return trailerModalEl;
+  }
+
+  function openTrailer(item) {
+    if (!item || !item.title) return;
+    const modal = getTrailerModalEl();
+    const titleEl = modal.querySelector('#trailerTitle');
+    const frameEl = modal.querySelector('#trailerFrame');
+    if (titleEl) titleEl.textContent = `${item.title} · Resmi Fragman`;
+
+    let embedUrl = '';
+    const rawTrailer = item.trailer;
+    if (rawTrailer) {
+      if (typeof rawTrailer === 'string') {
+        if (rawTrailer.startsWith('http')) {
+          const match = rawTrailer.match(/(?:watch\?v=|embed\/|youtu\.be\/)([\w-]+)/);
+          if (match) embedUrl = `https://www.youtube-nocookie.com/embed/${match[1]}?autoplay=1`;
+        } else {
+          embedUrl = `https://www.youtube-nocookie.com/embed/${rawTrailer}?autoplay=1`;
+        }
+      } else if (typeof rawTrailer === 'object' && rawTrailer.id) {
+        embedUrl = `https://www.youtube-nocookie.com/embed/${rawTrailer.id}?autoplay=1`;
+      }
+    }
+    if (!embedUrl) {
+      const query = encodeURIComponent(`${item.title} official trailer`);
+      embedUrl = `https://www.youtube-nocookie.com/embed?listType=search&list=${query}&autoplay=1`;
+    }
+
+    if (frameEl) frameEl.src = embedUrl;
+    modal.hidden = false;
+  }
+
+  function closeTrailer() {
+    if (!trailerModalEl) return;
+    const frameEl = trailerModalEl.querySelector('#trailerFrame');
+    if (frameEl) frameEl.src = '';
+    trailerModalEl.hidden = true;
+  }
+
+  window.UI = { icon, el, parts, tally, resolveAsset, esc, icons: Object.keys(P), updateAmbientGlow, hideAmbientGlow, openTrailer, closeTrailer };
   try { localStorage.removeItem('wall'); } catch (e) {}
 
   const dock = document.getElementById('dock'), list = document.getElementById('sections'), links = document.getElementById('links');
@@ -814,6 +986,26 @@
           badge: 'Komut',
           icon: document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon',
           run: () => window.toggleTheme && window.toggleTheme()
+        });
+      }
+      if (activeScope === 'all' && (!q || 'zaman tüneli yolculuk kronoloji timeline geçmiş'.includes(q))) {
+        quickCommands.push({
+          isCommand: true,
+          title: '⏳ Zaman Tüneline Git',
+          sub: 'Yıllara göre izlenen ve okunan yapımların kronolojik akışı',
+          badge: 'Sayfa',
+          icon: 'clock',
+          run: () => { location.href = root + 'zaman-tuneli/'; }
+        });
+      }
+      if (activeScope === 'all' && (!q || 'istatistik grafikler analiz stats rapor'.includes(q))) {
+        quickCommands.push({
+          isCommand: true,
+          title: '📊 Genel İstatistiklere Git',
+          sub: 'Tüm kategorilerin arşiv özet ve grafik dağılımları',
+          badge: 'Sayfa',
+          icon: 'chart',
+          run: () => { location.href = root + 'istatistik/'; }
         });
       }
 

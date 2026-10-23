@@ -57,9 +57,9 @@ export function extractSeedAnilistId(item) {
   );
 }
 
-const Q = `query($u:String,$c:Int){MediaListCollection(userName:$u,type:ANIME,chunk:$c,perChunk:100){hasNextChunk lists{name isCustomList entries{status progress repeat score(format:POINT_10_DECIMAL) createdAt customLists media{id format status episodes startDate{year month day} genres title{romaji english} coverImage{large} relations{edges{relationType node{id}}}}}}}}`;
+const Q = `query($u:String,$c:Int){MediaListCollection(userName:$u,type:ANIME,chunk:$c,perChunk:100){hasNextChunk lists{name isCustomList entries{status progress repeat score(format:POINT_10_DECIMAL) createdAt customLists media{id format status episodes startDate{year month day} genres title{romaji english} coverImage{large} bannerImage relations{edges{relationType node{id}}}}}}}}`;
 
-const QM = `query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){id format status episodes startDate{year month day} genres title{romaji english} coverImage{large} relations{edges{relationType node{id}}}}}}`;
+const QM = `query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){id format status episodes startDate{year month day} genres title{romaji english} coverImage{large} bannerImage relations{edges{relationType node{id}}}}}}`;
 
 const sleep = ms => new Promise(s => setTimeout(s, ms));
 
@@ -426,6 +426,11 @@ for (const [root, members] of groups) {
     ? matchedExisting.image
     : ((hm && hm.coverImage && hm.coverImage.large) || (matchedExisting && matchedExisting.image) || null);
 
+  // [AI-MIMARI-NOTU: ADIM 8 — SİNEMATİK GENİŞ SAHNE GÖRSELİ (BACKDROP BANNER)]
+  const banner = (isModified && locked.has('banner') && matchedExisting.banner)
+    ? matchedExisting.banner
+    : ((hm && hm.bannerImage) || (matchedExisting && matchedExisting.banner) || null);
+
   const finalAnilistId = preferredSeedId || head.id;
   const canonicalUrl = 'https://anilist.co/anime/' + finalAnilistId;
   const firstSeasonUrl = (matchedExisting && matchedExisting.firstSeasonUrl) || canonicalUrl;
@@ -439,6 +444,8 @@ for (const [root, members] of groups) {
     firstSeasonUrl,
     status,
     ...(isFavorite ? { favorite: true } : {}),
+    ...(banner ? { banner } : {}),
+    image,
     ...(next ? { next: true } : {}),
     ...(customGenres && customGenres.length ? { genres: customGenres, customGenres } : {}),
     score: score ?? null,

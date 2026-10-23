@@ -718,7 +718,7 @@ function renderTierBoard(visibleNodes) {
       }
     }
     if (shareBtn) {
-      shareBtn.textContent = '🔗 Bağlantıyı Kopyala';
+      shareBtn.textContent = (typeof navigator.share === 'function') ? '📤 Paylaş' : '🔗 Bağlantıyı Kopyala';
       shareBtn.onclick = async () => {
         // [AI-MIMARI-NOTU: ADIM 2 — ÇOKLU KATEGORİ SOSYAL MEDYA PAYLAŞIM KARTI BAĞLANTISI]:
         const rootPath = document.body.dataset.root || '../';
@@ -726,10 +726,20 @@ function renderTierBoard(visibleNodes) {
         const prefixMap = { anime: 'a', series: 'd', movie: 'f', manga: 'm', book: 'k' };
         const folder = prefixMap[sectionId] || 'a';
         const shareUrl = `${cleanBase}${folder}/${encodeURIComponent(it.id)}.html`;
+        if (typeof navigator.share === 'function') {
+          try {
+            await navigator.share({
+              title: `${it.title} · Tempestian`,
+              text: `${it.title} incelemesi ve ilerleme takibi`,
+              url: shareUrl
+            });
+            return;
+          } catch (_) {}
+        }
         try {
           await navigator.clipboard.writeText(shareUrl);
           shareBtn.textContent = '✓ Kopyalandı!';
-          setTimeout(() => { shareBtn.textContent = '🔗 Bağlantıyı Kopyala'; }, 2000);
+          setTimeout(() => { shareBtn.textContent = (typeof navigator.share === 'function') ? '📤 Paylaş' : '🔗 Bağlantıyı Kopyala'; }, 2000);
         } catch (e) {}
       };
     }

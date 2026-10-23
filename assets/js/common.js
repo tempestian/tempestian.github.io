@@ -994,46 +994,161 @@
   })();
 
   // ============================================================================
-  // [YENİ ÖZELLİK 2]: HIZLI ARAMA KISAYOLU (/ İLE ODAKLANMA & ESC İLE TEMİZLEME)
+  // [YENİ ÖZELLİK 2]: HIZLI ARAMA KISAYOLU (/), TEMİZLEME (✕), ESC VE YARDIM PENCERESİ (?)
   // ============================================================================
   (() => {
+    // 1. Kısayol Yardım Penceresi (Modal)
+    let kbdOverlay = null;
+    const createKbdModal = () => {
+      if (kbdOverlay) return kbdOverlay;
+      kbdOverlay = document.createElement('div');
+      kbdOverlay.className = 'kbd-overlay';
+      kbdOverlay.setAttribute('role', 'dialog');
+      kbdOverlay.setAttribute('aria-modal', 'true');
+      kbdOverlay.setAttribute('aria-label', 'Klavye Kısayolları');
+      kbdOverlay.innerHTML = `
+        <div class="kbd-dialog glass sq">
+          <div class="kbd-head">
+            <h3>Klavye Kısayolları</h3>
+            <button type="button" class="kbd-close" aria-label="Kapat">✕</button>
+          </div>
+          <ul class="kbd-list">
+            <li><span>Arama kutusuna odaklan</span><div class="kbd-keys"><kbd>/</kbd></div></li>
+            <li><span>Açık pencereyi kapat / Aramayı temizle</span><div class="kbd-keys"><kbd>Esc</kbd></div></li>
+            <li><span>Koyu / Açık tema değiştir</span><div class="kbd-keys"><kbd>T</kbd></div></li>
+            <li><span>Rastgele yapım seç</span><div class="kbd-keys"><kbd>R</kbd></div></li>
+            <li><span>Kart / Liste / Katman görünümü</span><div class="kbd-keys"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd></div></li>
+            <li><span>Bu yardım penceresini aç / kapat</span><div class="kbd-keys"><kbd>?</kbd></div></li>
+          </ul>
+        </div>
+      `;
+      document.body.appendChild(kbdOverlay);
+      kbdOverlay.addEventListener('click', e => {
+        if (e.target === kbdOverlay || e.target.closest('.kbd-close')) {
+          closeKbdModal();
+        }
+      });
+      return kbdOverlay;
+    };
+
+    const toggleKbdModal = () => {
+      const modal = createKbdModal();
+      modal.classList.toggle('open');
+    };
+    const closeKbdModal = () => {
+      if (kbdOverlay) kbdOverlay.classList.remove('open');
+    };
+
+    // 2. Klavye Dinleyicisi
     document.addEventListener('keydown', e => {
       const activeTag = document.activeElement && document.activeElement.tagName;
       const isInputActive = activeTag === 'INPUT' || activeTag === 'TEXTAREA' || (document.activeElement && document.activeElement.isContentEditable);
       
+      // '?' Tuşu: Kısayol modalını aç/kapat
+      if ((e.key === '?' || (e.shiftKey && e.key === '/')) && !isInputActive) {
+        e.preventDefault();
+        toggleKbdModal();
+        return;
+      }
+
       // '/' Tuşu: Arama kutusuna odaklan
       if (e.key === '/' && !isInputActive && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        const searchInp = document.getElementById('search') || document.querySelector('input[type="search"]');
+        const searchInp = document.getElementById('search') || document.getElementById('q') || document.querySelector('input[type="search"]');
         if (searchInp) {
           e.preventDefault();
           searchInp.focus();
           searchInp.select();
         }
       }
-      // 'Escape' Tuşu: Arama kutusundaysa metni temizle ve odaktan çık
-      else if (e.key === 'Escape' && isInputActive && document.activeElement && document.activeElement.id === 'search') {
-        const searchInp = document.activeElement;
-        if (searchInp.value) {
-          searchInp.value = '';
-          searchInp.dispatchEvent(new Event('input', { bubbles: true }));
+      // 'Escape' Tuşu: Modal açıksa kapat, yoksa arama kutusundaysa metni temizle ve odaktan çık
+      else if (e.key === 'Escape') {
+        if (kbdOverlay && kbdOverlay.classList.contains('open')) {
+          e.preventDefault();
+          closeKbdModal();
+          return;
         }
-        searchInp.blur();
+        if (isInputActive) {
+          const searchInp = document.activeElement;
+          if (searchInp && (searchInp.id === 'search' || searchInp.id === 'q' || searchInp.type === 'search')) {
+            if (searchInp.value) {
+              searchInp.value = '';
+              searchInp.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            searchInp.blur();
+          }
+        }
+      }
+      // 'T' Tuşu: Tema değiştir
+      else if ((e.key === 't' || e.key === 'T') && !isInputActive && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        if (typeof window.toggleTheme === 'function') {
+          e.preventDefault();
+          window.toggleTheme();
+        }
+      }
+      // 'R' Tuşu: Rastgele seç (varsa)
+      else if ((e.key === 'r' || e.key === 'R') && !isInputActive && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const diceBtn = document.getElementById('randomPickBtn') || document.querySelector('[data-icon="dice"]');
+        if (diceBtn) {
+          e.preventDefault();
+          diceBtn.click();
+        }
+      }
+      // '1', '2', '3' Tuşları: Görünüm değiştir
+      else if (['1', '2', '3'].includes(e.key) && !isInputActive && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const viewMap = { '1': 'grid', '2': 'list', '3': 'tier' };
+        const viewBtn = document.querySelector(`[data-view="${viewMap[e.key]}"]`);
+        if (viewBtn) {
+          e.preventDefault();
+          viewBtn.click();
+        }
       }
     });
 
-    const mountHint = () => {
-      const searchInp = document.getElementById('search');
-      if (searchInp && searchInp.parentElement && !searchInp.parentElement.querySelector('.search-kbd-hint')) {
-        searchInp.parentElement.classList.add('search-wrap');
-        const hint = document.createElement('kbd');
-        hint.className = 'search-kbd-hint';
-        hint.textContent = '/';
-        hint.setAttribute('title', 'Aramak için / tuşuna basın');
-        searchInp.parentElement.appendChild(hint);
-      }
+    // 3. Arama Temizleme (✕) Butonu ve Kısayol İpucu Entegrasyonu
+    const mountSearchControls = () => {
+      const searchInps = document.querySelectorAll('input#search, input#q, .search input');
+      searchInps.forEach(searchInp => {
+        const wrap = searchInp.parentElement;
+        if (!wrap) return;
+        wrap.classList.add('search-wrap');
+
+        // Kısayol rozeti ('/')
+        if (!wrap.querySelector('.search-kbd-hint')) {
+          const hint = document.createElement('kbd');
+          hint.className = 'search-kbd-hint';
+          hint.textContent = '/';
+          hint.setAttribute('title', 'Aramak için / tuşuna basın');
+          wrap.appendChild(hint);
+        }
+
+        // Temizleme butonu ('✕')
+        let clearBtn = wrap.querySelector('.search-clear');
+        if (!clearBtn) {
+          clearBtn = document.createElement('button');
+          clearBtn.type = 'button';
+          clearBtn.className = 'search-clear';
+          clearBtn.setAttribute('aria-label', 'Aramayı temizle');
+          clearBtn.innerHTML = '✕';
+          wrap.appendChild(clearBtn);
+
+          const syncClear = () => {
+            clearBtn.classList.toggle('on', Boolean(searchInp.value && searchInp.value.trim().length > 0));
+          };
+          searchInp.addEventListener('input', syncClear);
+          syncClear();
+
+          clearBtn.addEventListener('click', e => {
+            e.preventDefault();
+            searchInp.value = '';
+            searchInp.dispatchEvent(new Event('input', { bubbles: true }));
+            searchInp.focus();
+            syncClear();
+          });
+        }
+      });
     };
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountHint);
-    else mountHint();
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountSearchControls);
+    else mountSearchControls();
   })();
 
   // ============================================================================

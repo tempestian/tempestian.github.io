@@ -12,3 +12,8 @@
 ## 3. Scope & Finalization
 - If the user has authorized pushing to Git, complete the work, ensure the working tree is clean, and push to the remote branch automatically.
 - Upon completion, deliver a concise summary of the actions taken, verification results, and final system state.
+
+## 4. Git Commits & Attribution (Mandatory Rule)
+- For every commit in `tempestian.github.io`, always append the Gemini co-author trailer to the commit message:
+  `Co-authored-by: Gemini <200291788+gemini-code-assist@users.noreply.github.com>`
+

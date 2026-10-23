@@ -665,19 +665,26 @@ function fillSheet(it){
     }
   }
   if (shareBtn) {
-    shareBtn.textContent = '🔗 Bağlantıyı Kopyala';
+    shareBtn.textContent = (typeof navigator.share === 'function') ? '📤 Paylaş' : '🔗 Bağlantıyı Kopyala';
     shareBtn.onclick = async () => {
       // [AI-MIMARI-NOTU: ADIM 22 — SOSYAL MEDYA PAYLAŞIM KARTI BAĞLANTISI]:
-      // Doğrudan `a/<id>.html` adresi kopyalanır; böylece Discord, WhatsApp, Twitter gibi
-      // platformların crawler botları kullanıcının puanını, sezon/bölüm sayısını ve afişini
-      // estetik büyük kart olarak çekerken, tıklayan kişi 0ms içinde `anime/#<id>` detayına yönlendirilir.
       const rootPath = document.body.dataset.root || '../';
       const cleanBase = new URL(rootPath, location.href).href;
       const shareUrl = `${cleanBase}a/${encodeURIComponent(it.id)}.html`;
+      if (typeof navigator.share === 'function') {
+        try {
+          await navigator.share({
+            title: `${it.title} · Tempestian`,
+            text: `${it.title} incelemesi ve ilerleme takibi`,
+            url: shareUrl
+          });
+          return;
+        } catch (_) {}
+      }
       try {
         await navigator.clipboard.writeText(shareUrl);
         shareBtn.textContent = '✓ Kopyalandı!';
-        setTimeout(() => { shareBtn.textContent = '🔗 Bağlantıyı Kopyala'; }, 2000);
+        setTimeout(() => { shareBtn.textContent = (typeof navigator.share === 'function') ? '📤 Paylaş' : '🔗 Bağlantıyı Kopyala'; }, 2000);
       } catch (e) {}
     };
   }

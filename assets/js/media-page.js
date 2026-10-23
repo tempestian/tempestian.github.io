@@ -240,6 +240,15 @@
     }
     const im = li.querySelector('img'); im.onload = () => im.classList.add('in');
     if (it.image) im.src = big(it.image);
+    // [AI-MIMARI-NOTU: OPTİMİZASYON — FARE KARTIN ÜZERİNE GELDİĞİNDE BANNER'I ÖNCEDEN İNDİRME]
+    li.addEventListener('pointerenter', () => {
+      const bUrl = it.banner || it.backdrop;
+      if (bUrl) {
+        const bImg = new Image();
+        bImg.decoding = 'async';
+        bImg.src = bUrl;
+      }
+    }, { once: true });
     const m = { li, it, sc: effScore || 0, key: ((it.title || '') + ' ' + extraMeta).toLocaleLowerCase('tr'), mt: String(extraMeta || '').trim(), y, ay: addedYear, d: dec(y), sn, fl, rp: Math.max(0, ...ps.map(p => p.repeat || 0)), ep: w, g: effGenres };
     nodes.set(it.id, m);
     return li;
@@ -567,7 +576,7 @@ function renderTierBoard(visibleNodes) {
 
   const sheet = document.createElement('div');
   sheet.className = 'sheet'; sheet.hidden = true; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true'); sheet.setAttribute('aria-labelledby', 'sh-title');
-  sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-backdrop" hidden><img class="sheet-backdrop-img" alt="" loading="lazy"><div class="sheet-backdrop-grad"></div></div><div class="sheet-head"><img class="sheet-cover" alt=""><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-trailer-btn" data-sh-trailer title="Resmi fragmanı izle">🎬 Fragman</button><button type="button" class="sheet-share-btn" data-sh-share title="Bağlantıyı kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
+  sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-backdrop" hidden><img class="sheet-backdrop-img" alt="" decoding="async"><div class="sheet-backdrop-grad"></div></div><div class="sheet-head"><img class="sheet-cover" alt="" decoding="async"><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-trailer-btn" data-sh-trailer title="Resmi fragmanı izle">🎬 Fragman</button><button type="button" class="sheet-share-btn" data-sh-share title="Bağlantıyı kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
   document.body.append(sheet);
   const closeBtn = sheet.querySelector('[data-close]'); closeBtn.innerHTML = UI.icon('close');
   let opener = null, pushed = false;
@@ -580,14 +589,36 @@ function renderTierBoard(visibleNodes) {
     const cardEl = t('.sheet-card');
     const bdEl = t('.sheet-backdrop');
     const bdImg = t('.sheet-backdrop-img');
-    // [AI-MIMARI-NOTU: ADIM 8 — SİNEMATİK GENİŞ SAHNE GÖRSELİ (BACKDROP BANNER)]
+    // [AI-MIMARI-NOTU: OPTİMİZASYON — GHOSTING (ESKİ BANNER KALINTISI) ENGELLEYİCİ ASENKRON ÇÖZÜMLEME]
     const backdropUrl = it.banner || it.backdrop || null;
+    bdImg.dataset.targetId = it.id;
     if (backdropUrl) {
-      bdImg.src = backdropUrl;
       bdEl.hidden = false;
       cardEl.classList.add('has-backdrop');
+      if (bdImg.dataset.loadedSrc === backdropUrl) {
+        bdImg.style.opacity = '1';
+      } else {
+        bdImg.style.opacity = '0';
+        const tempBd = new Image();
+        tempBd.decoding = 'async';
+        tempBd.onload = () => {
+          if (bdImg.dataset.targetId === it.id) {
+            bdImg.src = backdropUrl;
+            bdImg.dataset.loadedSrc = backdropUrl;
+            bdImg.style.opacity = '1';
+          }
+        };
+        tempBd.src = backdropUrl;
+        if (tempBd.complete) {
+          bdImg.src = backdropUrl;
+          bdImg.dataset.loadedSrc = backdropUrl;
+          bdImg.style.opacity = '1';
+        }
+      }
     } else {
       bdEl.hidden = true;
+      bdImg.src = '';
+      bdImg.dataset.loadedSrc = '';
       cardEl.classList.remove('has-backdrop');
     }
     t('#sh-title').textContent = it.title;
@@ -604,9 +635,34 @@ function renderTierBoard(visibleNodes) {
       gEl.hidden = !effGenres.length;
     }
     const im = t('.sheet-cover');
-    im.hidden = !it.image;
-    if (it.image) {
-      im.src = big(it.image);
+    const targetCover = it.image ? big(it.image) : '';
+    im.dataset.targetId = it.id;
+    if (targetCover) {
+      im.hidden = false;
+      if (im.dataset.loadedSrc === targetCover) {
+        im.style.opacity = '1';
+      } else {
+        im.style.opacity = '0';
+        const tempCover = new Image();
+        tempCover.decoding = 'async';
+        tempCover.onload = () => {
+          if (im.dataset.targetId === it.id) {
+            im.src = targetCover;
+            im.dataset.loadedSrc = targetCover;
+            im.style.opacity = '1';
+          }
+        };
+        tempCover.src = targetCover;
+        if (tempCover.complete) {
+          im.src = targetCover;
+          im.dataset.loadedSrc = targetCover;
+          im.style.opacity = '1';
+        }
+      }
+    } else {
+      im.hidden = true;
+      im.src = '';
+      im.dataset.loadedSrc = '';
     }
     const own2 = ps.filter(own), te = sum(own2, 'episodes'), tw = sum(own2, 'watched'), pg = t('.sh-pg');
     pg.hidden = !(te && tw < te); if (!pg.hidden) pg.firstChild.style.setProperty('--w', Math.round(tw / te * 100) + '%');
@@ -648,6 +704,26 @@ function renderTierBoard(visibleNodes) {
     if (nextBtn) {
       nextBtn.disabled = curIdx < 0 || curIdx >= orderedIds.length - 1;
       nextBtn.onclick = () => { if (curIdx >= 0 && curIdx < orderedIds.length - 1) navigateSheetTo(orderedIds[curIdx + 1]); };
+    }
+    // [AI-MIMARI-NOTU: OPTİMİZASYON — BİR SONRAKİ VE ÖNCEKİ YAPIMLARI ÖNCEDEN YÜKLEME (PRELOAD)]
+    if (curIdx >= 0) {
+      const targets = [orderedIds[curIdx + 1], orderedIds[curIdx - 1], orderedIds[curIdx + 2]].filter(Boolean);
+      for (const pId of targets) {
+        const pIt = state.items.find(x => x.id === pId);
+        if (pIt) {
+          if (pIt.image) {
+            const pi = new Image();
+            pi.decoding = 'async';
+            pi.src = big(pIt.image);
+          }
+          const pb = pIt.banner || pIt.backdrop;
+          if (pb) {
+            const pbi = new Image();
+            pbi.decoding = 'async';
+            pbi.src = pb;
+          }
+        }
+      }
     }
     if (shareBtn) {
       shareBtn.textContent = '🔗 Bağlantıyı Kopyala';

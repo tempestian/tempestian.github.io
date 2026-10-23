@@ -215,7 +215,7 @@ h3 a:focus-visible{outline:0}
 .sheet-card{position:relative;width:min(100%,600px);max-height:88svh;overflow:auto;overscroll-behavior:contain;border-radius:var(--rl) var(--rl) 0 0;
   background:var(--glass-hi);padding:18px 18px calc(18px + env(safe-area-inset-bottom))}
 .sheet-head{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin-bottom:10px}
-.sheet-cover{width:56px;aspect-ratio:2/3;object-fit:cover;border-radius:calc(12px*var(--k));box-shadow:inset 0 0 0 1px var(--line)}
+.sheet-cover{width:56px;aspect-ratio:2/3;object-fit:cover;border-radius:calc(12px*var(--k));box-shadow:inset 0 0 0 1px var(--line);background:var(--glass2, rgba(255,255,255,.05));transition:opacity .18s cubic-bezier(0.16, 1, 0.3, 1)}
 .sheet-cover[hidden]{display:none}
 .sheet-t{min-width:0}
 .sheet-t h2{font-size:1.15rem;line-height:1.25;font-weight:620}
@@ -602,7 +602,7 @@ h3 a:focus-visible{outline:0}
   height: 195px;
   overflow: hidden;
   border-radius: var(--rl) var(--rl) 0 0;
-  background: #080a0f;
+  background: linear-gradient(135deg, #0c1017 0%, #151a24 100%);
 }
 @media (min-width: 640px) {
   .sheet-backdrop {
@@ -619,7 +619,7 @@ h3 a:focus-visible{outline:0}
   object-position: center 25%;
   display: block;
   transform: scale(1.02);
-  transition: transform 0.35s ease, filter 0.35s ease;
+  transition: transform 0.35s ease, filter 0.35s ease, opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .sheet-backdrop-grad {
   position: absolute;

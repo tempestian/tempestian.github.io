@@ -67,6 +67,43 @@
   };
 
   const P = SECTION_PROFILES[sectionId] || SECTION_PROFILES.series;
+  const pageTexts = {
+    searchPlaceholder: '',
+    emptyText: P.emptyText,
+    detailsText: 'Ayrıntılar',
+    resetFilterText: 'Filtreleri sıfırla',
+    externalButtonText: P.extBtnText,
+    footerText: P.footerText
+  };
+
+  function applyMediaPageConfig(cfg) {
+    const pg = cfg && cfg.pages && cfg.pages[sectionId];
+    if (!pg) return;
+    if (pg.emptyText) P.emptyText = pg.emptyText;
+    if (pg.externalButtonText || pg.anilistButtonText) P.extBtnText = pg.externalButtonText || pg.anilistButtonText;
+    if (pg.footerText !== undefined) P.footerText = pg.footerText;
+    Object.assign(pageTexts, pg);
+    const qEl = $('#q');
+    if (qEl && pg.searchPlaceholder) qEl.placeholder = pg.searchPlaceholder;
+    const footEl = document.querySelector('.foot');
+    if (footEl && pg.footerText !== undefined) {
+      footEl.textContent = pg.footerText;
+      footEl.hidden = pg.footerText === '';
+    }
+    const emptyEl = $('#empty');
+    if (emptyEl && !emptyEl.hidden) emptyEl.textContent = P.emptyText;
+    const moreBtn = document.querySelector('#stats > .more');
+    if (moreBtn && pg.detailsText) {
+      const ic = moreBtn.querySelector('svg');
+      moreBtn.textContent = pg.detailsText;
+      if (ic) moreBtn.append(ic);
+    }
+    const rstBtn = document.querySelector('#fp .more');
+    if (rstBtn && pg.resetFilterText) rstBtn.textContent = pg.resetFilterText;
+  }
+  if (window.SITE_CONFIG) applyMediaPageConfig(window.SITE_CONFIG);
+  document.addEventListener('siteconfig', e => applyMediaPageConfig(e.detail));
+
   const ST = P.statusLabels;
   const NEXT = 'Devam edilecek';
   const FAV_LABEL = '★ Başyapıtlar';
@@ -88,7 +125,7 @@
   const rew = ps => { const n = Math.max(0, ...ps.map(p => p.repeat || 0)); return n ? '↻ ' + n + '× tekrar' : ''; };
   function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} }
   const savedV = ls('view_' + sectionId);
-  const state = { items: [], view: (savedV === 'list' || savedV === 'tier') ? savedV : 'grid', filter: 'all', sort: 'added', q: '', sc: 'all', dc: 'all', kd: 'all', gn: 'all', ay: 'all' };
+  const state = { items: [], view: (savedV === 'list' || savedV === 'tier') ? savedV : 'grid', filter: 'all', sort: 'added', q: '', sc: 'all', dc: 'all', kd: 'all', gn: 'all', ay: 'all', mt: 'all' };
 
   const byAdded = (a, b) => (b.addedAt || '').localeCompare(a.addedAt || '');
   const nodes = new Map();
@@ -198,7 +235,7 @@
     }
     const im = li.querySelector('img'); im.onload = () => im.classList.add('in');
     if (it.image) im.src = big(it.image);
-    const m = { li, it, sc: effScore || 0, key: ((it.title || '') + ' ' + extraMeta).toLocaleLowerCase('tr'), y, ay: addedYear, d: dec(y), sn, fl, rp: Math.max(0, ...ps.map(p => p.repeat || 0)), ep: w, g: effGenres };
+    const m = { li, it, sc: effScore || 0, key: ((it.title || '') + ' ' + extraMeta).toLocaleLowerCase('tr'), mt: String(extraMeta || '').trim(), y, ay: addedYear, d: dec(y), sn, fl, rp: Math.max(0, ...ps.map(p => p.repeat || 0)), ep: w, g: effGenres };
     nodes.set(it.id, m);
     return li;
   }
@@ -258,7 +295,7 @@ function renderTierBoard(visibleNodes) {
   board.append(fr);
 }
 
-  const active = () => ['sc', 'dc', 'kd', 'gn', 'ay'].filter(k => state[k] !== 'all').length;
+  const active = () => ['sc', 'dc', 'kd', 'gn', 'ay', 'mt'].filter(k => state[k] !== 'all').length;
   function render() {
     const s = state, q = s.q.trim().toLocaleLowerCase('tr'), root = $('#list');
     root.className = s.view;
@@ -274,7 +311,7 @@ function renderTierBoard(visibleNodes) {
       const filterMatch = s.filter === 'all'
         || (s.filter === 'fav' ? Boolean(it.favorite) : s.filter === 'next' ? it.next : it.status === s.filter);
       const ok = filterMatch && n.key.includes(q)
-        && scOk(s.sc, n.sc) && (s.gn === 'all' || n.g.includes(s.gn)) && (s.dc === 'all' || n.d === s.dc) && (s.ay === 'all' || n.ay === s.ay) && kOk(s.kd, n);
+        && scOk(s.sc, n.sc) && (s.gn === 'all' || n.g.includes(s.gn)) && (s.dc === 'all' || n.d === s.dc) && (s.ay === 'all' || n.ay === s.ay) && (s.mt === 'all' || n.mt === s.mt) && kOk(s.kd, n);
       n.li.hidden = !ok; n.li.classList.remove('f', 'l');
     }
     const visibleNodes = [];
@@ -316,15 +353,24 @@ function renderTierBoard(visibleNodes) {
       for (const [v, l] of opts) { const c = counts[v]; if (c === 0) continue; chip(row, l, c, { g: k, v }, () => setF(k, v)); }
       box.append(g);
     };
-    const ms = [...nodes.values()], gcount = {};
-    for (const m of ms) for (const g of m.g) gcount[g] = (gcount[g] || 0) + 1;
+    const ms = [...nodes.values()], gcount = {}, mtCount = {}, ayCount = {};
+    for (const m of ms) {
+      for (const g of m.g) gcount[g] = (gcount[g] || 0) + 1;
+      if (m.mt) mtCount[m.mt] = (mtCount[m.mt] || 0) + 1;
+      if (m.ay) ayCount[m.ay] = (ayCount[m.ay] || 0) + 1;
+    }
     grp('Puan', 'sc', SCO, Object.fromEntries(SCO.map(([v]) => [v, ms.filter(m => scOk(v, m.sc)).length])));
-    grp('Yıl', 'dc', DORD.map(k => [k, DEC[k]]), Object.fromEntries(DORD.map(v => [v, ms.filter(m => m.d === v).length])));
+    grp('Çıkış Dönemi', 'dc', DORD.map(k => [k, DEC[k]]), Object.fromEntries(DORD.map(v => [v, ms.filter(m => m.d === v).length])));
+    const ayList = Object.keys(ayCount).sort((a, b) => b.localeCompare(a));
+    if (ayList.length > 1) grp('Eklenme / İzleme Yılı', 'ay', ayList.map(y => [y, y]), ayCount);
     const gs = Object.keys(gcount).sort((a, b) => gcount[b] - gcount[a] || a.localeCompare(b, 'tr'));
     if (gs.length) grp('Tür / Kategori', 'gn', gs.map(g => [g, g]), gcount);
+    const mtList = Object.keys(mtCount).sort((a, b) => mtCount[b] - mtCount[a] || a.localeCompare(b, 'tr')).slice(0, 20);
+    const mtLabel = sectionId === 'series' ? 'Platform / Kanal' : sectionId === 'movie' ? 'Yönetmen' : sectionId === 'manga' ? 'Mangaka / Yazar' : 'Yazar';
+    if (mtList.length) grp(mtLabel, 'mt', mtList.map(x => [x, x]), mtCount);
     grp('İçerik', 'kd', KIND, Object.fromEntries(KIND.map(([v]) => [v, ms.filter(m => kOk(v, m)).length])));
-    const rs = h('button', 'more', 'Filtreleri sıfırla'); rs.type = 'button';
-    rs.onclick = () => { Object.assign(state, { sc: 'all', dc: 'all', kd: 'all', gn: 'all', ay: 'all', filter: 'all', q: '' }); $('#q').value = ''; go(); };
+    const rs = h('button', 'more', pageTexts.resetFilterText || 'Filtreleri sıfırla'); rs.type = 'button';
+    rs.onclick = () => { Object.assign(state, { sc: 'all', dc: 'all', kd: 'all', gn: 'all', ay: 'all', mt: 'all', filter: 'all', q: '' }); $('#q').value = ''; go(); };
     box.append(rs); fp.append(box);
     $('#fbtn').onclick = () => { const o = $('#fp').classList.toggle('open'); $('#fbtn').setAttribute('aria-expanded', o); };
   }
@@ -362,7 +408,7 @@ function renderTierBoard(visibleNodes) {
       const e = h('div', 'stat'); e.innerHTML = '<b></b><span></span>'; e.firstChild.textContent = v; e.lastChild.textContent = l; row.append(e);
     }
 
-    const more = h('button', 'more', 'Ayrıntılar'); more.type = 'button'; more.setAttribute('aria-expanded', 'false'); more.insertAdjacentHTML('beforeend', UI.icon('down'));
+    const more = h('button', 'more', pageTexts.detailsText || 'Ayrıntılar'); more.type = 'button'; more.setAttribute('aria-expanded', 'false'); more.insertAdjacentHTML('beforeend', UI.icon('down'));
     const ins = h('div', 'ins'), inn = h('div', 'ins-in'); ins.append(inn);
     const blk = (title, ...kids) => { const b = h('div', 'blk'); b.append(h('h4', null, title), ...kids); inn.append(b); };
     const bars = (arr) => {
@@ -379,6 +425,45 @@ function renderTierBoard(visibleNodes) {
       const hist = Array.from({ length: 10 }, (_, i) => [String(i + 1), 0, 'sc', 'b' + (i + 1)]);
       for (const x of scs) hist[Math.min(10, Math.max(1, Math.floor(x))) - 1][1]++;
       blk('Puan dağılımı', bars(hist.slice(Math.min(...hist.map((x, i) => x[1] ? i : 9)))));
+    }
+
+    if (sectionId !== 'movie') {
+      const formatBuckets = {
+        season: { label: `Ana ${P.unitSeason} (×${P.weights.season.toFixed(2)})`, count: 0, scores: [] },
+        movie: { label: `${P.unitFilm} (×${P.weights.movie.toFixed(2)})`, count: 0, scores: [] },
+        other: { label: `Yan / Ek (×${P.weights.other.toFixed(2)})`, count: 0, scores: [] }
+      };
+      for (const it of cn) {
+        for (const p of UI.parts(it)) {
+          if (p.status !== 'COMPLETED' && !(p.watched > 0)) continue;
+          const k = p.kind === 'movie' ? 'movie' : p.kind === 'other' ? 'other' : 'season';
+          if (p.status === 'COMPLETED') formatBuckets[k].count++;
+          const psc = Number(p.score);
+          if (!isNaN(psc) && psc > 0) formatBuckets[k].scores.push(psc);
+        }
+      }
+      const fmtGrid = h('div', 'fmt-cmp-grid');
+      for (const fb of Object.values(formatBuckets)) {
+        if (!fb.count && !fb.scores.length) continue;
+        const fAvg = fb.scores.length ? (fb.scores.reduce((a, b) => a + b, 0) / fb.scores.length).toFixed(1) : '-';
+        const card = h('div', 'fmt-cmp-card glass');
+        card.innerHTML = `<span class="fmt-cmp-lbl"></span><b class="fmt-cmp-val"></b><small class="fmt-cmp-sub"></small>`;
+        card.querySelector('.fmt-cmp-lbl').textContent = fb.label;
+        card.querySelector('.fmt-cmp-val').textContent = fAvg !== '-' ? `★ ${fAvg}` : `${fb.count} tamamlandı`;
+        card.querySelector('.fmt-cmp-sub').textContent = `${fb.count} tamamlanan · ${fb.scores.length} puanlı`;
+        fmtGrid.append(card);
+      }
+      if (fmtGrid.children.length) blk('Format & ağırlıklı puan analizi', fmtGrid);
+    }
+
+    const ayCounts = {};
+    for (const i of cn) {
+      const ay = nodes.get(i.id) && nodes.get(i.id).ay;
+      if (ay) ayCounts[ay] = (ayCounts[ay] || 0) + 1;
+    }
+    const ayKeys = Object.keys(ayCounts).sort();
+    if (ayKeys.length > 1) {
+      blk('Eklenme yılına göre', bars(ayKeys.map(y => [y, ayCounts[y], 'ay', y])));
     }
 
     const sg = h('div', 'seg'), lg = h('div', 'leg');
@@ -422,7 +507,7 @@ function renderTierBoard(visibleNodes) {
 
   const sheet = document.createElement('div');
   sheet.className = 'sheet'; sheet.hidden = true; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true'); sheet.setAttribute('aria-labelledby', 'sh-title');
-  sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-head"><img class="sheet-cover" alt=""><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><a class="sh-al" target="_blank" rel="noopener"></a></div>';
+  sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-head"><img class="sheet-cover" alt=""><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-share-btn" data-sh-share title="Bağlantıyı kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
   document.body.append(sheet);
   const closeBtn = sheet.querySelector('[data-close]'); closeBtn.innerHTML = UI.icon('close');
   let opener = null, pushed = false;
@@ -467,7 +552,49 @@ function renderTierBoard(visibleNodes) {
     } else {
       al.hidden = true;
     }
+    const orderedIds = getVisibleOrderedIds();
+    const curIdx = orderedIds.indexOf(it.id);
+    const prevBtn = t('[data-sh-prev]'), nextBtn = t('[data-sh-next]'), posLbl = t('[data-sh-pos]'), shareBtn = t('[data-sh-share]');
+    if (posLbl) posLbl.textContent = curIdx >= 0 ? `${curIdx + 1} / ${orderedIds.length}` : '';
+    if (prevBtn) {
+      prevBtn.disabled = curIdx <= 0;
+      prevBtn.onclick = () => { if (curIdx > 0) navigateSheetTo(orderedIds[curIdx - 1]); };
+    }
+    if (nextBtn) {
+      nextBtn.disabled = curIdx < 0 || curIdx >= orderedIds.length - 1;
+      nextBtn.onclick = () => { if (curIdx >= 0 && curIdx < orderedIds.length - 1) navigateSheetTo(orderedIds[curIdx + 1]); };
+    }
+    if (shareBtn) {
+      shareBtn.textContent = '🔗 Bağlantıyı Kopyala';
+      shareBtn.onclick = async () => {
+        const shareUrl = `${location.origin}${location.pathname}#${encodeURIComponent(it.id)}`;
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          shareBtn.textContent = '✓ Kopyalandı!';
+          setTimeout(() => { shareBtn.textContent = '🔗 Bağlantıyı Kopyala'; }, 2000);
+        } catch (e) {}
+      };
+    }
     t('.sheet-card').scrollTop = 0;
+  }
+
+  function getVisibleOrderedIds() {
+    const root = $('#list');
+    const domIds = [];
+    if (root && root.children.length) {
+      for (const li of root.children) {
+        if (li.hidden) continue;
+        const a = li.querySelector('h3 a');
+        if (a && a.getAttribute('href')) domIds.push(decodeURIComponent(a.getAttribute('href').slice(1)));
+      }
+    }
+    return domIds.length ? domIds : state.items.map(x => x.id);
+  }
+
+  function navigateSheetTo(targetId) {
+    if (!targetId) return;
+    history.replaceState(null, '', '#' + encodeURIComponent(targetId));
+    syncSheet();
   }
 
   const hashId = () => { try { return decodeURIComponent(location.hash.slice(1)); } catch (e) { return ''; } };
@@ -485,6 +612,17 @@ function renderTierBoard(visibleNodes) {
   function closeSheet() { if (pushed) history.back(); else { history.replaceState(null, '', location.pathname + location.search); syncSheet(); } }
   sheet.querySelector('.sheet-bg').onclick = closeSheet; closeBtn.onclick = closeSheet;
   addEventListener('hashchange', syncSheet);
+  addEventListener('keydown', e => {
+    if (sheet.hidden) return;
+    if (e.key === 'Escape') closeSheet();
+    else if (e.key === 'ArrowLeft') {
+      const prevBtn = sheet.querySelector('[data-sh-prev]');
+      if (prevBtn && !prevBtn.disabled) { e.preventDefault(); prevBtn.click(); }
+    } else if (e.key === 'ArrowRight') {
+      const nextBtn = sheet.querySelector('[data-sh-next]');
+      if (nextBtn && !nextBtn.disabled) { e.preventDefault(); nextBtn.click(); }
+    }
+  });
 
   (async () => {
     try {

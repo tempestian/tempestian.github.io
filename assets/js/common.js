@@ -50,6 +50,7 @@
     chev: '<path d="m6 9.5 6 6 6-6"/>',
     star: '<path fill="currentColor" d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/>',
     tier: '<rect x="3.5" y="4.5" width="4.5" height="4.5" rx="1.2"/><path d="M11 6.8h9.5"/><rect x="3.5" y="10.8" width="4.5" height="4.5" rx="1.2"/><path d="M11 13h7.5"/><rect x="3.5" y="17" width="4.5" height="4.5" rx="1.2"/><path d="M11 19.2h5.5"/>',
+    link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
     dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/>'
   };
   const icon = n => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[n] || P.dot) + '</svg>';
@@ -301,6 +302,20 @@
       if (bt && pg.title) bt.textContent = pg.title;
       const h1 = document.querySelector('.page-head h1');
       if (h1 && pg.title) h1.textContent = pg.title;
+      const headEl = document.querySelector('.page-head');
+      if (headEl && pg.subtitle !== undefined) {
+        let subEl = headEl.querySelector('.sub');
+        if (!subEl && pg.subtitle) {
+          subEl = el('p', 'sub');
+          subEl.style.marginTop = '4px';
+          subEl.style.fontSize = '.98rem';
+          headEl.append(subEl);
+        }
+        if (subEl) {
+          subEl.textContent = pg.subtitle;
+          subEl.hidden = !pg.subtitle;
+        }
+      }
     }
   }
 

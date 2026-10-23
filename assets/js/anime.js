@@ -30,6 +30,7 @@ function applyAnimePageConfig(cfg) {
   const pa = cfg && cfg.pages && cfg.pages.anime;
   if (!pa) return;
   Object.assign(pageTexts, pa);
+  if (pa.externalButtonText && !pa.anilistButtonText) pageTexts.anilistButtonText = pa.externalButtonText;
   const qEl = $('#q');
   if (qEl && pa.searchPlaceholder) qEl.placeholder = pa.searchPlaceholder;
   const footEl = document.querySelector('.foot');
@@ -443,7 +444,7 @@ document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => { state.
 
 const sheet = document.createElement('div');
 sheet.className = 'sheet'; sheet.hidden = true; sheet.setAttribute('role','dialog'); sheet.setAttribute('aria-modal','true'); sheet.setAttribute('aria-labelledby','sh-title');
-sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-head"><img class="sheet-cover" alt=""><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><a class="sh-al" target="_blank" rel="noopener"></a></div>';
+sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-head"><img class="sheet-cover" alt=""><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki yapım (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki yapım (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-share-btn" data-sh-share title="Bu yapımın doğrudan bağlantısını kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
 document.body.append(sheet);
 const closeBtn = sheet.querySelector('[data-close]'); closeBtn.innerHTML = UI.icon('close');
 let opener = null, pushed = false;
@@ -493,7 +494,49 @@ function fillSheet(it){
   } else {
     al.hidden = true;
   }
+  const orderedIds = getVisibleOrderedIds();
+  const curIdx = orderedIds.indexOf(it.id);
+  const prevBtn = t('[data-sh-prev]'), nextBtn = t('[data-sh-next]'), posLbl = t('[data-sh-pos]'), shareBtn = t('[data-sh-share]');
+  if (posLbl) posLbl.textContent = curIdx >= 0 ? `${curIdx + 1} / ${orderedIds.length}` : '';
+  if (prevBtn) {
+    prevBtn.disabled = curIdx <= 0;
+    prevBtn.onclick = () => { if (curIdx > 0) navigateSheetTo(orderedIds[curIdx - 1]); };
+  }
+  if (nextBtn) {
+    nextBtn.disabled = curIdx < 0 || curIdx >= orderedIds.length - 1;
+    nextBtn.onclick = () => { if (curIdx >= 0 && curIdx < orderedIds.length - 1) navigateSheetTo(orderedIds[curIdx + 1]); };
+  }
+  if (shareBtn) {
+    shareBtn.textContent = '🔗 Bağlantıyı Kopyala';
+    shareBtn.onclick = async () => {
+      const shareUrl = `${location.origin}${location.pathname}#${encodeURIComponent(it.id)}`;
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        shareBtn.textContent = '✓ Kopyalandı!';
+        setTimeout(() => { shareBtn.textContent = '🔗 Bağlantıyı Kopyala'; }, 2000);
+      } catch (e) {}
+    };
+  }
   t('.sheet-card').scrollTop = 0;
+}
+
+function getVisibleOrderedIds() {
+  const root = $('#list');
+  const domIds = [];
+  if (root && root.children.length) {
+    for (const li of root.children) {
+      if (li.hidden) continue;
+      const a = li.querySelector('h3 a');
+      if (a && a.getAttribute('href')) domIds.push(decodeURIComponent(a.getAttribute('href').slice(1)));
+    }
+  }
+  return domIds.length ? domIds : state.items.map(x => x.id);
+}
+
+function navigateSheetTo(targetId) {
+  if (!targetId) return;
+  history.replaceState(null, '', '#' + encodeURIComponent(targetId));
+  syncSheet();
 }
 const hashId = () => { try { return decodeURIComponent(location.hash.slice(1)); } catch(e) { return ''; } };
 function syncSheet(){
@@ -513,6 +556,13 @@ addEventListener('hashchange', syncSheet);
 addEventListener('keydown', e => {
   if(sheet.hidden) return;
   if(e.key==='Escape') closeSheet();
+  else if(e.key==='ArrowLeft'){
+    const prevBtn = sheet.querySelector('[data-sh-prev]');
+    if(prevBtn && !prevBtn.disabled){ e.preventDefault(); prevBtn.click(); }
+  } else if(e.key==='ArrowRight'){
+    const nextBtn = sheet.querySelector('[data-sh-next]');
+    if(nextBtn && !nextBtn.disabled){ e.preventDefault(); nextBtn.click(); }
+  }
   else if(e.key==='Tab'){
     const f = [...sheet.querySelectorAll('a[href],button')].filter(x => !x.hidden);
     if(!f.length) return;

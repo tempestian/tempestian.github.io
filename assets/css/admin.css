@@ -251,3 +251,49 @@ textarea.inp{height:auto;padding:10px 13px;resize:vertical;font-family:inherit}
   .anime-adm-row{grid-template-columns:auto 40px 1fr;gap:10px}
   .anime-adm-row:has(.anime-adm-poster[hidden]){grid-template-columns:auto 1fr;gap:10px}
 }
+
+/* Çoklu Sezon & Edisyon Görsel Kapak Seçici Menüsü Stilleri */
+.cover-picker-drawer{padding:14px 16px;border-radius:var(--rm);background:var(--glass2);box-shadow:inset 0 0 0 1.5px var(--accent),0 8px 24px rgba(0,0,0,.14);display:grid;gap:12px;margin-top:4px}
+.cover-picker-drawer[hidden]{display:none!important}
+.cover-picker-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.cover-picker-title{display:flex;align-items:center;gap:8px;font-size:.9rem;font-weight:650;color:var(--ink)}
+.cover-picker-count{font-size:.73rem;font-weight:650;padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.cover-picker-search{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.cover-picker-search .inp{flex:1 1 200px;height:36px;font-size:.83rem}
+.cover-picker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;max-height:330px;overflow-y:auto;padding:4px 2px}
+.cover-pick-card{position:relative;border:0;padding:6px;border-radius:12px;background:var(--glass);box-shadow:inset 0 0 0 1px var(--line);cursor:pointer;display:grid;gap:6px;text-align:left;color:var(--ink);transition:transform .2s var(--spring),box-shadow .2s,background .2s}
+.cover-pick-card:hover{transform:translateY(-2px);background:var(--glass-hi);box-shadow:inset 0 0 0 1.5px var(--accent),0 6px 16px rgba(0,0,0,.14)}
+.cover-pick-card.selected{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent),0 6px 16px var(--glow)}
+.cover-pick-thumb{position:relative;width:100%;aspect-ratio:2/3;border-radius:8px;overflow:hidden;background:var(--glass2)}
+.cover-pick-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.cover-pick-badge{position:absolute;top:5px;left:5px;max-width:calc(100% - 10px);padding:2px 6px;border-radius:6px;background:rgba(10,14,22,.78);backdrop-filter:blur(6px);color:#fff;font-size:.66rem;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cover-pick-check{position:absolute;bottom:5px;right:5px;padding:2px 6px;border-radius:6px;background:#2bb673;color:#fff;font-size:.66rem;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.cover-pick-caption{font-size:.73rem;font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.cover-pick-sub{font-size:.67rem;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.anime-edit-cover{position:relative;cursor:pointer}
+.anime-edit-cover::after{content:'🖼️ Kapak Seç';position:absolute;inset:auto 6px 6px 6px;padding:4px 6px;border-radius:8px;background:rgba(10,14,22,.76);backdrop-filter:blur(6px);color:#fff;font-size:.68rem;font-weight:650;text-align:center;opacity:0;transition:opacity .2s;pointer-events:none}
+.anime-edit-cover:hover::after{opacity:1}
+
+/* Tüm Kategoriler Metin Düzenleyici Sekmeleri, Kategori Yöneticisi, Satır İçi Durum ve Hızlı Komut Paleti (Ctrl+K) */
+.page-text-tabs{display:flex;flex-wrap:wrap;gap:6px;padding:5px;border-radius:14px;background:var(--glass);box-shadow:inset 0 0 0 1px var(--line)}
+.page-text-tab{flex:1 1 auto;border:0;background:none;padding:8px 12px;border-radius:10px;font-size:.81rem;font-weight:620;color:var(--ink2);cursor:pointer;transition:background .2s,color .2s}
+.page-text-tab.active{background:var(--accent-soft);color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+
+.tag-mgr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,275px),1fr));gap:10px;max-height:320px;overflow-y:auto;padding:2px}
+.tag-mgr-item{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;border-radius:12px;background:var(--glass);box-shadow:inset 0 0 0 1px var(--line);font-size:.82rem}
+.tag-mgr-name{font-weight:650;display:inline-flex;align-items:center;gap:6px}
+.tag-mgr-cnt{font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.tag-mgr-actions{display:flex;align-items:center;gap:5px;flex:1 1 100%}
+.tag-mgr-actions .inp{height:30px;padding:0 9px;font-size:.78rem;border-radius:8px;flex:1}
+
+.adm-quick-status-sel{height:28px!important;padding:0 8px!important;font-size:.75rem!important;font-weight:620!important;border-radius:8px!important;width:auto!important;background:var(--glass)!important;color:var(--ink)!important;cursor:pointer}
+
+.cmd-palette-card{position:relative;width:min(100%,640px);max-height:82svh;display:grid;grid-template-rows:auto auto 1fr auto;gap:12px;padding:18px;border-radius:var(--rl);background:var(--glass-hi);box-shadow:var(--lift),inset 0 0 0 1.5px var(--accent)}
+.cmd-palette-list{display:grid;gap:6px;overflow-y:auto;max-height:420px;padding-right:4px}
+.cmd-palette-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 13px;border-radius:12px;border:0;background:var(--glass2);color:var(--ink);cursor:pointer;text-align:left;box-shadow:inset 0 0 0 1px var(--line);transition:background .15s,transform .15s}
+.cmd-palette-item:hover,.cmd-palette-item:focus{background:var(--accent-soft);box-shadow:inset 0 0 0 1.5px var(--accent);outline:none}
+.cmd-palette-left{display:flex;align-items:center;gap:10px;min-width:0}
+.cmd-palette-left img{width:28px;height:40px;border-radius:6px;object-fit:cover;background:var(--glass);flex:none}
+.cmd-palette-title{font-weight:630;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmd-palette-sub{font-size:.74rem;color:var(--ink2)}
+.cmd-palette-badge{font-size:.7rem;font-weight:650;padding:3px 8px;border-radius:999px;background:var(--glass);color:var(--accent);white-space:nowrap}

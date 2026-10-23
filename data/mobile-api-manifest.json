@@ -1,0 +1,159 @@
+{
+  "manifestVersion": "1.0.0",
+  "schemaVersion": 3,
+  "site": "tempestian.github.io",
+  "repository": {
+    "owner": "tempestian",
+    "name": "tempestian.github.io",
+    "branch": "main"
+  },
+  "authContract": {
+    "vaultFile": "data/admin-vault.json",
+    "kdf": "PBKDF2-SHA256",
+    "iterations": 600000,
+    "cipher": "AES-256-GCM",
+    "totp": {
+      "algorithm": "HMAC-SHA1",
+      "digits": 6,
+      "periodSeconds": 30,
+      "windowSteps": 1
+    },
+    "githubApiBase": "https://api.github.com"
+  },
+  "workflows": {
+    "animeSync": {
+      "workflowFile": "sync-anilist.yml",
+      "defaultInputs": {
+        "sync_mode": "relations_only"
+      }
+    },
+    "guideSync": {
+      "workflowFile": "sync-guides.yml",
+      "defaultInputs": {
+        "user_id": "657641",
+        "username": "Bayram Tempestian",
+        "prefix_filter": "Rehber"
+      }
+    }
+  },
+  "sections": {
+    "anime": {
+      "id": "anime",
+      "title": "Anime",
+      "dataFile": "data/anime.json",
+      "overridesFile": "data/overrides.json",
+      "itemsKey": "anime",
+      "unitLabel": "bölüm",
+      "supportsScoring": true,
+      "weights": {
+        "season": 1.0,
+        "movie": 0.35,
+        "other": 0.15
+      },
+      "statuses": [
+        "completed",
+        "watching",
+        "paused",
+        "dropped",
+        "planned"
+      ]
+    },
+    "series": {
+      "id": "series",
+      "title": "Dizi",
+      "dataFile": "data/series.json",
+      "itemsKey": "items",
+      "extraMetaField": "network",
+      "unitLabel": "bölüm",
+      "supportsScoring": true,
+      "weights": {
+        "season": 1.0,
+        "movie": 0.35,
+        "other": 0.15
+      },
+      "statuses": [
+        "completed",
+        "watching",
+        "paused",
+        "dropped",
+        "planned"
+      ]
+    },
+    "movie": {
+      "id": "movie",
+      "title": "Film",
+      "dataFile": "data/movies.json",
+      "itemsKey": "items",
+      "extraMetaField": "director",
+      "unitLabel": "film",
+      "supportsScoring": true,
+      "weights": {
+        "season": 1.0,
+        "movie": 1.0,
+        "other": 0.2
+      },
+      "statuses": [
+        "completed",
+        "watching",
+        "planned",
+        "dropped"
+      ]
+    },
+    "manga": {
+      "id": "manga",
+      "title": "Manga",
+      "dataFile": "data/manga.json",
+      "itemsKey": "items",
+      "extraMetaField": "author",
+      "unitLabel": "bölüm",
+      "supportsScoring": true,
+      "weights": {
+        "season": 1.0,
+        "movie": 0.5,
+        "other": 0.2
+      },
+      "statuses": [
+        "completed",
+        "watching",
+        "paused",
+        "dropped",
+        "planned"
+      ]
+    },
+    "book": {
+      "id": "book",
+      "title": "Kitap",
+      "dataFile": "data/books.json",
+      "itemsKey": "items",
+      "extraMetaField": "author",
+      "unitLabel": "sayfa",
+      "supportsScoring": true,
+      "weights": {
+        "season": 1.0,
+        "movie": 0.5,
+        "other": 0.25
+      },
+      "statuses": [
+        "completed",
+        "watching",
+        "paused",
+        "dropped",
+        "planned"
+      ]
+    },
+    "guide": {
+      "id": "guide",
+      "title": "Rehber",
+      "dataFile": "data/guides.json",
+      "itemsKey": "items",
+      "extraMetaField": "summary",
+      "unitLabel": "rehber",
+      "supportsScoring": false,
+      "statuses": [
+        "completed",
+        "watching",
+        "planned"
+      ]
+    }
+  }
+}

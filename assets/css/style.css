@@ -458,3 +458,14 @@ h3 a:focus-visible{outline:0}
 }
 @keyframes random-pulse{0%{box-shadow:0 0 0 0 var(--accent)}50%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
 .random-highlight{animation:random-pulse 1.2s ease 2;outline:2px solid var(--accent);border-radius:var(--rm)}
+
+/* ---- v7: Adım 20 Detay Kartı Hızlı Gezinme (Önceki/Sonraki) ve Derin Bağlantı Kopyalama Stilleri ---- */
+.sheet-foot-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.sheet-nav-grp{display:inline-flex;align-items:center;gap:6px}
+.sheet-nav-btn,.sheet-share-btn{border:0;border-radius:999px;padding:7px 13px;font-size:.8rem;font-weight:600;cursor:pointer;background:var(--glass2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);display:inline-flex;align-items:center;gap:6px;transition:background .2s,color .2s,transform .2s}
+.sheet-nav-btn:hover:not(:disabled),.sheet-share-btn:hover{background:var(--accent-soft);color:var(--accent)}
+.sheet-nav-btn:disabled{opacity:.38;cursor:default}
+.sheet-nav-btn svg,.sheet-share-btn svg{width:15px;height:15px}
+.sheet-pos-lbl{font-size:.75rem;font-weight:600;color:var(--ink2);padding:0 4px;font-variant-numeric:tabular-nums}
+.sheet-act-grp{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sheet-card .sh-al{margin-top:0}

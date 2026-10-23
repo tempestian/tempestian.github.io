@@ -20,6 +20,40 @@
     q: ''
   };
 
+  const pageTexts = {
+    searchPlaceholder: 'Rehber başlığı, konu veya kategori ara...',
+    emptyText: 'Henüz rehber eklenmemiş veya aramayla eşleşen rehber yok.',
+    detailsText: 'Ayrıntılar',
+    externalButtonText: 'Technopat Sosyal',
+    footerText: 'Rehber kartlarına tıkladığınızda Technopat Sosyal üzerindeki ilgili konuya yönlendirilirsiniz.'
+  };
+
+  function applyGuidePageConfig(cfg) {
+    const pg = cfg && cfg.pages && cfg.pages.guide;
+    if (!pg) return;
+    Object.assign(pageTexts, pg);
+    const qEl = $('#q');
+    if (qEl && pg.searchPlaceholder) qEl.placeholder = pg.searchPlaceholder;
+    const footEl = document.querySelector('.foot');
+    if (footEl && pg.footerText !== undefined) {
+      footEl.textContent = pg.footerText;
+      footEl.hidden = pg.footerText === '';
+    }
+    const emptyEl = $('#empty');
+    if (emptyEl && pg.emptyText) emptyEl.textContent = pg.emptyText;
+    const moreBtn = document.querySelector('#stats > .more');
+    if (moreBtn && pg.detailsText) {
+      const ic = moreBtn.querySelector('svg');
+      moreBtn.textContent = pg.detailsText;
+      if (ic) moreBtn.append(ic);
+    }
+    document.querySelectorAll('.guide-out-badge > span').forEach(sp => {
+      if (pg.externalButtonText) sp.textContent = pg.externalButtonText;
+    });
+  }
+  if (window.SITE_CONFIG) applyGuidePageConfig(window.SITE_CONFIG);
+  document.addEventListener('siteconfig', e => applyGuidePageConfig(e.detail));
+
   function getCategories(it) {
     if (!it) return [];
     const arr = Array.isArray(it.customGenres) && it.customGenres.length ? it.customGenres : (it.genres || []);
@@ -59,7 +93,7 @@
     }
 
     if (sortedCats.length) {
-      const more = h('button', 'more', 'Ayrıntılar');
+      const more = h('button', 'more', pageTexts.detailsText || 'Ayrıntılar');
       more.type = 'button';
       more.setAttribute('aria-expanded', 'false');
       more.insertAdjacentHTML('beforeend', UI.icon('down'));
@@ -204,7 +238,7 @@
       top.append(headLeft);
 
       const rightBadge = h('span', 'tag guide-out-badge');
-      rightBadge.innerHTML = `<span>Technopat Sosyal</span> ${UI.icon('out')}`;
+      rightBadge.innerHTML = `<span>${ UI.esc ? UI.esc(pageTexts.externalButtonText || 'Technopat Sosyal') : (pageTexts.externalButtonText || 'Technopat Sosyal') }</span> ${UI.icon('out')}`;
       top.append(rightBadge);
       a.append(top);
 

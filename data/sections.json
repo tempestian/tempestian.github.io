@@ -128,6 +128,7 @@
   "pages": {
     "anime": {
       "title": "Anime",
+      "subtitle": "",
       "metaTitle": "Anime · Tempestian",
       "description": "Tempestian'ın izlediği animeler: puanlar, sezonlar ve izleme durumu.",
       "searchPlaceholder": "Ara",
@@ -135,7 +136,68 @@
       "detailsText": "Ayrıntılar",
       "resetFilterText": "Filtreleri sıfırla",
       "anilistButtonText": "AniList'te aç",
+      "externalButtonText": "AniList'te aç",
       "footerText": "AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir."
+    },
+    "guide": {
+      "title": "Rehber",
+      "subtitle": "Technopat Sosyal üzerinde yayınladığım rehber ve incelemelerin kataloğu.",
+      "metaTitle": "Rehber · Tempestian",
+      "description": "Bayram Tempestian'ın Technopat Sosyal üzerinde yayınladığı rehberler ve teknik inceleme kataloğu.",
+      "searchPlaceholder": "Rehber başlığı, konu veya kategori ara...",
+      "emptyText": "Henüz rehber eklenmemiş veya aramayla eşleşen rehber yok.",
+      "detailsText": "Ayrıntılar",
+      "resetFilterText": "Filtreleri sıfırla",
+      "externalButtonText": "Technopat Sosyal",
+      "footerText": "Rehber kartlarına tıkladığınızda Technopat Sosyal üzerindeki ilgili konuya yönlendirilirsiniz."
+    },
+    "series": {
+      "title": "Dizi",
+      "subtitle": "",
+      "metaTitle": "Dizi · Tempestian",
+      "description": "Bayram Tempestian'ın izlediği diziler, sezon puanları ve izleme durumu.",
+      "searchPlaceholder": "Dizi, kategori veya kanal ara...",
+      "emptyText": "Henüz dizi eklenmemiş veya filtreyle eşleşen dizi yok.",
+      "detailsText": "Ayrıntılar",
+      "resetFilterText": "Filtreleri sıfırla",
+      "externalButtonText": "IMDb'de aç",
+      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir."
+    },
+    "movie": {
+      "title": "Film",
+      "subtitle": "",
+      "metaTitle": "Film · Tempestian",
+      "description": "Bayram Tempestian'ın izlediği filmler, kişisel puanlar ve favoriler.",
+      "searchPlaceholder": "Film, kategori veya yönetmen ara...",
+      "emptyText": "Henüz film eklenmemiş veya filtreyle eşleşen film yok.",
+      "detailsText": "Ayrıntılar",
+      "resetFilterText": "Filtreleri sıfırla",
+      "externalButtonText": "IMDb'de aç",
+      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir."
+    },
+    "manga": {
+      "title": "Manga",
+      "subtitle": "",
+      "metaTitle": "Manga · Tempestian",
+      "description": "Bayram Tempestian'ın okuduğu mangalar, cilt/bölüm takibi ve kişisel puanlar.",
+      "searchPlaceholder": "Manga, kategori veya yazar ara...",
+      "emptyText": "Henüz manga eklenmemiş veya filtreyle eşleşen manga yok.",
+      "detailsText": "Ayrıntılar",
+      "resetFilterText": "Filtreleri sıfırla",
+      "externalButtonText": "Kaynakta aç",
+      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir."
+    },
+    "book": {
+      "title": "Kitap",
+      "subtitle": "",
+      "metaTitle": "Kitap · Tempestian",
+      "description": "Bayram Tempestian'ın okuduğu kitaplar, sayfa takibi ve kişisel değerlendirmeler.",
+      "searchPlaceholder": "Kitap, kategori veya yazar ara...",
+      "emptyText": "Henüz kitap eklenmemiş veya filtreyle eşleşen kitap yok.",
+      "detailsText": "Ayrıntılar",
+      "resetFilterText": "Filtreleri sıfırla",
+      "externalButtonText": "Kaynakta aç",
+      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir."
     }
   }
 }

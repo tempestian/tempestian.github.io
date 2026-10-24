@@ -84,7 +84,7 @@ svg{display:block}
   background:var(--glass-hi);box-shadow:0 1px 0 var(--line);
   -webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6)}
 .bar.on::before{opacity:1}
-.bar-in{position:relative;max-width:760px;height:60px;margin:0 auto;padding:0 14px;display:flex;align-items:center;gap:8px}
+.bar-in{position:relative;max-width:760px;height:60px;margin:0 auto;padding:0 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .bar-title{
   font-weight:650;font-size:1.1rem;letter-spacing:-.015em;
   opacity:0;pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
@@ -92,35 +92,41 @@ svg{display:block}
 }
 .bar.on .bar-title{opacity:1}
 .btn{width:44px;height:44px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer;text-decoration:none;
-  transition:transform .35s var(--spring)}
+  transition:transform .35s var(--spring);flex:0 0 auto}
 .btn svg{width:22px;height:22px}
 .btn:active{transform:scale(.9)}
-.bar-in>.btn{flex:none;margin:0}
+.bar-in>.btn{flex:0 0 auto;margin:0}
 
-/* Masaüstü (min-width: 641px): Başlık ortada, butonlarla çakışmaya karşı güvenli marj */
+/* Eylem Butonları Grubu (Zaman Tüneli, İstatistik, Arama, Tema) */
+.bar-actions{display:flex;align-items:center;gap:8px;margin-left:auto;flex:0 0 auto}
+.bar-actions>.btn{flex:0 0 auto;margin:0}
+
+/* Geriye Dönük Uyumluluk Fallback (Eğer .bar-actions sarmalayıcısı yoksa) */
+.bar-in:not(:has(.bar-actions))>.bar-stats-btn:first-of-type,
+.bar-in:not(:has(.bar-actions)):not(:has(.bar-stats-btn)):not(:has([data-icon="back"]))>.btn:first-of-type,
+.bar-in:not(:has(.bar-actions)):not(:has(.bar-stats-btn))>[data-icon="back"]~.btn:first-of-type{margin-left:auto}
+
+/* Masaüstü (min-width: 641px): Başlık tam ortada, sol ve sağ buton gruplarıyla asla çakışmaz */
 @media (min-width: 641px){
-  .bar-title{position:absolute;left:50%;transform:translateX(-50%);max-width:calc(100% - 320px);text-align:center}
-  .bar-in>[data-icon="back"],.bar-in>a[href="../"]{margin-right:auto;flex:none}
-  .bar-in:not(:has([data-icon="back"]))>.btn:first-of-type,
-  .bar-in>.bar-title+.btn,
-  .bar-in>.bar-title+.bar-stats-btn{margin-left:auto}
+  .bar-title{position:absolute;left:50%;transform:translateX(-50%);max-width:calc(100% - 460px);text-align:center;pointer-events:none}
+  .bar-in>[data-icon="back"],.bar-in>a[href="../"]{margin-right:0;flex:0 0 auto}
+  .bar-actions{margin-left:auto}
 }
 
 /* Mobil (max-width: 640px): Samsung One UI Akıcı App Bar Düzeni */
 @media (max-width: 640px){
-  .bar-in{height:56px;padding:0 12px;gap:6px}
+  .bar-in{height:56px;padding:0 12px;gap:6px;justify-content:flex-start}
   .btn{width:40px;height:40px}
   .btn svg{width:20px;height:20px}
-  .bar-in>[data-icon="back"],.bar-in>a[href="../"]{margin-right:4px;flex:none}
+  .bar-in>[data-icon="back"],.bar-in>a[href="../"]{margin:0;flex:0 0 auto}
   .bar-title{
     position:static;transform:translateY(4px);
     flex:1 1 auto;min-width:0;text-align:left;
-    padding:0 2px;
+    padding:0 4px;margin:0;
   }
   .bar.on .bar-title{transform:translateY(0)}
-  .bar-in:not(:has([data-icon="back"]))>.btn:first-of-type,
-  .bar-in>.bar-title+.btn,
-  .bar-in>.bar-title+.bar-stats-btn{margin-left:auto}
+  .bar-actions{gap:6px;margin-left:auto;flex:0 0 auto}
+  .bar-stats-btn svg,.bar-search-btn svg{width:18px;height:18px}
 }
 
 .hero, .page-head{min-height:clamp(110px,19svh,200px);display:flex;flex-direction:column;justify-content:flex-end;gap:10px;padding:18px 6px 20px;

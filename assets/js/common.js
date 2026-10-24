@@ -155,6 +155,21 @@
   };
 
   const themeBtn = document.getElementById('theme');
+  const barIn = document.querySelector('.bar-in:not(.admin-bar-in)');
+  if (barIn) {
+    let actions = barIn.querySelector('.bar-actions');
+    if (!actions) {
+      actions = el('div', 'bar-actions');
+      const statsBtns = Array.from(barIn.querySelectorAll('.bar-stats-btn'));
+      if (themeBtn) {
+        themeBtn.parentNode.insertBefore(actions, themeBtn);
+        statsBtns.forEach(b => actions.appendChild(b));
+        actions.appendChild(themeBtn);
+      } else {
+        barIn.appendChild(actions);
+      }
+    }
+  }
   const syncIcons = () => {
     document.querySelectorAll('[data-icon]').forEach(b => { b.innerHTML = icon(b.dataset.icon === 'theme' ? (document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon') : b.dataset.icon); });
     if (themeBtn) themeBtn.setAttribute('aria-label', document.documentElement.dataset.theme === 'dark' ? 'Açık temaya geç' : 'Koyu temaya geç');
@@ -672,7 +687,11 @@
       sBtn.title = 'Tüm sitede ara (Ctrl+K)';
       sBtn.setAttribute('aria-label', 'Tüm sitede ara (Ctrl+K)');
       sBtn.innerHTML = icon('search');
-      barIn.insertBefore(sBtn, themeBtn);
+      if (themeBtn.parentNode) {
+        themeBtn.parentNode.insertBefore(sBtn, themeBtn);
+      } else {
+        barIn.insertBefore(sBtn, themeBtn);
+      }
       sBtn.onclick = () => openCommandPalette();
     }
 

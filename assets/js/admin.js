@@ -3431,6 +3431,14 @@
             $('#aeExtraMetaInput').value = info.extraMeta;
             state.editingDraft[adapter.extraMetaField.key] = info.extraMeta;
           }
+          if (Array.isArray(info.genres) && info.genres.length) {
+            const curG = Array.isArray(state.editingDraft.customGenres) ? state.editingDraft.customGenres : [];
+            const merged = [...new Set([...curG, ...info.genres])];
+            state.editingDraft.customGenres = merged;
+            state.editingDraft.genres = merged;
+            if ($('#aeGenresInput')) $('#aeGenresInput').value = merged.join(', ');
+            renderAnimeGenreStudio();
+          }
           if (Array.isArray(info.parts) && info.parts.length) {
             state.editingDraft.parts = info.parts;
             renderAnimePartsEditor();
@@ -3571,6 +3579,10 @@
               if (adapter.id === 'series' && !item.firstSeasonUrl && info.url) item.firstSeasonUrl = info.url;
               if (adapter.extraMetaField && !item[adapter.extraMetaField.key] && info.extraMeta) {
                 item[adapter.extraMetaField.key] = info.extraMeta;
+              }
+              if (Array.isArray(info.genres) && info.genres.length && (!item.customGenres || !item.customGenres.length)) {
+                item.customGenres = [...info.genres];
+                item.genres = [...info.genres];
               }
               if (adapter.id === 'series' && Array.isArray(info.parts) && info.parts.length) {
                 const existingParts = Array.isArray(item.parts) ? item.parts : [];
@@ -4155,13 +4167,52 @@
       };
     },
 
+    mapEnglishGenresToCatalog(rawGenres) {
+      if (!rawGenres) return [];
+      const list = Array.isArray(rawGenres) ? rawGenres : String(rawGenres).split(',').map(s => s.trim()).filter(Boolean);
+      const map = {
+        'action': 'Aksiyon',
+        'adventure': 'Macera',
+        'animation': 'Animasyon',
+        'anime': 'Animasyon',
+        'biography': 'Biyografi',
+        'comedy': 'Komedi',
+        'crime': 'Suç & Noir',
+        'documentary': 'Belgesel',
+        'drama': 'Dram',
+        'family': 'Aile',
+        'fantasy': 'Fantastik',
+        'film-noir': 'Suç & Noir',
+        'history': 'Tarihi',
+        'horror': 'Korku',
+        'music': 'Müzik',
+        'musical': 'Müzikal',
+        'mystery': 'Gizem',
+        'romance': 'Romantik',
+        'sci-fi': 'Bilim Kurgu',
+        'science fiction': 'Bilim Kurgu',
+        'sport': 'Spor',
+        'thriller': 'Gerilim',
+        'war': 'Savaş',
+        'western': 'Western',
+        'police': 'Suç & Polisiye'
+      };
+      const out = [];
+      for (const g of list) {
+        const lower = g.toLowerCase().trim();
+        const mapped = map[lower] || g;
+        if (!out.includes(mapped)) out.push(mapped);
+      }
+      return out;
+    },
+
     async fetchSeriesOrMovieFromImdb(inputUrlOrQuery, mediaKind = 'series') {
       const imdbId = parseImdbId(inputUrlOrQuery);
       const cleanQuery = String(inputUrlOrQuery || '').trim();
       const rawCands = [];
 
-      // 1. Dizi (veya IMDb ID'li TV yapımı) için TVMaze Lookup / Seasons / Images API
-      if (mediaKind === 'series' || imdbId) {
+      // 1. Dizi için TVMaze Lookup / Seasons / Images API (Dizilerde sezonları ve bölüm sayılarını en doğru TVMaze verir)
+      if (mediaKind === 'series' && (imdbId || cleanQuery)) {
         try {
           const lookupUrl = imdbId
             ? `https://api.tvmaze.com/lookup/shows?imdb=${encodeURIComponent(imdbId)}`
@@ -4169,11 +4220,10 @@
           const res = await fetch(lookupUrl);
           if (res.ok) {
             const show = await res.json();
-            if (show && show.id && (mediaKind === 'series' || (show.type && show.type !== 'Movie'))) {
-              const [sRes, imgRes, imdbRes] = await Promise.allSettled([
+            if (show && show.id) {
+              const [sRes, imgRes] = await Promise.allSettled([
                 fetch(`https://api.tvmaze.com/shows/${show.id}/seasons`),
-                fetch(`https://api.tvmaze.com/shows/${show.id}/images`),
-                fetch(`https://search.imdbot.workers.dev/?${imdbId ? 'tt=' + encodeURIComponent(imdbId) : 'q=' + encodeURIComponent(show.name || cleanQuery)}`)
+                fetch(`https://api.tvmaze.com/shows/${show.id}/images`)
               ]);
               const seasons = (sRes.status === 'fulfilled' && sRes.value.ok) ? await sRes.value.json() : [];
               const showImages = (imgRes.status === 'fulfilled' && imgRes.value.ok) ? await imgRes.value.json() : [];
@@ -4189,7 +4239,6 @@
                 });
               }
 
-              // Her sezonun kendi özel kapak görseli (TVMaze Seasons API)
               for (const s of (seasons || [])) {
                 if (!s || (s.number || 0) <= 0) continue;
                 const sImg = s.image && (s.image.original || s.image.medium);
@@ -4204,7 +4253,6 @@
                 }
               }
 
-              // TVMaze resmi poster galerisindeki alternatif sezon/dizi afişleri
               let altIdx = 1;
               for (const gi of (showImages || [])) {
                 if (!gi || (gi.type && gi.type !== 'poster')) continue;
@@ -4218,26 +4266,6 @@
                     sub: 'Resmi Poster Galerisi'
                   });
                 }
-              }
-
-              // IMDb poster sonuçları
-              if (imdbRes.status === 'fulfilled' && imdbRes.value.ok) {
-                try {
-                  const jImdb = await imdbRes.value.json();
-                  const descList = Array.isArray(jImdb && jImdb.description) ? jImdb.description : (jImdb && jImdb.short ? [jImdb] : []);
-                  descList.forEach((dItem, idx) => {
-                    const pUrl = dItem['#IMG_POSTER'] || (dItem.short && dItem.short.image) || '';
-                    if (pUrl) {
-                      rawCands.push({
-                        url: pUrl,
-                        badge: idx === 0 ? 'IMDb Orijinal Afiş' : 'IMDb Alternatif',
-                        label: dItem['#TITLE'] || (dItem.short && dItem.short.name) || show.name || 'IMDb',
-                        year: dItem['#YEAR'] || '',
-                        sub: dItem['#IMDB_ID'] || 'IMDb'
-                      });
-                    }
-                  });
-                } catch (_) {}
               }
 
               const parts = (seasons || [])
@@ -4261,6 +4289,9 @@
               const coverCandidates = this.dedupeCoverCandidates(rawCands);
               const bgImg = (showImages || []).find(gi => gi && gi.type === 'background');
               const banner = (bgImg && bgImg.resolutions && ((bgImg.resolutions.original && bgImg.resolutions.original.url) || (bgImg.resolutions.medium && bgImg.resolutions.medium.url))) || (show.image && show.image.original) || null;
+              const networkName = (show.network && show.network.name) || (show.webChannel && show.webChannel.name) || '';
+              const genres = this.mapEnglishGenresToCatalog(show.genres);
+
               return {
                 externalId: resolvedImdb || show.id,
                 url: resolvedImdb ? `https://www.imdb.com/title/${resolvedImdb}/` : (show.officialSite || ''),
@@ -4268,7 +4299,8 @@
                 image: mainImg || (coverCandidates[0] && coverCandidates[0].url) || '',
                 banner,
                 coverCandidates,
-                extraMeta: (show.network && show.network.name) || (show.webChannel && show.webChannel.name) || '',
+                extraMeta: networkName,
+                genres,
                 parts: parts.length ? parts : [{
                   id: resolvedImdb || ('part-' + Date.now()),
                   name: '1. Sezon',
@@ -4283,75 +4315,138 @@
               };
             }
           }
-        } catch (e) {}
+        } catch (_) {}
       }
 
-      // 2. Film veya IMDb yedek sorgusu (search.imdbot.workers.dev)
-      const qParam = imdbId ? `tt=${encodeURIComponent(imdbId)}` : `q=${encodeURIComponent(cleanQuery)}`;
-      const res2 = await fetch(`https://search.imdbot.workers.dev/?${qParam}`);
-      if (!res2.ok) throw new Error('IMDb servisine ulaşılamadı.');
-      const j2 = await res2.json();
-      const descList = Array.isArray(j2 && j2.description) ? j2.description : [];
-      const desc = descList[0] || (j2 && j2.short ? j2 : null);
-      if (!desc) throw new Error('IMDb üzerinde eşleşen dizi/film bulunamadı.');
-      const title = desc['#TITLE'] || (j2.short && j2.short.name) || '';
-      const year = desc['#YEAR'] || null;
-      const poster = desc['#IMG_POSTER'] || (j2.short && j2.short.image) || '';
-      const resolvedId = desc['#IMDB_ID'] || imdbId || ('imdb-' + Date.now());
-      const actors = desc['#ACTORS'] || '';
+      // 2. Film (veya TVMaze'de bulunamayan Dizi) için IMDb / OMDb / Wikidata Servisi
+      let omdbData = null;
+      let omdbSearchList = [];
+      const omdbKeys = ['trilogy', '4a3b711b'];
 
-      if (poster) {
-        rawCands.push({
-          url: poster,
-          badge: mediaKind === 'movie' ? 'Ana Film Afişi' : 'Ana Poster (IMDb)',
-          label: title || 'IMDb Afiş',
-          year: year || '',
-          sub: resolvedId
-        });
+      for (const k of omdbKeys) {
+        try {
+          const qUrl = imdbId
+            ? `https://www.omdbapi.com/?i=${encodeURIComponent(imdbId)}&apikey=${k}`
+            : `https://www.omdbapi.com/?t=${encodeURIComponent(cleanQuery)}&type=${mediaKind === 'movie' ? 'movie' : 'series'}&apikey=${k}`;
+          const res = await fetch(qUrl);
+          if (res.ok) {
+            const j = await res.json();
+            if (j && j.Response === 'True') {
+              omdbData = j;
+              // Eğer metin ile arandıysa ek afiş seçenekleri için arama sorgusunu da çek
+              if (!imdbId && cleanQuery) {
+                try {
+                  const sRes = await fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(cleanQuery)}&type=${mediaKind === 'movie' ? 'movie' : 'series'}&apikey=${k}`);
+                  if (sRes.ok) {
+                    const sJ = await sRes.json();
+                    if (sJ && Array.isArray(sJ.Search)) omdbSearchList = sJ.Search;
+                  }
+                } catch (_) {}
+              }
+              break;
+            }
+          }
+        } catch (_) {}
       }
-      descList.slice(1).forEach((dItem, idx) => {
-        const pUrl = dItem && dItem['#IMG_POSTER'];
-        if (pUrl) {
+
+      // 3. OMDb verilerini ayrıştır
+      let title = '';
+      let year = null;
+      let poster = '';
+      let resolvedId = imdbId || '';
+      let director = '';
+      let writer = '';
+      let actors = '';
+      let genres = [];
+      let rating = null;
+
+      if (omdbData) {
+        title = omdbData.Title || '';
+        year = parseInt(omdbData.Year, 10) || null;
+        poster = (omdbData.Poster && omdbData.Poster !== 'N/A') ? omdbData.Poster : '';
+        resolvedId = omdbData.imdbID || imdbId || ('imdb-' + Date.now());
+        director = (omdbData.Director && omdbData.Director !== 'N/A') ? omdbData.Director : '';
+        writer = (omdbData.Writer && omdbData.Writer !== 'N/A') ? omdbData.Writer : '';
+        actors = (omdbData.Actors && omdbData.Actors !== 'N/A') ? omdbData.Actors : '';
+        genres = this.mapEnglishGenresToCatalog(omdbData.Genre);
+        rating = (omdbData.imdbRating && omdbData.imdbRating !== 'N/A') ? parseFloat(omdbData.imdbRating) : null;
+
+        if (poster) {
           rawCands.push({
-            url: pUrl,
-            badge: `Alternatif / Seri #${idx + 2}`,
-            label: dItem['#TITLE'] || title,
-            year: dItem['#YEAR'] || '',
-            sub: dItem['#IMDB_ID'] || ''
+            url: poster,
+            badge: mediaKind === 'movie' ? 'Ana Film Afişi' : 'Ana Dizi Afişi',
+            label: title || 'IMDb Afiş',
+            year: year || '',
+            sub: resolvedId
           });
         }
-      });
 
-      // Eğer doğrudan tt... ID ile sorgulandıysa, başlıkla da ek arama yapıp serinin diğer filmlerinin/sezonlarının afişlerini menüye ekle
-      if (imdbId && title) {
+        // Alternatif afiş adayları
+        omdbSearchList.forEach((sItem, idx) => {
+          const p = sItem && sItem.Poster;
+          if (p && p !== 'N/A' && p !== poster) {
+            rawCands.push({
+              url: p,
+              badge: `Alternatif Afiş #${idx + 2}`,
+              label: sItem.Title || title,
+              year: sItem.Year || '',
+              sub: sItem.imdbID || ''
+            });
+          }
+        });
+      }
+
+      // 4. Yönetmen veya Başlık eksikse Wikidata SPARQL Servisiyle Tamamla (100% Free / Keyless)
+      if (resolvedId && (!director || !title)) {
         try {
-          const resSearch = await fetch(`https://search.imdbot.workers.dev/?q=${encodeURIComponent(title)}`);
-          if (resSearch.ok) {
-            const jSearch = await resSearch.json();
-            for (const sItem of (jSearch && jSearch.description) || []) {
-              if (sItem && sItem['#IMG_POSTER']) {
-                rawCands.push({
-                  url: sItem['#IMG_POSTER'],
-                  badge: 'Seri / Alternatif Afiş',
-                  label: sItem['#TITLE'] || title,
-                  year: sItem['#YEAR'] || '',
-                  sub: sItem['#IMDB_ID'] || ''
-                });
+          const sparql = `SELECT ?item ?title ?directorLabel ?year ?genreLabel WHERE {
+            ?item wdt:P345 "${resolvedId}".
+            OPTIONAL { ?item rdfs:label ?title. FILTER(LANG(?title) = "tr" || LANG(?title) = "en") }
+            OPTIONAL { ?item wdt:P57 ?director. }
+            OPTIONAL { ?item wdt:P577 ?date. BIND(YEAR(?date) AS ?year) }
+            OPTIONAL { ?item wdt:P136 ?genre. }
+            SERVICE wikibase:label { bd:serviceParam wikibase:language "tr,en". }
+          } LIMIT 5`;
+          const wdUrl = `https://query.wikidata.org/sparql?query=${encodeURIComponent(sparql)}&format=json`;
+          const wdRes = await fetch(wdUrl, { headers: { Accept: 'application/sparql-results+json' } });
+          if (wdRes.ok) {
+            const wdJson = await wdRes.json();
+            const bindings = (wdJson && wdJson.results && wdJson.results.bindings) || [];
+            for (const b of bindings) {
+              if (!director && b.directorLabel && b.directorLabel.value) director = b.directorLabel.value;
+              if (!title && b.title && b.title.value) title = b.title.value;
+              if (!year && b.year && b.year.value) year = parseInt(b.year.value, 10);
+              if (b.genreLabel && b.genreLabel.value) {
+                const gMapped = this.mapEnglishGenresToCatalog([b.genreLabel.value]);
+                for (const gm of gMapped) {
+                  if (!genres.includes(gm)) genres.push(gm);
+                }
               }
             }
           }
         } catch (_) {}
       }
 
+      if (!title) {
+        throw new Error('IMDb üzerinde eşleşen yapım bulunamadı. Lütfen doğrudan IMDb bağlantısı (https://www.imdb.com/title/tt...) veya IMDb ID (tt...) giriniz.');
+      }
+
+      const extraMeta = mediaKind === 'movie'
+        ? director
+        : (writer || actors || '');
+
       const coverCandidates = this.dedupeCoverCandidates(rawCands);
       return {
         externalId: resolvedId,
         url: `https://www.imdb.com/title/${resolvedId}/`,
         title,
+        director,
         image: poster || (coverCandidates[0] && coverCandidates[0].url) || '',
         banner: poster || null,
         coverCandidates,
-        extraMeta: actors,
+        extraMeta,
+        genres,
+        score: rating,
         parts: [
           {
             id: resolvedId,
@@ -7177,6 +7272,14 @@
             if (info.extraMeta && adapter.extraMetaField) {
               d[adapter.extraMetaField.key] = info.extraMeta;
               $('#rqExtraMetaInput').value = info.extraMeta;
+            }
+            if (Array.isArray(info.genres) && info.genres.length) {
+              const curG = Array.isArray(d.customGenres) ? d.customGenres : [];
+              const merged = [...new Set([...curG, ...info.genres])];
+              d.customGenres = merged;
+              d.genres = merged;
+              if ($('#rqGenresInput')) $('#rqGenresInput').value = merged.join(', ');
+              if (typeof renderRapidQueueGenres === 'function') renderRapidQueueGenres();
             }
             if (Array.isArray(info.parts) && info.parts.length) {
               d.parts = info.parts;

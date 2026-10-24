@@ -7,54 +7,141 @@
     "Fantastik",
     "Aksiyon",
     "Dram",
-    "Suç \u0026 Noir",
+    "Suç & Noir",
     "Gerilim",
     "Gizem",
     "Animasyon"
   ],
   "stats": {
-    "total": 0,
-    "watched": 0,
-    "films": 0,
+    "total": 2,
+    "watched": 2,
+    "films": 2,
     "extras": 0,
-    "watchCount": 0,
+    "watchCount": 2,
     "favorites": 0,
-    "byStatus": {},
-    "genres": [],
-    "scoreHistogram": {}
+    "avgScore": 9.3,
+    "byStatus": {
+      "completed": 2
+    },
+    "genres": [
+      {
+        "name": "Animasyon",
+        "count": 2
+      },
+      {
+        "name": "Macera",
+        "count": 2
+      },
+      {
+        "name": "Film",
+        "count": 1
+      },
+      {
+        "name": "Komedi",
+        "count": 1
+      }
+    ],
+    "scoreHistogram": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 2,
+      "10": 0
+    }
   },
   "items": [
     {
       "addedAt": "2026-10-24",
       "adminModified": true,
-      "banner": "https://m.media-amazon.com/images/M/MV5BZTA3OWVjOWItNjE1NS00NzZiLWE1MjgtZDZhMWI1ZTlkNzYwXkEyXkFqcGc@._V1_.jpg",
+      "banner": "https://m.media-amazon.com/images/M/MV5BZTA3OWVjOWItNjE1NS00NzZiLWE1MjgtZDZhMWI1ZTlkNzYwXkEyXkFqcGc@._V1_QL75_UX380_CR0,2,380,562_.jpg",
       "customGenres": [
-        "Film"
+        "Film",
+        "Animasyon",
+        "Macera",
+        "Komedi"
       ],
       "director": "John Lasseter",
-      "favorite": false,
       "genres": [
-        "Film"
+        "Film",
+        "Animasyon",
+        "Macera",
+        "Komedi"
       ],
       "id": "tt0114709",
-      "image": "https://m.media-amazon.com/images/M/MV5BZTA3OWVjOWItNjE1NS00NzZiLWE1MjgtZDZhMWI1ZTlkNzYwXkEyXkFqcGc@._V1_.jpg",
+      "image": "https://m.media-amazon.com/images/M/MV5BZTA3OWVjOWItNjE1NS00NzZiLWE1MjgtZDZhMWI1ZTlkNzYwXkEyXkFqcGc@._V1_QL75_UX380_CR0,2,380,562_.jpg",
       "parts": [
         {
-          "adminModified": true,
-          "episodes": 1,
-          "format": "MOVIE",
-          "id": 825104097,
-          "kind": "movie",
+          "id": "tt0114709",
           "name": "Toy Story",
-          "status": "COMPLETED",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
           "watched": 1,
-          "year": 1995
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 1995,
+          "repeat": 2,
+          "adminModified": true
         }
       ],
       "status": "completed",
       "title": "Toy Story",
       "type": "MOVIE",
-      "url": "https://www.imdb.com/title/tt0114709/"
+      "url": "https://www.imdb.com/title/tt0114709/",
+      "score": 9,
+      "imdbId": "tt0114709",
+      "source": "manual"
+    },
+    {
+      "id": "imdb-tt0120363",
+      "title": "Toy Story 2",
+      "url": "https://www.imdb.com/title/tt0120363/",
+      "firstSeasonUrl": "",
+      "status": "completed",
+      "score": 9.5,
+      "genres": [
+        "Animasyon",
+        "Macera"
+      ],
+      "customGenres": [
+        "Animasyon",
+        "Macera"
+      ],
+      "image": "https://m.media-amazon.com/images/M/MV5BNzVmODlhMDEtY2YxZi00OTVjLTlkNTktN2Q2OTRlM2I4M2FhXkEyXkFqcGc@._V1_QL75_UY562_CR1,0,380,562_.jpg",
+      "addedAt": "2026-10-24",
+      "source": "manual",
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "status",
+        "score",
+        "genres",
+        "addedAt"
+      ],
+      "parts": [
+        {
+          "id": "tt0120363",
+          "name": "Toy Story 2",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 1999,
+          "score": 9.5,
+          "repeat": 2,
+          "adminModified": true
+        }
+      ],
+      "banner": "https://m.media-amazon.com/images/M/MV5BNzVmODlhMDEtY2YxZi00OTVjLTlkNTktN2Q2OTRlM2I4M2FhXkEyXkFqcGc@._V1_QL75_UY562_CR1,0,380,562_.jpg",
+      "director": "Ash Brannon, John Lasseter, Lee Unkrich",
+      "imdbId": "tt0120363"
     }
   ]
 }

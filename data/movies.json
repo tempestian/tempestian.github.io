@@ -1,13 +1,13 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-10-23",
+  "updated": "2026-10-24",
   "source": "site-first:movie",
   "customGenreCatalog": [
     "Bilim Kurgu",
     "Fantastik",
     "Aksiyon",
     "Dram",
-    "Suç & Noir",
+    "Suç \u0026 Noir",
     "Gerilim",
     "Gizem",
     "Animasyon"
@@ -19,10 +19,42 @@
     "extras": 0,
     "watchCount": 0,
     "favorites": 0,
-    "avgScore": null,
     "byStatus": {},
     "genres": [],
     "scoreHistogram": {}
   },
-  "items": []
+  "items": [
+    {
+      "addedAt": "2026-10-24",
+      "adminModified": true,
+      "banner": "https://m.media-amazon.com/images/M/MV5BZTA3OWVjOWItNjE1NS00NzZiLWE1MjgtZDZhMWI1ZTlkNzYwXkEyXkFqcGc@._V1_.jpg",
+      "customGenres": [
+        "Film"
+      ],
+      "director": "John Lasseter",
+      "favorite": false,
+      "genres": [
+        "Film"
+      ],
+      "id": "tt0114709",
+      "image": "https://m.media-amazon.com/images/M/MV5BZTA3OWVjOWItNjE1NS00NzZiLWE1MjgtZDZhMWI1ZTlkNzYwXkEyXkFqcGc@._V1_.jpg",
+      "parts": [
+        {
+          "adminModified": true,
+          "episodes": 1,
+          "format": "MOVIE",
+          "id": 825104097,
+          "kind": "movie",
+          "name": "Toy Story",
+          "status": "COMPLETED",
+          "watched": 1,
+          "year": 1995
+        }
+      ],
+      "status": "completed",
+      "title": "Toy Story",
+      "type": "MOVIE",
+      "url": "https://www.imdb.com/title/tt0114709/"
+    }
+  ]
 }

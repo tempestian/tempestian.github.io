@@ -19,7 +19,7 @@
     "extras": 0,
     "watchCount": 2,
     "favorites": 0,
-    "avgScore": 9.3,
+    "avgScore": 9.8,
     "byStatus": {
       "completed": 2
     },
@@ -86,16 +86,26 @@
           "release": "FINISHED",
           "year": 1995,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "acting": 5,
+            "directing": 5,
+            "sound": 5,
+            "impact": 4
+          },
+          "score": 9.8
         }
       ],
       "status": "completed",
       "title": "Toy Story",
       "type": "MOVIE",
       "url": "https://www.imdb.com/title/tt0114709/",
-      "score": 9,
+      "score": 9.8,
       "imdbId": "tt0114709",
-      "source": "manual"
+      "source": "manual",
+      "subScores": {}
     },
     {
       "id": "imdb-tt0120363",
@@ -103,7 +113,7 @@
       "url": "https://www.imdb.com/title/tt0120363/",
       "firstSeasonUrl": "",
       "status": "completed",
-      "score": 9.5,
+      "score": 9.8,
       "genres": [
         "Animasyon",
         "Macera"
@@ -134,14 +144,23 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 1999,
-          "score": 9.5,
+          "score": 9.8,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "acting": 5,
+            "directing": 5,
+            "sound": 4,
+            "impact": 5
+          }
         }
       ],
       "banner": "https://m.media-amazon.com/images/M/MV5BNzVmODlhMDEtY2YxZi00OTVjLTlkNTktN2Q2OTRlM2I4M2FhXkEyXkFqcGc@._V1_QL75_UY562_CR1,0,380,562_.jpg",
       "director": "Ash Brannon, John Lasseter, Lee Unkrich",
-      "imdbId": "tt0120363"
+      "imdbId": "tt0120363",
+      "subScores": {}
     }
   ]
 }

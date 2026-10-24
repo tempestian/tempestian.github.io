@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-10-23",
+  "updated": "2026-10-24",
   "source": "site-first:relations_only",
   "statsConfig": {
     "animeCountRule": "completed_season_or_movie",
@@ -19,7 +19,7 @@
     "completedEpisodes": 3270,
     "inProgressEpisodes": 94,
     "favorites": 10,
-    "avgScore": 6.3,
+    "avgScore": 6.4,
     "byStatus": {
       "completed": 71,
       "watching": 5,
@@ -169,16 +169,16 @@
       }
     ],
     "scoreHistogram": {
-      "1": 5,
-      "2": 2,
-      "3": 1,
-      "4": 6,
-      "5": 15,
-      "6": 17,
-      "7": 11,
+      "1": 3,
+      "2": 3,
+      "3": 9,
+      "4": 7,
+      "5": 9,
+      "6": 13,
+      "7": 13,
       "8": 7,
-      "9": 6,
-      "10": 8
+      "9": 8,
+      "10": 6
     },
     "rules": {
       "animeCountRule": "completed_season_or_movie",
@@ -191,10 +191,10 @@
     "excluded": 11,
     "highlights": {
       "topScore": {
-        "id": "al-14719",
-        "title": "JoJo's Bizarre Adventure (TV)",
+        "id": "al-101280",
+        "title": "That Time I Got Reincarnated as a Slime",
         "score": 10,
-        "ties": 7
+        "ties": 5
       },
       "mostWatched": {
         "id": "al-21",
@@ -252,7 +252,15 @@
           "year": 2018,
           "score": 10,
           "repeat": 21,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 106509,
@@ -266,7 +274,15 @@
           "year": 2019,
           "score": 10,
           "repeat": 5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 108511,
@@ -280,7 +296,15 @@
           "year": 2021,
           "score": 10,
           "repeat": 21,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 116741,
@@ -294,7 +318,15 @@
           "year": 2021,
           "score": 10,
           "repeat": 3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 116742,
@@ -308,7 +340,15 @@
           "year": 2021,
           "score": 10,
           "repeat": 20,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 146503,
@@ -321,7 +361,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 161802,
@@ -335,7 +383,15 @@
           "year": 2023,
           "score": 10,
           "repeat": 5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 156822,
@@ -349,7 +405,15 @@
           "year": 2024,
           "score": 10,
           "repeat": 6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 182206,
@@ -362,7 +426,15 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 182205,
@@ -375,7 +447,15 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 217330,
@@ -388,7 +468,15 @@
           "release": "NOT_YET_RELEASED",
           "year": 2027,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 217331,
@@ -401,7 +489,15 @@
           "release": "NOT_YET_RELEASED",
           "year": 2027,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2026-10",
@@ -413,7 +509,15 @@
         "genres",
         "addedAt",
         "image"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 5,
+        "characters": 5,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-127399",
@@ -434,7 +538,7 @@
         "Aksiyon",
         "Fantastik"
       ],
-      "score": 6.3,
+      "score": 5.7,
       "parts": [
         {
           "id": 127399,
@@ -446,8 +550,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 6,
-          "adminModified": true
+          "score": 4.9,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 1,
+            "characters": 3,
+            "visuals": 3,
+            "sound": 3,
+            "enjoyment": 4
+          }
         },
         {
           "id": 138106,
@@ -470,8 +582,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 6,
-          "adminModified": true
+          "score": 5.8,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 163943,
@@ -494,8 +614,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 6,
-          "adminModified": true
+          "score": 5.6,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 4
+          }
         },
         {
           "id": 187921,
@@ -507,8 +635,16 @@
           "status": "CURRENT",
           "release": "FINISHED",
           "year": 2025,
-          "score": 7,
-          "adminModified": true
+          "score": 6.5,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 4,
+            "visuals": 5,
+            "sound": 3,
+            "enjoyment": 5
+          }
         },
         {
           "id": 213580,
@@ -531,7 +667,8 @@
         "genres",
         "addedAt",
         "image"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-162804",
@@ -592,7 +729,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20931",
@@ -621,7 +759,7 @@
         "Doğaüstü",
         "Seinen"
       ],
-      "score": 10,
+      "score": 8.7,
       "parts": [
         {
           "id": 20931,
@@ -633,8 +771,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "score": 10,
-          "adminModified": true
+          "score": 8.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 4,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2026-05",
@@ -645,7 +791,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-98503",
@@ -683,7 +830,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 4,
+            "characters": 3,
+            "visuals": 2,
+            "sound": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 102969,
@@ -695,8 +850,15 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 5,
-          "adminModified": true
+          "score": 5.6,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 4,
+            "characters": 2,
+            "sound": 4,
+            "enjoyment": 3
+          }
         }
       ],
       "addedAt": "2026-02",
@@ -707,7 +869,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20555",
@@ -730,7 +893,7 @@
         "Dram",
         "Psikolojik"
       ],
-      "score": 7,
+      "score": 8.3,
       "parts": [
         {
           "id": 20555,
@@ -742,8 +905,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 7,
-          "adminModified": true
+          "score": 8.3,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 3,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 4,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2026-02",
@@ -754,7 +925,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-108463",
@@ -795,7 +967,8 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {}
         },
         {
           "id": 159074,
@@ -858,7 +1031,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 5,
+        "characters": 5,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-199",
@@ -881,7 +1062,7 @@
         "Fantastik",
         "Doğaüstü"
       ],
-      "score": 7,
+      "score": 7.6,
       "parts": [
         {
           "id": 199,
@@ -893,8 +1074,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2001,
-          "score": 7,
-          "adminModified": true
+          "score": 7.6,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 3
+          }
         }
       ],
       "addedAt": "2026-01",
@@ -905,7 +1094,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-2981",
@@ -934,7 +1124,7 @@
         "Gerilim",
         "Gizem"
       ],
-      "score": 2,
+      "score": 3.8,
       "parts": [
         {
           "id": 2981,
@@ -946,8 +1136,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 1992,
-          "score": 2,
-          "adminModified": true
+          "score": 3.8,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 1,
+            "characters": 2,
+            "visuals": 4,
+            "sound": 1,
+            "enjoyment": 1
+          }
         }
       ],
       "addedAt": "2026-01",
@@ -958,7 +1156,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-114124",
@@ -981,7 +1180,7 @@
         "Psikolojik",
         "Gizem"
       ],
-      "score": 2.5,
+      "score": 3.8,
       "parts": [
         {
           "id": 114124,
@@ -993,8 +1192,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 4,
-          "adminModified": true
+          "score": 4.2,
+          "adminModified": true,
+          "subScores": {
+            "characters": 1,
+            "world": 1,
+            "story": 2,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 3
+          }
         },
         {
           "id": 124858,
@@ -1006,8 +1213,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 1,
-          "adminModified": true
+          "score": 3.3,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 1,
+            "characters": 1,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 1
+          }
         },
         {
           "id": 138700,
@@ -1029,7 +1244,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21613",
@@ -1057,7 +1273,7 @@
         "Seinen",
         "Reenkarnasyon"
       ],
-      "score": 6.1,
+      "score": 7.6,
       "parts": [
         {
           "id": 21613,
@@ -1069,8 +1285,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "score": 7,
-          "adminModified": true
+          "score": 8,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 3,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 98186,
@@ -1093,8 +1317,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 4,
-          "adminModified": true
+          "score": 8.2,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "sound": 5,
+            "visuals": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 135866,
@@ -1106,8 +1338,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 6,
-          "adminModified": true
+          "score": 6.9,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 3,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 5,
+            "enjoyment": 4
+          }
         },
         {
           "id": 135865,
@@ -1140,7 +1380,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-181447",
@@ -1163,7 +1404,7 @@
         "Aksiyon",
         "Fantastik"
       ],
-      "score": 6,
+      "score": 6.4,
       "parts": [
         {
           "id": 181447,
@@ -1175,8 +1416,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 6,
-          "adminModified": true
+          "score": 6.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 2,
+            "characters": 2,
+            "visuals": 5,
+            "sound": 4,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2026-01",
@@ -1187,7 +1436,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-1575",
@@ -1222,7 +1472,7 @@
         "Dram",
         "Süper Güç"
       ],
-      "score": 9.6,
+      "score": 9.5,
       "parts": [
         {
           "id": 1575,
@@ -1235,7 +1485,15 @@
           "release": "FINISHED",
           "year": 2006,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 1953,
@@ -1258,8 +1516,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2008,
-          "score": 10,
-          "adminModified": true
+          "score": 9.5,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 5163,
@@ -1392,8 +1658,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 7,
-          "adminModified": true
+          "score": 8.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 4,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 4
+          }
         },
         {
           "id": 117408,
@@ -1426,7 +1700,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-179696",
@@ -1451,7 +1726,7 @@
         "Romantik",
         "Slice of Life"
       ],
-      "score": 5.5,
+      "score": 5.4,
       "parts": [
         {
           "id": 179696,
@@ -1463,8 +1738,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 5.5,
-          "adminModified": true
+          "score": 5.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 3,
+            "characters": 2,
+            "visuals": 3,
+            "sound": 2,
+            "enjoyment": 3
+          }
         }
       ],
       "addedAt": "2025-12",
@@ -1475,7 +1758,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-126288",
@@ -1498,7 +1782,7 @@
         "Rom-Com",
         "Slice of Life"
       ],
-      "score": 4.1,
+      "score": 2.9,
       "parts": [
         {
           "id": 126288,
@@ -1510,8 +1794,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 4,
-          "adminModified": true
+          "score": 3.9,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 2,
+            "characters": 2,
+            "visuals": 4,
+            "sound": 2,
+            "enjoyment": 1
+          }
         },
         {
           "id": 143082,
@@ -1523,7 +1815,7 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 3,
+          "score": 1,
           "adminModified": true
         },
         {
@@ -1536,7 +1828,7 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 5,
+          "score": 1,
           "adminModified": true
         }
       ],
@@ -1548,7 +1840,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-16417",
@@ -1571,7 +1864,7 @@
         "Komedi",
         "Slice of Life"
       ],
-      "score": 1.5,
+      "score": 3.3,
       "parts": [
         {
           "id": 16417,
@@ -1583,8 +1876,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2013,
-          "score": 1,
-          "adminModified": true
+          "score": 3,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 1,
+            "characters": 2,
+            "visuals": 1,
+            "sound": 4,
+            "enjoyment": 1
+          }
         },
         {
           "id": 17879,
@@ -1607,8 +1908,15 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 3,
-          "adminModified": true
+          "score": 4,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 3,
+            "characters": 1,
+            "visuals": 2,
+            "enjoyment": 2
+          }
         },
         {
           "id": 21014,
@@ -1630,7 +1938,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-181444",
@@ -1657,7 +1966,7 @@
         "Dram",
         "Slice of Life"
       ],
-      "score": 8,
+      "score": 7.6,
       "parts": [
         {
           "id": 181444,
@@ -1669,8 +1978,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 8,
-          "adminModified": true
+          "score": 7.6,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 3,
+            "characters": 4,
+            "visuals": 5,
+            "sound": 4,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2025-09",
@@ -1681,7 +1998,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-163623",
@@ -1708,7 +2026,7 @@
         "Romantik",
         "Slice of Life"
       ],
-      "score": 6,
+      "score": 6.2,
       "parts": [
         {
           "id": 163623,
@@ -1720,8 +2038,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2024,
-          "score": 6,
-          "adminModified": true
+          "score": 6.2,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 2,
+            "characters": 4,
+            "visuals": 3,
+            "sound": 3,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2025-09",
@@ -1732,7 +2058,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-116267",
@@ -1758,7 +2085,7 @@
         "Romantik",
         "Slice of Life"
       ],
-      "score": 7,
+      "score": 6.6,
       "parts": [
         {
           "id": 116267,
@@ -1770,8 +2097,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 6,
-          "adminModified": true
+          "score": 5.2,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 2,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 4
+          }
         },
         {
           "id": 127371,
@@ -1806,7 +2141,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 5
+          }
         },
         {
           "id": 166104,
@@ -1828,7 +2171,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-66",
@@ -1896,7 +2240,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-101001",
@@ -1964,7 +2309,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-6574",
@@ -1987,7 +2333,7 @@
         "Slice of Life",
         "Okul"
       ],
-      "score": 5,
+      "score": 6.5,
       "parts": [
         {
           "id": 6574,
@@ -1999,8 +2345,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2010,
-          "score": 5,
-          "adminModified": true
+          "score": 6.5,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 3,
+            "characters": 2,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 5
+          }
         },
         {
           "id": 16646,
@@ -2022,7 +2376,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21196",
@@ -2107,7 +2462,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-15687",
@@ -2132,7 +2488,7 @@
         "Komedi",
         "Romantik"
       ],
-      "score": 7.5,
+      "score": 7.3,
       "parts": [
         {
           "id": 15687,
@@ -2157,8 +2513,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2012,
-          "score": 8,
-          "adminModified": true
+          "score": 8.1,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 3,
+            "visuals": 5,
+            "sound": 4,
+            "enjoyment": 5
+          }
         },
         {
           "id": 15879,
@@ -2222,8 +2586,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 9,
-          "adminModified": true
+          "score": 8.1,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 3,
+            "characters": 4,
+            "visuals": 5,
+            "sound": 4,
+            "enjoyment": 5
+          }
         },
         {
           "id": 20660,
@@ -2268,8 +2640,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 10,
-          "adminModified": true
+          "score": 8.9,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 4,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2025-05",
@@ -2280,7 +2660,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-98659",
@@ -2303,7 +2684,7 @@
         "Psikolojik",
         "Gizem"
       ],
-      "score": 6.5,
+      "score": 7,
       "parts": [
         {
           "id": 98659,
@@ -2315,8 +2696,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "score": 7,
-          "adminModified": true
+          "score": 7.5,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 3,
+            "sound": 3,
+            "enjoyment": 4
+          }
         },
         {
           "id": 145545,
@@ -2328,8 +2717,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 6,
-          "adminModified": true
+          "score": 6.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 4,
+            "characters": 3,
+            "visuals": 3,
+            "sound": 3,
+            "enjoyment": 3
+          }
         },
         {
           "id": 146066,
@@ -2341,8 +2738,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2024,
-          "score": 7,
-          "adminModified": true
+          "score": 7.5,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 3,
+            "sound": 3,
+            "enjoyment": 4
+          }
         },
         {
           "id": 180745,
@@ -2354,8 +2759,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2026,
-          "score": 6,
-          "adminModified": true
+          "score": 6.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 3,
+            "characters": 4,
+            "visuals": 1,
+            "sound": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 213477,
@@ -2377,7 +2790,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-5081",
@@ -2614,7 +3028,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-124080",
@@ -2641,7 +3056,7 @@
         "Romantik",
         "Slice of Life"
       ],
-      "score": 5,
+      "score": 6.1,
       "parts": [
         {
           "id": 124080,
@@ -2653,8 +3068,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 6,
-          "adminModified": true
+          "score": 7.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 2,
+            "enjoyment": 5
+          }
         },
         {
           "id": 163132,
@@ -2666,8 +3089,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 4,
-          "adminModified": true
+          "score": 4.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 2,
+            "visuals": 3,
+            "sound": 2,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2024-08",
@@ -2678,7 +3109,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20464",
@@ -2885,7 +3317,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-1614",
@@ -2904,7 +3337,7 @@
         "Spor",
         "Shounen"
       ],
-      "score": 5,
+      "score": 5.6,
       "parts": [
         {
           "id": 1614,
@@ -2916,8 +3349,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2001,
-          "score": 5,
-          "adminModified": true
+          "score": 5.6,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 3,
+            "characters": 4,
+            "visuals": 3,
+            "sound": 3,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2024-03",
@@ -2928,7 +3369,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21827",
@@ -3005,7 +3447,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-142770",
@@ -3030,7 +3473,7 @@
         "Dram",
         "Romantik"
       ],
-      "score": 6.5,
+      "score": 7.2,
       "parts": [
         {
           "id": 142770,
@@ -3042,8 +3485,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 6.5,
-          "adminModified": true
+          "score": 7.2,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 3,
+            "characters": 3,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2024-02",
@@ -3054,7 +3505,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-150672",
@@ -3082,7 +3534,7 @@
         "Psikolojik",
         "Müzik"
       ],
-      "score": 7,
+      "score": 7.7,
       "parts": [
         {
           "id": 150672,
@@ -3094,9 +3546,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 8,
+          "score": 8.4,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 166531,
@@ -3108,8 +3568,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2024,
-          "score": 6,
-          "adminModified": true
+          "score": 7,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 4,
+            "characters": 2,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 3
+          }
         },
         {
           "id": 182587,
@@ -3143,7 +3611,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20829",
@@ -3242,7 +3711,8 @@
         "genres",
         "addedAt",
         "image"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-7088",
@@ -3273,7 +3743,7 @@
         "Ecchi",
         "Komedi"
       ],
-      "score": 1,
+      "score": 2,
       "parts": [
         {
           "id": 7088,
@@ -3285,8 +3755,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2010,
-          "score": 1,
-          "adminModified": true
+          "score": 2,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 1,
+            "characters": 1,
+            "visuals": 1,
+            "sound": 1,
+            "enjoyment": 1
+          }
         },
         {
           "id": 8465,
@@ -3308,7 +3786,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-19",
@@ -3348,7 +3827,15 @@
           "release": "FINISHED",
           "year": 2004,
           "score": 9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 3,
+            "sound": 3,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2023-02",
@@ -3359,7 +3846,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-99750",
@@ -3382,7 +3870,7 @@
         "Romantik",
         "Slice of Life"
       ],
-      "score": 7,
+      "score": 5.8,
       "parts": [
         {
           "id": 99750,
@@ -3394,8 +3882,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 7,
-          "adminModified": true
+          "score": 5.8,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 2,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 1,
+            "enjoyment": 2
+          }
         }
       ],
       "addedAt": "2023-01",
@@ -3406,7 +3902,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20832",
@@ -3433,7 +3930,7 @@
         "Aksiyon",
         "Fantastik"
       ],
-      "score": 5,
+      "score": 5.8,
       "parts": [
         {
           "id": 20832,
@@ -3445,8 +3942,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "score": 5,
-          "adminModified": true
+          "score": 5.8,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 4,
+            "characters": 3,
+            "visuals": 3,
+            "sound": 2,
+            "enjoyment": 1
+          }
         },
         {
           "id": 21305,
@@ -3612,7 +4117,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-108465",
@@ -3733,7 +4239,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-127230",
@@ -3761,7 +4268,7 @@
         "Korku",
         "Dram"
       ],
-      "score": 6.8,
+      "score": 6.7,
       "parts": [
         {
           "id": 127230,
@@ -3773,9 +4280,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 6,
+          "score": 6.1,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 4,
+            "characters": 1,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 3
+          }
         },
         {
           "id": 198726,
@@ -3798,8 +4313,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 9,
-          "adminModified": true
+          "score": 8.3,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 3,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 204429,
@@ -3821,7 +4344,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-14813",
@@ -3878,7 +4402,15 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 20698,
@@ -3892,7 +4424,15 @@
           "year": 2015,
           "score": 10,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 21769,
@@ -3905,7 +4445,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 108489,
@@ -3919,7 +4467,15 @@
           "year": 2020,
           "score": 10,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 128643,
@@ -3932,7 +4488,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2022-09",
@@ -3943,7 +4507,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-98460",
@@ -3974,7 +4539,7 @@
         "Dram",
         "Psikolojik"
       ],
-      "score": 6,
+      "score": 4.6,
       "parts": [
         {
           "id": 98460,
@@ -3986,8 +4551,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 6,
-          "adminModified": true
+          "score": 4.6,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 4,
+            "characters": 1,
+            "visuals": 5,
+            "sound": 2,
+            "enjoyment": 1
+          }
         }
       ],
       "addedAt": "2022-09",
@@ -3998,7 +4571,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-98549",
@@ -4020,7 +4594,7 @@
         "Komedi",
         "Seinen"
       ],
-      "score": 5,
+      "score": 2.2,
       "parts": [
         {
           "id": 98549,
@@ -4032,8 +4606,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 5,
-          "adminModified": true
+          "score": 2.2,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 1,
+            "characters": 1,
+            "visuals": 1,
+            "sound": 2,
+            "enjoyment": 1
+          }
         },
         {
           "id": 104200,
@@ -4066,7 +4648,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-114963",
@@ -4089,7 +4672,7 @@
         "Romantik",
         "Dram"
       ],
-      "score": 5.5,
+      "score": 4.2,
       "parts": [
         {
           "id": 114963,
@@ -4101,8 +4684,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 5.5,
-          "adminModified": true
+          "score": 4.2,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 1,
+            "characters": 1,
+            "visuals": 4,
+            "sound": 2,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2022-07",
@@ -4113,7 +4704,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21234",
@@ -4154,7 +4746,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2022-07",
@@ -4165,7 +4765,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-14719",
@@ -4193,7 +4794,7 @@
         "Doğaüstü",
         "Fantastik"
       ],
-      "score": 10,
+      "score": 9.6,
       "parts": [
         {
           "id": 14719,
@@ -4205,8 +4806,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2012,
-          "score": 10,
-          "adminModified": true
+          "score": 9.1,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 5,
+            "characters": 4,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 20474,
@@ -4218,8 +4827,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 10,
-          "adminModified": true
+          "score": 8.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 5,
+            "characters": 3,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 20799,
@@ -4231,8 +4848,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "score": 10,
-          "adminModified": true
+          "score": 9.1,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 5,
+            "characters": 4,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 21450,
@@ -4245,7 +4870,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 21778,
@@ -4269,7 +4902,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 131942,
@@ -4281,8 +4922,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 10,
-          "adminModified": true
+          "score": 9.6,
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 4,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 146722,
@@ -4295,7 +4944,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 190327,
@@ -4308,7 +4965,15 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 210482,
@@ -4320,7 +4985,8 @@
           "status": "CURRENT",
           "release": "RELEASING",
           "year": 2026,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {}
         }
       ],
       "addedAt": "2022-07",
@@ -4331,7 +4997,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21355",
@@ -4376,7 +5043,15 @@
           "year": 2016,
           "score": 10,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 21780,
@@ -4411,7 +5086,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 108632,
@@ -4424,7 +5107,15 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 120700,
@@ -4448,7 +5139,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 128306,
@@ -4515,7 +5214,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-5680",
@@ -4629,7 +5329,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20954",
@@ -4652,7 +5353,7 @@
         "Psikolojik",
         "Shounen"
       ],
-      "score": 7,
+      "score": 4.5,
       "parts": [
         {
           "id": 20954,
@@ -4664,8 +5365,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 7,
-          "adminModified": true
+          "score": 4.5,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 2,
+            "characters": 3,
+            "visuals": 2,
+            "sound": 1,
+            "enjoyment": 1
+          }
         }
       ],
       "addedAt": "2022-06",
@@ -4676,7 +5385,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21311",
@@ -4706,7 +5416,7 @@
         "Doğaüstü",
         "Komedi"
       ],
-      "score": 6.6,
+      "score": 6.9,
       "parts": [
         {
           "id": 21311,
@@ -4718,8 +5428,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 6,
-          "adminModified": true
+          "score": 6.5,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 3,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 2
+          }
         },
         {
           "id": 21679,
@@ -4731,8 +5449,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 6,
-          "adminModified": true
+          "score": 5.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 3,
+            "characters": 4,
+            "visuals": 3,
+            "sound": 2,
+            "enjoyment": 3
+          }
         },
         {
           "id": 21791,
@@ -4755,8 +5481,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 8,
-          "adminModified": true
+          "score": 8.1,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 5,
+            "sound": 3,
+            "enjoyment": 4
+          }
         },
         {
           "id": 103223,
@@ -4768,8 +5502,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 7,
-          "adminModified": true
+          "score": 7.2,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 3
+          }
         },
         {
           "id": 120150,
@@ -4792,8 +5534,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 7,
-          "adminModified": true
+          "score": 7.8,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 4
+          }
         },
         {
           "id": 163263,
@@ -4826,7 +5576,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21290",
@@ -4855,7 +5606,7 @@
         "Romantik",
         "Ecchi"
       ],
-      "score": 5,
+      "score": 6.5,
       "parts": [
         {
           "id": 21290,
@@ -4867,9 +5618,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 5,
+          "score": 6.5,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 4,
+            "characters": 2,
+            "visuals": 4,
+            "sound": 2,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2022-05",
@@ -4880,7 +5639,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20",
@@ -5192,7 +5952,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-112301",
@@ -5219,7 +5980,7 @@
         "Fantastik",
         "Doğaüstü"
       ],
-      "score": 4.5,
+      "score": 6.2,
       "parts": [
         {
           "id": 112301,
@@ -5231,9 +5992,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 6,
+          "score": 8,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 130588,
@@ -5245,8 +6014,16 @@
           "status": "DROPPED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 3,
-          "adminModified": true
+          "score": 4.3,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 3,
+            "characters": 2,
+            "visuals": 3,
+            "sound": 1,
+            "enjoyment": 1
+          }
         },
         {
           "id": 130590,
@@ -5268,7 +6045,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20613",
@@ -5297,7 +6075,7 @@
         "Dram",
         "Komedi"
       ],
-      "score": 5,
+      "score": 3.3,
       "parts": [
         {
           "id": 20613,
@@ -5309,8 +6087,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 5,
-          "adminModified": true
+          "score": 3.3,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 2,
+            "characters": 1,
+            "visuals": 2,
+            "sound": 2,
+            "enjoyment": 3
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -5321,7 +6107,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-131548",
@@ -5366,7 +6153,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-11111",
@@ -5393,7 +6181,7 @@
         "Korku",
         "Doğaüstü"
       ],
-      "score": 7.6,
+      "score": 7.3,
       "parts": [
         {
           "id": 11111,
@@ -5405,8 +6193,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2012,
-          "score": 8,
-          "adminModified": true
+          "score": 7.6,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 2,
+            "enjoyment": 4
+          }
         },
         {
           "id": 11701,
@@ -5430,7 +6226,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-16498",
@@ -5475,8 +6272,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2013,
-          "score": 8,
-          "adminModified": true
+          "score": 8.8,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 5,
+            "visuals": 4,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 18397,
@@ -5547,8 +6352,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "score": 8,
-          "adminModified": true
+          "score": 7.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 3,
+            "sound": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 99634,
@@ -5582,8 +6395,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 9,
-          "adminModified": true
+          "score": 8.5,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 5,
+            "characters": 4,
+            "visuals": 3,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 104578,
@@ -5595,8 +6416,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 10,
-          "adminModified": true
+          "score": 9.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 3,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 119113,
@@ -5619,8 +6448,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 9,
-          "adminModified": true
+          "score": 9.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 4,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 131681,
@@ -5633,7 +6470,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 146984,
@@ -5646,7 +6491,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 162314,
@@ -5659,7 +6512,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -5670,7 +6531,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-100388",
@@ -5695,7 +6557,7 @@
         "Gerilim",
         "Psikolojik"
       ],
-      "score": 6,
+      "score": 3.7,
       "parts": [
         {
           "id": 100388,
@@ -5707,8 +6569,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 6,
-          "adminModified": true
+          "score": 3.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 1,
+            "characters": 2,
+            "visuals": 3,
+            "sound": 2,
+            "enjoyment": 1
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -5719,7 +6589,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-269",
@@ -5747,7 +6618,7 @@
         "Doğaüstü",
         "Süper Güç"
       ],
-      "score": 5.8,
+      "score": 6.3,
       "parts": [
         {
           "id": 269,
@@ -5759,8 +6630,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2004,
-          "score": 5.5,
-          "adminModified": true
+          "score": 4.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 3,
+            "characters": 2,
+            "visuals": 2,
+            "sound": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 834,
@@ -5838,8 +6717,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 6,
-          "adminModified": true
+          "score": 7.8,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 4,
+            "characters": 3,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 159322,
@@ -5883,7 +6770,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20596",
@@ -5956,7 +6844,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-1535",
@@ -5984,7 +6873,7 @@
         "Doğaüstü",
         "Psikolojik"
       ],
-      "score": 9,
+      "score": 9.9,
       "parts": [
         {
           "id": 1535,
@@ -5996,9 +6885,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2006,
-          "score": 9,
+          "score": 10,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 2994,
@@ -6010,8 +6907,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2007,
-          "score": 9,
-          "adminModified": true
+          "score": 9.2,
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 4,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 3
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -6022,7 +6927,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-101922",
@@ -6045,7 +6951,7 @@
         "Fantastik",
         "Doğaüstü"
       ],
-      "score": 4.3,
+      "score": 5.9,
       "parts": [
         {
           "id": 101922,
@@ -6057,8 +6963,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 4,
-          "adminModified": true
+          "score": 5.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 3,
+            "characters": 1,
+            "visuals": 5,
+            "sound": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 112151,
@@ -6070,8 +6984,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 7,
-          "adminModified": true
+          "score": 8.1,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 3,
+            "characters": 4,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 4
+          }
         },
         {
           "id": 129874,
@@ -6094,8 +7016,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 5,
-          "adminModified": true
+          "score": 6.8,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 3,
+            "characters": 2,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 4
+          }
         },
         {
           "id": 145139,
@@ -6107,8 +7037,16 @@
           "status": "DROPPED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 3,
-          "adminModified": true
+          "score": 4.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 1,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 1
+          }
         },
         {
           "id": 166240,
@@ -6163,7 +7101,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-17513",
@@ -6221,7 +7160,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-101347",
@@ -6248,7 +7188,7 @@
         "Fantastik",
         "Dram"
       ],
-      "score": 8,
+      "score": 9,
       "parts": [
         {
           "id": 101347,
@@ -6260,8 +7200,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 8,
-          "adminModified": true
+          "score": 9,
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 4,
+            "characters": 4,
+            "visuals": 5,
+            "sound": 4,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -6272,7 +7220,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-97682",
@@ -6298,7 +7247,7 @@
         "Fantastik",
         "Doğaüstü"
       ],
-      "score": 5,
+      "score": 5.6,
       "parts": [
         {
           "id": 97682,
@@ -6310,9 +7259,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "score": 6,
+          "score": 6.6,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 4,
+            "characters": 3,
+            "visuals": 3,
+            "sound": 3,
+            "enjoyment": 4
+          }
         },
         {
           "id": 149099,
@@ -6335,8 +7292,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 4,
-          "adminModified": true
+          "score": 4.5,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 4,
+            "characters": 1,
+            "visuals": 3,
+            "sound": 2,
+            "enjoyment": 1
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -6347,7 +7312,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20987",
@@ -6429,7 +7395,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-113415",
@@ -6453,7 +7420,7 @@
         "Fantastik",
         "Doğaüstü"
       ],
-      "score": 3.4,
+      "score": 3.5,
       "parts": [
         {
           "id": 113415,
@@ -6465,8 +7432,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 2,
-          "adminModified": true
+          "score": 3.1,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 1,
+            "characters": 1,
+            "visuals": 4,
+            "sound": 2,
+            "enjoyment": 1
+          }
         },
         {
           "id": 131573,
@@ -6478,8 +7453,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 6,
-          "adminModified": true
+          "score": 4.9,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 1,
+            "characters": 2,
+            "visuals": 4,
+            "sound": 2,
+            "enjoyment": 3
+          }
         },
         {
           "id": 145064,
@@ -6491,8 +7474,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 4,
-          "adminModified": true
+          "score": 3.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 1,
+            "characters": 1,
+            "visuals": 5,
+            "sound": 2,
+            "enjoyment": 1
+          }
         },
         {
           "id": 192809,
@@ -6547,7 +7538,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-101921",
@@ -6573,7 +7565,7 @@
         "Slice of Life",
         "Seinen"
       ],
-      "score": 8.4,
+      "score": 9.4,
       "parts": [
         {
           "id": 101921,
@@ -6585,9 +7577,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 8,
+          "score": 9.3,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 112641,
@@ -6599,9 +7599,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2020,
-          "score": 8,
+          "score": 9.3,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 125368,
@@ -6637,9 +7645,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 9,
+          "score": 10,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 151384,
@@ -6651,8 +7667,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 9,
-          "adminModified": true
+          "score": 9.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 4,
+            "enjoyment": 5,
+            "sound": 5
+          }
         },
         {
           "id": 194884,
@@ -6664,8 +7688,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 10,
-          "adminModified": true
+          "score": 9.6,
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 4,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 205081,
@@ -6688,7 +7720,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-98314",
@@ -6712,7 +7745,7 @@
         "Okul",
         "Gerilim"
       ],
-      "score": 6.5,
+      "score": 7.1,
       "parts": [
         {
           "id": 98314,
@@ -6724,8 +7757,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2017,
-          "score": 7,
-          "adminModified": true
+          "score": 7.3,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 4,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 5
+          }
         },
         {
           "id": 100876,
@@ -6737,8 +7778,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 6,
-          "adminModified": true
+          "score": 6.9,
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 4,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 3
+          }
         },
         {
           "id": 141351,
@@ -6760,7 +7809,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-512",
@@ -6785,7 +7835,7 @@
         "Fantastik",
         "Slice of Life"
       ],
-      "score": 6,
+      "score": 5.6,
       "parts": [
         {
           "id": 512,
@@ -6797,8 +7847,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 1989,
-          "score": 6,
-          "adminModified": true
+          "score": 5.6,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 3,
+            "characters": 2,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -6809,7 +7867,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21421",
@@ -6832,7 +7891,7 @@
         "Psikolojik",
         "Bilim Kurgu"
       ],
-      "score": 5.5,
+      "score": 4.4,
       "parts": [
         {
           "id": 21421,
@@ -6844,8 +7903,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 5.5,
-          "adminModified": true
+          "score": 4.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 3,
+            "visuals": 2,
+            "sound": 2,
+            "enjoyment": 2
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -6856,7 +7923,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-132405",
@@ -6882,7 +7950,7 @@
         "Komedi",
         "Slice of Life"
       ],
-      "score": 5,
+      "score": 6.2,
       "parts": [
         {
           "id": 132405,
@@ -6894,8 +7962,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 5,
-          "adminModified": true
+          "score": 6.2,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 3,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 5
+          }
         },
         {
           "id": 154768,
@@ -6918,7 +7994,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-523",
@@ -6943,7 +8020,7 @@
         "Doğaüstü",
         "Slice of Life"
       ],
-      "score": 6,
+      "score": 7.4,
       "parts": [
         {
           "id": 523,
@@ -6955,8 +8032,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 1988,
-          "score": 6,
-          "adminModified": true
+          "score": 7.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 3,
+            "enjoyment": 4
+          }
         },
         {
           "id": 2488,
@@ -6978,7 +8063,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21",
@@ -7557,7 +8643,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-2890",
@@ -7580,7 +8667,7 @@
         "Fantastik",
         "Doğaüstü"
       ],
-      "score": 6,
+      "score": 4.4,
       "parts": [
         {
           "id": 2890,
@@ -7592,8 +8679,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2008,
-          "score": 6,
-          "adminModified": true
+          "score": 4.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 2,
+            "characters": 2,
+            "visuals": 3,
+            "sound": 4,
+            "enjoyment": 3
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -7604,7 +8699,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-101291",
@@ -7632,7 +8728,7 @@
         "Dram",
         "Psikolojik"
       ],
-      "score": 7.3,
+      "score": 8.1,
       "parts": [
         {
           "id": 101291,
@@ -7644,9 +8740,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 7,
+          "score": 7.7,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 3,
+            "characters": 4,
+            "visuals": 3,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 104157,
@@ -7658,8 +8762,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2019,
-          "score": 8,
-          "adminModified": true
+          "score": 9.1,
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 4,
+            "characters": 5,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 5
+          }
         },
         {
           "id": 154967,
@@ -7714,7 +8826,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21049",
@@ -7744,7 +8857,7 @@
         "Dram",
         "Slice of Life"
       ],
-      "score": 7,
+      "score": 7.3,
       "parts": [
         {
           "id": 21049,
@@ -7756,8 +8869,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 7,
-          "adminModified": true
+          "score": 7.2,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 2,
+            "sound": 3,
+            "enjoyment": 4
+          }
         },
         {
           "id": 98635,
@@ -7769,8 +8890,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2018,
-          "score": 7,
-          "adminModified": true
+          "score": 7.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 3,
+            "characters": 5,
+            "visuals": 3,
+            "sound": 3,
+            "enjoyment": 5
+          }
         },
         {
           "id": 108939,
@@ -7792,7 +8921,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-140960",
@@ -7802,7 +8932,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/140960",
       "status": "completed",
       "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/140960-Z7xSvkRxHKfj.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140960-Kb6R5nYQfjmP.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx140960-Kb6R5nYQfjmP.jpg",
       "genres": [
         "Shounen",
         "Rom-Com",
@@ -7819,7 +8949,7 @@
         "Slice of Life",
         "Romantik"
       ],
-      "score": 7.3,
+      "score": 8.2,
       "parts": [
         {
           "id": 140960,
@@ -7831,9 +8961,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 7,
+          "score": 7.8,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "world": 4,
+            "story": 4,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 5,
+            "enjoyment": 4
+          }
         },
         {
           "id": 142838,
@@ -7845,9 +8983,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 7,
+          "score": 7.8,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "enjoyment": 4,
+            "story": 4,
+            "world": 4,
+            "characters": 3,
+            "visuals": 4,
+            "sound": 5
+          }
         },
         {
           "id": 158927,
@@ -7859,8 +9005,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 7,
-          "adminModified": true
+          "score": 8.2,
+          "adminModified": true,
+          "subScores": {
+            "enjoyment": 5,
+            "sound": 4,
+            "visuals": 4,
+            "characters": 4,
+            "world": 4,
+            "story": 4
+          }
         },
         {
           "id": 158928,
@@ -7872,8 +9026,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2023,
-          "score": 8,
-          "adminModified": true
+          "score": 9.2,
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 4,
+            "characters": 4,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 177937,
@@ -7885,8 +9047,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 8,
-          "adminModified": true
+          "score": 8.7,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "characters": 4,
+            "world": 4,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -7897,7 +9067,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-129201",
@@ -7924,7 +9095,7 @@
         "Doğaüstü",
         "Bilim Kurgu"
       ],
-      "score": 9.5,
+      "score": 9.8,
       "parts": [
         {
           "id": 129201,
@@ -7936,9 +9107,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 9.5,
+          "score": 9.8,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 4,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -7949,7 +9128,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21804",
@@ -8039,7 +9219,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-129193",
@@ -8066,7 +9247,7 @@
         "Fantastik",
         "Macera"
       ],
-      "score": 8.5,
+      "score": 6.4,
       "parts": [
         {
           "id": 129193,
@@ -8078,8 +9259,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 8.5,
-          "adminModified": true
+          "score": 6.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 3,
+            "characters": 2,
+            "visuals": 4,
+            "sound": 2,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -8090,7 +9279,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-10620",
@@ -8119,7 +9309,7 @@
         "Psikolojik",
         "Doğaüstü"
       ],
-      "score": 6,
+      "score": 7.8,
       "parts": [
         {
           "id": 8460,
@@ -8144,8 +9334,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2011,
-          "score": 6,
-          "adminModified": true
+          "score": 8.3,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 5,
+            "characters": 4,
+            "visuals": 3,
+            "sound": 4,
+            "enjoyment": 5
+          }
         },
         {
           "id": 12503,
@@ -8180,7 +9378,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-130586",
@@ -8209,7 +9408,7 @@
         "Komedi",
         "Harem"
       ],
-      "score": 6,
+      "score": 4.5,
       "parts": [
         {
           "id": 130586,
@@ -8221,8 +9420,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 6,
-          "adminModified": true
+          "score": 4.5,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 1,
+            "characters": 2,
+            "visuals": 3,
+            "sound": 3,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -8233,7 +9440,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20605",
@@ -8261,7 +9469,7 @@
         "Korku",
         "Dram"
       ],
-      "score": 4,
+      "score": 3.4,
       "parts": [
         {
           "id": 20605,
@@ -8273,8 +9481,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2014,
-          "score": 4,
-          "adminModified": true
+          "score": 3.8,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 1,
+            "characters": 2,
+            "visuals": 2,
+            "sound": 4,
+            "enjoyment": 1
+          }
         },
         {
           "id": 20850,
@@ -8286,8 +9502,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2015,
-          "score": 4,
-          "adminModified": true
+          "score": 2.9,
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 1,
+            "characters": 1,
+            "visuals": 2,
+            "sound": 4,
+            "enjoyment": 1
+          }
         },
         {
           "id": 21132,
@@ -8342,7 +9566,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-6211",
@@ -8365,7 +9590,7 @@
         "Dram",
         "Psikolojik"
       ],
-      "score": 4,
+      "score": 3.3,
       "parts": [
         {
           "id": 6211,
@@ -8377,8 +9602,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2009,
-          "score": 4,
-          "adminModified": true
+          "score": 3.3,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 3,
+            "characters": 1,
+            "visuals": 1,
+            "sound": 1,
+            "enjoyment": 1
+          }
         },
         {
           "id": 7654,
@@ -8400,7 +9633,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-120120",
@@ -8421,7 +9655,7 @@
         "Aksiyon",
         "Dram"
       ],
-      "score": 5,
+      "score": 3.4,
       "parts": [
         {
           "id": 120120,
@@ -8433,8 +9667,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2021,
-          "score": 5,
-          "adminModified": true
+          "score": 3.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 1,
+            "characters": 1,
+            "visuals": 2,
+            "sound": 3,
+            "enjoyment": 2
+          }
         },
         {
           "id": 132467,
@@ -8501,7 +9743,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-141014",
@@ -8524,7 +9767,7 @@
         "Gizem",
         "Seinen"
       ],
-      "score": 8,
+      "score": 8.3,
       "parts": [
         {
           "id": 141014,
@@ -8536,9 +9779,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 8,
+          "score": 8.3,
           "repeat": 3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 3,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -8550,7 +9801,8 @@
         "genres",
         "addedAt",
         "image"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-141774",
@@ -8573,7 +9825,7 @@
         "Müzik",
         "Slice of Life"
       ],
-      "score": 9,
+      "score": 7.9,
       "parts": [
         {
           "id": 141774,
@@ -8585,9 +9837,17 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2022,
-          "score": 9,
+          "score": 7.9,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 3,
+            "world": 4,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 171026,
@@ -8609,7 +9869,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-20665",
@@ -8646,7 +9907,15 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 21039,
@@ -8668,7 +9937,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     },
     {
       "id": "al-21519",
@@ -8693,7 +9963,7 @@
         "Doğaüstü",
         "Gizem"
       ],
-      "score": 8,
+      "score": 8.4,
       "parts": [
         {
           "id": 21519,
@@ -8705,8 +9975,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2016,
-          "score": 8,
-          "adminModified": true
+          "score": 8.4,
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 5,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -8717,7 +9995,8 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {}
     }
   ]
 }

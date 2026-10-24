@@ -117,25 +117,46 @@ html,body{
   pointer-events:none;z-index:10;
 }
 
-/* Sayfa Çevirme Animasyonları (Gerçek Basılı Kitap Hissi) */
-.page-flip-next{
-  animation:pageTurnNext .58s cubic-bezier(.25, .8, .25, 1) both;
-  transform-origin:left center;
+/* Sayfa Çevirme / Kaydırma Animasyonları (Gerçek Basılı Kitap Hissinde Akıcı Kayma) */
+.page-slide-next{
+  animation:bookSlideNext .46s cubic-bezier(.22, .8, .25, 1) both;
 }
-.page-flip-prev{
-  animation:pageTurnPrev .58s cubic-bezier(.25, .8, .25, 1) both;
-  transform-origin:right center;
+.page-slide-prev{
+  animation:bookSlidePrev .46s cubic-bezier(.22, .8, .25, 1) both;
 }
 
-@keyframes pageTurnNext{
-  0%{opacity:0;transform:rotateY(-24deg) translateX(30px);filter:brightness(.92)}
-  50%{transform:rotateY(-8deg) translateX(10px);filter:brightness(1.04)}
-  100%{opacity:1;transform:rotateY(0deg) translateX(0);filter:brightness(1)}
+@keyframes bookSlideNext{
+  0%{
+    opacity:0;
+    transform:translateX(44px) scale(.98);
+    box-shadow:-12px 0 25px rgba(0,0,0,.2);
+  }
+  50%{
+    opacity:.9;
+    transform:translateX(10px) scale(.995);
+  }
+  100%{
+    opacity:1;
+    transform:translateX(0) scale(1);
+    box-shadow:none;
+  }
 }
-@keyframes pageTurnPrev{
-  0%{opacity:0;transform:rotateY(24deg) translateX(-30px);filter:brightness(.92)}
-  50%{transform:rotateY(8deg) translateX(-10px);filter:brightness(1.04)}
-  100%{opacity:1;transform:rotateY(0deg) translateX(0);filter:brightness(1)}
+
+@keyframes bookSlidePrev{
+  0%{
+    opacity:0;
+    transform:translateX(-44px) scale(.98);
+    box-shadow:12px 0 25px rgba(0,0,0,.2);
+  }
+  50%{
+    opacity:.9;
+    transform:translateX(-10px) scale(.995);
+  }
+  100%{
+    opacity:1;
+    transform:translateX(0) scale(1);
+    box-shadow:none;
+  }
 }
 
 /* Sayfa Görünümü ve Metin */
@@ -144,6 +165,7 @@ html,body{
   color:var(--fg);font-family:'Lora',serif;line-height:1.85;font-size:1.06rem;
   scrollbar-width:thin;scrollbar-color:var(--accent-soft) transparent;
   display:flex;flex-direction:column;justify-content:center;
+  will-change:transform,opacity;
 }
 @media (max-width:500px){
   .page-viewport{padding:36px 24px 58px;font-size:1rem;line-height:1.76}
@@ -191,14 +213,26 @@ html,body{
 .cat-mascot:hover{transform:translateY(-6px) scale(1.1)}
 .cat-mascot .cat-body{font-size:40px;animation:paws 3s infinite ease-in-out}
 .cat-speech{
-  position:absolute;bottom:50px;right:0;background:#fff;color:#380713;
+  position:absolute;bottom:52px;right:0;background:#fff;color:#380713;
   padding:7px 14px;border-radius:16px;border-bottom-right-radius:2px;
-  font-family:'Caveat',cursive;font-size:1.18rem;font-weight:700;white-space:nowrap;
+  font-family:'Caveat',cursive;font-size:1.15rem;font-weight:700;white-space:normal;
+  max-width:270px;width:max-content;line-height:1.25;text-align:right;
   box-shadow:0 8px 24px rgba(74,18,32,.25);border:1px solid rgba(220,38,78,.2);
-  opacity:0;transform:translateY(8px) scale(.92);pointer-events:none;
+  opacity:0;transform:translateY(8px) scale(.94);pointer-events:none;
   transition:all .35s cubic-bezier(.175,.885,.32,1.275);
 }
 .cat-speech.show{opacity:1;transform:translateY(0) scale(1)}
+
+@media (max-width:540px){
+  .cat-mascot{right:14px}
+  .cat-speech{
+    right:0;
+    max-width:calc(100vw - 80px);
+    font-size:1.05rem;
+    padding:6px 12px;
+    box-sizing:border-box;
+  }
+}
 
 /* Alt İlerleme & Gezinme Çubuğu */
 .bottom-bar{
@@ -554,8 +588,8 @@ html,body{
     function render(dir){
       pageContent.innerHTML = '';
       
-      // Basılı kitap sayfa çevirme efekti
-      pageContent.className = 'page-viewport ' + (dir > 0 ? 'page-flip-next' : (dir < 0 ? 'page-flip-prev' : ''));
+      // Basılı kitap sayfa kaydırma efekti
+      pageContent.className = 'page-viewport ' + (dir > 0 ? 'page-slide-next' : (dir < 0 ? 'page-slide-prev' : ''));
 
       if(cur === 0){
         // Kapak Sayfası

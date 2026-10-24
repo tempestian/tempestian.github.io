@@ -115,10 +115,10 @@
       if (totalWeight <= 0) return null;
       return Math.round((totalScore / totalWeight) * 10) / 10;
     },
-    renderBreakdownHtml(typeKey, subScores, overallScore) {
+    renderBreakdownGrid(typeKey, subScores) {
       const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
       if (!criteria) return '';
-      const itemsHtml = criteria.map(c => {
+      return criteria.map(c => {
         const star = Number(subScores && subScores[c.id]) || 0;
         const filledStars = '★'.repeat(star) + '☆'.repeat(5 - star);
         const weightPct = Math.round(c.weight * 100);
@@ -132,7 +132,8 @@
           </div>
         `;
       }).join('');
-
+    },
+    renderBreakdownHtml(typeKey, subScores, overallScore) {
       return `
         <div class="sh-rb-head">
           <span class="sh-rb-title">
@@ -142,9 +143,103 @@
           <span class="sh-rb-score">★ ${overallScore || '-'} / 10</span>
         </div>
         <div class="sh-rb-grid">
-          ${itemsHtml}
+          ${this.renderBreakdownGrid(typeKey, subScores)}
         </div>
       `;
+    },
+    renderSheetBreakdown(containerEl, typeKey, item, overallScore) {
+      if (!containerEl || !item) return;
+      const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
+      if (!criteria) {
+        containerEl.hidden = true;
+        containerEl.replaceChildren();
+        return;
+      }
+
+      const parts = Array.isArray(item.parts) ? item.parts : [];
+      const ratedParts = parts.filter(p => p && p.subScores && typeof p.subScores === 'object' && Object.values(p.subScores).some(v => v != null && v > 0));
+      const hasItemSubScores = item.subScores && typeof item.subScores === 'object' && Object.values(item.subScores).some(v => v != null && v > 0);
+
+      if (!ratedParts.length && !hasItemSubScores) {
+        containerEl.hidden = true;
+        containerEl.replaceChildren();
+        return;
+      }
+
+      containerEl.hidden = false;
+
+      // Durum 1: Tek parça veya doğrudan yapım seviyesi değerlendirme
+      if (ratedParts.length <= 1 && (!hasItemSubScores || !ratedParts.length)) {
+        const targetScores = ratedParts.length === 1 ? ratedParts[0].subScores : item.subScores;
+        const targetTitle = ratedParts.length === 1 && ratedParts[0].name ? ratedParts[0].name : 'Detaylı Değerlendirme';
+        const targetScore = ratedParts.length === 1 && ratedParts[0].score != null ? ratedParts[0].score : overallScore;
+
+        containerEl.innerHTML = `
+          <div class="sh-rb-head">
+            <span class="sh-rb-title">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/></svg>
+              ${esc(targetTitle)}
+            </span>
+            <span class="sh-rb-score">★ ${targetScore || '-'} / 10</span>
+          </div>
+          <div class="sh-rb-grid">
+            ${this.renderBreakdownGrid(typeKey, targetScores)}
+          </div>
+        `;
+        return;
+      }
+
+      // Durum 2: Çoklu Sezon / Parça Değerlendirmesi (Kompakt ve şık yatay sekme şeridi ile minimal görünüm)
+      const tabs = [];
+      if (hasItemSubScores) {
+        tabs.push({ id: 'item_overall', name: 'Genel', score: overallScore, subScores: item.subScores });
+      }
+      ratedParts.forEach((p, idx) => {
+        tabs.push({
+          id: 'part_' + idx,
+          name: p.name || `${idx + 1}. Sezon`,
+          score: p.score != null ? p.score : this.computeScore(criteria, p.subScores),
+          subScores: p.subScores
+        });
+      });
+
+      let activeTabIdx = 0;
+
+      const renderView = () => {
+        const curTab = tabs[activeTabIdx] || tabs[0];
+        const tabsHtml = tabs.map((t, i) => `
+          <button type="button" class="sh-rb-tab${i === activeTabIdx ? ' active' : ''}" data-tab-idx="${i}" role="tab" aria-selected="${i === activeTabIdx}">
+            <span>${esc(t.name)}</span>
+            <span class="sh-rb-tab-score">★ ${t.score || '-'}</span>
+          </button>
+        `).join('');
+
+        containerEl.innerHTML = `
+          <div class="sh-rb-head">
+            <span class="sh-rb-title">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/></svg>
+              Detaylı Puanlama · ${esc(curTab.name)}
+            </span>
+            <span class="sh-rb-score">★ ${curTab.score || overallScore || '-'} / 10</span>
+          </div>
+          <div class="sh-rb-tabs" role="tablist" aria-label="Sezon Puanları">
+            ${tabsHtml}
+          </div>
+          <div class="sh-rb-grid">
+            ${this.renderBreakdownGrid(typeKey, curTab.subScores)}
+          </div>
+        `;
+
+        containerEl.querySelectorAll('.sh-rb-tab').forEach(btn => {
+          btn.onclick = e => {
+            e.stopPropagation();
+            activeTabIdx = Number(btn.dataset.tabIdx);
+            renderView();
+          };
+        });
+      };
+
+      renderView();
     }
   };
 

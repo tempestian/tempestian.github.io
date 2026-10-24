@@ -126,6 +126,18 @@ function validateAnimeJson() {
         if (p.watched != null && (typeof p.watched !== 'number' || p.watched < 0)) {
           addError(rel, `${pRef} 'watched' negatif veya sayı değil: ${p.watched}`);
         }
+        if (p.subScores != null) {
+          if (typeof p.subScores !== 'object' || Array.isArray(p.subScores)) {
+            addError(rel, `${pRef} 'subScores' nesne (object) olmalıdır.`);
+          } else {
+            for (const [k, v] of Object.entries(p.subScores)) {
+              const num = Number(v);
+              if (isNaN(num) || num < 1 || num > 5 || !Number.isInteger(num)) {
+                addError(rel, `${pRef} 'subScores.${k}' 1-5 arasında tam sayı olmalıdır (bulunan: ${v})`);
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -214,6 +226,25 @@ function validateMultiMediaFiles() {
             const num = Number(v);
             if (isNaN(num) || num < 1 || num > 5 || !Number.isInteger(num)) {
               addError(rel, `${prefix} 'subScores.${k}' 1-5 arasında tam sayı olmalıdır (bulunan: ${v})`);
+            }
+          }
+        }
+      }
+
+      if (Array.isArray(it.parts)) {
+        for (let j = 0; j < it.parts.length; j++) {
+          const p = it.parts[j];
+          const pRef = `${prefix} Parça #${j + 1} (${p.name || p.id || 'isimsiz'})`;
+          if (p.subScores != null) {
+            if (typeof p.subScores !== 'object' || Array.isArray(p.subScores)) {
+              addError(rel, `${pRef} 'subScores' nesne (object) olmalıdır.`);
+            } else {
+              for (const [k, v] of Object.entries(p.subScores)) {
+                const num = Number(v);
+                if (isNaN(num) || num < 1 || num > 5 || !Number.isInteger(num)) {
+                  addError(rel, `${pRef} 'subScores.${k}' 1-5 arasında tam sayı olmalıdır (bulunan: ${v})`);
+                }
+              }
             }
           }
         }

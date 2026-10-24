@@ -615,21 +615,8 @@ function fillSheet(it){
   const own2 = ps.filter(own), te = sum(own2,'episodes'), tw = sum(own2,'watched'), pg = t('.sh-pg');
   pg.hidden = !(te && tw < te); if(!pg.hidden) pg.firstChild.style.setProperty('--w', Math.round(tw/te*100)+'%');
   const rbEl = t('#shRatingBreakdown');
-  if (rbEl) {
-    if (it.subScores && typeof it.subScores === 'object' && window.TempestianRating) {
-      const criteria = window.TempestianRating.CRITERIA.anime;
-      const hasAnyStar = criteria && criteria.some(c => it.subScores[c.id] != null);
-      if (hasAnyStar) {
-        rbEl.hidden = false;
-        rbEl.innerHTML = window.TempestianRating.renderBreakdownHtml('anime', it.subScores, effScore);
-      } else {
-        rbEl.hidden = true;
-        rbEl.replaceChildren();
-      }
-    } else {
-      rbEl.hidden = true;
-      rbEl.replaceChildren();
-    }
+  if (rbEl && window.TempestianRating) {
+    window.TempestianRating.renderSheetBreakdown(rbEl, 'anime', it, effScore);
   }
   const ol = t('.parts'); ol.replaceChildren();
   for(const p of ps){

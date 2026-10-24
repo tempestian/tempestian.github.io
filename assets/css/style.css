@@ -476,6 +476,13 @@ h3 a:focus-visible{outline:0}
 .sh-rb-lbl{font-size:.71rem;font-weight:600;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sh-rb-num{font-size:.68rem;font-weight:700;color:var(--ink);opacity:.85}
 .sh-rb-stars{font-size:.72rem;color:#eab308;letter-spacing:.06em}
+.sh-rb-tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;margin-bottom:8px;border-bottom:1px solid var(--line);scrollbar-width:none}
+.sh-rb-tabs::-webkit-scrollbar{display:none}
+.sh-rb-tab{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;border:0;font-size:.73rem;font-weight:600;cursor:pointer;background:var(--glass);color:var(--ink2);box-shadow:inset 0 0 0 1px var(--line);transition:all .2s ease}
+.sh-rb-tab:hover{background:var(--accent-soft);color:var(--accent)}
+.sh-rb-tab.active{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.sh-rb-tab.active .sh-rb-tab-score{color:#fff;opacity:.95}
+.sh-rb-tab-score{font-size:.69rem;font-weight:750;color:#eab308}
 
 .sheet-cover{width:72px}
 @media (max-width:640px){.sheet-card::before{content:"";display:block;width:38px;height:4px;border-radius:9px;background:var(--line);margin:-6px auto 12px}}

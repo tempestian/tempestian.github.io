@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>İyi ki doğdun miniğim 🐾</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<link rel="icon" href="../assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<style>
+:root{
+  --bg:#121526;
+  --bg2:#241a35;
+  --paper-1:#fcf8f8;
+  --paper-2:#f5e8eb;
+  --book-cover:#341b2a;
+  --book-gold:#e6b485;
+  --fg:#321f2c;
+  --accent:#9c3858;
+  --accent-soft:#f3c8d5;
+  --cat-gold:#ffb347;
+  --shadow:rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;overflow:hidden;background:radial-gradient(ellipse at bottom, var(--bg2) 0%, var(--bg) 100%);color:#fff;font-family:system-ui,-apple-system,sans-serif;user-select:none}
+
+/* Arka plan partikülleri ve yıldızlar */
+#stars-canvas{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* Kilit Ekranı (Geri sayım bitmediyse ve backdoor aktif değilse) */
+#lock-screen{
+  position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(18,21,38,.96);backdrop-filter:blur(20px);padding:24px;text-align:center;
+}
+.lock-box{
+  max-width:440px;width:100%;padding:36px 28px;border-radius:28px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 24px 60px rgba(0,0,0,.5);animation:fadeIn .7s ease;
+}
+.lock-cat{font-size:54px;display:inline-block;animation:paws 2.2s infinite ease-in-out}
+.lock-title{font-family:'Caveat',cursive;font-size:2.2rem;color:var(--accent-soft);margin:14px 0 6px}
+.lock-desc{font-size:.95rem;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:20px}
+.lock-timer{display:flex;gap:12px;justify-content:center;margin:16px 0}
+.lock-col{background:rgba(0,0,0,.35);padding:10px 14px;border-radius:14px;min-width:68px;border:1px solid rgba(255,255,255,.08)}
+.lock-col b{display:block;font-size:1.6rem;color:#fff;font-family:'Playfair Display',serif}
+.lock-col span{font-size:.75rem;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.5px}
+.lock-back{margin-top:22px;display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;padding:8px 16px;border-radius:99px;background:rgba(255,255,255,.06);transition:.2s}
+.lock-back:hover{color:#fff;background:rgba(255,255,255,.14)}
+
+/* Ana Uygulama */
+.app-container{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;padding:12px}
+
+/* Üst Kontrol Barı */
+.top-nav{
+  position:absolute;top:calc(env(safe-area-inset-top,0px) + 12px);left:16px;right:16px;
+  display:flex;justify-content:space-between;align-items:center;z-index:30;pointer-events:auto;
+}
+.brand-tag{
+  display:flex;align-items:center;gap:8px;font-family:'Caveat',cursive;font-size:1.4rem;color:var(--accent-soft);
+  background:rgba(255,255,255,.06);padding:5px 14px 5px 10px;border-radius:99px;border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(8px);
+}
+.brand-tag span.cat{font-size:1.2rem;animation:tail 1.8s ease-in-out infinite alternate;display:inline-block}
+.nav-actions{display:flex;gap:10px}
+.icon-btn{
+  width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.08);color:#fff;font-size:1.15rem;display:grid;place-items:center;
+  cursor:pointer;backdrop-filter:blur(10px);transition:transform .2s,background .2s;
+}
+.icon-btn:hover{background:rgba(255,255,255,.18);transform:scale(1.06)}
+.icon-btn:active{transform:scale(.95)}
+
+/* Kitap Sahnesi (3D Perspektif & Mobil Uyumluluk) */
+.stage{
+  position:relative;width:100%;max-width:540px;height:84vh;max-height:780px;
+  display:flex;align-items:center;justify-content:center;perspective:2000px;
+}
+@media (max-width:600px){
+  .stage{height:88vh;max-height:none;padding-top:40px}
+}
+
+/* Kitap Gövdesi */
+.book-wrapper{
+  position:relative;width:100%;height:100%;max-width:480px;
+  background:linear-gradient(135deg, var(--paper-2), var(--paper-1));
+  border-radius:18px;box-shadow:0 24px 60px rgba(0,0,0,.65), 0 4px 18px rgba(0,0,0,.35), inset 0 0 40px rgba(156,56,88,.05);
+  border:1px solid rgba(255,255,255,.6);
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:transform .3s ease;
+}
+
+/* Sayfa Kenar Süsleri & Doku */
+.book-wrapper::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:32px;
+  background:linear-gradient(90deg, rgba(0,0,0,.15) 0%, rgba(0,0,0,.04) 50%, transparent 100%);
+  pointer-events:none;z-index:10;
+}
+.book-wrapper::after{
+  content:"";position:absolute;right:0;top:0;bottom:0;width:10px;
+  background:linear-gradient(270deg, rgba(0,0,0,.08) 0%, transparent 100%);
+  pointer-events:none;z-index:10;
+}
+
+/* Kitabın İçeriği (Kaydırma & Okuma) */
+.page-viewport{
+  flex:1;overflow-y:auto;overflow-x:hidden;padding:46px 36px 64px;
+  color:var(--fg);font-family:'Lora',serif;line-height:1.85;font-size:1.06rem;
+  scrollbar-width:thin;scrollbar-color:var(--accent-soft) transparent;
+  display:flex;flex-direction:column;justify-content:center;
+}
+@media (max-width:500px){
+  .page-viewport{padding:36px 24px 54px;font-size:1rem;line-height:1.75}
+}
+.page-viewport::-webkit-scrollbar{width:5px}
+.page-viewport::-webkit-scrollbar-thumb{background:var(--accent-soft);border-radius:10px}
+
+/* Kapak Görünümü */
+.cover-content{text-align:center;padding:20px 0}
+.cover-cat-badge{
+  width:84px;height:84px;margin:0 auto 16px;border-radius:50%;
+  background:radial-gradient(circle, #ffeef4 0%, #f7d2df 100%);
+  display:grid;place-items:center;font-size:42px;box-shadow:0 8px 24px rgba(156,56,88,.2);
+  animation:float 3.5s ease-in-out infinite;border:2px dashed var(--accent);
+}
+.cover-title{
+  font-family:'Caveat',cursive;font-size:3.2rem;line-height:1.1;color:var(--accent);
+  margin:10px 0 12px;font-weight:700;letter-spacing:-.5px;
+}
+.cover-orn{font-size:1.8rem;color:var(--accent);opacity:.75;margin:6px 0}
+.cover-sub{font-size:1.25rem;font-style:italic;color:#664253;margin:0}
+.cover-tip{
+  margin-top:42px;font-family:system-ui,-apple-system,sans-serif;font-size:.85rem;color:#8f6d7d;
+  display:inline-flex;align-items:center;gap:6px;background:rgba(156,56,88,.08);padding:8px 18px;border-radius:99px;
+  animation:pulse 2s infinite ease-in-out;
+}
+
+/* Sayfa İçerik Başlık & Gövdesi */
+.page-head{text-align:center;margin-bottom:18px}
+.page-title{font-family:'Playfair Display',serif;font-weight:600;font-size:1.55rem;color:var(--accent);margin:0}
+.rulewrap{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0 16px}
+.rulewrap .line{height:1px;width:32px;background:var(--accent);opacity:.6}
+.rulewrap .paw{font-size:13px;opacity:.7}
+.page-text{white-space:pre-wrap;overflow-wrap:break-word;word-break:normal}
+.page-text.align-left{text-align:left}
+.page-text.align-center{text-align:center}
+
+/* Sayfa Geçiş Animasyonları */
+.page-slide-in-right{animation:slideInRight .45s cubic-bezier(.2,.8,.2,1) both}
+.page-slide-in-left{animation:slideInLeft .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes slideInRight{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:translateX(0)}}
+
+/* Kedi Karakter & Pati Etkileşimi */
+.cat-mascot{
+  position:absolute;bottom:-18px;right:22px;z-index:25;cursor:pointer;
+  display:flex;align-items:flex-end;gap:4px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.3));
+  transition:transform .2s ease;
+}
+.cat-mascot:hover{transform:translateY(-6px) scale(1.08)}
+.cat-mascot .cat-body{font-size:38px}
+.cat-speech{
+  position:absolute;bottom:48px;right:0;background:#fff;color:#2a1b24;
+  padding:6px 12px;border-radius:14px;border-bottom-right-radius:2px;
+  font-family:'Caveat',cursive;font-size:1.15rem;font-weight:700;white-space:nowrap;
+  box-shadow:0 6px 18px rgba(0,0,0,.18);opacity:0;transform:translateY(8px);pointer-events:none;
+  transition:all .3s cubic-bezier(.175,.885,.32,1.275);
+}
+.cat-speech.show{opacity:1;transform:translateY(0)}
+
+/* Alt İlerleme & Gezinme Çubuğu */
+.bottom-bar{
+  position:absolute;bottom:14px;left:20px;right:20px;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:20;pointer-events:none;
+}
+.page-num{
+  font-family:system-ui,-apple-system,sans-serif;font-size:.85rem;font-weight:600;
+  color:#734f60;background:rgba(255,255,255,.7);padding:3px 12px;border-radius:99px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.progress-rail{
+  flex:1;max-width:140px;margin:0 14px;height:4px;background:rgba(156,56,88,.15);border-radius:99px;overflow:hidden;
+}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg, #f095b3, var(--accent));transition:width .35s ease}
+
+/* Yan Gezinme Butonları (Masaüstü) */
+.nav-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:1.8rem;
+  display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(12px);z-index:28;
+  transition:all .25s ease;box-shadow:0 8px 24px rgba(0,0,0,.35);
+}
+.nav-arrow:hover{background:rgba(255,255,255,.24);transform:translateY(-50%) scale(1.1)}
+.nav-arrow:active{transform:translateY(-50%) scale(.95)}
+.nav-arrow.prev{left:-70px}
+.nav-arrow.next{right:-70px}
+@media (max-width:680px){
+  .nav-arrow{display:none}
+}
+
+/* Kalp & Konfeti Efektleri */
+.floating-heart{
+  position:fixed;pointer-events:none;z-index:90;font-size:24px;
+  animation:heartFly 2.2s cubic-bezier(.25,1,.5,1) forwards;
+}
+@keyframes heartFly{
+  0%{opacity:1;transform:translate(0,0) scale(.6) rotate(0deg)}
+  50%{opacity:.9;transform:translate(var(--tx), -70px) scale(1.2) rotate(15deg)}
+  100%{opacity:0;transform:translate(calc(var(--tx) * 1.5), -160px) scale(.8) rotate(-15deg)}
+}
+
+/* Temel Animasyonlar */
+@keyframes fadeIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pulse{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.03)}}
+@keyframes paws{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes tail{0%{transform:rotate(-10deg)}100%{transform:rotate(12deg)}}
+</style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<!-- Kilit & Geri Sayım Ekranı -->
+<div id="lock-screen" style="display:none">
+  <div class="lock-box">
+    <div class="lock-cat">🐾</div>
+    <h1 class="lock-title">Birazcık Sabır Miniğim</h1>
+    <p class="lock-desc" id="lock-msg">Bu özel hediye doğum günün için mühürlendi. Geri sayım tamamlandığında kendiliğinden açılacak ✨</p>
+    <div class="lock-timer">
+      <div class="lock-col"><b id="ld">0</b><span>Gün</span></div>
+      <div class="lock-col"><b id="lh">00</b><span>Saat</span></div>
+      <div class="lock-col"><b id="lm">00</b><span>Dakika</span></div>
+      <div class="lock-col"><b id="ls">00</b><span>Saniye</span></div>
+    </div>
+    <a href="../" class="lock-back">‹ Ana Sayfaya Dön</a>
+  </div>
+</div>
+
+<!-- Kitap Arayüzü -->
+<div class="app-container" id="book-app" style="display:none">
+  <header class="top-nav">
+    <div class="brand-tag">
+      <span class="cat">🐱</span>
+      <span>miniğime özel</span>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" id="btn-heart" title="Pati Bırak / Kalp Gönder" aria-label="Kalp">💖</button>
+      <button class="icon-btn" id="btn-fs" title="Tam Ekran" aria-label="Tam Ekran">⛶</button>
+      <a href="../" class="icon-btn" title="Ana Sayfa" aria-label="Kapat" style="text-decoration:none">✕</a>
+    </div>
+  </header>
+
+  <main class="stage">
+    <button class="nav-arrow prev" id="arrow-prev" title="Önceki Sayfa" aria-label="Önceki">‹</button>
+
+    <div class="book-wrapper" id="book-wrapper">
+      <div class="page-viewport" id="page-content">
+        <!-- Sayfa dinamik render edilir -->
+      </div>
+
+      <!-- Maskot Kedi -->
+      <div class="cat-mascot" id="mascot" title="Miyav! Bana tıkla 🐾">
+        <div class="cat-speech" id="mascot-speech">Miyav! Seni çok seviyor 🐾</div>
+        <div class="cat-body">🐈‍⬛</div>
+      </div>
+
+      <footer class="bottom-bar">
+        <span class="page-num" id="page-num">1 / 31</span>
+        <div class="progress-rail"><div class="progress-fill" id="progress-bar"></div></div>
+      </footer>
+    </div>
+
+    <button class="nav-arrow next" id="arrow-next" title="Sonraki Sayfa" aria-label="Sonraki">›</button>
+  </main>
+</div>
+
+<script id="book-data" type="application/json">
+{
+  "targetDate": "2026-10-27T00:00:00+03:00",
+  "secretKey": "patileriyikidogdun",
+  "cover": {
+    "title": "İyi ki doğdun miniğim",
+    "subtitle": "Doğum günün kutlu olsun <3"
+  },
+  "pages": [
+    {
+      "title": "",
+      "text": "Hiçbir doğum gününde yanında olamayışımın o sızısını hafifletmek için\nsana sıradan bir şey vermek istemedim.\n\nUzun uzun düşündüm:\n-Sıradan bir hediye mesafeyi kapatır mı?\n -Göndereceğim herhangi bir paket\n hissettiklerimi tam karşılar mı?\n\nCevabın koca bir \"hayır\" olduğunu anladığımda, aradığım şeyin bir eşya olmadığını fark ettim.",
+      "align": "left"
+    },
+    {
+      "title": "",
+      "text": "Yazarlık hayali kuran biri,\nsevgilisine bundan daha büyük ne sunabilirdi ki?\nBu kitabı yazma kararı almamı sağlayan\ntam olarak bu soruydu.\nSana olan sevgimi kelimelere döküp\ndoğum gününü güzelleştirmek istiyorum.\nElimdeki cümleler senin yanında\nne kadar sönük kalır bilmem ama\nben senin hayatında kalıcı bir iz bırakmayı arzuluyorum.\nBu kitap, hayatıma gerçek anlamını veren kadına verebileceğim en saf hediye.\n\nDoğum günün kutlu olsun miniğim.",
+      "align": "left"
+    },
+    {
+      "title": "Yanında olamamak...",
+      "text": "Uzak mesafe kolay iş değil, herkesin harcı da değil biliyorum. Beni kilometrelerce öteden bile kocaman sarmalayan o minik kalbinin, mesafeler yüzünden nasıl sızladığını da görüyorum. Beraber onca şey atlattık; şu an önümüzdeki tek engel olan bu mesafeler bile aslında bizi birbirimize daha çok bağlıyor. Özlemek bile seninle güzel, seninle bir anlamı var. Yanında olamamak en büyük acım ama bir gün sana sımsıkı sarılmak, o kokunu doya doya içime çekmek de en güzel hayalim...",
+      "align": "left"
+    },
+    {
+      "title": "Yanında olamamak en büyük acım",
+      "text": "Yanında olamamak...\nEllerini tutamadan,\nYüzüne dokunamadan,\nKokunu soluyamadan geçen günlerin ağırlığı...\nBu uzak yollara inat,\nSonunda kavuşacağımız o ana\nİnatla sabrediyorum."
+    },
+    {
+      "title": "Aramızda mesafeler var ama...",
+      "text": "\"Günaydın\" mesajınla uyanmak,\n\nEkranın diğer ucundan gelen o anlık neşenle günün toparlanması,\n\nFotoğraflarınla o anı durdurabilmek,\n\nGülüşünle bütün dertleri unutmak,\n\nGün sonunda yine seninle uykuya dalmak..."
+    },
+    {
+      "title": "İlk konuştuğumuz an...",
+      "text": "Yalnızca oyun temalı bir sosyal medya uygulaması olan Hoyolab, bizim için çok daha fazlası. \nAttığın şişenin milyonlarca insan arasından bana denk gelmesi ne büyük şans...  \nSana yardım edebileceğimi söylediğimde arkadaş olacağımızın çoktan farkındaydım ama sevgili olacağımızı kim tahmin ederdi? "
+    },
+    {
+      "title": "",
+      "text": "Senden Instagram hesabını ilk istediğimde kullanmadığını söylemen, açıkçası reddedilmiş gibi hissetmeme sebep olmuştu. Bilemezdim sanaldan birine güvenmenin senin için ne kadar zor olduğunu. \nSeninle konuştuğumuz ilk an, paylaştığımız vakitler... Ve bana o yavaş yavaş güvenişin... Bazen seni kırmış, istemeden üzmüş olabilirim ama sana sözüm olsun, o kırgınlıkları tekrar etmeyeceğim. \nGeleceğimizin çok güzel olacağına emin ol güzelim; tek amacım mutluluğunun sebebi olmak ve yüzündeki o tebessüm olarak kalabilmek."
+    },
+    {
+      "title": "Keşke...",
+      "text": "Keşke daha erken tanısaydım seni,\nYürümeyi öğrenmeden,\nSöylemeyi öğrenmeden,\nOkula bile gitmeden.\n\nKeşke daha erken tanısaydım seni,\nAcı nedir hiç bilmeden,\nKötü nedir hiç bilmeden,\nSevgi nedir bilmeden.\n\nKeşke daha erken tanısaydım seni,\nDaha temiz geçmişimle,\nDaha iyi bir gelecekle,\nÇok daha iyi bir benle."
+    },
+    {
+      "title": "Ama iyi ki...",
+      "text": "İyi ki tanımışım seni.\nMesafelerin o soğukluğuna inat,\nİçimdeki her şeyi yeşerten seninle,\nİyi ki kesişmiş yollarımız."
+    },
+    {
+      "title": "Seni tanıdıktan sonra...",
+      "text": "Hayatıma girdiğin o günden beri,\niçimde bir şeylerin değiştiğini hissettim.\nGülümsemelerim daha içten,\nsabahlarım daha telaşsız olmaya başladı.\nGelecekten korkmayı bıraktım;\niçinde senin olduğun bir yarın\nbana artık sadece huzur veriyor.\nSen benim hayatıma değil,\ndoğrudan içime doğdun miniğim."
+    },
+    {
+      "title": "Geceler...",
+      "text": "Geceleri duyamıyorum sesini,\nyanımda zaten yoksun.\nEkrandaki son mesajına bakıp\nuykuya dalıyorum.\nBazen birkaç kelimen yetiyor,\ntüm yorgunluğumu silmeye.\nEvet, uzaklardasın\nama gecenin sessizliğinde bile\naklımda dolanan tüm düşüncelerdesin..."
+    },
+    {
+      "title": "Kelimeler yetmediğinde...",
+      "text": "Bazen öyle anlar oluyor ki hislerimi kelimelere dökmekte zorlanıyorum.\nNe söylesem hep bir eksiklik kalıyor.\nSana olan hislerimi ne kadar anlatmaya çabalasam da sıradan cümleler gibi hissediliyor.\nOysa bendeki seni anlatmak için\nne kelimeler yetiyor\nne de zaman...\nO yüzden sen anlamazsın beni,\nseni ne kadar sevdiğimi..."
+    },
+    {
+      "title": "Sen anlamazsın beni...",
+      "text": "Sen anlamazsın beni,\nSeni ne kadar sevdiğimi.\nGözümden gör isterdim,\nGözlerimdeki seni.\n\nSen anlamazsın beni,\nAnlatmak isterdim uzun uzun;\nZamanı durdurabilseydim,\nVaktim yeterdi belki..."
+    },
+    {
+      "title": "Keşke burada olsaydın...",
+      "text": "Gün içinde güldüğüm anlar oluyor;\niçimden \"yanımda olsaydı\" demek geçiyor,\no anı beraber yaşasak, birlikte gülsek diyorum.\n\nGün içinde ağladığım anlar oluyor;\n\"yanımda olsaydı\" diyorum,\nsadece sarılsa yeterdi...\nNe yaşarsam yaşayayım,\naklım da kalbim de hep sende kalıyor."
+    },
+    {
+      "title": "Beklemeye değer...",
+      "text": "Zor, biliyorum.\nBazen günler gerçekten geçmek bilmiyor.\nAraya giren haftalar, aylar\ninsanın sabrını sınıyor gibi geliyor\nama seni beklemekten hiç gocunmuyorum.\nHer takvim yaprağında,\nkavuşacağımız o güne bir adım daha yaklaşıyorum.\nÇünkü sonunda ellerini tutacağımı bilmek;\naradaki her güne,\nher kilometreye fazlasıyla değiyor."
+    },
+    {
+      "title": "Mesafeler...",
+      "text": "Aramızda yüzlerce kilometre var,\nbazen sadece bir ses,\nbazen birkaç satır yazı\nama ne zaman gözlerimi kapatsam yanımdasın sanki.\n\nNe sokaklar engel olabiliyor buna\nne de aradaki bu yollar.\nBiliyorum miniğim,\nbu ekranlar bir gün kapanacak\nve ben sadece sana bakacağım."
+    },
+    {
+      "title": "Beraber geçirdiğimiz vakitler...",
+      "text": "Seninle beraber anime, film izlemek...\nBirlikte aynı şarkıları dinlemek...\nSeninle yaptığım her şey \ndaha bir anlam kazanıyor hayatımda.\nSeninle vakit geçirmeyi \nher şeyden daha çok seviyorum.\n\nYan yana olduğumuzu hayal ediyorum;\nel ele tutuşarak izleyebilirdik filmleri,\naynı kulaklıktan dinleyebilirdik şarkıları,\naynı kitabın sayfalarını çevirebilirdik\nama en önemlisi:\nGözlerine bakarak söyleyebilirdim\nseni sevdiğimi..."
+    },
+    {
+      "title": "Seni her şeyden daha fazla seviyorum...",
+      "text": "Söylediklerimin sıradan olduğunu düşünme\nbu öyle alışkanlıktan ya da laf olsun diye\ndile gelen bir cümle değil.\nNasıl anlatırım bilmiyorum \nama şöyle düşün:\nGün içinde kafamı meşgul eden ne kadar dert varsa;\nkoşturmacalar, yorgunluklar, canımı sıkan insanlar...\nSen aklıma geldiğin an hepsi arka plana düşüyor.\nHayatımın tam ortasında sadece sen kalıyorsun."
+    },
+    {
+      "title": "",
+      "text": "Seni sevmek benim için bir seçenek ya da\nanlık bir heves olmadı hiç.\nZihnimin en kalabalık olduğu anda bile\niçime çöken o huzurun tek sebebi sensin.\nAramızdaki bu mesafenin yorduğu,\ngünlerin geçmek bilmediği anlarda bile\nsevgimden bir an olsun şüphe etmedim.\nAksine, her geçen gün daha da kök saldı içimde.\nHayatta güvendiğim ne varsa\nsenin varlığının yanında hafif kalıyor.\nGözümün gördüğü, kalbimin alabildiği her şeyden;\nevet miniğim, seni herkesten ve her şeyden\nçok daha fazla seviyorum."
+    },
+    {
+      "title": "Ufak atışmalar...",
+      "text": "Biliyor musun?\nSinirlendiğin zaman verdiğin tepkiyi \nçok seviyorum. \nİçinden bir canavar çıktığını düşünüyorsun belki ama ne kadar tatlı olduğunu fark edemiyorsun. Seninle tartışamıyorum çünkü o tatlı çıkışların sokakta minik bir kedi görmüş gibi gülümsetiyor beni. Belki çok sert olduğunu düşünüyorsun, fark etmiyorsun ne kadar sevimli olduğunu. Ne kadar kızarsan kız, o öfkeli hâllerini bile aşırı seviyorum."
+    },
+    {
+      "title": "Çabuk barışmalar...",
+      "text": "Öfke dediğin nedir ki aramızda,\nBir nefes boyu süren kısa bir parazit.\nSen kaşını çatmayı denersin ama\nİkimiz de biliriz uzatmanın yersizliğini.\n\nEkranın o soğuk mesafesi bile\nsesini duyduğum an delinir gider.\nKüs kalmayı beceremeyiz biz;\ngöz göze geldiğimiz an,\nbütün o sahte kıyametler\ntek bir gülüşle sessizce kapanır."
+    },
+    {
+      "title": "Kavuştuktan sonra...",
+      "text": "Bazen gözlerimi kapatıp kavuştuğumuz günlerin provasını yapıyorum kafamda.\nMesela sıradan bir pazar sabahı beraber kahvaltı hazırlamak,\nmarkette reyonlar arasında saçma sapan şeylere gülmek,\nyağmur yağdığında bir kafenin cam kenarına sığınıp sıcak bir şeyler içmek...\n\nBize sıradan gelen o küçük anlar, aslında benim en büyük hayalim.\nÇünkü biliyorum; seninle yaşanan en sıradan gün bile, sensiz geçen en parlak günden çok daha güzel olacak."
+    },
+    {
+      "title": "İlk sarılış...",
+      "text": "Bütün bu yollar tükendiğinde,\nEkranlar sustuğunda,\nVe takvimler nihayet o günü gösterdiğinde;\n\nSana ilk sarıldığım o saniyede,\nNe geçen zamanın hesabını soracağım\nNe de aramızdaki kilometrelerin.\n\nSadece kokunu çekeceğim içime,\nGözlerimi kapatıp fısıldayacağım:\n\"Geçti miniğim, bak buradayım.\""
+    },
+    {
+      "title": "Sana sözüm olsun...",
+      "text": "Hayat her zaman güllük gülistanlık\nolmayacak, biliyorum.\nYorulduğumuz, nefesimizin daraldığı\ngünler de gelecek ama sana söz veriyorum\nminiğim; ne olursa olsun ellerini\nasla bırakmayacağım.\nBu yolda ayağına taş değmesin diye\nönündeki yolları temizleyecek,\ndüştüğünde seni kaldıracak ilk el yine ben olacağım.\nElbet bizim de sınandığımız anlar olacak\nama birbirimize tutunduğumuz sürece\nhiçbir dert sevgimizden büyük olamaz."
+    },
+    {
+      "title": "Fotoğrafına baktığımda...",
+      "text": "Bazen saatlerce durup bir karesine bakıyorum gülüşünün.\nSanki ekran eriyip gidecek,\nSanki saçlarının kokusu dolacak odama.\n\nNe çok şey anlatır bir bakış,\nNe çok dert siler gözlerin...\nSen orada gülümsersin,\nBen burada yeniden başlarım yaşamaya."
+    },
+    {
+      "title": "Bana kattıkların...",
+      "text": "Hayatıma girdiğinden beri içimde uyuyan o neşeli çocuğu uyandırdın.\nDaha sabırlı olmayı, her şeye rağmen tebessüm edebilmeyi ve birini böylesine saf sevebilmeyi senden öğrendim ben.\n\nBir insanın kalbime bu kadar dokunabilmesi, beni her gün daha iyi biri olmaya heveslendirmesi ne büyük bir şans...\nSen bana sadece sevgini değil miniğim, yepyeni ve çok daha güzel bir ben hediye ettin."
+    },
+    {
+      "title": "Uzak değilsin ki...",
+      "text": "Araya giren şehirlere bakıyorum bazen;\nyollara, tabelalara, bitmek bilmeyen kilometrelere...\nSonra elimi sol yanıma koyuyorum;\noradasın.\n\nUzaklık dediğin haritada bir çizgiden ibaret miniğim.\nBen seni haritaların bittiği,\nkalbimin en derin başladığı yerde sakladım.\n\nNe yollar seni benden uzaklaştırabilir,\nne de zaman sevgimi eksiltebilir."
+    },
+    {
+      "title": "Yıllar sonra bu sayfayı açtığımızda...",
+      "text": "Biliyorum, bir gün gelecek ve biz bu kitabı\nyan yana oturmuş bir koltukta,\nellerimiz birbirine kenetliyken okuyacağız.\n\nSayfaları çevirirken o eski günleri,\nekran başında döktüğümüz gözyaşlarını,\nözlemden sızlayan içimizi hatırlayıp\nyüzümüzde gururlu bir tebessümle birbirimize bakacağız.\n\n\"Bak miniğim,\" diyeceğim sana,\n\"nasıl da sabrettik, nasıl da başardık...\"\nİşte o an, bu kitabın en güzel sayfası yazılmış olacak."
+    },
+    {
+      "title": "",
+      "text": "Dünyaya bir ışık gibi indiğin o gün,\nBenim karanlığımın biteceği günmüş meğer.\nÇok sonra kesişse de yollarımız,\nKader adını kalbime çoktan kazımış meğer.\n\nYeni yaşında gülüşün hiç solmasın,\nO minik kalbin keder nedir bilmesin.\nVarsın bu doğum gününde mesafeler girsin aramıza,\nHiçbir yol sevgimin sana ulaşmasını engelleyemez.\n\nİyi ki doğdun ruhumun diğer yarısı,\nİyi ki varsın miniğim...\nÖmrüm yettiğince, her yeni yaşında\nElini tutan yine ben olacağım."
+    },
+    {
+      "title": "",
+      "text": "Fark ettim ki miniğim,\nben bu kitabı istesem de bitiremem\nçünkü bu sıradan bir doğum günü hediyesi değil;\nbizim yaşayan, nefes alan hikayemiz.\nAşkımız sürdükçe bu satırlar da uzayıp gidecek,\nbiz yeni anılar biriktirdikçe\nbu kitaba hep yeni sayfalar eklenecek.\nBu bir son değil;\nseninle yazacağımız upuzun bir ömrün\nsadece ilk otuz sayfası...\n\nİyi ki doğdun miniğim,\nhikayemiz hiç bitmesin.",
+      "align": "center"
+    }
+  ]
+}
+</script>
+
+<script>
+(function(){
+  'use strict';
+  const data = JSON.parse(document.getElementById('book-data').textContent);
+  const targetMs = Date.parse(data.targetDate || '2026-10-27T00:00:00+03:00');
+  const params = new URLSearchParams(window.location.search);
+  
+  // Arka kapı anahtarı kontrolü: ?key=patileriyikidogdun veya zaman dolmuşsa
+  const isBackdoor = params.get('key') === data.secretKey || params.get('onizleme') === '1' || params.has('gizli');
+  const isExpired = Date.now() >= targetMs;
+
+  const lockScreen = document.getElementById('lock-screen');
+  const bookApp = document.getElementById('book-app');
+
+  if (!isExpired && !isBackdoor) {
+    lockScreen.style.display = 'flex';
+    initLockTimer();
+    return;
+  }
+
+  // Kitabı Aç
+  bookApp.style.display = 'flex';
+  initBook();
+
+  /* ---------- GERİ SAYIM MOTORU ---------- */
+  function initLockTimer(){
+    const pad = n => String(n).padStart(2,'0');
+    const update = () => {
+      const left = targetMs - Date.now();
+      if(left <= 0){
+        location.reload();
+        return;
+      }
+      const s = Math.floor(left / 1000);
+      document.getElementById('ld').textContent = String(Math.floor(s / 86400));
+      document.getElementById('lh').textContent = pad(Math.floor(s % 86400 / 3600));
+      document.getElementById('lm').textContent = pad(Math.floor(s % 3600 / 60));
+      document.getElementById('ls').textContent = pad(s % 60);
+    };
+    update();
+    setInterval(update, 1000);
+  }
+
+  /* ---------- KİTAP ETKİLEŞİM MOTORU ---------- */
+  function initBook(){
+    let cur = 0;
+    const total = data.pages.length + 1; // Kapak + 30 sayfa = 31 sayfa
+    const pageContent = document.getElementById('page-content');
+    const pageNum = document.getElementById('page-num');
+    const progressBar = document.getElementById('progress-bar');
+    const arrowPrev = document.getElementById('arrow-prev');
+    const arrowNext = document.getElementById('arrow-next');
+    const mascot = document.getElementById('mascot');
+    const speech = document.getElementById('mascot-speech');
+
+    const catQuotes = [
+      "Miyav! Çok tatlı bir kitap bu 🐾",
+      "Seni dünyalar kadar çok seviyor! ✨",
+      "Pati pati sevgiler 🐾💖",
+      "Uzaklar engel değil miyav!",
+      "İyi ki doğdun miniğim! 🎂",
+      "Birlikte nice senelere 🐾✨",
+      "Mırrr... Bu sayfa çok duygusal 🥺"
+    ];
+
+    function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    function fmt(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\*(.+?)\*/g,'<i>$1</i>');}
+
+    function render(dir){
+      pageContent.innerHTML = '';
+      pageContent.className = 'page-viewport ' + (dir > 0 ? 'page-slide-in-right' : (dir < 0 ? 'page-slide-in-left' : ''));
+
+      if(cur === 0){
+        // Kapak Sayfası
+        pageContent.innerHTML = `
+          <div class="cover-content">
+            <div class="cover-cat-badge">🐾</div>
+            <div class="cover-orn">❦</div>
+            <h1 class="cover-title">${esc(data.cover.title)}</h1>
+            <p class="cover-sub">${fmt(data.cover.subtitle)}</p>
+            <div class="cover-tip">
+              <span>👉 Sayfaları çevirmek için kaydır veya tıkla</span>
+            </div>
+          </div>
+        `;
+      } else {
+        // Normal İçerik Sayfası
+        const p = data.pages[cur - 1];
+        const alignClass = p.align === 'center' ? 'align-center' : 'align-left';
+        const titleHtml = p.title ? `
+          <div class="page-head">
+            <h2 class="page-title">${esc(p.title)}</h2>
+            <div class="rulewrap">
+              <span class="line"></span>
+              <span class="paw">🐾</span>
+              <span class="line"></span>
+            </div>
+          </div>
+        ` : '';
+
+        pageContent.innerHTML = `
+          ${titleHtml}
+          <div class="page-text ${alignClass}">${fmt(p.text)}</div>
+        `;
+      }
+
+      pageNum.textContent = (cur === 0 ? 'Kapak' : cur) + ' / ' + (total - 1);
+      progressBar.style.width = (cur / (total - 1) * 100) + '%';
+      pageContent.scrollTop = 0;
+    }
+
+    function go(idx, dir){
+      if(idx < 0 || idx >= total) return;
+      cur = idx;
+      render(dir);
+    }
+
+    function next(){
+      if(cur < total - 1) {
+        spawnPaws();
+        go(cur + 1, 1);
+      }
+    }
+    function prev(){
+      if(cur > 0) go(cur - 1, -1);
+    }
+
+    arrowPrev.addEventListener('click', prev);
+    arrowNext.addEventListener('click', next);
+
+    // Dokunmatik / Kaydırma (Swipe)
+    let sx = 0, sy = 0;
+    pageContent.addEventListener('touchstart', e => {
+      sx = e.touches[0].clientX;
+      sy = e.touches[0].clientY;
+    }, {passive:true});
+
+    pageContent.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - sx;
+      const dy = e.changedTouches[0].clientY - sy;
+      if(Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.4){
+        dx < 0 ? next() : prev();
+      }
+    }, {passive:true});
+
+    // Klavye Kısayolları
+    window.addEventListener('keydown', e => {
+      if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') next();
+      else if(e.key === 'ArrowLeft' || e.key === 'PageUp') prev();
+      else if(e.key === 'Home') go(0, -1);
+      else if(e.key === 'End') go(total - 1, 1);
+    });
+
+    // Maskot Kedi Etkileşimi
+    let quoteIdx = 0;
+    mascot.addEventListener('click', () => {
+      speech.textContent = catQuotes[quoteIdx % catQuotes.length];
+      speech.classList.add('show');
+      quoteIdx++;
+      spawnHearts(mascot.getBoundingClientRect().left + 20, mascot.getBoundingClientRect().top);
+      setTimeout(() => speech.classList.remove('show'), 2600);
+    });
+
+    // Kalp Butonu
+    const btnHeart = document.getElementById('btn-heart');
+    btnHeart.addEventListener('click', e => {
+      const rect = btnHeart.getBoundingClientRect();
+      spawnHearts(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    });
+
+    // Tam Ekran Butonu
+    const btnFs = document.getElementById('btn-fs');
+    btnFs.addEventListener('click', () => {
+      if(!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(()=>{});
+      } else {
+        document.exitFullscreen().catch(()=>{});
+      }
+    });
+
+    render(0);
+  }
+
+  /* ---------- ANİMASYONLU KALP & PATİ EFEKTLERİ ---------- */
+  function spawnHearts(x, y){
+    const icons = ['💖', '🐾', '🌸', '✨', '💕'];
+    for(let i=0; i<6; i++){
+      const heart = document.createElement('div');
+      heart.className = 'floating-heart';
+      heart.textContent = icons[Math.floor(Math.random() * icons.length)];
+      heart.style.left = (x + (Math.random() * 40 - 20)) + 'px';
+      heart.style.top = (y + (Math.random() * 20 - 10)) + 'px';
+      heart.style.setProperty('--tx', (Math.random() * 80 - 40) + 'px');
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 2200);
+    }
+  }
+
+  function spawnPaws(){
+    const paw = document.createElement('div');
+    paw.className = 'floating-heart';
+    paw.textContent = '🐾';
+    paw.style.left = (window.innerWidth / 2 + (Math.random() * 60 - 30)) + 'px';
+    paw.style.top = (window.innerHeight / 2 + 50) + 'px';
+    paw.style.setProperty('--tx', (Math.random() * 40 - 20) + 'px');
+    document.body.appendChild(paw);
+    setTimeout(() => paw.remove(), 2000);
+  }
+
+  /* ---------- PARILTILI YILDIZ TOZU ARKA PLANI ---------- */
+  (function initCanvas(){
+    const cvs = document.getElementById('stars-canvas');
+    const ctx = cvs.getContext('2d');
+    let w, h, pts = [];
+
+    function resize(){
+      w = cvs.width = window.innerWidth;
+      h = cvs.height = window.innerHeight;
+      pts = [];
+      const cnt = Math.floor((w * h) / 12000);
+      for(let i=0; i<cnt; i++){
+        pts.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.6 + .4,
+          a: Math.random(),
+          s: Math.random() * .015 + .005
+        });
+      }
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function loop(){
+      ctx.clearRect(0,0,w,h);
+      for(const p of pts){
+        p.a += p.s;
+        const alpha = Math.abs(Math.sin(p.a)) * .7 + .15;
+        ctx.fillStyle = `rgba(243, 200, 213, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(loop);
+    }
+    loop();
+  })();
+
+})();
+</script>
+</body>
+</html>

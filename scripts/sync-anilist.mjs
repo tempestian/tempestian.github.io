@@ -410,8 +410,11 @@ for (const [root, members] of groups) {
   const status = (isModified && locked.has('status') && matchedExisting.status) ? matchedExisting.status : computedStatus;
 
   const ts = Math.min(...pool.map(p => p.createdAt || Infinity));
-  const computedAddedAt = isFinite(ts) ? new Date(ts * 1000).toISOString().slice(0, 10) : ((matchedExisting && matchedExisting.addedAt) || new Date().toISOString().slice(0, 10));
-  const addedAt = (isModified && locked.has('addedAt') && matchedExisting.addedAt) ? matchedExisting.addedAt : computedAddedAt;
+  const computedAddedAt = isFinite(ts) ? new Date(ts * 1000).toISOString().slice(0, 7) : ((matchedExisting && matchedExisting.addedAt) || new Date().toISOString().slice(0, 7));
+  let addedAt = (isModified && locked.has('addedAt') && matchedExisting.addedAt) ? matchedExisting.addedAt : computedAddedAt;
+  if (addedAt && /^\d{4}-\d{2}-\d{2}$/.test(addedAt)) {
+    addedAt = addedAt.slice(0, 7);
+  }
 
   const seas = parts.filter(p => p.kind === 'season'), fw = seas.findIndex(p => p.watched > 0);
   const computedNext = status === 'completed' && fw >= 0 && !hit(noCont, head.id, [title, ...parts.map(p => p.name)]) && !parts.some(p => hit(noCont, p.id, []))

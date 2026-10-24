@@ -232,7 +232,8 @@
       h2.style.fontSize = '1.22rem';
       titleBox.append(h2);
       if (it.addedAt) {
-        const dt = h('p', 'meta', it.addedAt + (it.favorite ? ' · ★ Öne Çıkan Rehber' : ''));
+        const fmtDate = (window.formatHybridDate ? window.formatHybridDate(it.addedAt) : it.addedAt) || '';
+        const dt = h('p', 'meta', fmtDate + (it.favorite ? ' · ★ Öne Çıkan Rehber' : ''));
         titleBox.append(dt);
       }
       headLeft.append(titleBox);

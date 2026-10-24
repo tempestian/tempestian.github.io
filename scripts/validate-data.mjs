@@ -95,6 +95,12 @@ function validateAnimeJson() {
       }
     }
 
+    if (a.addedAt != null) {
+      if (typeof a.addedAt !== 'string' || !/^\d{4}(-\d{2}(-\d{2})?)?$/.test(a.addedAt)) {
+        addError(rel, `${prefix} 'addedAt' geçersiz tarih formatı: '${a.addedAt}'. Beklenen: 'YYYY-AA' veya 'YYYY'`);
+      }
+    }
+
     if (a.subScores != null) {
       if (typeof a.subScores !== 'object' || Array.isArray(a.subScores)) {
         addError(rel, `${prefix} 'subScores' nesne (object) olmalıdır.`);
@@ -191,6 +197,12 @@ function validateMultiMediaFiles() {
         const s = Number(it.score);
         if (isNaN(s) || s < 0 || s > 10) {
           addError(rel, `${prefix} 'score' 0-10 aralığında olmalıdır (bulunan: ${it.score})`);
+        }
+      }
+
+      if (it.addedAt != null) {
+        if (typeof it.addedAt !== 'string' || !/^\d{4}(-\d{2}(-\d{2})?)?$/.test(it.addedAt)) {
+          addError(rel, `${prefix} 'addedAt' geçersiz tarih formatı: '${it.addedAt}'. Beklenen: 'YYYY-AA' veya 'YYYY'`);
         }
       }
 

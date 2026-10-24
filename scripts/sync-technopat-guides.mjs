@@ -175,14 +175,14 @@ export function parseXenForoThreadsFromHtml(html = '', targetPrefix = TARGET_PRE
     const summary = snippetMatch ? stripTags(snippetMatch[1]).slice(0, 320) : '';
 
     // Tarih (<time ... datetime="2026-09-11T..." data-time="1789...">)
-    let addedAt = new Date().toISOString().slice(0, 10);
-    const timeIsoMatch = block.match(/<time\b[^>]*datetime="(\d{4}-\d{2}-\d{2})[^"]*"/i);
+    let addedAt = new Date().toISOString().slice(0, 7);
+    const timeIsoMatch = block.match(/<time\b[^>]*datetime="(\d{4}-\d{2})[^"]*"/i);
     const timeUnixMatch = block.match(/<time\b[^>]*data-time="(\d{9,11})"/i);
     if (timeIsoMatch) {
       addedAt = timeIsoMatch[1];
     } else if (timeUnixMatch) {
       const d = new Date(Number(timeUnixMatch[1]) * 1000);
-      if (!Number.isNaN(d.getTime())) addedAt = d.toISOString().slice(0, 10);
+      if (!Number.isNaN(d.getTime())) addedAt = d.toISOString().slice(0, 7);
     }
 
     // Forum alt bölümü (/sosyal/bolum/...)

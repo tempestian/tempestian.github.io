@@ -1892,8 +1892,12 @@
                   </select>
                 </label>
                 <label class="field">
-                  <span>Eklenme Tarihi</span>
-                  <input type="date" id="aeAddedAt" class="inp glass">
+                  <span>Eklenme / İzleme Tarihi</span>
+                  <div style="display:flex;gap:6px;align-items:center">
+                    <input type="text" id="aeAddedAt" class="inp glass" placeholder="YYYY-AA veya YYYY (Örn: 2024-10)" style="flex:1" autocomplete="off">
+                    <button type="button" class="btn-secondary" id="aeAddedAtNowBtn" style="padding:7px 12px;font-size:.8rem;flex:none;white-space:nowrap" title="Mevcut ayı doldur">Bu Ay</button>
+                  </div>
+                  <small id="aeAddedAtPreview" style="color:var(--accent);font-size:.78rem;margin-top:2px;display:block"></small>
                 </label>
                 <div class="field" style="align-self:end">
                   <button type="button" class="fav-toggle-btn" id="aeFavoriteBtn" style="height:42px;justify-content:center">☆ Başyapıt / Favori</button>
@@ -2577,7 +2581,7 @@
           <div class="anime-adm-sub">
             <span style="display:inline-flex;align-items:center;gap:4px">Durum: <select class="inp glass adm-quick-status-sel" title="Durumu doğrudan değiştir">${(adapter.statusOptions || []).map(([v, l]) => `<option value="${v}" ${it.status === v ? 'selected' : ''}>${l}</option>`).join('')}</select></span>
             ${adapter.id === 'guide' && it.forumSection ? `<span>Bölüm: <b>${AdminSecurity.sanitizeText(it.forumSection, 50)}</b></span>` : ''}
-            ${adapter.id === 'guide' && it.addedAt ? `<span>Tarih: <b>${AdminSecurity.sanitizeText(it.addedAt, 20)}</b></span>` : ''}
+            ${it.addedAt ? `<span>Tarih: <b>${AdminSecurity.sanitizeText(window.formatHybridDate ? window.formatHybridDate(it.addedAt) : it.addedAt, 20)}</b></span>` : ''}
             ${adapter.id === 'guide' ? '' : `<span>Puan: <b>${effScore ? '★ ' + effScore : 'Puansız'}</b></span>`}
             ${adapter.id === 'guide' ? '' : `<span>Parça: <b>${(it.parts || []).length}</b> (${doneEps} ${uiMeta.rowUnitText})</span>`}
             ${activePartLabel && adapter.id !== 'guide' ? `<span class="adm-active-part">Aktif: <b></b></span>` : ''}
@@ -2798,7 +2802,7 @@
       genres: [],
       customGenres: [],
       image: '',
-      addedAt: new Date().toISOString().slice(0, 10),
+      addedAt: new Date().toISOString().slice(0, 7),
       source: 'manual',
       adminModified: true,
       lockedFields: ['title', 'status', 'score', 'genres', 'addedAt'],
@@ -3005,7 +3009,16 @@
     state.modalCoverCandidates = [];
     $('#aeStatus').value = d.status || 'completed';
     $('#aeNext').value = d.next === true ? 'yes' : d.next === false ? 'no' : 'auto';
-    $('#aeAddedAt').value = d.addedAt || new Date().toISOString().slice(0, 10);
+    const rawAdded = d.addedAt || new Date().toISOString().slice(0, 7);
+    $('#aeAddedAt').value = /^\d{4}-\d{2}-\d{2}$/.test(rawAdded) ? rawAdded.slice(0, 7) : rawAdded;
+    if ($('#aeAddedAtNowBtn')) {
+      $('#aeAddedAtNowBtn').onclick = () => {
+        $('#aeAddedAt').value = new Date().toISOString().slice(0, 7);
+        syncAddedAtPreview();
+      };
+    }
+    $('#aeAddedAt').oninput = syncAddedAtPreview;
+    syncAddedAtPreview();
 
     // Yalnızca admin tarafından seçilen özel kategorileri (`customGenres`) göster
     const activeGenres = Array.isArray(d.customGenres) ? d.customGenres : [];
@@ -3020,6 +3033,24 @@
     renderAnimeGenreStudio();
     renderAnimePartsEditor();
     $('#animeEditModal').hidden = false;
+  }
+
+  function syncAddedAtPreview() {
+    const el = $('#aeAddedAt');
+    const prev = $('#aeAddedAtPreview');
+    if (!el || !prev) return;
+    const v = (el.value || '').trim();
+    if (!v) {
+      prev.textContent = '';
+    } else if (/^\d{4}-\d{2}$/.test(v)) {
+      prev.textContent = `✓ ${window.formatHybridDate ? window.formatHybridDate(v) : v}`;
+    } else if (/^\d{4}$/.test(v)) {
+      prev.textContent = `✓ ${v} (Yalnızca Yıl)`;
+    } else if (/^\d{4}-\d{2}-\d{2}$/.test(v)) {
+      prev.textContent = `✓ ${window.formatHybridDate ? window.formatHybridDate(v.slice(0, 7)) : v} (Kaydederken gün kırpılacak)`;
+    } else {
+      prev.textContent = `⚠️ Geçersiz format (YYYY-AA veya YYYY giriniz)`;
+    }
   }
 
   function syncModalFavoriteBtn() {
@@ -4063,7 +4094,9 @@
     if (d.favorite) d.favorite = true;
     else delete d.favorite;
 
-    d.addedAt = S($('#aeAddedAt').value, 20) || new Date().toISOString().slice(0, 10);
+    let rawAdded = S($('#aeAddedAt').value, 20).trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(rawAdded)) rawAdded = rawAdded.slice(0, 7);
+    d.addedAt = rawAdded || new Date().toISOString().slice(0, 7);
 
     const customGenres = [
       ...new Set(

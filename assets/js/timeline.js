@@ -156,8 +156,12 @@
 
     for (const yStr of sortedYears) {
       const groupItems = yearGroups.get(yStr);
-      // Grup içi sıralama: Puan ve favori önceliği
-      groupItems.sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0) || (b.score || 0) - (a.score || 0));
+      // Grup içi sıralama: 'added' modunda ay/tarih sırası (Ekim -> Ocak), ardından puan ve favori
+      if (activeMode === 'added') {
+        groupItems.sort((a, b) => (b.addedAt || '').localeCompare(a.addedAt || '') || (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0) || (b.score || 0) - (a.score || 0));
+      } else {
+        groupItems.sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0) || (b.score || 0) - (a.score || 0));
+      }
 
       const grpEl = document.createElement('div');
       grpEl.className = 'timeline-year-group';
@@ -196,7 +200,9 @@
         }
         const targetUrl = `../${it.sectionMeta.path}#${encodeURIComponent(it.id)}`;
         const statusText = STATUS_LABELS[it.status] || it.status;
-        const dateNote = activeMode === 'added' ? (it.addedAt ? `Eklenme: ${it.addedAt}` : `Dönem: ${it.addedYear}`) : `Çıkış: ${it.releaseYear}`;
+        const actionLabel = (it.section === 'book' || it.section === 'manga') ? 'Okuma' : 'İzleme';
+        const formattedDate = (window.formatHybridDate ? window.formatHybridDate(it.addedAt) : it.addedAt) || '';
+        const dateNote = activeMode === 'added' ? (formattedDate ? `${actionLabel}: ${formattedDate}` : `Dönem: ${it.addedYear}`) : `Çıkış: ${it.releaseYear}`;
 
         itemEl.innerHTML = `
           <div class="timeline-node-dot" aria-hidden="true"></div>

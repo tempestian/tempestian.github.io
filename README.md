@@ -32,7 +32,7 @@ Dosya elle düzenlenmez, AniList senkronu tarafından üretilir. Her kayıt bir 
 | `parts[].repeat` | int | yalnızca yeniden izleme sayısı 0'dan büyükse bulunur; istatistiğe katılmaz, listede "↻ N× tekrar" etiketi (franchise içindeki en çok tekrar izlenen parçanın tekrar sayısı; parçaların tekrarları toplanmaz), detay ekranında her sezon/film için "İzlendi · N kez" (N = repeat + 1) gösterilir |
 | `genres` | dizi | yalnızca doluysa; franchise'ın izlenen parçalarındaki türler, sık olandan aza, en çok 6 (AniList İngilizce adlarıyla; arayüz Türkçeleştirir) |
 | `image` | string/null | AniList kapak görseli |
-| `addedAt` | `YYYY-MM-DD` | |
+| `addedAt` | `YYYY-MM` veya `YYYY` (Akıllı Hibrit Model) | İzleme/eklenme tarihi (örn. `2024-10` veya `2023`) |
 
 Bir animeye tıklayınca açılan detay ekranı `parts` listesini sırayla gösterir (İzlendi, İzleniyor, İzlenmedi, Planlandı, Yayınlanmadı...). Adres `anime/#al-<ID>` biçimindedir. Ana listede "Devam edilecek" etiketi ve süzgeci `next` alanından gelir.
 

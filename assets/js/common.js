@@ -154,6 +154,34 @@
     return root + u.replace(/^\.?\//, '');
   };
 
+  // ============================================================================
+  // [AKILLI HİBRİT MODEL: TARİH BİÇİMLENDİRME & GÖSTERİM MOTORU]
+  // 'YYYY-MM' (Ay Yıl, örn: '2024-10' -> 'Ekim 2024')
+  // 'YYYY'    (Yalnızca Yıl, örn: '2023' -> '2023')
+  // Geriye dönük uyumluluk: 'YYYY-MM-DD' gelirse 'Ekim 2024' olarak çözülür.
+  // ============================================================================
+  const TURKISH_MONTHS = [
+    '', 'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+    'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+  ];
+
+  const formatHybridDate = val => {
+    if (!val || typeof val !== 'string') return '';
+    const s = val.trim();
+    const mMatch = s.match(/^(\d{4})-(\d{1,2})(?:-\d{1,2})?$/);
+    if (mMatch) {
+      const y = mMatch[1];
+      const m = parseInt(mMatch[2], 10);
+      const mName = TURKISH_MONTHS[m];
+      return mName ? `${mName} ${y}` : y;
+    }
+    if (/^\d{4}$/.test(s)) {
+      return s;
+    }
+    return s;
+  };
+  window.formatHybridDate = formatHybridDate;
+
   const themeBtn = document.getElementById('theme');
   const barIn = document.querySelector('.bar-in:not(.admin-bar-in)');
   if (barIn) {

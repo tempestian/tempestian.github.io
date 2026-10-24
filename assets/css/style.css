@@ -455,6 +455,22 @@ h3 a:focus-visible{outline:0}
 .poster{box-shadow:inset 0 0 0 1px var(--line),0 6px 14px rgba(0,0,0,.16)}
 .sh-pg{height:5px;border-radius:9px;background:var(--accent-soft);overflow:hidden;margin:2px 0 8px}.sh-pg[hidden]{display:none}
 .sh-pg i{display:block;height:100%;width:var(--w);background:var(--accent);border-radius:9px}
+
+/* Detaylı Puanlama Karnesi (Ön Yüz) */
+.sh-rating-breakdown{background:var(--glass2);border:1px solid var(--line);border-radius:var(--rm);padding:10px 12px;margin:8px 0 12px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.sh-rating-breakdown[hidden]{display:none!important}
+.sh-rb-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px}
+.sh-rb-title{font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2);display:flex;align-items:center;gap:6px}
+.sh-rb-title svg{color:#eab308;flex:none}
+.sh-rb-score{font-size:.85rem;font-weight:750;color:#eab308;background:rgba(234,179,8,.12);padding:2px 9px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(234,179,8,.25)}
+.sh-rb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,135px),1fr));gap:6px}
+.sh-rb-item{background:var(--glass);border:1px solid var(--line);border-radius:calc(9px*var(--k));padding:6px 9px;display:flex;flex-direction:column;gap:2px;transition:transform .15s ease,background .15s ease}
+.sh-rb-item:hover{background:var(--glass-hi);transform:translateY(-1px)}
+.sh-rb-top{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.sh-rb-lbl{font-size:.71rem;font-weight:600;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sh-rb-num{font-size:.68rem;font-weight:700;color:var(--ink);opacity:.85}
+.sh-rb-stars{font-size:.72rem;color:#eab308;letter-spacing:.06em}
+
 .sheet-cover{width:72px}
 @media (max-width:640px){.sheet-card::before{content:"";display:block;width:38px;height:4px;border-radius:9px;background:var(--line);margin:-6px auto 12px}}
 @media (max-width:520px){.stats-row{grid-template-columns:repeat(5,1fr)}.nums{gap:2px 16px}}

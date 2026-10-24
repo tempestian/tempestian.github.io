@@ -86,6 +86,13 @@ function getPartWeight(p) {
 
 function getEffectiveScore(it) {
   if (!it) return null;
+  if (it.subScores && typeof it.subScores === 'object' && window.TempestianRating) {
+    const criteria = window.TempestianRating.CRITERIA.anime;
+    if (criteria) {
+      const sc = window.TempestianRating.computeScore(criteria, it.subScores);
+      if (sc != null) return sc;
+    }
+  }
   const parts = Array.isArray(it.parts) ? it.parts : [];
   let weightedSum = 0, totalWeight = 0;
   for (const p of parts) {
@@ -516,7 +523,7 @@ document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => { state.
 
 const sheet = document.createElement('div');
 sheet.className = 'sheet'; sheet.hidden = true; sheet.setAttribute('role','dialog'); sheet.setAttribute('aria-modal','true'); sheet.setAttribute('aria-labelledby','sh-title');
-sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-backdrop" hidden><img class="sheet-backdrop-img" alt="" decoding="async"><div class="sheet-backdrop-grad"></div></div><div class="sheet-head"><img class="sheet-cover" alt="" decoding="async"><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki yapım (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki yapım (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-share-btn" data-sh-share title="Bu yapımın doğrudan bağlantısını kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
+sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-backdrop" hidden><img class="sheet-backdrop-img" alt="" decoding="async"><div class="sheet-backdrop-grad"></div></div><div class="sheet-head"><img class="sheet-cover" alt="" decoding="async"><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><div class="sh-rating-breakdown" id="shRatingBreakdown" hidden></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki yapım (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki yapım (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-share-btn" data-sh-share title="Bu yapımın doğrudan bağlantısını kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
 document.body.append(sheet);
 const closeBtn = sheet.querySelector('[data-close]'); closeBtn.innerHTML = UI.icon('close');
 let opener = null, pushed = false;
@@ -607,6 +614,23 @@ function fillSheet(it){
   }
   const own2 = ps.filter(own), te = sum(own2,'episodes'), tw = sum(own2,'watched'), pg = t('.sh-pg');
   pg.hidden = !(te && tw < te); if(!pg.hidden) pg.firstChild.style.setProperty('--w', Math.round(tw/te*100)+'%');
+  const rbEl = t('#shRatingBreakdown');
+  if (rbEl) {
+    if (it.subScores && typeof it.subScores === 'object' && window.TempestianRating) {
+      const criteria = window.TempestianRating.CRITERIA.anime;
+      const hasAnyStar = criteria && criteria.some(c => it.subScores[c.id] != null);
+      if (hasAnyStar) {
+        rbEl.hidden = false;
+        rbEl.innerHTML = window.TempestianRating.renderBreakdownHtml('anime', it.subScores, effScore);
+      } else {
+        rbEl.hidden = true;
+        rbEl.replaceChildren();
+      }
+    } else {
+      rbEl.hidden = true;
+      rbEl.replaceChildren();
+    }
+  }
   const ol = t('.parts'); ol.replaceChildren();
   for(const p of ps){
     const [txt, cls] = partState(p), li = document.createElement('li');

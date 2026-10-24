@@ -53,8 +53,71 @@ export const DEFAULT_STATS_CONFIG = {
   genreSourceRule: 'custom_only'
 };
 
-export function resolveEffectiveScore(a) {
+export const RATING_CRITERIA = {
+  anime: [
+    { id: 'story', label: 'Hikâye & Kurgusal Mimari', weight: 0.25 },
+    { id: 'world', label: 'Dünya Tasarımı & Evren İnşası', weight: 0.20 },
+    { id: 'characters', label: 'Karakter Derinliği & Gelişim', weight: 0.20 },
+    { id: 'visuals', label: 'Görsel Yönetmenlik & Animasyon', weight: 0.15 },
+    { id: 'sound', label: 'Ses Tasarımı, Müzik & Seslendirme', weight: 0.10 },
+    { id: 'enjoyment', label: 'Seyir Hazzı & Duygusal Tortu', weight: 0.10 }
+  ],
+  manga: [
+    { id: 'story', label: 'Hikâye & Senaryo Örgüsü', weight: 0.25 },
+    { id: 'world', label: 'Dünya Tasarımı, Lore & Sistem', weight: 0.25 },
+    { id: 'characters', label: 'Karakterler & Diyalog Kalitesi', weight: 0.20 },
+    { id: 'art', label: 'Çizim & Panel Yönetimi', weight: 0.20 },
+    { id: 'enjoyment', label: 'Okuma Sürükleyiciliği & Etki', weight: 0.10 }
+  ],
+  movie: [
+    { id: 'story', label: 'Senaryo & Anlatım Bütünlüğü', weight: 0.25 },
+    { id: 'world', label: 'Dünya Tasarımı & Mekân Hissi', weight: 0.20 },
+    { id: 'acting', label: 'Oyunculuk & Karakter İnandırıcılığı', weight: 0.20 },
+    { id: 'directing', label: 'Yönetmenlik & Sinematografi', weight: 0.15 },
+    { id: 'sound', label: 'Ses Miksajı & Film Müziği', weight: 0.10 },
+    { id: 'impact', label: 'Duygusal Katarsis & Final Vuruşu', weight: 0.10 }
+  ],
+  series: [
+    { id: 'story', label: 'Ana Kurgu & Sezon Devamlılığı', weight: 0.25 },
+    { id: 'world', label: 'Dünya Tasarımı & Sosyolojik Doku', weight: 0.20 },
+    { id: 'characters', label: 'Karakter Arkları & Kadro Derinliği', weight: 0.20 },
+    { id: 'pacing', label: 'Bölüm Temposu & Sürükleyicilik', weight: 0.15 },
+    { id: 'production', label: 'Prodüksiyon & Sinematografi', weight: 0.10 },
+    { id: 'music_finale', label: 'Müzik & Finallerin Ağırlığı', weight: 0.10 }
+  ],
+  book: [
+    { id: 'story', label: 'Kurgu, Olay Örgüsü & Fikir', weight: 0.25 },
+    { id: 'world', label: 'Dünya Tasarımı & Evren İnşası', weight: 0.25 },
+    { id: 'prose', label: 'Anlatım Dili & Edebi Üslup', weight: 0.25 },
+    { id: 'characters', label: 'Karakter & Psikolojik Katman', weight: 0.15 },
+    { id: 'impact', label: 'Düşünsel Tortu & Kalıcılık', weight: 0.10 }
+  ]
+};
+
+export function computeCriteriaScore(criteria, subScores) {
+  if (!subScores || typeof subScores !== 'object') return null;
+  let totalScore = 0;
+  let totalWeight = 0;
+  for (const c of criteria) {
+    const star = Number(subScores[c.id]);
+    if (!isNaN(star) && star >= 1 && star <= 5) {
+      totalScore += star * 2 * c.weight;
+      totalWeight += c.weight;
+    }
+  }
+  if (totalWeight <= 0) return null;
+  return Math.round((totalScore / totalWeight) * 10) / 10;
+}
+
+export function resolveEffectiveScore(a, type = 'anime') {
   if (!a || typeof a !== 'object') return null;
+
+  if (a.subScores && typeof a.subScores === 'object') {
+    const criteria = RATING_CRITERIA[type] || RATING_CRITERIA.anime;
+    const s = computeCriteriaScore(criteria, a.subScores);
+    if (s != null) return s;
+  }
+
   const parts = Array.isArray(a.parts) ? a.parts : [];
   let weightedSum = 0;
   let totalWeight = 0;

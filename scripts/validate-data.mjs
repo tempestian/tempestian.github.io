@@ -95,6 +95,19 @@ function validateAnimeJson() {
       }
     }
 
+    if (a.subScores != null) {
+      if (typeof a.subScores !== 'object' || Array.isArray(a.subScores)) {
+        addError(rel, `${prefix} 'subScores' nesne (object) olmalıdır.`);
+      } else {
+        for (const [k, v] of Object.entries(a.subScores)) {
+          const num = Number(v);
+          if (isNaN(num) || num < 1 || num > 5 || !Number.isInteger(num)) {
+            addError(rel, `${prefix} 'subScores.${k}' 1-5 arasında tam sayı olmalıdır (bulunan: ${v})`);
+          }
+        }
+      }
+    }
+
     if (!Array.isArray(a.parts)) {
       addError(rel, `${prefix} 'parts' alanı dizi olmalıdır.`);
     } else {
@@ -172,6 +185,26 @@ function validateMultiMediaFiles() {
 
       if (it.status && !VALID_STATUSES.has(it.status)) {
         addError(rel, `${prefix} geçersiz status: '${it.status}'`);
+      }
+
+      if (it.score != null) {
+        const s = Number(it.score);
+        if (isNaN(s) || s < 0 || s > 10) {
+          addError(rel, `${prefix} 'score' 0-10 aralığında olmalıdır (bulunan: ${it.score})`);
+        }
+      }
+
+      if (it.subScores != null) {
+        if (typeof it.subScores !== 'object' || Array.isArray(it.subScores)) {
+          addError(rel, `${prefix} 'subScores' nesne (object) olmalıdır.`);
+        } else {
+          for (const [k, v] of Object.entries(it.subScores)) {
+            const num = Number(v);
+            if (isNaN(num) || num < 1 || num > 5 || !Number.isInteger(num)) {
+              addError(rel, `${prefix} 'subScores.${k}' 1-5 arasında tam sayı olmalıdır (bulunan: ${v})`);
+            }
+          }
+        }
       }
     }
   }

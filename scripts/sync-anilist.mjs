@@ -466,6 +466,7 @@ for (const [root, members] of groups) {
     image,
     addedAt,
     ...(matchedExisting && matchedExisting.source ? { source: matchedExisting.source } : {}),
+    ...(matchedExisting && matchedExisting.subScores ? { subScores: matchedExisting.subScores } : {}),
     ...(isModified ? { adminModified: true, lockedFields: [...locked] } : {})
   });
 }

@@ -377,8 +377,20 @@
   // [AI-MIMARI-NOTU: ADIM 7 & 8 — AĞIRLIKLI PUAN, ÖZEL TÜR VE İSTATİSTİK MOTORU]
   // `scripts/stats.mjs` ile %100 aynı matematiksel modeli çalıştırır.
   // ============================================================================
-  function resolveEffectiveScore(a) {
+  function resolveEffectiveScore(a, typeId) {
     if (!a || typeof a !== 'object') return null;
+
+    // 1. Yeni Kriter Bazlı Ağırlıklı Puanlama (subScores)
+    if (a.subScores && typeof a.subScores === 'object' && window.TempestianRating) {
+      const tid = typeId || (typeof getActiveAdapter === 'function' ? getActiveAdapter()?.id : null) || (typeof getActiveAdminAdapter === 'function' ? getActiveAdminAdapter()?.id : null) || a.kind || a.type || 'anime';
+      const criteria = window.TempestianRating.CRITERIA[tid] || window.TempestianRating.CRITERIA.anime;
+      if (criteria) {
+        const sc = window.TempestianRating.computeScore(criteria, a.subScores);
+        if (sc != null) return sc;
+      }
+    }
+
+    // 2. Parça ağırlıklı hesap (Geriye dönük uyumluluk)
     const parts = Array.isArray(a.parts) ? a.parts : [];
     let weightedSum = 0;
     let totalWeight = 0;
@@ -1337,10 +1349,11 @@
                 <div class="score-studio-top">
                   <div>
                     <h4 id="rqSubItemsHeading">Sezon, Film ve Yan İçerik Puanları (Sezon ×1.00 · Film ×0.35 · Yan İçerik ×0.15)</h4>
-                    <p class="meta">Her sezon veya filme tıklayarak puan verin; genel puan ağırlıklı olarak otomatik hesaplanır.</p>
+                    <p class="meta">Kriterlere 5 yıldız verin veya parçaları güncelleyin; genel puan otomatik hesaplanır.</p>
                   </div>
                   <div class="template-chips" id="rqBulkSeasonScoreChips"></div>
                 </div>
+                <div id="rqCriteriaStudioMount"></div>
                 <div id="rqSubItemsList" class="rq-subitems-grid"></div>
               </div>
             </div>
@@ -1894,10 +1907,11 @@
             <div class="score-studio-top">
               <div>
                 <h4 id="aeScoreStudioHeading">Ağırlıklı Otomatik Puanlama (Sezon ×1.00 · Film ×0.35 · Yan İçerik ×0.15)</h4>
-                <p class="meta" id="aeScoreStudioSub">Aşağıdaki sezon, film ve yan içerik kartlarına girdiğiniz puanlar ağırlıklarına göre genel puanı otomatik belirler.</p>
+                <p class="meta" id="aeScoreStudioSub">Aşağıdaki 5 yıldızlı kriterleri puanlayın; sistem ağırlıklarına göre 10 üzerinden virgüllü puanı otomatik belirler.</p>
               </div>
               <div class="score-badge-big" id="aeWeightedScoreDisplay">Puansız</div>
             </div>
+            <div id="aeCriteriaStudioMount"></div>
             <div class="field-row align-end">
               <label class="field" style="flex:2">
                 <span id="aeQuickScoreLabel">Tüm İzlenen Parçalara Hızlı Puan Ata (İsteğe Bağlı Kısayol)</span>
@@ -2998,6 +3012,9 @@
     $('#aeGenresInput').value = activeGenres.join(', ');
 
     syncModalFavoriteBtn();
+    renderCriteriaRatingStudio($('#aeCriteriaStudioMount'), state.editingDraft, adapter.id, () => {
+      syncScoreStudioUI();
+    });
     syncScoreStudioUI();
     renderQuickScoreChips();
     renderAnimeGenreStudio();
@@ -3020,13 +3037,143 @@
 
   function syncScoreStudioUI() {
     if (!state.editingDraft) return;
-    const effScore = resolveEffectiveScore(state.editingDraft);
+    const adapter = getActiveAdminAdapter();
+    const effScore = resolveEffectiveScore(state.editingDraft, adapter.id);
     state.editingDraft.score = effScore;
     const badge = $('#aeWeightedScoreDisplay');
     if (badge) {
       badge.textContent = effScore != null ? `★ ${effScore}` : 'Puansız';
     }
     renderQuickScoreChips();
+  }
+
+  function renderCriteriaRatingStudio(mountEl, item, typeId, onScoreChange) {
+    if (!mountEl) return;
+    mountEl.replaceChildren();
+    if (typeId === 'guide' || !window.TempestianRating) return;
+
+    const criteria = window.TempestianRating.CRITERIA[typeId] || window.TempestianRating.CRITERIA.anime;
+    if (!criteria) return;
+
+    if (!item.subScores || typeof item.subScores !== 'object') {
+      item.subScores = {};
+    }
+
+    const wrap = document.createElement('div');
+    wrap.className = 'criteria-studio glass';
+
+    const head = document.createElement('div');
+    head.className = 'criteria-studio-head';
+    head.innerHTML = `
+      <div>
+        <h5>5 Yıldızlı Ağırlıklı Puanlama Stüdyosu</h5>
+        <p class="meta">Kriterlere 1–5 yıldız verin; sistem ağırlıklarına göre 10 üzerinden virgüllü puanı otomatik hesaplar.</p>
+      </div>
+      <div class="criteria-studio-actions">
+        <button type="button" class="btn-subtle btn-xs" id="clearSubScoresBtn">Puanı Sıfırla</button>
+      </div>
+    `;
+    wrap.appendChild(head);
+
+    const grid = document.createElement('div');
+    grid.className = 'criteria-rows-grid';
+
+    criteria.forEach(c => {
+      const curVal = Number(item.subScores[c.id]) || 0;
+      const weightPct = Math.round(c.weight * 100);
+
+      const row = document.createElement('div');
+      row.className = 'criterion-row';
+      row.dataset.cid = c.id;
+
+      row.innerHTML = `
+        <div class="criterion-info">
+          <div class="criterion-title-wrap">
+            <span class="criterion-name">${c.label}</span>
+            <span class="criterion-weight">%${weightPct}</span>
+          </div>
+          <span class="criterion-desc">${c.desc}</span>
+        </div>
+        <div class="criterion-stars-wrap">
+          <div class="criterion-stars" role="radiogroup" aria-label="${c.label}"></div>
+          <span class="criterion-num-badge">${curVal > 0 ? curVal + '/5' : 'Seçilmedi'}</span>
+        </div>
+      `;
+
+      const starsContainer = row.querySelector('.criterion-stars');
+      const badge = row.querySelector('.criterion-num-badge');
+      if (curVal > 0) badge.classList.add('active');
+
+      for (let star = 1; star <= 5; star++) {
+        const starBtn = document.createElement('button');
+        starBtn.type = 'button';
+        starBtn.className = 'c-star-btn' + (star <= curVal ? ' on' : '');
+        starBtn.textContent = '★';
+        starBtn.title = `${star} / 5 Yıldız`;
+
+        starBtn.onmouseenter = () => {
+          const allBtns = starsContainer.querySelectorAll('.c-star-btn');
+          allBtns.forEach((b, idx) => {
+            b.classList.toggle('hover', idx < star);
+          });
+        };
+
+        starBtn.onmouseleave = () => {
+          const allBtns = starsContainer.querySelectorAll('.c-star-btn');
+          allBtns.forEach(b => b.classList.remove('hover'));
+        };
+
+        starBtn.onclick = () => {
+          if (item.subScores[c.id] === star) {
+            delete item.subScores[c.id];
+          } else {
+            item.subScores[c.id] = star;
+          }
+          item.adminModified = true;
+          const updatedVal = Number(item.subScores[c.id]) || 0;
+          badge.textContent = updatedVal > 0 ? updatedVal + '/5' : 'Seçilmedi';
+          badge.classList.toggle('active', updatedVal > 0);
+
+          const allBtns = starsContainer.querySelectorAll('.c-star-btn');
+          allBtns.forEach((b, idx) => {
+            b.classList.toggle('on', idx < updatedVal);
+          });
+
+          const hasAny = Object.values(item.subScores).some(v => v != null && v > 0);
+          if (!hasAny) {
+            delete item.subScores;
+          }
+
+          const newScore = resolveEffectiveScore(item, typeId);
+          item.score = newScore;
+          if (typeof onScoreChange === 'function') {
+            onScoreChange(newScore);
+          }
+        };
+
+        starsContainer.appendChild(starBtn);
+      }
+
+      grid.appendChild(row);
+    });
+
+    wrap.appendChild(grid);
+
+    const clearBtn = head.querySelector('#clearSubScoresBtn');
+    if (clearBtn) {
+      clearBtn.onclick = () => {
+        item.subScores = {};
+        delete item.subScores;
+        item.adminModified = true;
+        renderCriteriaRatingStudio(mountEl, item, typeId, onScoreChange);
+        item.score = resolveEffectiveScore(item, typeId);
+        if (typeof onScoreChange === 'function') {
+          onScoreChange(item.score);
+        }
+      };
+    }
+
+    mountEl.appendChild(wrap);
   }
 
   function renderQuickScoreChips() {
@@ -4784,7 +4931,7 @@
         if (!state.animeData.customGenreCatalog.includes(cat)) state.animeData.customGenreCatalog.push(cat);
         markDirty('anime');
       },
-      computeScore: (item) => resolveEffectiveScore(item),
+      computeScore: (item) => resolveEffectiveScore(item, 'anime'),
       saveItem: (updatedItem) => {
         const list = state.animeData.anime || [];
         const idx = list.findIndex(x => x.id === updatedItem.id);
@@ -4830,7 +4977,7 @@
       getItems: () => ensureMultiMediaStore('manga').items,
       getCustomCatalog: () => ensureMultiMediaStore('manga').customGenreCatalog,
       addCustomCategory: (cat) => addMultiMediaCategory('manga', cat),
-      computeScore: (item) => resolveEffectiveScore(item),
+      computeScore: (item) => resolveEffectiveScore(item, 'manga'),
       saveItem: (updatedItem) => saveMultiMediaItem('manga', updatedItem)
     },
     book: {
@@ -4861,7 +5008,7 @@
       getItems: () => ensureMultiMediaStore('book').items,
       getCustomCatalog: () => ensureMultiMediaStore('book').customGenreCatalog,
       addCustomCategory: (cat) => addMultiMediaCategory('book', cat),
-      computeScore: (item) => resolveEffectiveScore(item),
+      computeScore: (item) => resolveEffectiveScore(item, 'book'),
       saveItem: (updatedItem) => saveMultiMediaItem('book', updatedItem)
     },
     series: {
@@ -4891,7 +5038,7 @@
       getItems: () => ensureMultiMediaStore('series').items,
       getCustomCatalog: () => ensureMultiMediaStore('series').customGenreCatalog,
       addCustomCategory: (cat) => addMultiMediaCategory('series', cat),
-      computeScore: (item) => resolveEffectiveScore(item),
+      computeScore: (item) => resolveEffectiveScore(item, 'series'),
       saveItem: (updatedItem) => saveMultiMediaItem('series', updatedItem)
     },
     movie: {
@@ -4920,7 +5067,7 @@
       getItems: () => ensureMultiMediaStore('movie').items,
       getCustomCatalog: () => ensureMultiMediaStore('movie').customGenreCatalog,
       addCustomCategory: (cat) => addMultiMediaCategory('movie', cat),
-      computeScore: (item) => resolveEffectiveScore(item),
+      computeScore: (item) => resolveEffectiveScore(item, 'movie'),
       saveItem: (updatedItem) => saveMultiMediaItem('movie', updatedItem)
     },
     guide: {
@@ -4948,7 +5095,7 @@
       getItems: () => ensureMultiMediaStore('guide').items,
       getCustomCatalog: () => ensureMultiMediaStore('guide').customGenreCatalog,
       addCustomCategory: (cat) => addMultiMediaCategory('guide', cat),
-      computeScore: (item) => resolveEffectiveScore(item),
+      computeScore: () => null,
       saveItem: (updatedItem) => saveMultiMediaItem('guide', updatedItem)
     }
   };
@@ -5229,6 +5376,9 @@
       subItemsContainer.hidden = adapter.id === 'guide';
     }
     renderRapidQueueGenres();
+    renderCriteriaRatingStudio($('#rqCriteriaStudioMount'), d, adapter.id, () => {
+      syncRapidQueueScoreBadge();
+    });
     renderRapidQueueSubItems();
     syncRapidQueueScoreBadge();
   }

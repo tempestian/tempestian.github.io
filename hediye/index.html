@@ -117,55 +117,58 @@ html,body{
   pointer-events:none;z-index:10;
 }
 
-/* Sayfa Çevirme / Kaydırma Animasyonları (Gerçek Basılı Kitap Hissinde Akıcı Kayma) */
-.page-slide-next{
-  animation:bookSlideNext .46s cubic-bezier(.22, .8, .25, 1) both;
-}
-.page-slide-prev{
-  animation:bookSlidePrev .46s cubic-bezier(.22, .8, .25, 1) both;
-}
-
-@keyframes bookSlideNext{
-  0%{
-    opacity:0;
-    transform:translateX(44px) scale(.98);
-    box-shadow:-12px 0 25px rgba(0,0,0,.2);
-  }
-  50%{
-    opacity:.9;
-    transform:translateX(10px) scale(.995);
-  }
-  100%{
-    opacity:1;
-    transform:translateX(0) scale(1);
-    box-shadow:none;
-  }
-}
-
-@keyframes bookSlidePrev{
-  0%{
-    opacity:0;
-    transform:translateX(-44px) scale(.98);
-    box-shadow:12px 0 25px rgba(0,0,0,.2);
-  }
-  50%{
-    opacity:.9;
-    transform:translateX(-10px) scale(.995);
-  }
-  100%{
-    opacity:1;
-    transform:translateX(0) scale(1);
-    box-shadow:none;
-  }
+/* Gerçek Kitap Çevirme / Sayfa Kaydırma Sahnesi */
+.page-container{
+  position:relative;flex:1;width:100%;height:100%;overflow:hidden;
 }
 
 /* Sayfa Görünümü ve Metin */
 .page-viewport{
-  flex:1;overflow-y:auto;overflow-x:hidden;padding:46px 36px 68px;
+  position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:46px 36px 68px;
   color:var(--fg);font-family:'Lora',serif;line-height:1.85;font-size:1.06rem;
   scrollbar-width:thin;scrollbar-color:var(--accent-soft) transparent;
   display:flex;flex-direction:column;justify-content:center;
   will-change:transform,opacity;
+  background:linear-gradient(135deg, var(--paper-red-2), var(--paper-red-1));
+}
+
+/* Gerçek Çevrilen Sayfa Animasyonları (Eski sayfa ayrılırken yeni sayfa açılır) */
+.page-in-right{
+  animation:pageTurnInRight .52s cubic-bezier(.2,.8,.25,1) both;
+  z-index:3;
+  box-shadow:-16px 0 35px rgba(0,0,0,.35);
+}
+.page-out-left{
+  animation:pageTurnOutLeft .52s cubic-bezier(.2,.8,.25,1) both;
+  z-index:2;
+  pointer-events:none;
+}
+.page-in-left{
+  animation:pageTurnInLeft .52s cubic-bezier(.2,.8,.25,1) both;
+  z-index:3;
+  box-shadow:16px 0 35px rgba(0,0,0,.35);
+}
+.page-out-right{
+  animation:pageTurnOutRight .52s cubic-bezier(.2,.8,.25,1) both;
+  z-index:2;
+  pointer-events:none;
+}
+
+@keyframes pageTurnInRight{
+  from{transform:translateX(100%);filter:brightness(.94)}
+  to{transform:translateX(0);filter:brightness(1)}
+}
+@keyframes pageTurnOutLeft{
+  from{transform:translateX(0) scale(1);filter:brightness(1)}
+  to{transform:translateX(-26%) scale(.95);filter:brightness(.82)}
+}
+@keyframes pageTurnInLeft{
+  from{transform:translateX(-100%);filter:brightness(.94)}
+  to{transform:translateX(0);filter:brightness(1)}
+}
+@keyframes pageTurnOutRight{
+  from{transform:translateX(0) scale(1);filter:brightness(1)}
+  to{transform:translateX(26%) scale(.95);filter:brightness(.82)}
 }
 @media (max-width:500px){
   .page-viewport{padding:36px 24px 58px;font-size:1rem;line-height:1.76}
@@ -323,8 +326,8 @@ html,body{
 
     <div class="book-spine">
       <div class="book-wrapper" id="book-wrapper">
-        <div class="page-viewport" id="page-content">
-          <!-- Sayfa dinamik render edilir -->
+        <div class="page-container" id="page-container">
+          <!-- Sayfa katmanları dinamik render edilir -->
         </div>
 
         <!-- Maskot Kedi -->
@@ -585,15 +588,15 @@ html,body{
       }, duration);
     }
 
-    function render(dir){
-      pageContent.innerHTML = '';
-      
-      // Basılı kitap sayfa kaydırma efekti
-      pageContent.className = 'page-viewport ' + (dir > 0 ? 'page-slide-next' : (dir < 0 ? 'page-slide-prev' : ''));
+    const pageContainer = document.getElementById('page-container');
+    let activePageEl = null;
 
-      if(cur === 0){
-        // Kapak Sayfası
-        pageContent.innerHTML = `
+    function buildPageEl(pageIndex){
+      const el = document.createElement('div');
+      el.className = 'page-viewport';
+
+      if(pageIndex === 0){
+        el.innerHTML = `
           <div class="cover-content">
             <div class="cover-cat-badge">🐾</div>
             <div class="cover-orn">❦</div>
@@ -605,8 +608,7 @@ html,body{
           </div>
         `;
       } else {
-        // Normal İçerik Sayfası
-        const p = data.pages[cur - 1];
+        const p = data.pages[pageIndex - 1];
         const alignClass = p.align === 'center' ? 'align-center' : 'align-left';
         const titleHtml = p.title ? `
           <div class="page-head">
@@ -619,15 +621,44 @@ html,body{
           </div>
         ` : '';
 
-        pageContent.innerHTML = `
+        el.innerHTML = `
           ${titleHtml}
           <div class="page-text ${alignClass}">${fmt(p.text)}</div>
         `;
       }
+      return el;
+    }
+
+    function render(dir){
+      const oldEl = activePageEl;
+      const newEl = buildPageEl(cur);
+
+      if(!oldEl || dir === 0){
+        pageContainer.innerHTML = '';
+        pageContainer.appendChild(newEl);
+        activePageEl = newEl;
+      } else {
+        // Çift katmanlı gerçek sayfa kayma animasyonu
+        if(dir > 0){
+          newEl.classList.add('page-in-right');
+          oldEl.classList.add('page-out-left');
+        } else {
+          newEl.classList.add('page-in-left');
+          oldEl.classList.add('page-out-right');
+        }
+
+        pageContainer.appendChild(newEl);
+        activePageEl = newEl;
+
+        setTimeout(() => {
+          if(oldEl && oldEl.parentNode === pageContainer){
+            oldEl.remove();
+          }
+        }, 530);
+      }
 
       pageNum.textContent = (cur === 0 ? 'Kapak' : cur) + ' / ' + (total - 1);
       progressBar.style.width = (cur / (total - 1) * 100) + '%';
-      pageContent.scrollTop = 0;
 
       // Sayfa değişiminde kedi sayfa temasına özel konuşsun
       const dialogue = pageCatDialogues[cur] || "Seni çok seviyor miyav! 🐾";
@@ -635,7 +666,7 @@ html,body{
     }
 
     function go(idx, dir){
-      if(idx < 0 || idx >= total) return;
+      if(idx < 0 || idx >= total || idx === cur) return;
       cur = idx;
       render(dir);
     }
@@ -655,12 +686,12 @@ html,body{
 
     // Dokunmatik / Kaydırma (Swipe)
     let sx = 0, sy = 0;
-    pageContent.addEventListener('touchstart', e => {
+    pageContainer.addEventListener('touchstart', e => {
       sx = e.touches[0].clientX;
       sy = e.touches[0].clientY;
     }, {passive:true});
 
-    pageContent.addEventListener('touchend', e => {
+    pageContainer.addEventListener('touchend', e => {
       const dx = e.changedTouches[0].clientX - sx;
       const dy = e.changedTouches[0].clientY - sy;
       if(Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.35){

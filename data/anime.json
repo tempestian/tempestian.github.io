@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-10-24",
+  "updated": "2026-10-25",
   "source": "site-first:relations_only",
   "statsConfig": {
     "animeCountRule": "completed_season_or_movie",
@@ -21,8 +21,8 @@
     "favorites": 10,
     "avgScore": 6.4,
     "byStatus": {
-      "completed": 71,
       "watching": 5,
+      "completed": 71,
       "dropped": 8,
       "paused": 5
     },
@@ -211,6 +211,125 @@
   },
   "anime": [
     {
+      "id": "al-127399",
+      "title": "Record of Ragnarok",
+      "anilistId": 127399,
+      "url": "https://anilist.co/anime/127399",
+      "firstSeasonUrl": "https://anilist.co/anime/127399",
+      "status": "watching",
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/127399-eiN22Xg4LG9x.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127399-AAH1pevCZLrB.jpg",
+      "genres": [
+        "Shounen",
+        "Aksiyon",
+        "Fantastik"
+      ],
+      "customGenres": [
+        "Shounen",
+        "Aksiyon",
+        "Fantastik"
+      ],
+      "score": 5.7,
+      "parts": [
+        {
+          "id": 127399,
+          "name": "Record of Ragnarok",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 12,
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021,
+          "score": 4.9,
+          "adminModified": true
+        },
+        {
+          "id": 138106,
+          "name": "Shuumatsu no Valkyrie Mini Anime",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 14,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 138056,
+          "name": "Record of Ragnarok II",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 10,
+          "watched": 10,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023,
+          "score": 5.8,
+          "adminModified": true
+        },
+        {
+          "id": 163943,
+          "name": "Shuumatsu no Valkyrie II Mini Anime",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 18,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2023
+        },
+        {
+          "id": 165356,
+          "name": "Record of Ragnarok II Part 2",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 5,
+          "watched": 5,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023,
+          "score": 5.6,
+          "adminModified": true
+        },
+        {
+          "id": 187921,
+          "name": "Record of Ragnarok III",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 15,
+          "watched": 11,
+          "status": "CURRENT",
+          "release": "FINISHED",
+          "year": 2025,
+          "score": 6.5,
+          "adminModified": true
+        },
+        {
+          "id": 213580,
+          "name": "Shuumatsu no Valkyrie IV",
+          "kind": "other",
+          "format": "TV",
+          "episodes": 0,
+          "watched": 0,
+          "status": "NONE",
+          "release": "NOT_YET_RELEASED",
+          "year": null
+        }
+      ],
+      "addedAt": "2026-10",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt",
+        "image"
+      ]
+    },
+    {
       "id": "al-101280",
       "title": "That Time I Got Reincarnated as a Slime",
       "anilistId": 101280,
@@ -252,15 +371,7 @@
           "year": 2018,
           "score": 10,
           "repeat": 21,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 106509,
@@ -274,15 +385,7 @@
           "year": 2019,
           "score": 10,
           "repeat": 5,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 108511,
@@ -296,15 +399,7 @@
           "year": 2021,
           "score": 10,
           "repeat": 21,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 116741,
@@ -318,15 +413,7 @@
           "year": 2021,
           "score": 10,
           "repeat": 3,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 116742,
@@ -340,15 +427,7 @@
           "year": 2021,
           "score": 10,
           "repeat": 20,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 146503,
@@ -361,15 +440,7 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 161802,
@@ -383,15 +454,7 @@
           "year": 2023,
           "score": 10,
           "repeat": 5,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 156822,
@@ -405,15 +468,7 @@
           "year": 2024,
           "score": 10,
           "repeat": 6,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 182206,
@@ -426,15 +481,7 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 182205,
@@ -447,15 +494,7 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 217330,
@@ -468,15 +507,7 @@
           "release": "NOT_YET_RELEASED",
           "year": 2027,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 217331,
@@ -489,27 +520,10 @@
           "release": "NOT_YET_RELEASED",
           "year": 2027,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2026-10",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt",
-        "image"
-      ],
       "subScores": {
         "story": 5,
         "world": 5,
@@ -517,148 +531,7 @@
         "visuals": 5,
         "sound": 5,
         "enjoyment": 5
-      }
-    },
-    {
-      "id": "al-127399",
-      "title": "Record of Ragnarok",
-      "anilistId": 127399,
-      "url": "https://anilist.co/anime/127399",
-      "firstSeasonUrl": "https://anilist.co/anime/127399",
-      "status": "watching",
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/127399-eiN22Xg4LG9x.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127399-AAH1pevCZLrB.jpg",
-      "genres": [
-        "Shounen",
-        "Aksiyon",
-        "Fantastik"
-      ],
-      "customGenres": [
-        "Shounen",
-        "Aksiyon",
-        "Fantastik"
-      ],
-      "score": 5.7,
-      "parts": [
-        {
-          "id": 127399,
-          "name": "Record of Ragnarok",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 12,
-          "watched": 12,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2021,
-          "score": 4.9,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 1,
-            "characters": 3,
-            "visuals": 3,
-            "sound": 3,
-            "enjoyment": 4
-          }
-        },
-        {
-          "id": 138106,
-          "name": "Shuumatsu no Valkyrie Mini Anime",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 14,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2021
-        },
-        {
-          "id": 138056,
-          "name": "Record of Ragnarok II",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 10,
-          "watched": 10,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2023,
-          "score": 5.8,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 2,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 4,
-            "enjoyment": 4
-          }
-        },
-        {
-          "id": 163943,
-          "name": "Shuumatsu no Valkyrie II Mini Anime",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 18,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2023
-        },
-        {
-          "id": 165356,
-          "name": "Record of Ragnarok II Part 2",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 5,
-          "watched": 5,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2023,
-          "score": 5.6,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 2,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 4
-          }
-        },
-        {
-          "id": 187921,
-          "name": "Record of Ragnarok III",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 15,
-          "watched": 11,
-          "status": "CURRENT",
-          "release": "FINISHED",
-          "year": 2025,
-          "score": 6.5,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 2,
-            "characters": 4,
-            "visuals": 5,
-            "sound": 3,
-            "enjoyment": 5
-          }
-        },
-        {
-          "id": 213580,
-          "name": "Shuumatsu no Valkyrie IV",
-          "kind": "other",
-          "format": "TV",
-          "episodes": 0,
-          "watched": 0,
-          "status": "NONE",
-          "release": "NOT_YET_RELEASED",
-          "year": null
-        }
-      ],
-      "addedAt": "2026-10",
+      },
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -667,8 +540,7 @@
         "genres",
         "addedAt",
         "image"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-162804",
@@ -722,6 +594,7 @@
         }
       ],
       "addedAt": "2026-09",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -729,8 +602,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-20931",
@@ -772,18 +644,11 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 8.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 4,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 4,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2026-05",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -791,8 +656,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-98503",
@@ -830,15 +694,7 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 6,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 4,
-            "characters": 3,
-            "visuals": 2,
-            "sound": 4,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 102969,
@@ -851,17 +707,11 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 5.6,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 4,
-            "characters": 2,
-            "sound": 4,
-            "enjoyment": 3
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2026-02",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -869,8 +719,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-20555",
@@ -906,18 +755,11 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 8.3,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 3,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 4,
-            "enjoyment": 4
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2026-02",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -925,8 +767,341 @@
         "status",
         "genres",
         "addedAt"
+      ]
+    },
+    {
+      "id": "al-2981",
+      "title": "Chika Gentou Gekiga: Shoujo Tsubaki",
+      "anilistId": 2981,
+      "url": "https://anilist.co/anime/2981",
+      "firstSeasonUrl": "https://anilist.co/anime/2981",
+      "status": "completed",
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/2981-FodA2OZ7K0Ka.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2981-PuzLTzNf4DeV.png",
+      "genres": [
+        "Seinen",
+        "Karanlık Fantezi",
+        "Psikolojik",
+        "Dram",
+        "Korku",
+        "Gerilim",
+        "Gizem"
       ],
-      "subScores": {}
+      "customGenres": [
+        "Seinen",
+        "Karanlık Fantezi",
+        "Psikolojik",
+        "Dram",
+        "Korku",
+        "Gerilim",
+        "Gizem"
+      ],
+      "score": 3.8,
+      "parts": [
+        {
+          "id": 2981,
+          "name": "Chika Gentou Gekiga: Shoujo Tsubaki",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 1992,
+          "score": 3.8,
+          "adminModified": true
+        }
+      ],
+      "addedAt": "2026-01",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
+    },
+    {
+      "id": "al-181447",
+      "title": "May I Ask for One Final Thing?",
+      "anilistId": 181447,
+      "url": "https://anilist.co/anime/181447",
+      "firstSeasonUrl": "https://anilist.co/anime/181447",
+      "status": "completed",
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/181447-t1JZ4Yy2kv94.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181447-aCmaQmtdwuU5.jpg",
+      "genres": [
+        "Shoujo",
+        "Reenkarnasyon",
+        "Aksiyon",
+        "Fantastik"
+      ],
+      "customGenres": [
+        "Shoujo",
+        "Reenkarnasyon",
+        "Aksiyon",
+        "Fantastik"
+      ],
+      "score": 6.4,
+      "parts": [
+        {
+          "id": 181447,
+          "name": "May I Ask for One Final Thing?",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 13,
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2025,
+          "score": 6.4,
+          "adminModified": true
+        }
+      ],
+      "addedAt": "2026-01",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
+    },
+    {
+      "id": "al-114124",
+      "title": "Moriarty the Patriot",
+      "anilistId": 114124,
+      "url": "https://anilist.co/anime/114124",
+      "firstSeasonUrl": "https://anilist.co/anime/114124",
+      "status": "completed",
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/114124-44utnIatIX16.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114124-def92qPuIVeK.jpg",
+      "genres": [
+        "Shounen",
+        "Dedektiflik",
+        "Psikolojik",
+        "Gizem"
+      ],
+      "customGenres": [
+        "Shounen",
+        "Dedektiflik",
+        "Psikolojik",
+        "Gizem"
+      ],
+      "score": 3.8,
+      "parts": [
+        {
+          "id": 114124,
+          "name": "Moriarty the Patriot",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 11,
+          "watched": 11,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020,
+          "score": 4.2,
+          "adminModified": true
+        },
+        {
+          "id": 124858,
+          "name": "Moriarty the Patriot Part 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021,
+          "score": 3.3,
+          "adminModified": true
+        },
+        {
+          "id": 138700,
+          "name": "Moriarty the Patriot OVA",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 2,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
+        }
+      ],
+      "addedAt": "2026-01",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
+    },
+    {
+      "id": "al-21613",
+      "title": "Saga of Tanya the Evil",
+      "anilistId": 21613,
+      "url": "https://anilist.co/anime/21613",
+      "firstSeasonUrl": "https://anilist.co/anime/21613",
+      "status": "completed",
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/21613-FGAqKSTvfxuA.png",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21613-qT3NiwYP5dYc.png",
+      "next": true,
+      "genres": [
+        "Isekai",
+        "Aksiyon",
+        "Fantastik",
+        "Askeri",
+        "Seinen",
+        "Reenkarnasyon"
+      ],
+      "customGenres": [
+        "Isekai",
+        "Aksiyon",
+        "Fantastik",
+        "Askeri",
+        "Seinen",
+        "Reenkarnasyon"
+      ],
+      "score": 7.6,
+      "parts": [
+        {
+          "id": 21613,
+          "name": "Saga of Tanya the Evil",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2017,
+          "score": 8,
+          "adminModified": true
+        },
+        {
+          "id": 98186,
+          "name": "Youjo Shenki",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2017
+        },
+        {
+          "id": 100878,
+          "name": "Saga of Tanya the Evil - the Movie -",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2019,
+          "score": 8.2,
+          "adminModified": true
+        },
+        {
+          "id": 135866,
+          "name": "Saga of Tanya the Evil: Operation Desert Pasta",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021,
+          "score": 6.9,
+          "adminModified": true
+        },
+        {
+          "id": 135865,
+          "name": "Saga of Tanya the Evil Season 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
+        },
+        {
+          "id": 213961,
+          "name": "Youjo Shenki 2",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
+        }
+      ],
+      "addedAt": "2026-01",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
+    },
+    {
+      "id": "al-199",
+      "title": "Spirited Away",
+      "anilistId": 199,
+      "url": "https://anilist.co/anime/199",
+      "firstSeasonUrl": "https://anilist.co/anime/199",
+      "status": "completed",
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/199-Sm2RU5PSqw7T.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-sWefXJvXkDOb.jpg",
+      "genres": [
+        "Shoujo",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "customGenres": [
+        "Shoujo",
+        "Macera",
+        "Fantastik",
+        "Doğaüstü"
+      ],
+      "score": 7.6,
+      "parts": [
+        {
+          "id": 199,
+          "name": "Spirited Away",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2001,
+          "score": 7.6,
+          "adminModified": true
+        }
+      ],
+      "addedAt": "2026-01",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-108463",
@@ -967,8 +1142,7 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 10,
-          "adminModified": true,
-          "subScores": {}
+          "adminModified": true
         },
         {
           "id": 159074,
@@ -1024,14 +1198,6 @@
         }
       ],
       "addedAt": "2026-01",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt"
-      ],
       "subScores": {
         "story": 5,
         "world": 5,
@@ -1039,54 +1205,7 @@
         "visuals": 5,
         "sound": 5,
         "enjoyment": 5
-      }
-    },
-    {
-      "id": "al-199",
-      "title": "Spirited Away",
-      "anilistId": 199,
-      "url": "https://anilist.co/anime/199",
-      "firstSeasonUrl": "https://anilist.co/anime/199",
-      "status": "completed",
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/199-Sm2RU5PSqw7T.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-sWefXJvXkDOb.jpg",
-      "genres": [
-        "Shoujo",
-        "Macera",
-        "Fantastik",
-        "Doğaüstü"
-      ],
-      "customGenres": [
-        "Shoujo",
-        "Macera",
-        "Fantastik",
-        "Doğaüstü"
-      ],
-      "score": 7.6,
-      "parts": [
-        {
-          "id": 199,
-          "name": "Spirited Away",
-          "kind": "movie",
-          "format": "MOVIE",
-          "episodes": 1,
-          "watched": 1,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2001,
-          "score": 7.6,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 3
-          }
-        }
-      ],
-      "addedAt": "2026-01",
+      },
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -1094,350 +1213,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
-    },
-    {
-      "id": "al-2981",
-      "title": "Chika Gentou Gekiga: Shoujo Tsubaki",
-      "anilistId": 2981,
-      "url": "https://anilist.co/anime/2981",
-      "firstSeasonUrl": "https://anilist.co/anime/2981",
-      "status": "completed",
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/2981-FodA2OZ7K0Ka.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2981-PuzLTzNf4DeV.png",
-      "genres": [
-        "Seinen",
-        "Karanlık Fantezi",
-        "Psikolojik",
-        "Dram",
-        "Korku",
-        "Gerilim",
-        "Gizem"
-      ],
-      "customGenres": [
-        "Seinen",
-        "Karanlık Fantezi",
-        "Psikolojik",
-        "Dram",
-        "Korku",
-        "Gerilim",
-        "Gizem"
-      ],
-      "score": 3.8,
-      "parts": [
-        {
-          "id": 2981,
-          "name": "Chika Gentou Gekiga: Shoujo Tsubaki",
-          "kind": "movie",
-          "format": "MOVIE",
-          "episodes": 1,
-          "watched": 1,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 1992,
-          "score": 3.8,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 1,
-            "characters": 2,
-            "visuals": 4,
-            "sound": 1,
-            "enjoyment": 1
-          }
-        }
-      ],
-      "addedAt": "2026-01",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt"
-      ],
-      "subScores": {}
-    },
-    {
-      "id": "al-114124",
-      "title": "Moriarty the Patriot",
-      "anilistId": 114124,
-      "url": "https://anilist.co/anime/114124",
-      "firstSeasonUrl": "https://anilist.co/anime/114124",
-      "status": "completed",
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/114124-44utnIatIX16.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114124-def92qPuIVeK.jpg",
-      "genres": [
-        "Shounen",
-        "Dedektiflik",
-        "Psikolojik",
-        "Gizem"
-      ],
-      "customGenres": [
-        "Shounen",
-        "Dedektiflik",
-        "Psikolojik",
-        "Gizem"
-      ],
-      "score": 3.8,
-      "parts": [
-        {
-          "id": 114124,
-          "name": "Moriarty the Patriot",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 11,
-          "watched": 11,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2020,
-          "score": 4.2,
-          "adminModified": true,
-          "subScores": {
-            "characters": 1,
-            "world": 1,
-            "story": 2,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 3
-          }
-        },
-        {
-          "id": 124858,
-          "name": "Moriarty the Patriot Part 2",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 13,
-          "watched": 13,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2021,
-          "score": 3.3,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 1,
-            "characters": 1,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 1
-          }
-        },
-        {
-          "id": 138700,
-          "name": "Moriarty the Patriot OVA",
-          "kind": "other",
-          "format": "OVA",
-          "episodes": 2,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2022
-        }
-      ],
-      "addedAt": "2026-01",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt"
-      ],
-      "subScores": {}
-    },
-    {
-      "id": "al-21613",
-      "title": "Saga of Tanya the Evil",
-      "anilistId": 21613,
-      "url": "https://anilist.co/anime/21613",
-      "firstSeasonUrl": "https://anilist.co/anime/21613",
-      "status": "completed",
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/21613-FGAqKSTvfxuA.png",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21613-qT3NiwYP5dYc.png",
-      "next": true,
-      "genres": [
-        "Isekai",
-        "Aksiyon",
-        "Fantastik",
-        "Askeri",
-        "Seinen",
-        "Reenkarnasyon"
-      ],
-      "customGenres": [
-        "Isekai",
-        "Aksiyon",
-        "Fantastik",
-        "Askeri",
-        "Seinen",
-        "Reenkarnasyon"
-      ],
-      "score": 7.6,
-      "parts": [
-        {
-          "id": 21613,
-          "name": "Saga of Tanya the Evil",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 12,
-          "watched": 12,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2017,
-          "score": 8,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 3,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 5,
-            "enjoyment": 5
-          }
-        },
-        {
-          "id": 98186,
-          "name": "Youjo Shenki",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 13,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2017
-        },
-        {
-          "id": 100878,
-          "name": "Saga of Tanya the Evil - the Movie -",
-          "kind": "movie",
-          "format": "MOVIE",
-          "episodes": 1,
-          "watched": 1,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2019,
-          "score": 8.2,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 4,
-            "sound": 5,
-            "visuals": 4,
-            "enjoyment": 4
-          }
-        },
-        {
-          "id": 135866,
-          "name": "Saga of Tanya the Evil: Operation Desert Pasta",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 1,
-          "watched": 1,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2021,
-          "score": 6.9,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 3,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 5,
-            "enjoyment": 4
-          }
-        },
-        {
-          "id": 135865,
-          "name": "Saga of Tanya the Evil Season 2",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 12,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2026
-        },
-        {
-          "id": 213961,
-          "name": "Youjo Shenki 2",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 12,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2026
-        }
-      ],
-      "addedAt": "2026-01",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt"
-      ],
-      "subScores": {}
-    },
-    {
-      "id": "al-181447",
-      "title": "May I Ask for One Final Thing?",
-      "anilistId": 181447,
-      "url": "https://anilist.co/anime/181447",
-      "firstSeasonUrl": "https://anilist.co/anime/181447",
-      "status": "completed",
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/181447-t1JZ4Yy2kv94.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181447-aCmaQmtdwuU5.jpg",
-      "genres": [
-        "Shoujo",
-        "Reenkarnasyon",
-        "Aksiyon",
-        "Fantastik"
-      ],
-      "customGenres": [
-        "Shoujo",
-        "Reenkarnasyon",
-        "Aksiyon",
-        "Fantastik"
-      ],
-      "score": 6.4,
-      "parts": [
-        {
-          "id": 181447,
-          "name": "May I Ask for One Final Thing?",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 13,
-          "watched": 13,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2025,
-          "score": 6.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 2,
-            "characters": 2,
-            "visuals": 5,
-            "sound": 4,
-            "enjoyment": 5
-          }
-        }
-      ],
-      "addedAt": "2026-01",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-1575",
@@ -1485,15 +1261,7 @@
           "release": "FINISHED",
           "year": 2006,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 1953,
@@ -1517,15 +1285,7 @@
           "release": "FINISHED",
           "year": 2008,
           "score": 9.5,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 5163,
@@ -1659,15 +1419,7 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 8.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 4,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 117408,
@@ -1693,6 +1445,7 @@
         }
       ],
       "addedAt": "2025-12",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -1700,8 +1453,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-179696",
@@ -1739,18 +1491,11 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 5.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 3,
-            "characters": 2,
-            "visuals": 3,
-            "sound": 2,
-            "enjoyment": 3
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2025-12",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -1758,8 +1503,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-126288",
@@ -1795,15 +1539,7 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 3.9,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 2,
-            "characters": 2,
-            "visuals": 4,
-            "sound": 2,
-            "enjoyment": 1
-          }
+          "adminModified": true
         },
         {
           "id": 143082,
@@ -1833,6 +1569,7 @@
         }
       ],
       "addedAt": "2025-12",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -1840,8 +1577,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-16417",
@@ -1877,15 +1613,7 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 3,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 1,
-            "characters": 2,
-            "visuals": 1,
-            "sound": 4,
-            "enjoyment": 1
-          }
+          "adminModified": true
         },
         {
           "id": 17879,
@@ -1909,14 +1637,7 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 4,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 3,
-            "characters": 1,
-            "visuals": 2,
-            "enjoyment": 2
-          }
+          "adminModified": true
         },
         {
           "id": 21014,
@@ -1931,6 +1652,7 @@
         }
       ],
       "addedAt": "2025-10",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -1938,68 +1660,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
-    },
-    {
-      "id": "al-181444",
-      "title": "The Fragrant Flower Blooms With Dignity",
-      "anilistId": 181444,
-      "url": "https://anilist.co/anime/181444",
-      "firstSeasonUrl": "https://anilist.co/anime/181444",
-      "status": "completed",
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/181444-SBhwJNPxjHrr.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181444-Ut9DDUZdfHwg.jpg",
-      "genres": [
-        "Shounen",
-        "Rom-Com",
-        "Okul",
-        "Romantik",
-        "Dram",
-        "Slice of Life"
-      ],
-      "customGenres": [
-        "Shounen",
-        "Rom-Com",
-        "Okul",
-        "Romantik",
-        "Dram",
-        "Slice of Life"
-      ],
-      "score": 7.6,
-      "parts": [
-        {
-          "id": 181444,
-          "name": "The Fragrant Flower Blooms With Dignity",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 13,
-          "watched": 13,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2025,
-          "score": 7.6,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 3,
-            "characters": 4,
-            "visuals": 5,
-            "sound": 4,
-            "enjoyment": 5
-          }
-        }
-      ],
-      "addedAt": "2025-09",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-163623",
@@ -2039,200 +1700,11 @@
           "release": "FINISHED",
           "year": 2024,
           "score": 6.2,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 2,
-            "characters": 4,
-            "visuals": 3,
-            "sound": 3,
-            "enjoyment": 4
-          }
-        }
-      ],
-      "addedAt": "2025-09",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt"
-      ],
-      "subScores": {}
-    },
-    {
-      "id": "al-116267",
-      "title": "TONIKAWA: Over The Moon For You",
-      "anilistId": 116267,
-      "url": "https://anilist.co/anime/116267",
-      "firstSeasonUrl": "https://anilist.co/anime/116267",
-      "status": "completed",
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/116267-xQRslGT0tMTS.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116267-Eo1biPBTlL4i.jpg",
-      "next": true,
-      "genres": [
-        "Shounen",
-        "Rom-Com",
-        "Komedi",
-        "Romantik",
-        "Slice of Life"
-      ],
-      "customGenres": [
-        "Shounen",
-        "Rom-Com",
-        "Komedi",
-        "Romantik",
-        "Slice of Life"
-      ],
-      "score": 6.6,
-      "parts": [
-        {
-          "id": 116267,
-          "name": "TONIKAWA: Over The Moon For You",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 12,
-          "watched": 12,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2020,
-          "score": 5.2,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 2,
-            "characters": 2,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 4
-          }
-        },
-        {
-          "id": 127371,
-          "name": "TONIKAWA: Over The Moon For You ~SNS~",
-          "kind": "other",
-          "format": "OVA",
-          "episodes": 1,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2021
-        },
-        {
-          "id": 141212,
-          "name": "TONIKAWA: Over The Moon For You ~Uniform~",
-          "kind": "other",
-          "format": "SPECIAL",
-          "episodes": 1,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2022
-        },
-        {
-          "id": 141208,
-          "name": "TONIKAWA: Over The Moon For You Season 2",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 12,
-          "watched": 12,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2023,
-          "score": 8,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 5
-          }
-        },
-        {
-          "id": 166104,
-          "name": "TONIKAWA: Over The Moon For You ~High School Days~",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 4,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2023
-        }
-      ],
-      "addedAt": "2025-06",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt"
-      ],
-      "subScores": {}
-    },
-    {
-      "id": "al-66",
-      "title": "Azumanga Daioh",
-      "anilistId": 66,
-      "url": "https://anilist.co/anime/66",
-      "firstSeasonUrl": "https://anilist.co/anime/66",
-      "status": "watching",
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/66-9q6Y6bMBwqrX.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx66-ZqYQWl6LsfeI.png",
-      "genres": [
-        "Shounen",
-        "Okul",
-        "Komedi",
-        "Slice of Life"
-      ],
-      "customGenres": [
-        "Shounen",
-        "Okul",
-        "Komedi",
-        "Slice of Life"
-      ],
-      "score": null,
-      "parts": [
-        {
-          "id": 1593,
-          "name": "Azumanga Web Daioh",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 1,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2000
-        },
-        {
-          "id": 659,
-          "name": "Azumanga Daioh: The Very Short Movie",
-          "kind": "other",
-          "format": "SPECIAL",
-          "episodes": 1,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2001
-        },
-        {
-          "id": 66,
-          "name": "Azumanga Daioh",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 26,
-          "watched": 4,
-          "status": "CURRENT",
-          "release": "FINISHED",
-          "year": 2002,
           "adminModified": true
         }
       ],
-      "addedAt": "2025-06",
+      "addedAt": "2025-09",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -2240,8 +1712,59 @@
         "status",
         "genres",
         "addedAt"
+      ]
+    },
+    {
+      "id": "al-181444",
+      "title": "The Fragrant Flower Blooms With Dignity",
+      "anilistId": 181444,
+      "url": "https://anilist.co/anime/181444",
+      "firstSeasonUrl": "https://anilist.co/anime/181444",
+      "status": "completed",
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/181444-SBhwJNPxjHrr.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181444-Ut9DDUZdfHwg.jpg",
+      "genres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Romantik",
+        "Dram",
+        "Slice of Life"
       ],
-      "subScores": {}
+      "customGenres": [
+        "Shounen",
+        "Rom-Com",
+        "Okul",
+        "Romantik",
+        "Dram",
+        "Slice of Life"
+      ],
+      "score": 7.6,
+      "parts": [
+        {
+          "id": 181444,
+          "name": "The Fragrant Flower Blooms With Dignity",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2025,
+          "score": 7.6,
+          "adminModified": true
+        }
+      ],
+      "addedAt": "2025-09",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-101001",
@@ -2302,6 +1825,7 @@
         }
       ],
       "addedAt": "2025-06",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -2309,8 +1833,173 @@
         "status",
         "genres",
         "addedAt"
+      ]
+    },
+    {
+      "id": "al-66",
+      "title": "Azumanga Daioh",
+      "anilistId": 66,
+      "url": "https://anilist.co/anime/66",
+      "firstSeasonUrl": "https://anilist.co/anime/66",
+      "status": "watching",
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/66-9q6Y6bMBwqrX.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx66-ZqYQWl6LsfeI.png",
+      "genres": [
+        "Shounen",
+        "Okul",
+        "Komedi",
+        "Slice of Life"
       ],
-      "subScores": {}
+      "customGenres": [
+        "Shounen",
+        "Okul",
+        "Komedi",
+        "Slice of Life"
+      ],
+      "score": null,
+      "parts": [
+        {
+          "id": 1593,
+          "name": "Azumanga Web Daioh",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2000
+        },
+        {
+          "id": 659,
+          "name": "Azumanga Daioh: The Very Short Movie",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2001
+        },
+        {
+          "id": 66,
+          "name": "Azumanga Daioh",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 26,
+          "watched": 4,
+          "status": "CURRENT",
+          "release": "FINISHED",
+          "year": 2002,
+          "adminModified": true
+        }
+      ],
+      "addedAt": "2025-06",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
+    },
+    {
+      "id": "al-116267",
+      "title": "TONIKAWA: Over The Moon For You",
+      "anilistId": 116267,
+      "url": "https://anilist.co/anime/116267",
+      "firstSeasonUrl": "https://anilist.co/anime/116267",
+      "status": "completed",
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/116267-xQRslGT0tMTS.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116267-Eo1biPBTlL4i.jpg",
+      "next": true,
+      "genres": [
+        "Shounen",
+        "Rom-Com",
+        "Komedi",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "customGenres": [
+        "Shounen",
+        "Rom-Com",
+        "Komedi",
+        "Romantik",
+        "Slice of Life"
+      ],
+      "score": 6.6,
+      "parts": [
+        {
+          "id": 116267,
+          "name": "TONIKAWA: Over The Moon For You",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020,
+          "score": 5.2,
+          "adminModified": true
+        },
+        {
+          "id": 127371,
+          "name": "TONIKAWA: Over The Moon For You ~SNS~",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 141212,
+          "name": "TONIKAWA: Over The Moon For You ~Uniform~",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 1,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2022
+        },
+        {
+          "id": 141208,
+          "name": "TONIKAWA: Over The Moon For You Season 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2023,
+          "score": 8,
+          "adminModified": true
+        },
+        {
+          "id": 166104,
+          "name": "TONIKAWA: Over The Moon For You ~High School Days~",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 4,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2023
+        }
+      ],
+      "addedAt": "2025-06",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-6574",
@@ -2346,15 +2035,7 @@
           "release": "FINISHED",
           "year": 2010,
           "score": 6.5,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 3,
-            "characters": 2,
-            "visuals": 4,
-            "sound": 4,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 16646,
@@ -2369,6 +2050,7 @@
         }
       ],
       "addedAt": "2025-05",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -2376,8 +2058,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-21196",
@@ -2455,6 +2136,7 @@
         }
       ],
       "addedAt": "2025-05",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -2462,8 +2144,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-15687",
@@ -2514,15 +2195,7 @@
           "release": "FINISHED",
           "year": 2012,
           "score": 8.1,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 3,
-            "visuals": 5,
-            "sound": 4,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 15879,
@@ -2587,15 +2260,7 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 8.1,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 3,
-            "characters": 4,
-            "visuals": 5,
-            "sound": 4,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 20660,
@@ -2641,18 +2306,11 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 8.9,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 4,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2025-05",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -2660,8 +2318,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-98659",
@@ -2697,15 +2354,7 @@
           "release": "FINISHED",
           "year": 2017,
           "score": 7.5,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 4,
-            "visuals": 3,
-            "sound": 3,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 145545,
@@ -2718,15 +2367,7 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 6.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 4,
-            "characters": 3,
-            "visuals": 3,
-            "sound": 3,
-            "enjoyment": 3
-          }
+          "adminModified": true
         },
         {
           "id": 146066,
@@ -2739,15 +2380,7 @@
           "release": "FINISHED",
           "year": 2024,
           "score": 7.5,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 4,
-            "visuals": 3,
-            "sound": 3,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 180745,
@@ -2760,15 +2393,7 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 6.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 3,
-            "characters": 4,
-            "visuals": 1,
-            "sound": 4,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 213477,
@@ -2783,6 +2408,7 @@
         }
       ],
       "addedAt": "2025-03",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -2790,8 +2416,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-5081",
@@ -3021,6 +2646,7 @@
         }
       ],
       "addedAt": "2024-09",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -3028,8 +2654,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-124080",
@@ -3069,15 +2694,7 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 7.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 2,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 163132,
@@ -3090,18 +2707,11 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 4.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 2,
-            "characters": 2,
-            "visuals": 3,
-            "sound": 2,
-            "enjoyment": 4
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2024-08",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -3109,8 +2719,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-20464",
@@ -3310,6 +2919,7 @@
         }
       ],
       "addedAt": "2024-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -3317,8 +2927,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-1614",
@@ -3350,18 +2959,11 @@
           "release": "FINISHED",
           "year": 2001,
           "score": 5.6,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 3,
-            "characters": 4,
-            "visuals": 3,
-            "sound": 3,
-            "enjoyment": 4
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2024-03",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -3369,8 +2971,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-21827",
@@ -3440,6 +3041,7 @@
         }
       ],
       "addedAt": "2024-03",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -3447,8 +3049,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-142770",
@@ -3486,18 +3087,11 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 7.2,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 3,
-            "characters": 3,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 4
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2024-02",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -3505,8 +3099,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-150672",
@@ -3548,15 +3141,7 @@
           "year": 2023,
           "score": 8.4,
           "repeat": 1,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 166531,
@@ -3569,15 +3154,7 @@
           "release": "FINISHED",
           "year": 2024,
           "score": 7,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 4,
-            "characters": 2,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 3
-          }
+          "adminModified": true
         },
         {
           "id": 182587,
@@ -3604,6 +3181,7 @@
         }
       ],
       "addedAt": "2023-06",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -3611,8 +3189,74 @@
         "status",
         "genres",
         "addedAt"
+      ]
+    },
+    {
+      "id": "al-7088",
+      "title": "Demon King Daimao",
+      "anilistId": 7088,
+      "url": "https://anilist.co/anime/7088",
+      "firstSeasonUrl": "https://anilist.co/anime/7088",
+      "status": "completed",
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/7088-Ty2MX5FwLwhQ.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7088-Y38q7jaBwlTZ.png",
+      "genres": [
+        "Shounen",
+        "Harem",
+        "Okul",
+        "Süper Güç",
+        "Aksiyon",
+        "Fantastik",
+        "Ecchi",
+        "Komedi"
       ],
-      "subScores": {}
+      "customGenres": [
+        "Shounen",
+        "Harem",
+        "Okul",
+        "Süper Güç",
+        "Aksiyon",
+        "Fantastik",
+        "Ecchi",
+        "Komedi"
+      ],
+      "score": 2,
+      "parts": [
+        {
+          "id": 7088,
+          "name": "Demon King Daimao",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2010,
+          "score": 2,
+          "adminModified": true
+        },
+        {
+          "id": 8465,
+          "name": "Demon King Daimaou Specials",
+          "kind": "other",
+          "format": "SPECIAL",
+          "episodes": 6,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2010
+        }
+      ],
+      "addedAt": "2023-05",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20829",
@@ -3703,6 +3347,7 @@
         }
       ],
       "addedAt": "2023-05",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -3711,83 +3356,7 @@
         "genres",
         "addedAt",
         "image"
-      ],
-      "subScores": {}
-    },
-    {
-      "id": "al-7088",
-      "title": "Demon King Daimao",
-      "anilistId": 7088,
-      "url": "https://anilist.co/anime/7088",
-      "firstSeasonUrl": "https://anilist.co/anime/7088",
-      "status": "completed",
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/7088-Ty2MX5FwLwhQ.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7088-Y38q7jaBwlTZ.png",
-      "genres": [
-        "Shounen",
-        "Harem",
-        "Okul",
-        "Süper Güç",
-        "Aksiyon",
-        "Fantastik",
-        "Ecchi",
-        "Komedi"
-      ],
-      "customGenres": [
-        "Shounen",
-        "Harem",
-        "Okul",
-        "Süper Güç",
-        "Aksiyon",
-        "Fantastik",
-        "Ecchi",
-        "Komedi"
-      ],
-      "score": 2,
-      "parts": [
-        {
-          "id": 7088,
-          "name": "Demon King Daimao",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 12,
-          "watched": 12,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2010,
-          "score": 2,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 1,
-            "characters": 1,
-            "visuals": 1,
-            "sound": 1,
-            "enjoyment": 1
-          }
-        },
-        {
-          "id": 8465,
-          "name": "Demon King Daimaou Specials",
-          "kind": "other",
-          "format": "SPECIAL",
-          "episodes": 6,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2010
-        }
-      ],
-      "addedAt": "2023-05",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-19",
@@ -3827,18 +3396,11 @@
           "release": "FINISHED",
           "year": 2004,
           "score": 9,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 3,
-            "sound": 3,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2023-02",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -3846,8 +3408,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-99750",
@@ -3883,18 +3444,11 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 5.8,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 2,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 1,
-            "enjoyment": 2
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2023-01",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -3902,8 +3456,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-20832",
@@ -3943,15 +3496,7 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 5.8,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 4,
-            "characters": 3,
-            "visuals": 3,
-            "sound": 2,
-            "enjoyment": 1
-          }
+          "adminModified": true
         },
         {
           "id": 21305,
@@ -4110,6 +3655,7 @@
         }
       ],
       "addedAt": "2023-01",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -4117,8 +3663,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-108465",
@@ -4232,6 +3777,7 @@
         }
       ],
       "addedAt": "2022-12",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -4239,8 +3785,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-127230",
@@ -4282,15 +3827,7 @@
           "year": 2022,
           "score": 6.1,
           "repeat": 1,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 4,
-            "characters": 1,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 3
-          }
+          "adminModified": true
         },
         {
           "id": 198726,
@@ -4314,15 +3851,7 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 8.3,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 3,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 204429,
@@ -4337,6 +3866,7 @@
         }
       ],
       "addedAt": "2022-10",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -4344,8 +3874,63 @@
         "status",
         "genres",
         "addedAt"
+      ]
+    },
+    {
+      "id": "al-98460",
+      "title": "Devilman Crybaby",
+      "anilistId": 98460,
+      "url": "https://anilist.co/anime/98460",
+      "firstSeasonUrl": "https://anilist.co/anime/98460",
+      "status": "completed",
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/98460-PwSHquwVu89n.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98460-bLtH2c3jd6sV.png",
+      "genres": [
+        "Seinen",
+        "Karanlık Fantezi",
+        "Post-Apokaliptik",
+        "Aksiyon",
+        "Doğaüstü",
+        "Korku",
+        "Dram",
+        "Psikolojik"
       ],
-      "subScores": {}
+      "customGenres": [
+        "Seinen",
+        "Karanlık Fantezi",
+        "Post-Apokaliptik",
+        "Aksiyon",
+        "Doğaüstü",
+        "Korku",
+        "Dram",
+        "Psikolojik"
+      ],
+      "score": 4.6,
+      "parts": [
+        {
+          "id": 98460,
+          "name": "Devilman Crybaby",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 10,
+          "watched": 10,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018,
+          "score": 4.6,
+          "adminModified": true
+        }
+      ],
+      "addedAt": "2022-09",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-14813",
@@ -4402,15 +3987,7 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 20698,
@@ -4424,15 +4001,7 @@
           "year": 2015,
           "score": 10,
           "repeat": 1,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 21769,
@@ -4445,15 +4014,7 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 108489,
@@ -4467,15 +4028,7 @@
           "year": 2020,
           "score": 10,
           "repeat": 2,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 128643,
@@ -4488,18 +4041,11 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-09",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -4507,72 +4053,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
-    },
-    {
-      "id": "al-98460",
-      "title": "Devilman Crybaby",
-      "anilistId": 98460,
-      "url": "https://anilist.co/anime/98460",
-      "firstSeasonUrl": "https://anilist.co/anime/98460",
-      "status": "completed",
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/98460-PwSHquwVu89n.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98460-bLtH2c3jd6sV.png",
-      "genres": [
-        "Seinen",
-        "Karanlık Fantezi",
-        "Post-Apokaliptik",
-        "Aksiyon",
-        "Doğaüstü",
-        "Korku",
-        "Dram",
-        "Psikolojik"
-      ],
-      "customGenres": [
-        "Seinen",
-        "Karanlık Fantezi",
-        "Post-Apokaliptik",
-        "Aksiyon",
-        "Doğaüstü",
-        "Korku",
-        "Dram",
-        "Psikolojik"
-      ],
-      "score": 4.6,
-      "parts": [
-        {
-          "id": 98460,
-          "name": "Devilman Crybaby",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 10,
-          "watched": 10,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2018,
-          "score": 4.6,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 4,
-            "characters": 1,
-            "visuals": 5,
-            "sound": 2,
-            "enjoyment": 1
-          }
-        }
-      ],
-      "addedAt": "2022-09",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-98549",
@@ -4607,15 +4088,7 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 2.2,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 1,
-            "characters": 1,
-            "visuals": 1,
-            "sound": 2,
-            "enjoyment": 1
-          }
+          "adminModified": true
         },
         {
           "id": 104200,
@@ -4641,6 +4114,7 @@
         }
       ],
       "addedAt": "2022-09",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -4648,8 +4122,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-114963",
@@ -4685,18 +4158,11 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 4.2,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 1,
-            "characters": 1,
-            "visuals": 4,
-            "sound": 2,
-            "enjoyment": 4
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-07",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -4704,8 +4170,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-21234",
@@ -4746,18 +4211,11 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-07",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -4765,8 +4223,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-14719",
@@ -4807,15 +4264,7 @@
           "release": "FINISHED",
           "year": 2012,
           "score": 9.1,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 5,
-            "characters": 4,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 20474,
@@ -4828,15 +4277,7 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 8.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 5,
-            "characters": 3,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 20799,
@@ -4849,15 +4290,7 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 9.1,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 5,
-            "characters": 4,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 21450,
@@ -4870,15 +4303,7 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 21778,
@@ -4902,15 +4327,7 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 131942,
@@ -4923,15 +4340,7 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 9.6,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 4,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 146722,
@@ -4944,15 +4353,7 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 190327,
@@ -4965,15 +4366,7 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 210482,
@@ -4985,228 +4378,11 @@
           "status": "CURRENT",
           "release": "RELEASING",
           "year": 2026,
-          "adminModified": true,
-          "subScores": {}
-        }
-      ],
-      "addedAt": "2022-07",
-      "adminModified": true,
-      "lockedFields": [
-        "title",
-        "score",
-        "status",
-        "genres",
-        "addedAt"
-      ],
-      "subScores": {}
-    },
-    {
-      "id": "al-21355",
-      "title": "Re:ZERO -Starting Life in Another World-",
-      "anilistId": 21355,
-      "url": "https://anilist.co/anime/21355",
-      "firstSeasonUrl": "https://anilist.co/anime/21355",
-      "status": "completed",
-      "favorite": true,
-      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/21355-f9SjOfEJMk5P.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg",
-      "next": true,
-      "genres": [
-        "Shounen",
-        "Isekai",
-        "Zaman Yolculuğu",
-        "Dram",
-        "Fantastik",
-        "Psikolojik",
-        "Gerilim"
-      ],
-      "customGenres": [
-        "Shounen",
-        "Isekai",
-        "Zaman Yolculuğu",
-        "Dram",
-        "Fantastik",
-        "Psikolojik",
-        "Gerilim"
-      ],
-      "score": 10,
-      "parts": [
-        {
-          "id": 21355,
-          "name": "Re:ZERO -Starting Life in Another World-",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 25,
-          "watched": 25,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2016,
-          "score": 10,
-          "repeat": 1,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
-        },
-        {
-          "id": 21780,
-          "name": "Re:ZERO ~Starting Break Time From Zero~",
-          "kind": "season",
-          "format": "TV_SHORT",
-          "episodes": 11,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2016
-        },
-        {
-          "id": 21891,
-          "name": "Re:PETIT ~Re: Starting Life in Another World From PETIT~",
-          "kind": "season",
-          "format": "TV_SHORT",
-          "episodes": 14,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2016
-        },
-        {
-          "id": 100049,
-          "name": "Re:ZERO -Starting Life in Another World- OVAs",
-          "kind": "other",
-          "format": "OVA",
-          "episodes": 2,
-          "watched": 2,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2018,
-          "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
-        },
-        {
-          "id": 108632,
-          "name": "Re:ZERO -Starting Life in Another World- Season 2",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 13,
-          "watched": 13,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2020,
-          "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
-        },
-        {
-          "id": 120700,
-          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 2nd Season",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 13,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2020
-        },
-        {
-          "id": 119661,
-          "name": "Re:ZERO -Starting Life in Another World- Season 2 Part 2",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 12,
-          "watched": 12,
-          "status": "COMPLETED",
-          "release": "FINISHED",
-          "year": 2021,
-          "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
-        },
-        {
-          "id": 128306,
-          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 2nd Season Part 2",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 12,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2021
-        },
-        {
-          "id": 163134,
-          "name": "Re:ZERO -Starting Life in Another World- Season 3",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 16,
-          "watched": 0,
-          "status": "PLANNING",
-          "release": "FINISHED",
-          "year": 2024,
           "adminModified": true
-        },
-        {
-          "id": 182417,
-          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 3rd Season",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 16,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2024
-        },
-        {
-          "id": 189046,
-          "name": "Re:ZERO -Starting Life in Another World- Season 4",
-          "kind": "season",
-          "format": "TV",
-          "episodes": 19,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2026
-        },
-        {
-          "id": 210687,
-          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 4th Season",
-          "kind": "season",
-          "format": "ONA",
-          "episodes": 19,
-          "watched": 0,
-          "status": "NONE",
-          "release": "FINISHED",
-          "year": 2026
         }
       ],
       "addedAt": "2022-07",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -5214,8 +4390,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-5680",
@@ -5322,6 +4497,7 @@
         }
       ],
       "addedAt": "2022-07",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -5329,8 +4505,192 @@
         "status",
         "genres",
         "addedAt"
+      ]
+    },
+    {
+      "id": "al-21355",
+      "title": "Re:ZERO -Starting Life in Another World-",
+      "anilistId": 21355,
+      "url": "https://anilist.co/anime/21355",
+      "firstSeasonUrl": "https://anilist.co/anime/21355",
+      "status": "completed",
+      "favorite": true,
+      "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/21355-f9SjOfEJMk5P.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg",
+      "next": true,
+      "genres": [
+        "Shounen",
+        "Isekai",
+        "Zaman Yolculuğu",
+        "Dram",
+        "Fantastik",
+        "Psikolojik",
+        "Gerilim"
       ],
-      "subScores": {}
+      "customGenres": [
+        "Shounen",
+        "Isekai",
+        "Zaman Yolculuğu",
+        "Dram",
+        "Fantastik",
+        "Psikolojik",
+        "Gerilim"
+      ],
+      "score": 10,
+      "parts": [
+        {
+          "id": 21355,
+          "name": "Re:ZERO -Starting Life in Another World-",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 25,
+          "watched": 25,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2016,
+          "score": 10,
+          "repeat": 1,
+          "adminModified": true
+        },
+        {
+          "id": 21780,
+          "name": "Re:ZERO ~Starting Break Time From Zero~",
+          "kind": "season",
+          "format": "TV_SHORT",
+          "episodes": 11,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 21891,
+          "name": "Re:PETIT ~Re: Starting Life in Another World From PETIT~",
+          "kind": "season",
+          "format": "TV_SHORT",
+          "episodes": 14,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2016
+        },
+        {
+          "id": 100049,
+          "name": "Re:ZERO -Starting Life in Another World- OVAs",
+          "kind": "other",
+          "format": "OVA",
+          "episodes": 2,
+          "watched": 2,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2018,
+          "score": 10,
+          "adminModified": true
+        },
+        {
+          "id": 108632,
+          "name": "Re:ZERO -Starting Life in Another World- Season 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 13,
+          "watched": 13,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020,
+          "score": 10,
+          "adminModified": true
+        },
+        {
+          "id": 120700,
+          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 2nd Season",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 13,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2020
+        },
+        {
+          "id": 119661,
+          "name": "Re:ZERO -Starting Life in Another World- Season 2 Part 2",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 12,
+          "watched": 12,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2021,
+          "score": 10,
+          "adminModified": true
+        },
+        {
+          "id": 128306,
+          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 2nd Season Part 2",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 12,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2021
+        },
+        {
+          "id": 163134,
+          "name": "Re:ZERO -Starting Life in Another World- Season 3",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 16,
+          "watched": 0,
+          "status": "PLANNING",
+          "release": "FINISHED",
+          "year": 2024,
+          "adminModified": true
+        },
+        {
+          "id": 182417,
+          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 3rd Season",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 16,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2024
+        },
+        {
+          "id": 189046,
+          "name": "Re:ZERO -Starting Life in Another World- Season 4",
+          "kind": "season",
+          "format": "TV",
+          "episodes": 19,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
+        },
+        {
+          "id": 210687,
+          "name": "Re:Zero kara Hajimeru Kyuukei Jikan (Break Time) 4th Season",
+          "kind": "season",
+          "format": "ONA",
+          "episodes": 19,
+          "watched": 0,
+          "status": "NONE",
+          "release": "FINISHED",
+          "year": 2026
+        }
+      ],
+      "addedAt": "2022-07",
+      "subScores": {},
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "score",
+        "status",
+        "genres",
+        "addedAt"
+      ]
     },
     {
       "id": "al-20954",
@@ -5366,18 +4726,11 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 4.5,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 2,
-            "characters": 3,
-            "visuals": 2,
-            "sound": 1,
-            "enjoyment": 1
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-06",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -5385,8 +4738,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-21311",
@@ -5429,15 +4781,7 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 6.5,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 3,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 2
-          }
+          "adminModified": true
         },
         {
           "id": 21679,
@@ -5450,15 +4794,7 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 5.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 3,
-            "characters": 4,
-            "visuals": 3,
-            "sound": 2,
-            "enjoyment": 3
-          }
+          "adminModified": true
         },
         {
           "id": 21791,
@@ -5482,15 +4818,7 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 8.1,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 4,
-            "visuals": 5,
-            "sound": 3,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 103223,
@@ -5503,15 +4831,7 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 7.2,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 3
-          }
+          "adminModified": true
         },
         {
           "id": 120150,
@@ -5535,15 +4855,7 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 7.8,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 163263,
@@ -5569,6 +4881,7 @@
         }
       ],
       "addedAt": "2022-06",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -5576,8 +4889,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-21290",
@@ -5620,18 +4932,11 @@
           "year": 2016,
           "score": 6.5,
           "repeat": 1,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 4,
-            "characters": 2,
-            "visuals": 4,
-            "sound": 2,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-05",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -5639,8 +4944,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-20",
@@ -5945,6 +5249,7 @@
         }
       ],
       "addedAt": "2022-05",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -5952,8 +5257,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-112301",
@@ -5994,15 +5298,7 @@
           "year": 2020,
           "score": 8,
           "repeat": 1,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 130588,
@@ -6015,15 +5311,7 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 4.3,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 3,
-            "characters": 2,
-            "visuals": 3,
-            "sound": 1,
-            "enjoyment": 1
-          }
+          "adminModified": true
         },
         {
           "id": 130590,
@@ -6038,6 +5326,7 @@
         }
       ],
       "addedAt": "2022-05",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -6045,8 +5334,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-20613",
@@ -6088,18 +5376,11 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 3.3,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 2,
-            "characters": 1,
-            "visuals": 2,
-            "sound": 2,
-            "enjoyment": 3
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -6107,8 +5388,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-131548",
@@ -6146,6 +5426,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -6153,8 +5434,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-11111",
@@ -6194,15 +5474,7 @@
           "release": "FINISHED",
           "year": 2012,
           "score": 7.6,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 2,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 11701,
@@ -6219,6 +5491,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -6226,8 +5499,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-16498",
@@ -6273,15 +5545,7 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 8.8,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 5,
-            "visuals": 4,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 18397,
@@ -6353,15 +5617,7 @@
           "release": "FINISHED",
           "year": 2017,
           "score": 7.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 4,
-            "visuals": 3,
-            "sound": 4,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 99634,
@@ -6396,15 +5652,7 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 8.5,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 5,
-            "characters": 4,
-            "visuals": 3,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 104578,
@@ -6417,15 +5665,7 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 9.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 3,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 119113,
@@ -6449,15 +5689,7 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 9.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 4,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 131681,
@@ -6470,15 +5702,7 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 146984,
@@ -6491,15 +5715,7 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 162314,
@@ -6512,18 +5728,11 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -6531,8 +5740,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-100388",
@@ -6570,18 +5778,11 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 3.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 1,
-            "characters": 2,
-            "visuals": 3,
-            "sound": 2,
-            "enjoyment": 1
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -6589,8 +5790,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-269",
@@ -6631,15 +5831,7 @@
           "release": "FINISHED",
           "year": 2004,
           "score": 4.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 3,
-            "characters": 2,
-            "visuals": 2,
-            "sound": 4,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 834,
@@ -6718,15 +5910,7 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 7.8,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 4,
-            "characters": 3,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 159322,
@@ -6763,6 +5947,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -6770,8 +5955,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-20596",
@@ -6837,6 +6021,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -6844,8 +6029,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-1535",
@@ -6887,15 +6071,7 @@
           "year": 2006,
           "score": 10,
           "repeat": 1,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 2994,
@@ -6908,18 +6084,11 @@
           "release": "FINISHED",
           "year": 2007,
           "score": 9.2,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 4,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 3
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -6927,8 +6096,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-101922",
@@ -6964,15 +6132,7 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 5.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 3,
-            "characters": 1,
-            "visuals": 5,
-            "sound": 4,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 112151,
@@ -6985,15 +6145,7 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 8.1,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 3,
-            "characters": 4,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 129874,
@@ -7017,15 +6169,7 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 6.8,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 3,
-            "characters": 2,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 145139,
@@ -7038,15 +6182,7 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 4.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 2,
-            "characters": 1,
-            "visuals": 4,
-            "sound": 4,
-            "enjoyment": 1
-          }
+          "adminModified": true
         },
         {
           "id": 166240,
@@ -7094,6 +6230,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -7101,8 +6238,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-17513",
@@ -7153,6 +6289,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -7160,8 +6297,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-101347",
@@ -7201,18 +6337,11 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 9,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 4,
-            "characters": 4,
-            "visuals": 5,
-            "sound": 4,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -7220,8 +6349,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-97682",
@@ -7261,15 +6389,7 @@
           "year": 2017,
           "score": 6.6,
           "repeat": 1,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 4,
-            "characters": 3,
-            "visuals": 3,
-            "sound": 3,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 149099,
@@ -7293,18 +6413,11 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 4.5,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 4,
-            "characters": 1,
-            "visuals": 3,
-            "sound": 2,
-            "enjoyment": 1
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -7312,8 +6425,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-20987",
@@ -7388,6 +6500,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -7395,8 +6508,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-113415",
@@ -7433,15 +6545,7 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 3.1,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 1,
-            "characters": 1,
-            "visuals": 4,
-            "sound": 2,
-            "enjoyment": 1
-          }
+          "adminModified": true
         },
         {
           "id": 131573,
@@ -7454,15 +6558,7 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 4.9,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 1,
-            "characters": 2,
-            "visuals": 4,
-            "sound": 2,
-            "enjoyment": 3
-          }
+          "adminModified": true
         },
         {
           "id": 145064,
@@ -7475,15 +6571,7 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 3.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 1,
-            "characters": 1,
-            "visuals": 5,
-            "sound": 2,
-            "enjoyment": 1
-          }
+          "adminModified": true
         },
         {
           "id": 192809,
@@ -7531,6 +6619,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -7538,8 +6627,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-101921",
@@ -7579,15 +6667,7 @@
           "year": 2019,
           "score": 9.3,
           "repeat": 2,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 112641,
@@ -7601,15 +6681,7 @@
           "year": 2020,
           "score": 9.3,
           "repeat": 2,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 125368,
@@ -7647,15 +6719,7 @@
           "year": 2022,
           "score": 10,
           "repeat": 2,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 151384,
@@ -7668,15 +6732,7 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 9.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 4,
-            "enjoyment": 5,
-            "sound": 5
-          }
+          "adminModified": true
         },
         {
           "id": 194884,
@@ -7689,15 +6745,7 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 9.6,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 4,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 205081,
@@ -7713,6 +6761,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -7720,8 +6769,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-98314",
@@ -7758,15 +6806,7 @@
           "release": "FINISHED",
           "year": 2017,
           "score": 7.3,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 4,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 4,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 100876,
@@ -7779,15 +6819,7 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 6.9,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 4,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 4,
-            "enjoyment": 3
-          }
+          "adminModified": true
         },
         {
           "id": 141351,
@@ -7802,6 +6834,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -7809,8 +6842,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-512",
@@ -7848,18 +6880,11 @@
           "release": "FINISHED",
           "year": 1989,
           "score": 5.6,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 3,
-            "characters": 2,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 4
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -7867,8 +6892,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-21421",
@@ -7904,18 +6928,11 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 4.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 2,
-            "characters": 3,
-            "visuals": 2,
-            "sound": 2,
-            "enjoyment": 2
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -7923,8 +6940,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-132405",
@@ -7963,15 +6979,7 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 6.2,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 3,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 154768,
@@ -7987,6 +6995,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -7994,8 +7003,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-523",
@@ -8033,15 +7041,7 @@
           "release": "FINISHED",
           "year": 1988,
           "score": 7.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 3,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 2488,
@@ -8056,6 +7056,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -8063,8 +7064,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-21",
@@ -8636,6 +7636,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -8643,8 +7644,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-2890",
@@ -8680,18 +7680,11 @@
           "release": "FINISHED",
           "year": 2008,
           "score": 4.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 2,
-            "characters": 2,
-            "visuals": 3,
-            "sound": 4,
-            "enjoyment": 3
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -8699,8 +7692,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-101291",
@@ -8742,15 +7734,7 @@
           "year": 2018,
           "score": 7.7,
           "repeat": 2,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 3,
-            "characters": 4,
-            "visuals": 3,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 104157,
@@ -8763,15 +7747,7 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 9.1,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 4,
-            "characters": 5,
-            "visuals": 4,
-            "sound": 4,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 154967,
@@ -8819,6 +7795,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -8826,8 +7803,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-21049",
@@ -8870,15 +7846,7 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 7.2,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 4,
-            "visuals": 2,
-            "sound": 3,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 98635,
@@ -8891,15 +7859,7 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 7.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 3,
-            "characters": 5,
-            "visuals": 3,
-            "sound": 3,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 108939,
@@ -8914,6 +7874,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -8921,8 +7882,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-140960",
@@ -8932,7 +7892,7 @@
       "firstSeasonUrl": "https://anilist.co/anime/140960",
       "status": "completed",
       "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/140960-Z7xSvkRxHKfj.jpg",
-      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx140960-Kb6R5nYQfjmP.jpg",
+      "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140960-Kb6R5nYQfjmP.jpg",
       "genres": [
         "Shounen",
         "Rom-Com",
@@ -8963,15 +7923,7 @@
           "year": 2022,
           "score": 7.8,
           "repeat": 1,
-          "adminModified": true,
-          "subScores": {
-            "world": 4,
-            "story": 4,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 5,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 142838,
@@ -8985,15 +7937,7 @@
           "year": 2022,
           "score": 7.8,
           "repeat": 1,
-          "adminModified": true,
-          "subScores": {
-            "enjoyment": 4,
-            "story": 4,
-            "world": 4,
-            "characters": 3,
-            "visuals": 4,
-            "sound": 5
-          }
+          "adminModified": true
         },
         {
           "id": 158927,
@@ -9006,15 +7950,7 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 8.2,
-          "adminModified": true,
-          "subScores": {
-            "enjoyment": 5,
-            "sound": 4,
-            "visuals": 4,
-            "characters": 4,
-            "world": 4,
-            "story": 4
-          }
+          "adminModified": true
         },
         {
           "id": 158928,
@@ -9027,15 +7963,7 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 9.2,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 4,
-            "characters": 4,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 177937,
@@ -9048,18 +7976,11 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 8.7,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "characters": 4,
-            "world": 4,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9067,8 +7988,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-129201",
@@ -9109,18 +8029,11 @@
           "year": 2022,
           "score": 9.8,
           "repeat": 2,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 4,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9128,8 +8041,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-21804",
@@ -9212,6 +8124,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9219,8 +8132,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-129193",
@@ -9260,18 +8172,11 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 6.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 3,
-            "characters": 2,
-            "visuals": 4,
-            "sound": 2,
-            "enjoyment": 4
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9279,8 +8184,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-10620",
@@ -9335,15 +8239,7 @@
           "release": "FINISHED",
           "year": 2011,
           "score": 8.3,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 5,
-            "characters": 4,
-            "visuals": 3,
-            "sound": 4,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 12503,
@@ -9371,6 +8267,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9378,8 +8275,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-130586",
@@ -9421,18 +8317,11 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 4.5,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 1,
-            "characters": 2,
-            "visuals": 3,
-            "sound": 3,
-            "enjoyment": 4
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9440,8 +8329,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-20605",
@@ -9482,15 +8370,7 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 3.8,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 1,
-            "characters": 2,
-            "visuals": 2,
-            "sound": 4,
-            "enjoyment": 1
-          }
+          "adminModified": true
         },
         {
           "id": 20850,
@@ -9503,15 +8383,7 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 2.9,
-          "adminModified": true,
-          "subScores": {
-            "story": 1,
-            "world": 1,
-            "characters": 1,
-            "visuals": 2,
-            "sound": 4,
-            "enjoyment": 1
-          }
+          "adminModified": true
         },
         {
           "id": 21132,
@@ -9559,6 +8431,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9566,8 +8439,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-6211",
@@ -9603,15 +8475,7 @@
           "release": "FINISHED",
           "year": 2009,
           "score": 3.3,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 3,
-            "characters": 1,
-            "visuals": 1,
-            "sound": 1,
-            "enjoyment": 1
-          }
+          "adminModified": true
         },
         {
           "id": 7654,
@@ -9626,6 +8490,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9633,8 +8498,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-120120",
@@ -9668,15 +8532,7 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 3.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 1,
-            "characters": 1,
-            "visuals": 2,
-            "sound": 3,
-            "enjoyment": 2
-          }
+          "adminModified": true
         },
         {
           "id": 132467,
@@ -9736,6 +8592,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9743,8 +8600,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-141014",
@@ -9781,18 +8637,11 @@
           "year": 2022,
           "score": 8.3,
           "repeat": 3,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 3,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 4,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9801,8 +8650,7 @@
         "genres",
         "addedAt",
         "image"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-141774",
@@ -9839,15 +8687,7 @@
           "year": 2022,
           "score": 7.9,
           "repeat": 1,
-          "adminModified": true,
-          "subScores": {
-            "story": 3,
-            "world": 4,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 171026,
@@ -9862,6 +8702,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9869,8 +8710,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-20665",
@@ -9907,15 +8747,7 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 21039,
@@ -9930,6 +8762,7 @@
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9937,8 +8770,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     },
     {
       "id": "al-21519",
@@ -9976,18 +8808,11 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 8.4,
-          "adminModified": true,
-          "subScores": {
-            "story": 4,
-            "world": 4,
-            "characters": 5,
-            "visuals": 4,
-            "sound": 4,
-            "enjoyment": 4
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2022-04",
+      "subScores": {},
       "adminModified": true,
       "lockedFields": [
         "title",
@@ -9995,8 +8820,7 @@
         "status",
         "genres",
         "addedAt"
-      ],
-      "subScores": {}
+      ]
     }
   ]
 }

@@ -726,7 +726,7 @@
   // kaydırılabilmesini sağlayan evrensel olay dinleyicisi.
   (() => {
     // [AI-MIMARI-NOTU: ADIM 21]: .cmdk-ScopeBar sekme şeridi de dahil edilerek arama modalında pürüzsüz kaydırma sağlandı.
-    const SELECTOR = '.chips, .dock, .rq-strip, .cmdk-ScopeBar';
+    const SELECTOR = '.chips, .dock, .rq-strip, .cmdk-ScopeBar, .cmdk-scope-bar';
 
     document.addEventListener('wheel', e => {
       const el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
@@ -925,7 +925,7 @@
             <input type="search" class="cmdk-inp" placeholder="Anime, rehber, dizi, film, manga, kitap veya komut ara..." autocomplete="off">
             <button type="button" class="cmdk-kbd" data-cmdk-close>ESC</button>
           </div>
-          <div class="cmdk-ScopeBar" role="group" aria-label="Bölüm filtresi"></div>
+          <div class="cmdk-ScopeBar cmdk-scope-bar" role="group" aria-label="Bölüm filtresi"></div>
           <div class="cmdk-list" role="listbox"></div>
           <div class="cmdk-foot">
             <span>↑↓ Gezin · Enter Aç · ESC Kapat</span>
@@ -956,6 +956,9 @@
         b.onclick = () => {
           activeScope = val;
           scopeBar.querySelectorAll('.cmdk-scope-btn').forEach(x => x.setAttribute('aria-pressed', x.dataset.scope === activeScope));
+          if (typeof b.scrollIntoView === 'function') {
+            b.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+          }
           activeIdx = 0;
           renderResults();
           inp.focus();
@@ -1166,6 +1169,7 @@
         scopeBar.querySelectorAll('.cmdk-scope-btn').forEach(x => x.setAttribute('aria-pressed', x.dataset.scope === activeScope));
       }
       modal.hidden = false;
+      renderResults();
       inp.focus();
       inp.select();
       await ensureIndexLoaded();

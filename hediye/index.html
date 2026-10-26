@@ -349,7 +349,8 @@ html,body{
 
 <script id="book-data" type="application/json">
 {
-  "targetDate": "2026-10-27T00:00:00+03:00",
+  "targetDate": "2026-10-26T00:00:00+03:00",
+  "unlocked": true,
   "secretKey": "patileriyikidogdun",
   "cover": {
     "title": "İyi ki doğdun miniğim",
@@ -488,12 +489,12 @@ html,body{
 (function(){
   'use strict';
   const data = JSON.parse(document.getElementById('book-data').textContent);
-  const targetMs = Date.parse(data.targetDate || '2026-10-27T00:00:00+03:00');
+  const targetMs = Date.parse(data.targetDate || '2026-10-26T00:00:00+03:00');
   const params = new URLSearchParams(window.location.search);
   
   // Arka kapı anahtarı kontrolü
   const isBackdoor = params.get('key') === data.secretKey || params.get('onizleme') === '1' || params.has('gizli');
-  const isExpired = Date.now() >= targetMs;
+  const isExpired = data.unlocked === true || Date.now() >= targetMs;
 
   const lockScreen = document.getElementById('lock-screen');
   const bookApp = document.getElementById('book-app');

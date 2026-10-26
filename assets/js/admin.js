@@ -75,12 +75,12 @@
       ariaLabel: 'Sürpriz',
       openLabel: 'Sürprizi aç',
       closeLabel: 'Sürprizi kapat',
-      leadText: 'Hediyenin açılmasına kalan süre',
-      targetDate: '2026-10-27T00:00:00+03:00',
-      dateLabel: '27 Ekim 2026 · 00.00 (TSİ)',
+      leadText: 'Hediyenin açılma zamanı geldi',
+      targetDate: '2026-10-26T00:00:00+03:00',
+      dateLabel: '26 Ekim 2026 · 00.00 (TSİ)',
       expiredLeadText: 'Hediyenin açılma zamanı geldi',
-      expiredSubText: 'Az sonra burada olacak.',
-      expiredUrl: '',
+      expiredSubText: 'Sürprizi okumak için tıkla ✨',
+      expiredUrl: 'hediye/',
       units: { d: 'Gün', h: 'Saat', m: 'Dakika', s: 'Saniye' }
     },
     boxes: [],
@@ -1553,11 +1553,11 @@
               </label>
               <label class="field">
                 <span>Hedef Tarih &amp; Saat (ISO 8601)</span>
-                <input type="text" id="cfgGiftTarget" class="inp glass" placeholder="2026-10-27T00:00:00+03:00">
+                <input type="text" id="cfgGiftTarget" class="inp glass" placeholder="2026-10-26T00:00:00+03:00">
               </label>
               <label class="field">
                 <span>Tarih Alt Etiketi (dateLabel)</span>
-                <input type="text" id="cfgGiftDateLabel" class="inp glass" placeholder="27 Ekim 2026 · 00.00 (TSİ)">
+                <input type="text" id="cfgGiftDateLabel" class="inp glass" placeholder="26 Ekim 2026 · 00.00 (TSİ)">
               </label>
             </div>
             <div class="field-row">
@@ -6645,7 +6645,7 @@
 
     gift.enabled = Boolean($('#cfgGiftEnabled').checked);
     gift.leadText = S($('#cfgGiftLead').value, 200);
-    gift.targetDate = S($('#cfgGiftTarget').value, 60) || '2026-10-27T00:00:00+03:00';
+    gift.targetDate = S($('#cfgGiftTarget').value, 60) || '2026-10-26T00:00:00+03:00';
     gift.dateLabel = S($('#cfgGiftDateLabel').value, 140);
     gift.expiredLeadText = S($('#cfgGiftExpLead').value, 200);
     gift.expiredSubText = S($('#cfgGiftExpSub').value, 200);

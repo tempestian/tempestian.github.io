@@ -44,9 +44,9 @@
     <h1 id="heroTitle">Tempestian</h1>
     <p class="sub" id="heroSub">Bayram</p>
   </section>
-  <section class="gift glass sq" id="gift" aria-label="Sürpriz">
+  <section class="gift glass sq open" id="gift" aria-label="Sürpriz">
     <span class="gift-bg" aria-hidden="true"></span>
-    <button class="gift-btn" id="giftBtn" type="button" aria-expanded="false" aria-controls="giftPanel" aria-label="Sürprizi aç">
+    <button class="gift-btn" id="giftBtn" type="button" aria-expanded="true" aria-controls="giftPanel" aria-label="Sürprizi kapat" title="Sürprizi okumak için tıkla ✨">
       <span class="gift-glow" aria-hidden="true"></span>
       <svg class="gift-box" viewBox="0 -16 120 136" aria-hidden="true">
         <defs>
@@ -71,14 +71,14 @@
     <div class="gift-panel" id="giftPanel">
       <div class="gift-in">
         <div class="gift-body-txt">
-          <p class="gift-lead" id="giftLead">Hediyenin açılmasına kalan süre</p>
-          <div class="cd" id="giftCd" role="timer" aria-live="off">
+          <p class="gift-lead" id="giftLead">Hediyenin açılma zamanı geldi</p>
+          <div class="cd" id="giftCd" role="timer" aria-live="off" hidden>
             <div><b data-u="d">0</b><span data-ul="d">Gün</span></div>
             <div><b data-u="h">00</b><span data-ul="h">Saat</span></div>
             <div><b data-u="m">00</b><span data-ul="m">Dakika</span></div>
             <div><b data-u="s">00</b><span data-ul="s">Saniye</span></div>
           </div>
-          <p class="gift-date" id="giftDate">27 Ekim 2026 · 00.00 (TSİ)</p>
+          <p class="gift-date" id="giftDate"><a href="hediye/" style="color:var(--accent);font-weight:600">Sürprizi okumak için tıkla ✨</a></p>
         </div>
       </div>
     </div>

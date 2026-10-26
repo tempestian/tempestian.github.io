@@ -16,12 +16,12 @@
     ariaLabel: 'Sürpriz',
     openLabel: 'Sürprizi aç',
     closeLabel: 'Sürprizi kapat',
-    leadText: 'Hediyenin açılmasına kalan süre',
-    targetDate: '2026-10-27T00:00:00+03:00',
-    dateLabel: '27 Ekim 2026 · 00.00 (TSİ)',
+    leadText: 'Hediyenin açılma zamanı geldi',
+    targetDate: '2026-10-26T00:00:00+03:00',
+    dateLabel: '26 Ekim 2026 · 00.00 (TSİ)',
     expiredLeadText: 'Hediyenin açılma zamanı geldi',
-    expiredSubText: 'Az sonra burada olacak.',
-    expiredUrl: '',
+    expiredSubText: 'Sürprizi okumak için tıkla ✨',
+    expiredUrl: 'hediye/',
     units: { d: 'Gün', h: 'Saat', m: 'Dakika', s: 'Saniye' }
   };
 
@@ -63,7 +63,7 @@
         date.innerHTML = '';
         const a = document.createElement('a');
         a.href = cfg.expiredUrl;
-        a.textContent = cfg.expiredSubText || 'Açmak için tıklayın';
+        a.textContent = cfg.expiredSubText || 'Sürprizi okumak için tıkla ✨';
         a.style.color = 'var(--accent)';
         a.style.fontWeight = '600';
         date.append(a);
@@ -105,14 +105,22 @@
     }
     card.hidden = false;
     if (cfg.ariaLabel) card.setAttribute('aria-label', cfg.ariaLabel);
+
+    const parsed = Date.parse(cfg.targetDate);
+    if (!isNaN(parsed)) targetMs = parsed;
+
+    const isExpired = isNaN(targetMs) || targetMs <= Date.now();
+    if (isExpired && !card.classList.contains('open')) {
+      card.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+
     const isOpen = card.classList.contains('open');
     btn.setAttribute('aria-label', isOpen ? (cfg.closeLabel || 'Sürprizi kapat') : (cfg.openLabel || 'Sürprizi aç'));
     for (const k of ['d', 'h', 'm', 's']) {
       if (unitSpans[k] && cfg.units[k]) unitSpans[k].textContent = cfg.units[k];
     }
-    const parsed = Date.parse(cfg.targetDate);
-    if (!isNaN(parsed)) targetMs = parsed;
-    if (isOpen) start();
+    if (isOpen || isExpired) start();
     else {
       lead.textContent = cfg.leadText || '';
       date.textContent = cfg.dateLabel || '';
@@ -125,6 +133,11 @@
   });
 
   btn.addEventListener('click', () => {
+    const isExpired = isNaN(targetMs) || targetMs <= Date.now();
+    if (isExpired && card.classList.contains('open') && cfg.expiredUrl) {
+      window.location.href = cfg.expiredUrl;
+      return;
+    }
     const open = !card.classList.contains('open');
     card.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', open);

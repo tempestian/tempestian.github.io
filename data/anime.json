@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-10-25",
+  "updated": "2026-10-27",
   "source": "site-first:relations_only",
   "statsConfig": {
     "animeCountRule": "completed_season_or_movie",
@@ -5942,7 +5942,7 @@
           "episodes": 10,
           "watched": 0,
           "status": "NONE",
-          "release": "RELEASING",
+          "release": "FINISHED",
           "year": 2026
         }
       ],

@@ -165,7 +165,7 @@
 
   async function initStatsPage() {
     const rootPath = document.body.dataset.root || '../../';
-    const sectionKey = document.body.dataset.section || 'anime';
+    const sectionKey = document.body.dataset.statsSection || document.body.dataset.section || 'anime';
     const cfg = SECTION_CONFIGS[sectionKey] || SECTION_CONFIGS.anime;
     const dataUrl = document.body.dataset.data || `${rootPath}data/${sectionKey === 'series' ? 'series.json' : (sectionKey === 'movie' ? 'movies.json' : (sectionKey === 'book' ? 'books.json' : `${sectionKey}.json`))}`;
 

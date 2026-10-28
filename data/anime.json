@@ -15,9 +15,9 @@
     "season": 127,
     "film": 24,
     "other": 25,
-    "episodes": 3368,
+    "episodes": 3369,
     "completedEpisodes": 3285,
-    "inProgressEpisodes": 83,
+    "inProgressEpisodes": 84,
     "favorites": 10,
     "avgScore": 6.4,
     "byStatus": {
@@ -586,7 +586,7 @@
           "kind": "season",
           "format": "TV",
           "episodes": 12,
-          "watched": 7,
+          "watched": 8,
           "status": "CURRENT",
           "release": "FINISHED",
           "year": 2024,
@@ -612,7 +612,8 @@
         "score",
         "status",
         "genres",
-        "addedAt"
+        "addedAt",
+        "image"
       ]
     },
     {

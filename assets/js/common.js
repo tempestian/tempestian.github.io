@@ -790,6 +790,39 @@
         btn.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
       }
     });
+
+    // [AI-MIMARI-NOTU: AKILLI DOCK & SEKME GEÇİŞİ — GERİ TUŞU YIĞILMASINI ÖNLEME]
+    // Kullanıcı alt menüdeki (dock) sekmeler arasında gezinirken tarayıcı geçmişine
+    // sürekli yeni sayfa katmanı yığıp kullanıcının siteden çıkmak için 5-10 kez
+    // geri tuşuna basmak zorunda kalmasını engellemek için dock geçişleri 'replace' (yerine yazma)
+    // mantığıyla çalıştırılır.
+    document.addEventListener('click', e => {
+      const dockLink = e.target && e.target.closest ? e.target.closest('#dock a') : null;
+      if (!dockLink) return;
+      // Yeni sekmede açma veya özel tuş kombinasyonlarını (Ctrl/Cmd/Shift) tarayıcıya bırak
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (dockLink.target && dockLink.target !== '_self') return;
+
+      const targetHref = dockLink.getAttribute('href');
+      if (!targetHref || targetHref.startsWith('#')) return;
+
+      // Aynı sayfaya tıklanmışsa işlem yapma
+      if (dockLink.getAttribute('aria-current') === 'page') {
+        e.preventDefault();
+        return;
+      }
+
+      const targetUrl = new URL(dockLink.href, window.location.href);
+      if (targetUrl.origin !== window.location.origin) return;
+
+      // Standart tıklamayı ele al ve geçmiş yığılmasını önleyerek konumu güncelle
+      e.preventDefault();
+      if (typeof window.location.replace === 'function') {
+        window.location.replace(targetUrl.href);
+      } else {
+        window.location.href = targetUrl.href;
+      }
+    });
   })();
 
 

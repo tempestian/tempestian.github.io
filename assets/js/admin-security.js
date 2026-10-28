@@ -345,11 +345,11 @@
     onLockCallback = fn;
   }
 
-  async function unlockWithDeviceTOTP(totpCode) {
+  async function unlockWithSavedToken() {
     const rl = checkRateLimit();
     if (!rl.ok) throw new Error(`Çok fazla başarısız deneme. Lütfen ${rl.waitSec} saniye bekleyin.`);
     const meta = getDeviceVaultMeta();
-    if (!meta) throw new Error('Bu cihazda tanımlı Google Authenticator profili bulunamadı.');
+    if (!meta) throw new Error('Bu tarayıcıda kayıtlı yönetici token\'ı bulunamadı.');
     let data;
     try {
       const key = await getOrCreateDeviceKey(false);
@@ -357,19 +357,15 @@
       data = JSON.parse(new TextDecoder().decode(plain));
     } catch (e) {
       recordFailedAttempt();
-      throw new Error('Cihaz anahtarı okunamadı. Lütfen şifreli kasayla giriş yapın.');
+      throw new Error('Cihaz anahtarı okunamadı veya tarayıcı verisi temizlenmiş.');
     }
     if (!data || !data.pat) {
       data = null;
       recordFailedAttempt();
-      throw new Error('Cihaz kasasında geçerli yetkilendirme anahtarı bulunamadı.');
+      throw new Error('Kayıtlı oturumda geçerli GitHub Token bulunamadı.');
     }
-    const totpOk = await verifyTOTP(data.totpSecret, totpCode, 1);
-    if (!totpOk) {
-      data = null;
-      recordFailedAttempt();
-      throw new Error('Google Authenticator 6 haneli kodu hatalı veya süresi doldu.');
-    }
+    // GitHub API ile token'ın hâlâ geçerli olduğunu doğrula
+    await verifyGithubWriteAccess(data.pat, data.repoOwner || 'tempestian', data.repoName || 'tempestian.github.io');
     clearFailedAttempts();
     activeSession = {
       username: data.username || 'tempestian',
@@ -377,9 +373,46 @@
       repoOwner: data.repoOwner || 'tempestian',
       repoName: data.repoName || 'tempestian.github.io',
       branch: data.branch || 'main',
-      totpSecret: data.totpSecret,
+      totpSecret: data.totpSecret || '',
       unlockedAt: Date.now()
     };
+    resetIdleTimer();
+    return getSessionInfo();
+  }
+
+  async function unlockWithPat(pat, repoOwner = 'tempestian', repoName = 'tempestian.github.io', branch = 'main', remember = true) {
+    const rl = checkRateLimit();
+    if (!rl.ok) throw new Error(`Çok fazla başarısız deneme. Lütfen ${rl.waitSec} saniye bekleyin.`);
+    const cleanPat = String(pat || '').trim();
+    if (!cleanPat) throw new Error('Lütfen GitHub Token girin.');
+    const verified = await verifyGithubWriteAccess(cleanPat, repoOwner, repoName);
+    clearFailedAttempts();
+
+    const sessionData = {
+      username: verified.login || repoOwner,
+      pat: cleanPat,
+      repoOwner,
+      repoName,
+      branch,
+      unlockedAt: Date.now()
+    };
+
+    if (remember) {
+      try {
+        await saveDeviceVault({
+          username: sessionData.username,
+          pat: cleanPat,
+          repoOwner,
+          repoName,
+          branch,
+          updatedAt: new Date().toISOString()
+        });
+      } catch (err) {
+        console.warn('Tarayıcı hafızasına kaydedilemedi:', err);
+      }
+    }
+
+    activeSession = sessionData;
     resetIdleTimer();
     return getSessionInfo();
   }
@@ -645,7 +678,9 @@
     clearLocalVault,
     fetchRemoteVault,
     verifyGithubWriteAccess,
-    unlockWithDeviceTOTP,
+    unlockWithPat,
+    unlockWithSavedToken,
+    unlockWithDeviceTOTP: unlockWithSavedToken,
     unlockWithVault,
     unlockWithEncryptedVault,
     lockSession,

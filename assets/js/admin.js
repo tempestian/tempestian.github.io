@@ -849,25 +849,17 @@
   }
 
   async function initAuthGate() {
+    showAuthAlert('');
     const devMeta = AdminSecurity.getDeviceVaultMeta();
-    const localVault = AdminSecurity.getLocalVault();
-    state.remoteVault = await AdminSecurity.fetchRemoteVault(root);
-    const hasSealedVault = Boolean(state.remoteVault || localVault);
-
-    $('#pairVaultBox').hidden = !hasSealedVault;
-    $('#pairInitialGate').hidden = hasSealedVault;
-    $('#pairDynamicMount').replaceChildren();
 
     if (devMeta) {
       $('#deviceReadyBox').hidden = false;
-      $('#deviceMissingBox').hidden = true;
-      $('#deviceStatusBanner').innerHTML = `<span><b>${AdminSecurity.sanitizeText(devMeta.username || 'tempestian')}</b> profili bu cihazda Google Authenticator ile eşleşmiş durumda.</span>`;
-      switchAuthTab('totp');
-      setTimeout(() => { const inp = $('#loginTotpCode'); if (inp) inp.focus(); }, 60);
+      $('#tokenEntryBox').hidden = true;
+      $('#deviceStatusBanner').innerHTML = `<span><b>${AdminSecurity.sanitizeText(devMeta.username || 'tempestian')}</b> profiline ait GitHub Token bu tarayıcıda kayıtlı.</span>`;
     } else {
       $('#deviceReadyBox').hidden = true;
-      $('#deviceMissingBox').hidden = false;
-      switchAuthTab('totp');
+      $('#tokenEntryBox').hidden = false;
+      setTimeout(() => { const inp = $('#loginPatInput'); if (inp) inp.focus(); }, 60);
     }
   }
 
@@ -1722,26 +1714,12 @@
 
           <div class="admin-card glass sq">
             <div class="card-head">
-              <h2>Google Authenticator &amp; Şifreli Kasa Yedeği</h2>
-              <p>Aktif Google Authenticator QR kodunuzu görüntüleyin veya çoklu cihaz için AES-256-GCM şifreli kasa oluşturun.</p>
-            </div>
-            <div id="activeQrSection" class="qr-card glass" hidden>
-              <div id="secQrContainer" class="qr-box"></div>
-              <div class="qr-meta">
-                <span class="qr-label">Aktif Google Authenticator Anahtarı:</span>
-                <code id="secTotpSecret" class="secret-code"></code>
-              </div>
+              <h2>Tarayıcı Token Hafızası &amp; Güvenlik</h2>
+              <p>GitHub Fine-Grained Token bilginiz bu tarayıcıda WebCrypto (AES-GCM) ile güvenle saklanır. İstediğiniz an kayıtlı oturumu silebilirsiniz.</p>
             </div>
             <div class="field-stack">
-              <label class="field">
-                <span>Taşınabilir Kasa Parolası (admin-vault.json için)</span>
-                <input type="password" id="exportVaultPass" class="inp glass" placeholder="Şifreli yedek parolası belirleyin">
-              </label>
               <div class="form-actions wrap-actions">
-                <button type="button" class="btn-subtle" id="toggleSecQrBtn">Google Authenticator QR Göster/Gizle</button>
-                <button type="button" class="btn-subtle" id="downloadVaultBtn">Şifreli Kasayı İndir (.vault.json)</button>
-                <button type="button" class="btn-secondary" id="commitVaultToRepoBtn">Şifreli Kasayı Repoya Mühürle</button>
-                <button type="button" class="btn-danger" id="resetDeviceVaultBtn">Cihaz Eşleşmesini Sil</button>
+                <button type="button" class="btn-danger" id="resetDeviceVaultBtn">Bu Tarayıcıdaki Kayıtlı Token'ı Sil ve Çıkış Yap</button>
               </div>
             </div>
           </div>
@@ -8216,67 +8194,14 @@
         toast(err.message, 'err');
       }
     };
-
-    $('#toggleSecQrBtn').onclick = () => {
-      const box = $('#activeQrSection');
-      box.hidden = !box.hidden;
-    };
-
-    $('#downloadVaultBtn').onclick = async () => {
-      const pass = $('#exportVaultPass').value;
-      if (!pass || pass.length < 8) {
-        toast('Lütfen şifreli kasa için en az 8 karakterli bir parola belirleyin.', 'warn');
-        return;
-      }
-      const info = AdminSecurity.getSessionInfo();
-      if (!info || !info.totpSecret) {
-        toast('Aktif Google Authenticator anahtarı bulunamadı.', 'warn');
-        return;
-      }
-      const vaultObj = await AdminSecurity.encryptVault({
-        username: info.username,
-        repoOwner: info.repoOwner,
-        repoName: info.repoName,
-        branch: info.branch,
-        totpSecret: info.totpSecret
-      }, info.username, pass);
-      AdminSecurity.saveLocalVault(vaultObj);
-      downloadBlobJson(vaultObj, 'admin-vault.json');
-      toast('AES-256-GCM şifreli kasa (admin-vault.json) indirildi.');
-    };
-
-    $('#commitVaultToRepoBtn').onclick = async () => {
-      const pass = $('#exportVaultPass').value;
-      if (!pass || pass.length < 8) {
-        toast('Repoya kaydetmeden önce en az 8 karakterli güçlü bir kasa parolası girin.', 'warn');
-        return;
-      }
-      const info = AdminSecurity.getSessionInfo();
-      if (!info || !info.hasToken) {
-        toast('Repoya kaydetmek için geçerli bir GitHub Token tanımlı olmalıdır.', 'warn');
-        return;
-      }
-      try {
-        const vaultObj = await AdminSecurity.encryptVault({
-          username: info.username,
-          repoOwner: info.repoOwner,
-          repoName: info.repoName,
-          branch: info.branch,
-          totpSecret: info.totpSecret
-        }, info.username, pass);
-        await AdminSecurity.githubPutFile('data/admin-vault.json', JSON.stringify(vaultObj, null, 2) + '\n', 'Şifreli yönetici kasası mühürlendi', false);
-        state.remoteVault = vaultObj;
-        toast('Şifreli kasa data/admin-vault.json olarak repoya mühürlendi.');
-      } catch (err) {
-        toast(err.message, 'err');
-      }
-    };
-
-    $('#resetDeviceVaultBtn').onclick = async () => {
-      await AdminSecurity.clearDeviceVault();
-      AdminSecurity.clearLocalVault();
-      AdminSecurity.lockSession('Cihazdaki Google Authenticator eşleşmesi silindi.');
-    };
+    const resetBtn = $('#resetDeviceVaultBtn');
+    if (resetBtn) {
+      resetBtn.onclick = async () => {
+        await AdminSecurity.clearDeviceVault();
+        AdminSecurity.clearLocalVault();
+        AdminSecurity.lockSession('Tarayıcıdaki kayıtlı GitHub Token silindi.');
+      };
+    }
   }
 
   function onSessionUnlocked(sessionInfo) {
@@ -8320,127 +8245,75 @@
     $('#authGate').hidden = false;
     $('#lockBtn').hidden = true;
     $('#sessionBadge').hidden = true;
-    $('#loginTotpCode').value = '';
+    const loginInput = $('#loginPatInput');
+    if (loginInput) loginInput.value = '';
     state.verifiedSetupContext = null;
-    $('#pairDynamicMount').replaceChildren();
     if (reason) showAuthAlert(reason);
     initAuthGate();
   });
 
-  $$('[data-auth-tab]').forEach(btn => {
-    btn.onclick = () => switchAuthTab(btn.dataset.authTab);
-  });
-  $('#goToPairBtn').onclick = () => switchAuthTab('pair');
-
-  const loginTotpInput = $('#loginTotpCode');
-  async function handleDeviceTotpLogin(e) {
-    if (e) e.preventDefault();
-    showAuthAlert('');
-    const code = loginTotpInput.value.trim();
-    if (code.length !== 6) return;
-    try {
-      const info = await AdminSecurity.unlockWithDeviceTOTP(code);
-      toast('Google Authenticator doğrulandı. Hoş geldiniz!');
-      onSessionUnlocked(info);
-    } catch (err) {
-      showAuthAlert(err.message);
-      loginTotpInput.select();
-    }
-  }
-  $('#formDeviceTotp').onsubmit = handleDeviceTotpLogin;
-  loginTotpInput.oninput = () => {
-    loginTotpInput.value = loginTotpInput.value.replace(/\D/g, '').slice(0, 6);
-    if (loginTotpInput.value.length === 6) handleDeviceTotpLogin();
-  };
-
-  $('#formVerifySetupToken').onsubmit = async e => {
-    e.preventDefault();
-    showAuthAlert('');
-    if (state.remoteVault) {
-      showAuthAlert('Mühürlü yönetici kasası zaten mevcut. İlk kurulum yapılamaz.');
-      return;
-    }
-    const repoOwner = AdminSecurity.sanitizeText($('#setupRepoOwner').value, 80) || 'tempestian';
-    const repoName = AdminSecurity.sanitizeText($('#setupRepoName').value, 100) || 'tempestian.github.io';
-    const branch = AdminSecurity.sanitizeText($('#setupBranch').value, 80) || 'main';
-    const pat = $('#setupPat').value.trim();
-    const btn = $('#verifySetupPatBtn');
-    btn.disabled = true;
-    btn.textContent = 'GitHub API ile Doğrulanıyor...';
-    try {
-      const verified = await AdminSecurity.verifyGithubWriteAccess(pat, repoOwner, repoName);
-      state.verifiedSetupContext = {
-        login: verified.login,
-        pat,
-        repoOwner,
-        repoName,
-        branch
-      };
-      $('#pairInitialGate').hidden = true;
-      mountSetupQRStep();
-      toast('GitHub depo sahipliği doğrulandı.');
-    } catch (err) {
-      showAuthAlert(err.message);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'GitHub API ile Sahipliği Doğrula';
-    }
-  };
-
-  $('#vaultFileInput').onchange = async e => {
-    const f = e.target.files && e.target.files[0];
-    if (!f) return;
-    try {
-      const txt = await f.text();
-      const parsed = JSON.parse(txt);
-      if (parsed && parsed.v === 1 && parsed.ct) {
-        state.importedVault = parsed;
-        AdminSecurity.saveLocalVault(parsed);
-        toast('Şifreli kasa dosyası yüklendi.');
-      } else {
-        showAuthAlert('Geçersiz kasa dosyası.');
+  const savedBtn = $('#savedTokenLoginBtn');
+  if (savedBtn) {
+    savedBtn.onclick = async () => {
+      showAuthAlert('');
+      savedBtn.disabled = true;
+      savedBtn.textContent = 'Doğrulanıyor...';
+      try {
+        const info = await AdminSecurity.unlockWithSavedToken();
+        toast('Hoş geldiniz!');
+        onSessionUnlocked(info);
+      } catch (err) {
+        showAuthAlert(err.message);
+        $('#deviceReadyBox').hidden = true;
+        $('#tokenEntryBox').hidden = false;
+        setTimeout(() => { const inp = $('#loginPatInput'); if (inp) inp.focus(); }, 50);
+      } finally {
+        savedBtn.disabled = false;
+        savedBtn.textContent = 'Kayıtlı Token ile Giriş Yap';
       }
-    } catch (err) {
-      showAuthAlert('Kasa dosyası okunamadı.');
-    }
-  };
+    };
+  }
 
-  $('#formPairExistingVault').onsubmit = async e => {
-    e.preventDefault();
-    showAuthAlert('');
-    const vaultObj = state.importedVault || state.remoteVault || AdminSecurity.getLocalVault();
-    if (!vaultObj) {
-      showAuthAlert('Mühürlü kasa bulunamadı.');
-      return;
-    }
-    const u = $('#vaultUsername').value.trim();
-    const p = $('#vaultPassword').value;
-    const c = $('#vaultTotpCode').value.trim();
-    const pat = $('#vaultPatInput').value.trim();
-    const btn = $('#pairExistingBtn');
-    btn.disabled = true;
-    btn.textContent = 'Doğrulanıyor...';
-    try {
-      const info = await AdminSecurity.unlockWithEncryptedVault({
-        vaultObj,
-        username: u,
-        password: p,
-        totpCode: c,
-        pat,
-        saveToDevice: true
-      });
-      toast('Cihazınız başarıyla yetkilendirildi!');
-      onSessionUnlocked(info);
-    } catch (err) {
-      showAuthAlert(err.message);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Doğrula ve Bu Cihazı Yetkilendir';
-    }
-  };
+  const showManualBtn = $('#showManualTokenBtn');
+  if (showManualBtn) {
+    showManualBtn.onclick = () => {
+      showAuthAlert('');
+      $('#deviceReadyBox').hidden = true;
+      $('#tokenEntryBox').hidden = false;
+      setTimeout(() => { const inp = $('#loginPatInput'); if (inp) inp.focus(); }, 50);
+    };
+  }
+
+  const formTokenLogin = $('#formTokenLogin');
+  if (formTokenLogin) {
+    formTokenLogin.onsubmit = async e => {
+      e.preventDefault();
+      showAuthAlert('');
+      const pat = $('#loginPatInput').value.trim();
+      const repoOwner = AdminSecurity.sanitizeText($('#tokenRepoOwner').value, 80) || 'tempestian';
+      const repoName = AdminSecurity.sanitizeText($('#tokenRepoName').value, 100) || 'tempestian.github.io';
+      const branch = AdminSecurity.sanitizeText($('#tokenBranch').value, 80) || 'main';
+      const remember = $('#rememberMe').checked;
+
+      const submitBtn = $('#tokenLoginSubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Doğrulanıyor...';
+      try {
+        const info = await AdminSecurity.unlockWithPat(pat, repoOwner, repoName, branch, remember);
+        toast('Giriş başarılı. Hoş geldiniz!');
+        onSessionUnlocked(info);
+      } catch (err) {
+        showAuthAlert(err.message);
+        $('#loginPatInput').select();
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Doğrula ve Giriş Yap';
+      }
+    };
+  }
 
   $('#lockBtn').onclick = () => {
-    AdminSecurity.lockSession('Oturum kilitlendi.');
+    AdminSecurity.lockSession('Oturum kapatıldı.');
   };
 
   initAuthGate();

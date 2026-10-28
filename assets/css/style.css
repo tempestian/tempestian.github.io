@@ -1,3 +1,24 @@
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+::view-transition-group(pill) {
+  animation-duration: 0.35s;
+  animation-timing-function: cubic-bezier(0.34, 1.45, 0.5, 1);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.22s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 :root{
   --k:1;
   --rl:calc(30px*var(--k));

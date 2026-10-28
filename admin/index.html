@@ -39,108 +39,53 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 19 5.8v5.7c0 5-3.2 8.8-7 10-3.8-1.2-7-5-7-10V5.8z"/><path d="m9.5 12 1.8 1.8 3.6-3.6"/></svg>
       </div>
       <div>
-        <h1>Yönetici Doğrulaması</h1>
-        <p class="sub" id="authSubtitle">Devam etmek için Google Authenticator (TOTP) doğrulamasını tamamlayın.</p>
+        <h1>Yönetici Girişi</h1>
+        <p class="sub" id="authSubtitle">GitHub Fine-Grained Token (PAT) ile giriş yapın.</p>
       </div>
-    </div>
-
-    <div class="auth-tabs" role="tablist" aria-label="Doğrulama Yöntemi">
-      <button type="button" class="auth-tab" role="tab" data-auth-tab="totp" aria-selected="true">Google Authenticator Girişi</button>
-      <button type="button" class="auth-tab" role="tab" data-auth-tab="pair" aria-selected="false">Yeni Cihaz / Kasa Bağla</button>
     </div>
 
     <p id="authAlert" class="auth-alert" hidden></p>
 
-    <div id="authPaneTotp" class="auth-pane">
+    <div class="auth-pane">
       <div id="deviceReadyBox" class="auth-box" hidden>
         <div class="status-banner ok" id="deviceStatusBanner"></div>
-        <form id="formDeviceTotp" autocomplete="off">
-          <label class="field">
-            <span>Google Authenticator 6 Haneli Kod</span>
-            <input type="text" id="loginTotpCode" class="totp-input glass" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" autocomplete="one-time-code" required>
-            <small>Telefonunuzdaki Google Authenticator uygulamasında görünen 6 haneli kodu girin.</small>
-          </label>
-          <div class="form-actions">
-            <button type="submit" class="btn-primary">Doğrula ve Giriş Yap</button>
-          </div>
-        </form>
-      </div>
-
-      <div id="deviceMissingBox" class="auth-box" hidden>
-        <div class="status-banner warn">
-          <span>Bu tarayıcıda yetkilendirilmiş yönetici oturumu bulunmuyor.</span>
-        </div>
-        <p class="help-txt">Bu cihazda henüz yönetici anahtarı tanımlanmamış. Yalnızca depo sahibi (<b>tempestian</b>) geçerli GitHub yazma yetkisi ve Google Authenticator doğrulaması ile cihaz eşleştirebilir.</p>
-        <div class="form-actions">
-          <button type="button" class="btn-primary" id="goToPairBtn">Cihaz / Kasa Doğrulamasına Geç</button>
+        <p class="help-txt" style="margin-top:0.75rem;">Kayıtlı GitHub Token hazır. Tek tıklamayla paneli açabilir veya farklı bir token ile giriş yapabilirsiniz.</p>
+        <div class="form-actions" style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <button type="button" class="btn-primary" id="savedTokenLoginBtn">Kayıtlı Token ile Giriş Yap</button>
+          <button type="button" class="btn-subtle" id="showManualTokenBtn">Farklı Token Gir</button>
         </div>
       </div>
-    </div>
 
-    <div id="authPanePair" class="auth-pane" hidden>
-      <div id="pairVaultBox" class="vault-block" hidden>
-        <h3>Mühürlü Yönetici Kasası + Google Authenticator (2FA)</h3>
-        <p class="help-txt">Depodaki mühürlü kasa (<code>data/admin-vault.json</code>) aktiftir. Bu cihazı yetkilendirmek için Yönetici Parolanızı, Google Authenticator 6 haneli kodunuzu ve GitHub Fine-Grained Token bilginizi girin.</p>
-        <form id="formPairExistingVault" autocomplete="off">
-          <div class="field-row">
-            <label class="field">
-              <span>Yönetici Kullanıcı Adı</span>
-              <input type="text" id="vaultUsername" class="inp glass" value="tempestian" required>
-            </label>
-            <label class="field">
-              <span>Yönetici Kasa Parolası</span>
-              <input type="password" id="vaultPassword" class="inp glass" placeholder="AES-256-GCM kasa parolanız" required>
-            </label>
-          </div>
-          <div class="field-row">
-            <label class="field">
-              <span>Google Authenticator Kodu (6 Hane)</span>
-              <input type="text" id="vaultTotpCode" class="totp-input glass" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="000000" required>
-            </label>
-            <label class="field">
-              <span>GitHub Fine-Grained Token (PAT)</span>
-              <input type="password" id="vaultPatInput" class="inp glass" placeholder="github_pat_..." required>
-            </label>
-          </div>
-          <label class="field">
-            <span>Harici Kasa Dosyası <small>(İsteğe bağlı `.vault.json` yedeği)</small></span>
-            <input type="file" id="vaultFileInput" accept=".json,application/json" class="inp glass file-inp">
-          </label>
-          <div class="form-actions">
-            <button type="submit" class="btn-primary" id="pairExistingBtn">Doğrula ve Bu Cihazı Yetkilendir</button>
-          </div>
-        </form>
-      </div>
-
-      <div id="pairInitialGate" class="vault-block" hidden>
-        <h3>Depo Sahibi Kimlik Kanıtı (İlk Mühürleme)</h3>
-        <p class="help-txt">Bu sayfada herkese açık QR kodu bulunmaz. İlk Google Authenticator anahtarını üretmek ve depoyu mühürlemek için önce <b>tempestian/tempestian.github.io</b> deposuna yazma yetkisi olan GitHub Fine-Grained Token doğrulaması yapılmalıdır.</p>
-        <form id="formVerifySetupToken" autocomplete="off">
+      <div id="tokenEntryBox" class="auth-box">
+        <form id="formTokenLogin" autocomplete="off">
           <div class="field-row">
             <label class="field">
               <span>Repo Sahibi</span>
-              <input type="text" id="setupRepoOwner" class="inp glass" value="tempestian" required>
+              <input type="text" id="tokenRepoOwner" class="inp glass" value="tempestian" required>
             </label>
             <label class="field">
               <span>Repo Adı</span>
-              <input type="text" id="setupRepoName" class="inp glass" value="tempestian.github.io" required>
+              <input type="text" id="tokenRepoName" class="inp glass" value="tempestian.github.io" required>
             </label>
             <label class="field">
               <span>Dal (Branch)</span>
-              <input type="text" id="setupBranch" class="inp glass" value="main" required>
+              <input type="text" id="tokenBranch" class="inp glass" value="main" required>
             </label>
           </div>
           <label class="field">
-            <span>GitHub Fine-Grained Token (PAT) — Zorunlu</span>
-            <input type="password" id="setupPat" class="inp glass" placeholder="github_pat_..." required>
+            <span>GitHub Fine-Grained Personal Access Token (PAT)</span>
+            <input type="password" id="loginPatInput" class="inp glass" placeholder="github_pat_..." autocomplete="current-password" required>
+            <small><code>tempestian/tempestian.github.io</code> deposuna <b>Contents: Read and write</b> yetkisine sahip GitHub Token'ınızı girin.</small>
           </label>
-          <div class="form-actions">
-            <button type="submit" class="btn-primary" id="verifySetupPatBtn">GitHub API ile Sahipliği Doğrula</button>
+          <label class="chk" style="display:inline-flex;align-items:center;gap:0.5rem;cursor:pointer;margin-top:0.5rem;user-select:none;">
+            <input type="checkbox" id="rememberMe" checked>
+            <span>Beni bu tarayıcıda hatırla (Cihazda güvenle sakla)</span>
+          </label>
+          <div class="form-actions" style="margin-top:1.25rem;">
+            <button type="submit" class="btn-primary" id="tokenLoginSubmitBtn">Doğrula ve Giriş Yap</button>
           </div>
         </form>
       </div>
-
-      <div id="pairDynamicMount"></div>
     </div>
   </section>
 

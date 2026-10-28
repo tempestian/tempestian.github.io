@@ -242,7 +242,8 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 4.9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {}
         },
         {
           "id": 138106,
@@ -266,7 +267,8 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 5.8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {}
         },
         {
           "id": 163943,
@@ -290,7 +292,8 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 5.6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {}
         },
         {
           "id": 187921,
@@ -302,8 +305,16 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2025,
-          "score": 6.5,
-          "adminModified": true
+          "score": 6.6,
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 3,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 213580,

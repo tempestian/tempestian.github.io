@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-10-27",
+  "updated": "2026-10-28",
   "source": "site-first:relations_only",
   "statsConfig": {
     "animeCountRule": "completed_season_or_movie",
@@ -15,9 +15,9 @@
     "season": 126,
     "film": 24,
     "other": 25,
-    "episodes": 3364,
+    "episodes": 3367,
     "completedEpisodes": 3270,
-    "inProgressEpisodes": 94,
+    "inProgressEpisodes": 97,
     "favorites": 10,
     "avgScore": 6.4,
     "byStatus": {
@@ -298,7 +298,7 @@
           "kind": "season",
           "format": "ONA",
           "episodes": 15,
-          "watched": 11,
+          "watched": 14,
           "status": "CURRENT",
           "release": "FINISHED",
           "year": 2025,

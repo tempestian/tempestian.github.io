@@ -29,7 +29,20 @@
       "s": "Saniye"
     }
   },
-  "boxes": [],
+  "boxes": [
+    {
+      "id": "box-1793189451192",
+      "title": "One Piece izlemek mi?",
+      "badge": "Durum",
+      "text": "Aşırı yavaş ilerleyiş yüzünden One Piece izlemek tamamen zulüm ama bu kadar ilerlemişken devam etmeliyim...",
+      "icon": "anime",
+      "image": "",
+      "url": "",
+      "position": "above",
+      "span": "full",
+      "enabled": true
+    }
+  ],
   "sections": [
     {
       "id": "anime",
@@ -135,8 +148,8 @@
       "emptyText": "Eşleşen anime yok.",
       "detailsText": "Ayrıntılar",
       "resetFilterText": "Filtreleri sıfırla",
-      "anilistButtonText": "AniList'te aç",
       "externalButtonText": "AniList'te aç",
+      "anilistButtonText": "AniList'te aç",
       "footerText": "AniList'ten günde bir güncellenir. Kapaklar sahiplerine aittir."
     },
     "guide": {

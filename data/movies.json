@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-10-25",
+  "updated": "2026-10-29",
   "source": "site-first:movie",
   "customGenreCatalog": [
     "Bilim Kurgu",
@@ -13,24 +13,32 @@
     "Animasyon"
   ],
   "stats": {
-    "total": 2,
-    "watched": 2,
-    "films": 2,
+    "total": 3,
+    "watched": 3,
+    "films": 3,
     "extras": 0,
-    "watchCount": 2,
+    "watchCount": 3,
     "favorites": 0,
-    "avgScore": 9.8,
+    "avgScore": 9.1,
     "byStatus": {
-      "completed": 2
+      "completed": 3
     },
     "genres": [
       {
         "name": "Animasyon",
-        "count": 2
+        "count": 3
       },
       {
         "name": "Macera",
         "count": 2
+      },
+      {
+        "name": "Aksiyon",
+        "count": 1
+      },
+      {
+        "name": "Fantastik",
+        "count": 1
       },
       {
         "name": "Film",
@@ -38,6 +46,10 @@
       },
       {
         "name": "Komedi",
+        "count": 1
+      },
+      {
+        "name": "Short",
         "count": 1
       }
     ],
@@ -48,12 +60,11 @@
       "4": 0,
       "5": 0,
       "6": 0,
-      "7": 0,
+      "7": 1,
       "8": 0,
-      "9": 2,
-      "10": 0
-    },
-    "episodes": 2
+      "9": 1,
+      "10": 1
+    }
   },
   "items": [
     {
@@ -96,7 +107,7 @@
             "sound": 5,
             "impact": 4
           },
-          "score": 9.8
+          "score": 10
         }
       ],
       "status": "completed",
@@ -146,7 +157,7 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 1999,
-          "score": 9.8,
+          "score": 9.6,
           "repeat": 2,
           "adminModified": true,
           "subScores": {
@@ -164,6 +175,60 @@
       "imdbId": "tt0120363",
       "subScores": {},
       "year": 1999
+    },
+    {
+      "id": "imdb-tt0120903",
+      "title": "X-Men",
+      "url": "www.imdb.com/title/tt0120903/",
+      "firstSeasonUrl": "",
+      "status": "completed",
+      "score": 7.6,
+      "genres": [
+        "Animasyon",
+        "Short",
+        "Fantastik",
+        "Aksiyon"
+      ],
+      "customGenres": [
+        "Animasyon",
+        "Short",
+        "Fantastik",
+        "Aksiyon"
+      ],
+      "image": "https://m.media-amazon.com/images/M/MV5BNzNjZjQwOTAtNWQ3NC00MmJlLThlZDEtZmUyMWQ3NmE4Y2Y5XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+      "addedAt": "2026-10",
+      "source": "manual",
+      "adminModified": true,
+      "lockedFields": [
+        "title",
+        "status",
+        "score",
+        "genres",
+        "addedAt"
+      ],
+      "parts": [
+        {
+          "id": "tt14920216",
+          "name": "Xmen: Contest of Champions Part 2",
+          "kind": "movie",
+          "format": "MOVIE",
+          "episodes": 1,
+          "watched": 1,
+          "status": "COMPLETED",
+          "release": "FINISHED",
+          "year": 2020
+        }
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 4,
+        "acting": 3,
+        "directing": 3,
+        "sound": 3,
+        "impact": 4
+      },
+      "imdbId": "tt0120903",
+      "director": ""
     }
   ]
 }

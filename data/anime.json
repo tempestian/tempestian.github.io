@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-10-28",
+  "updated": "2026-10-29",
   "source": "site-first:relations_only",
   "statsConfig": {
     "animeCountRule": "completed_season_or_movie",
@@ -219,6 +219,7 @@
       "status": "completed",
       "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/127399-eiN22Xg4LG9x.jpg",
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127399-AAH1pevCZLrB.jpg",
+      "next": true,
       "genres": [
         "Shounen",
         "Aksiyon",
@@ -242,8 +243,7 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 4.9,
-          "adminModified": true,
-          "subScores": {}
+          "adminModified": true
         },
         {
           "id": 138106,
@@ -267,8 +267,7 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 5.8,
-          "adminModified": true,
-          "subScores": {}
+          "adminModified": true
         },
         {
           "id": 163943,
@@ -292,8 +291,7 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 5.6,
-          "adminModified": true,
-          "subScores": {}
+          "adminModified": true
         },
         {
           "id": 187921,
@@ -306,15 +304,7 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 6.6,
-          "adminModified": true,
-          "subScores": {
-            "story": 2,
-            "world": 3,
-            "characters": 4,
-            "visuals": 4,
-            "sound": 4,
-            "enjoyment": 4
-          }
+          "adminModified": true
         },
         {
           "id": 213580,

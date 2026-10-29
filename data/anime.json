@@ -11,25 +11,25 @@
     "Siyaset"
   ],
   "stats": {
-    "anime": 78,
-    "season": 127,
+    "anime": 79,
+    "season": 128,
     "film": 24,
     "other": 25,
-    "episodes": 3372,
-    "completedEpisodes": 3285,
-    "inProgressEpisodes": 87,
+    "episodes": 3373,
+    "completedEpisodes": 3297,
+    "inProgressEpisodes": 76,
     "favorites": 10,
     "avgScore": 6.4,
     "byStatus": {
-      "completed": 72,
-      "watching": 4,
+      "completed": 73,
       "dropped": 8,
+      "watching": 3,
       "paused": 5
     },
     "genres": [
       {
         "name": "Shounen",
-        "count": 42
+        "count": 43
       },
       {
         "name": "Dram",
@@ -45,26 +45,26 @@
       },
       {
         "name": "Komedi",
-        "count": 25
+        "count": 26
       },
       {
         "name": "Slice of Life",
-        "count": 23
+        "count": 24
       },
       {
         "name": "Okul",
-        "count": 21
+        "count": 22
       },
       {
         "name": "Psikolojik",
         "count": 21
       },
       {
-        "name": "Doğaüstü",
-        "count": 20
+        "name": "Romantik",
+        "count": 21
       },
       {
-        "name": "Romantik",
+        "name": "Doğaüstü",
         "count": 20
       },
       {
@@ -76,11 +76,11 @@
         "count": 18
       },
       {
-        "name": "Macera",
-        "count": 14
+        "name": "Rom-Com",
+        "count": 15
       },
       {
-        "name": "Rom-Com",
+        "name": "Macera",
         "count": 14
       },
       {
@@ -174,7 +174,7 @@
       "3": 9,
       "4": 7,
       "5": 9,
-      "6": 13,
+      "6": 14,
       "7": 13,
       "8": 7,
       "9": 8,
@@ -186,9 +186,9 @@
       "genreSourceRule": "custom_only"
     },
     "listed": 89,
-    "completed": 72,
+    "completed": 73,
     "partial": 6,
-    "excluded": 11,
+    "excluded": 10,
     "highlights": {
       "topScore": {
         "id": "al-101280",
@@ -549,7 +549,7 @@
       "anilistId": 162804,
       "url": "https://anilist.co/anime/162804",
       "firstSeasonUrl": "https://anilist.co/anime/162804",
-      "status": "watching",
+      "status": "completed",
       "banner": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/162804-NwvD3Lya8IZp.jpg",
       "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162804-TBeptcAfvqTd.jpg",
       "genres": [
@@ -568,7 +568,7 @@
         "Slice of Life",
         "Shounen"
       ],
-      "score": null,
+      "score": 6.2,
       "parts": [
         {
           "id": 162804,
@@ -576,10 +576,11 @@
           "kind": "season",
           "format": "TV",
           "episodes": 12,
-          "watched": 11,
-          "status": "CURRENT",
+          "watched": 12,
+          "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2024,
+          "score": 6.2,
           "adminModified": true
         },
         {

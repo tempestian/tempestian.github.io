@@ -472,7 +472,9 @@ h1 {
 }
 
 /* ============================================================================
-   ZEMİNE OTURAN MATERIAL 3 ALT NAVİGASYON BARI (#dock / nav-bar)
+   MATERIAL 3 NAVİGASYON (#dock)
+   - Mobil (≤768px): Zemine Oturan M3 Bottom Navigation Bar
+   - Masaüstü (≥769px): Sol Kenar M3 Navigation Rail (Dikey Şerit)
    ============================================================================ */
 .dock {
   position: fixed;
@@ -484,7 +486,7 @@ h1 {
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 6px max(12px, calc((100vw - 780px) / 2)) max(8px, env(safe-area-inset-bottom));
+  padding: 6px 12px max(8px, env(safe-area-inset-bottom));
   border-radius: 0;
   border: 0;
   border-top: 1px solid var(--line);
@@ -528,7 +530,7 @@ h1 {
   font-weight: 560;
   letter-spacing: 0.01em;
   white-space: nowrap;
-  transition: color 0.2s ease, transform 0.25s var(--spring);
+  transition: color 0.2s ease, transform 0.25s var(--spring), background 0.2s ease;
 }
 
 .dock a > :not(.pill) {
@@ -585,6 +587,61 @@ h1 {
 
 :root:not([data-theme=dark]) .pill {
   border-color: rgba(9, 105, 195, 0.18);
+}
+
+/* Masaüstü (PC / Geniş Ekran): Material 3 Sol Yan Sütun — Navigation Rail */
+@media (min-width: 769px) {
+  body:has(#dock:not([hidden])) {
+    padding-left: 88px;
+    padding-bottom: 48px;
+  }
+
+  .dock {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: auto;
+    width: 88px;
+    height: 100svh;
+    padding: 24px 8px;
+    border-top: 0;
+    border-right: 1px solid var(--line);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.18);
+    flex-direction: column !important;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+    gap: 14px;
+  }
+
+  .dock a {
+    flex: 0 0 auto;
+    width: 72px;
+    min-width: 72px;
+    max-width: 72px;
+    padding: 8px 4px 6px !important;
+    gap: 6px;
+    border-radius: 16px;
+  }
+
+  .dock a:not([aria-current]):hover {
+    background: var(--glass);
+  }
+
+  .pill {
+    top: 6px;
+    width: 54px;
+    height: 32px;
+    margin-left: -27px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wrap,
+  .bar-in {
+    max-width: 920px;
+  }
 }
 
 /* ============================================================================

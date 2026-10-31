@@ -71,10 +71,15 @@ jobs:
       - name: Değişiklik varsa kaydet
         if: steps.check_bot.outputs.skip != 'true'
         run: |
-          if git diff --quiet data/anime.json a/ d/ f/ m/ k/ 2>/dev/null; then exit 0; fi
+          for p in data/anime.json a d f m k; do
+            [ -e "$p" ] && git add "$p"
+          done
+          if git diff --cached --quiet; then
+            echo "Değişiklik yok, commit atlanıyor."
+            exit 0
+          fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/anime.json a/ d/ f/ m/ k/ 2>/dev/null || true
           git commit -m "chore(media): kapak, yan icerik ve paylasim kartlari senkronu [skip ci]"
           git pull --rebase origin main
           git push

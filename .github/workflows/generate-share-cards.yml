@@ -57,13 +57,16 @@ jobs:
       - name: Değişen Kartları Kaydet ve Gönder
         if: steps.check_bot.outputs.skip != 'true'
         run: |
-          if git diff --quiet a/ d/ f/ m/ k/ 2>/dev/null; then
+          for p in a d f m k; do
+            [ -e "$p" ] && git add "$p"
+          done
+          if git diff --cached --quiet; then
             echo "Kartlarda değişiklik yok."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add a/ d/ f/ m/ k/ 2>/dev/null || true
           git commit -m "chore(cards): statik sosyal medya paylasim kartlari guncellendi [skip ci]"
           git pull --rebase origin main
           git push
+

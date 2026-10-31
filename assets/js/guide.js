@@ -79,8 +79,7 @@
     }
     const sortedCats = Object.keys(catCounts).sort((a, b) => catCounts[b] - catCounts[a] || a.localeCompare(b, 'tr'));
 
-    const row = h('div', 'stats-row');
-    row.style.gridTemplateColumns = 'repeat(3, 1fr)';
+    const row = h('div', 'stats-row guide-stats-row');
     for (const [v, l] of [
       [items.length, 'rehber'],
       [sortedCats.length, 'kategori'],

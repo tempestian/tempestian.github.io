@@ -153,18 +153,22 @@
 
   function getEffectiveScore(it) {
     if (!it) return null;
-    if (it.subScores && typeof it.subScores === 'object' && window.TempestianRating) {
-      const typeKey = document.body.dataset.section || 'anime';
-      const criteria = window.TempestianRating.CRITERIA[typeKey] || window.TempestianRating.CRITERIA.anime;
-      if (criteria) {
-        const sc = window.TempestianRating.computeScore(criteria, it.subScores);
-        if (sc != null) return sc;
-      }
+    const typeKey = document.body.dataset.section || 'series';
+    const criteria = window.TempestianRating ? (window.TempestianRating.CRITERIA[typeKey] || window.TempestianRating.CRITERIA.anime) : null;
+
+    if (it.subScores && typeof it.subScores === 'object' && criteria) {
+      const sc = window.TempestianRating.computeScore(criteria, it.subScores);
+      if (sc != null) return sc;
     }
+
     const parts = Array.isArray(it.parts) ? it.parts : [];
     let weightedSum = 0, totalWeight = 0;
     for (const p of parts) {
       if (!p) continue;
+      if (p.subScores && typeof p.subScores === 'object' && criteria) {
+        const sc = window.TempestianRating.computeScore(criteria, p.subScores);
+        if (sc != null) p.score = sc;
+      }
       const sc = Number(p.score);
       if (!isNaN(sc) && sc > 0) {
         const w = getPartWeight(p);
@@ -173,6 +177,7 @@
       }
     }
     if (totalWeight > 0) return Math.round((weightedSum / totalWeight) * 10) / 10;
+
     const s = Number(it.score);
     return !isNaN(s) && s > 0 ? Math.round(s * 10) / 10 : null;
   }

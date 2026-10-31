@@ -115,6 +115,52 @@
       if (totalWeight <= 0) return null;
       return Math.round((totalScore / totalWeight) * 10) / 10;
     },
+    deriveSubScores(typeKey, targetScore) {
+      const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
+      if (!criteria || targetScore == null || isNaN(targetScore) || Number(targetScore) < 1.0) return null;
+      const target = Math.max(2.0, Math.min(10.0, Number(targetScore)));
+      const n = criteria.length;
+
+      let bestCombo = null;
+      let minDiff = Infinity;
+      let minVar = Infinity;
+
+      function recurse(idx, current) {
+        if (idx === n) {
+          let sum = 0;
+          let totalW = 0;
+          for (let i = 0; i < n; i++) {
+            sum += current[i] * 2 * criteria[i].weight;
+            totalW += criteria[i].weight;
+          }
+          const score = Math.round((sum / totalW) * 10) / 10;
+          const diff = Math.abs(score - target);
+          const avg = current.reduce((a, b) => a + b, 0) / n;
+          const variance = current.reduce((a, b) => a + Math.pow(b - avg, 2), 0);
+
+          if (diff < minDiff || (Math.abs(diff - minDiff) < 1e-6 && variance < minVar)) {
+            minDiff = diff;
+            minVar = variance;
+            bestCombo = [...current];
+          }
+          return;
+        }
+        for (let s = 1; s <= 5; s++) {
+          current.push(s);
+          recurse(idx + 1, current);
+          current.pop();
+        }
+      }
+
+      recurse(0, []);
+
+      if (!bestCombo) return null;
+      const res = {};
+      for (let i = 0; i < n; i++) {
+        res[criteria[i].id] = bestCombo[i];
+      }
+      return res;
+    },
     renderBreakdownGrid(typeKey, subScores) {
       const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
       if (!criteria) return '';

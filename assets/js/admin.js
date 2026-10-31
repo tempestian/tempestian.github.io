@@ -3091,7 +3091,8 @@
         <h5>${titleText}</h5>
         <p class="meta">${subText}</p>
       </div>
-      <div class="criteria-studio-actions">
+      <div class="criteria-studio-actions" style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+        <button type="button" class="btn-subtle btn-xs" id="autoFillSubScoresBtn" title="Genel puana göre 5 yıldızlı kriterleri otomatik dağıt">★ Puana Göre Kriterleri Doldur</button>
         <button type="button" class="btn-subtle btn-xs" id="clearSubScoresBtn">Puanı Sıfırla</button>
       </div>
     `;
@@ -3180,6 +3181,45 @@
     });
 
     wrap.appendChild(grid);
+
+    const autoFillBtn = head.querySelector('#autoFillSubScoresBtn');
+    if (autoFillBtn) {
+      autoFillBtn.onclick = () => {
+        const scoreInput = document.getElementById('editScore') || document.getElementById('p_score');
+        let targetVal = scoreInput && scoreInput.value !== '' ? Number(scoreInput.value) : (item.score != null ? Number(item.score) : null);
+        if (targetVal == null || isNaN(targetVal) || targetVal < 1) {
+          const userVal = prompt('Lütfen kriter karnesine dağıtılacak genel puanı girin (örn: 8.5):', item.score || '8.0');
+          if (!userVal) return;
+          targetVal = Number(userVal);
+        }
+        if (isNaN(targetVal) || targetVal < 1 || targetVal > 10) {
+          if (typeof showToast === 'function') showToast('Geçerli bir puan giriniz (1 - 10).', 'warn');
+          return;
+        }
+
+        const derived = window.TempestianRating ? window.TempestianRating.deriveSubScores(typeId, targetVal) : null;
+        if (!derived) {
+          if (typeof showToast === 'function') showToast('Kriter puanları türetilemedi.', 'warn');
+          return;
+        }
+
+        item.subScores = { ...derived };
+        item.adminModified = true;
+
+        const calculated = window.TempestianRating.computeScore(criteria, item.subScores);
+        if (calculated != null) {
+          item.score = calculated;
+        }
+
+        renderCriteriaRatingStudio(mountEl, item, typeId, onScoreChange, customTitle, customSub);
+        if (typeof onScoreChange === 'function' && calculated != null) {
+          onScoreChange(calculated);
+        }
+        if (typeof showToast === 'function') {
+          showToast(`Genel puana (${targetVal}) göre 5 yıldızlı kriterler uyarlandı!`, 'success');
+        }
+      };
+    }
 
     const clearBtn = head.querySelector('#clearSubScoresBtn');
     if (clearBtn) {

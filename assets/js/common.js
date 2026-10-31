@@ -592,10 +592,10 @@
           a.href = it.href;
           if (it.id === cur) {
             a.setAttribute('aria-current', 'page');
-            const pill = el('span', 'pill');
-            pill.setAttribute('aria-hidden', 'true');
-            a.append(pill);
           }
+          const pill = el('span', 'pill');
+          pill.setAttribute('aria-hidden', 'true');
+          a.append(pill);
           a.insertAdjacentHTML('beforeend', icon(it.icon));
           a.append(el('span', '', it.title));
           fr.append(a);
@@ -1436,6 +1436,30 @@
         target.classList.add('img-fallback-applied');
       }
     }, true);
+  })();
+
+  // ============================================================================
+  // [M3 EXPRESSIVE RIPPLE MOTORU]: @materialwebunofficial/md3e-web Uyumlu Dalga
+  // ============================================================================
+  (() => {
+    const RIPPLE_SEL = '.btn, .chips button, .seg button, .sh-rb-tab, .dock a, .btn-primary, .btn-secondary, .btn-subtle, .btn-chip, .nav-tab, .stats-nav-item, .timeline-cat-btn, .timeline-mode-btn';
+    document.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      const host = e.target && e.target.closest ? e.target.closest(RIPPLE_SEL) : null;
+      if (!host || host.disabled) return;
+      const targetBox = host.matches('.dock a') ? (host.querySelector('.pill') || host) : host;
+      const rect = targetBox.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const size = Math.max(rect.width, rect.height) * 1.35;
+      const rip = document.createElement('span');
+      rip.className = 'md-ripple-effect';
+      rip.style.width = rip.style.height = `${size}px`;
+      rip.style.left = `${e.clientX - rect.left - size / 2}px`;
+      rip.style.top = `${e.clientY - rect.top - size / 2}px`;
+      targetBox.appendChild(rip);
+      rip.addEventListener('animationend', () => rip.remove(), { once: true });
+      setTimeout(() => { if (rip.parentNode) rip.remove(); }, 500);
+    }, { passive: true });
   })();
 
 })();

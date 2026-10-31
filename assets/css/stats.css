@@ -10,17 +10,18 @@
   padding-bottom: 80px;
 }
 
-/* Üst Kategori Sekmeleri Barı — M3 Expressive Connected Container */
+/* Üst Kategori Sekmeleri Barı — @materialwebunofficial/md3e-web Connected Button Group */
 .stats-nav {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   overflow-x: auto;
-  padding: 6px;
+  padding: 0;
   margin-bottom: 24px;
-  border-radius: 18px;
-  background: var(--glass);
-  border: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
@@ -28,28 +29,44 @@
   display: none;
 }
 .stats-nav-item {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 16px;
-  border-radius: 999px;
+  padding: 9px 18px;
+  border-radius: var(--md-sys-shape-corner-small, 8px);
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--ink2);
+  color: var(--md-sys-color-on-surface-variant, var(--ink2));
   text-decoration: none;
   white-space: nowrap;
-  transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
-  background: transparent;
-  border: 1px solid transparent;
+  transition:
+    border-radius var(--md-sys-motion-spatial-fast-duration, 333ms) var(--md-sys-motion-spatial-fast-easing, ease),
+    background-color var(--md-sys-motion-effect-fast-duration, 225ms) var(--md-sys-motion-effect-fast-easing, ease),
+    color var(--md-sys-motion-effect-fast-duration, 225ms) var(--md-sys-motion-effect-fast-easing, ease),
+    transform var(--md-sys-motion-spatial-fast-duration, 333ms) var(--md-sys-motion-spatial-fast-easing, ease);
+  background: var(--md-sys-color-surface-container-high, var(--glass-hi));
+  border: 0;
 }
-.stats-nav-item:hover {
-  color: var(--ink);
-  background: var(--glass-hi);
+.stats-nav-item:first-child {
+  border-radius: var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-full, 9999px);
+}
+.stats-nav-item:last-child {
+  border-radius: var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-small, 8px);
+}
+.stats-nav-item:hover:not(.is-active) {
+  color: var(--md-sys-color-on-surface, var(--ink));
+  background: var(--md-sys-color-surface-container-highest, var(--glass-hi));
+}
+.stats-nav-item:active {
+  border-radius: var(--md-sys-shape-corner-extra-small, 4px);
+  transform: scaleX(1.04);
 }
 .stats-nav-item.is-active {
-  color: var(--on-accent);
-  background: var(--accent);
-  border-radius: 12px;
+  color: var(--md-sys-color-on-secondary-container, var(--on-accent));
+  background: var(--md-sys-color-secondary-container, var(--accent));
+  border-radius: var(--md-sys-shape-corner-full, 9999px) !important;
   font-weight: 700;
 }
 

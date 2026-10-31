@@ -9,24 +9,55 @@
 }
 
 ::view-transition-group(pill) {
-  animation-duration: 0.32s;
-  animation-timing-function: cubic-bezier(0.34, 1.45, 0.5, 1);
+  animation-duration: 333ms;
+  animation-timing-function: var(--md-sys-motion-spatial-fast-easing, cubic-bezier(0.34, 1.45, 0.5, 1));
 }
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 0.2s;
-  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation-duration: 225ms;
+  animation-timing-function: var(--md-sys-motion-effect-fast-easing, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 :root {
+  /* ==========================================================================
+     @materialwebunofficial/md3e-web — Material 3 Expressive System Tokens
+     ========================================================================== */
+  --md-sys-shape-corner-none: 0px;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-large-increased: 20px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-extra-large-increased: 32px;
+  --md-sys-shape-corner-full: 9999px;
+  --md-sys-shape-expressive-button-default: 9999px;
+  --md-sys-shape-expressive-button-pressed: 8px;
+  --md-sys-shape-expressive-chip-default: 12px;
+  --md-sys-shape-expressive-chip-selected: 9999px;
+  --md-sys-shape-expressive-chip-pressed: 8px;
+
+  /* M3 Expressive Fizik Tabanlı Yay (Spring) Eğrileri */
+  --md-sys-motion-spatial-fast-duration: 333ms;
+  --md-sys-motion-spatial-fast-easing: linear(0, .04035, .13419, .25163, .37385, .4898, .5936, .68281, .75711, .81743, .86531, .90257, .93102, .95234, .96802, .97932, .9873, .99279, .99645, .9988, 1.00023, 1.00103, 1.00141, 1.00152, 1.00147, 1.00134, 1.00116, 1.00098, 1.0008, 1.00064, 1.0005, 1.00038, 1.00029, 1.00021, 1.00015, 1.00011, 1.00008, 1.00005, 1.00003, 1.00002, 1);
+  --md-sys-motion-spatial-medium-duration: 500ms;
+  --md-sys-motion-spatial-medium-easing: linear(0, .0167, .0595, .1182, .1858, .2573, .3291, .3988, .4649, .5264, .5828, .6338, .6796, .7203, .7563, .7879, .8155, .8395, .8603, .8782, .8936, .9068, .9181, .9278, .9361, .9432, .9493, .9545, .959, .9629, .9663, .9693, .9719, .9742, .9762, .978, .9796, .9811, .9824, .9836, 1);
+  --md-sys-motion-effect-fast-duration: 225ms;
+  --md-sys-motion-effect-fast-easing: linear(0, .09439, .27432, .45584, .60862, .72647, .8128, .87391, .91613, .94478, .96394, .97662, .98493, .99034, .99383, .99608, .99752, .99843, .99901, .99938, .99961, .99976, .99985, .99991, .99994, .99996, .99998, 1);
+
+  --md-sys-elevation-level0: none;
+  --md-sys-elevation-level1: 0px 1px 2px rgba(0, 0, 0, .18), 0px 1px 3px 1px rgba(0, 0, 0, .09);
+  --md-sys-elevation-level2: 0px 1px 2px rgba(0, 0, 0, .22), 0px 2px 6px 2px rgba(0, 0, 0, .12);
+  --md-sys-elevation-level3: 0px 1px 3px rgba(0, 0, 0, .26), 0px 4px 8px 3px rgba(0, 0, 0, .14);
+
   --k: 1;
   --rl: 24px;
   --rm: 16px;
   --rs: 12px;
-  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --spring: cubic-bezier(0.34, 1.45, 0.5, 1);
-  --sans: "Inter", "Google Sans", "Roboto Flex", "One UI Sans", "SamsungOne", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ease: var(--md-sys-motion-effect-fast-easing);
+  --spring: var(--md-sys-motion-spatial-fast-easing);
+  --sans: "Google Sans", "Inter", "Roboto Flex", "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", "Fira Code", "SF Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Arka plan ve atmosfer (Korundu) */
@@ -36,27 +67,52 @@
   --g3: rgba(60, 210, 190, 0.20);
   --grain: 0;
 
-  /* M3 Expressive + Editoryal Açık Tema Tonal Yüzeyler */
-  --ink: #11151c;
-  --ink2: rgba(17, 21, 28, 0.62);
-  --glass: rgba(245, 249, 253, 0.88);
-  --glass2: rgba(232, 239, 246, 0.78);
-  --glass-hi: rgba(252, 254, 255, 0.95);
-  --m3-nav-bg: rgba(242, 247, 252, 0.94);
+  /* M3 Expressive Dynamic Color Roles — Light Mode (Seed #00639B) */
+  --md-sys-color-primary: #00639b;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #cee5ff;
+  --md-sys-color-on-primary-container: #001d32;
+  --md-sys-color-secondary: #49607b;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #d0e4ff;
+  --md-sys-color-on-secondary-container: #031d34;
+  --md-sys-color-tertiary: #62597c;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #e8ddff;
+  --md-sys-color-on-tertiary-container: #1e1635;
+  --md-sys-color-surface: rgba(244, 248, 253, 0.88);
+  --md-sys-color-surface-container-lowest: rgba(255, 255, 255, 0.94);
+  --md-sys-color-surface-container-low: rgba(240, 246, 252, 0.86);
+  --md-sys-color-surface-container: rgba(234, 241, 249, 0.90);
+  --md-sys-color-surface-container-high: rgba(226, 235, 245, 0.92);
+  --md-sys-color-surface-container-highest: rgba(218, 229, 241, 0.95);
+  --md-sys-color-on-surface: #171c22;
+  --md-sys-color-on-surface-variant: #41474f;
+  --md-sys-color-outline: #717880;
+  --md-sys-color-outline-variant: rgba(113, 120, 128, 0.24);
+
+  /* Mevcut Bileşen Değişken Eşlemeleri */
+  --ink: var(--md-sys-color-on-surface);
+  --ink2: var(--md-sys-color-on-surface-variant);
+  --glass: var(--md-sys-color-surface-container);
+  --glass2: var(--md-sys-color-surface-container-low);
+  --glass-hi: var(--md-sys-color-surface-container-high);
+  --m3-nav-bg: rgba(236, 243, 250, 0.92);
   --veil: rgba(236, 238, 243, 0.45);
   --rim: transparent;
   --rim-lo: transparent;
-  --line: rgba(16, 24, 40, 0.085);
-  --line-strong: rgba(16, 24, 40, 0.15);
-  --accent: #0969c3;
-  --on-accent: #ffffff;
-  --accent-soft: rgba(9, 105, 195, 0.13);
+  --line: var(--md-sys-color-outline-variant);
+  --line-strong: rgba(16, 24, 40, 0.22);
+  --accent: var(--md-sys-color-primary);
+  --on-accent: var(--md-sys-color-on-primary);
+  --accent-soft: var(--md-sys-color-secondary-container);
+  --on-accent-soft: var(--md-sys-color-on-secondary-container);
   --done-teal: #0d9488;
-  --done-teal-soft: rgba(13, 148, 136, 0.13);
+  --done-teal-soft: rgba(13, 148, 136, 0.14);
   --star: #d98200;
   --warn: #b86e00;
-  --bad: #d23a2c;
-  --lift: 0 6px 20px rgba(20, 30, 55, 0.07), 0 1px 3px rgba(20, 30, 55, 0.04);
+  --bad: #b3261e;
+  --lift: var(--md-sys-elevation-level1);
   --glow: rgba(40, 175, 235, 0.18);
   color-scheme: light;
 }
@@ -69,29 +125,73 @@
   --g3: rgba(30, 220, 190, 0.13);
   --grain: 0.07;
 
-  /* M3 Expressive + Editoryal Koyu Tema Tonal Yüzeyler */
-  --ink: #f1f4f9;
-  --ink2: rgba(241, 244, 249, 0.60);
-  --glass: rgba(17, 22, 32, 0.86);
-  --glass2: rgba(12, 16, 24, 0.78);
-  --glass-hi: rgba(22, 28, 40, 0.94);
-  --m3-nav-bg: rgba(11, 15, 22, 0.94);
+  /* M3 Expressive Dynamic Color Roles — Dark Mode (Seed #00639B) */
+  --md-sys-color-primary: #95ccff;
+  --md-sys-color-on-primary: #003353;
+  --md-sys-color-primary-container: #004a76;
+  --md-sys-color-on-primary-container: #cee5ff;
+  --md-sys-color-secondary: #b4c8e8;
+  --md-sys-color-on-secondary: #1d324b;
+  --md-sys-color-secondary-container: #243b55;
+  --md-sys-color-on-secondary-container: #d6e6ff;
+  --md-sys-color-tertiary: #ccc0e9;
+  --md-sys-color-on-tertiary: #332b4b;
+  --md-sys-color-tertiary-container: #4a4163;
+  --md-sys-color-on-tertiary-container: #e8ddff;
+  --md-sys-color-surface: rgba(14, 18, 26, 0.84);
+  --md-sys-color-surface-container-lowest: rgba(9, 12, 18, 0.88);
+  --md-sys-color-surface-container-low: rgba(15, 20, 29, 0.84);
+  --md-sys-color-surface-container: rgba(19, 25, 36, 0.88);
+  --md-sys-color-surface-container-high: rgba(25, 33, 46, 0.92);
+  --md-sys-color-surface-container-highest: rgba(32, 41, 56, 0.95);
+  --md-sys-color-on-surface: #e2e6ed;
+  --md-sys-color-on-surface-variant: #bec7d4;
+  --md-sys-color-outline: #88929e;
+  --md-sys-color-outline-variant: rgba(136, 146, 158, 0.18);
+
+  /* Mevcut Bileşen Değişken Eşlemeleri */
+  --ink: var(--md-sys-color-on-surface);
+  --ink2: var(--md-sys-color-on-surface-variant);
+  --glass: var(--md-sys-color-surface-container);
+  --glass2: var(--md-sys-color-surface-container-low);
+  --glass-hi: var(--md-sys-color-surface-container-high);
+  --m3-nav-bg: rgba(14, 19, 28, 0.90);
   --veil: rgba(0, 0, 0, 0.45);
   --rim: transparent;
   --rim-lo: transparent;
-  --line: rgba(255, 255, 255, 0.075);
-  --line-strong: rgba(255, 255, 255, 0.14);
-  --accent: #63c7ff;
-  --on-accent: #051e30;
-  --accent-soft: rgba(99, 199, 255, 0.16);
+  --line: var(--md-sys-color-outline-variant);
+  --line-strong: rgba(255, 255, 255, 0.20);
+  --accent: var(--md-sys-color-primary);
+  --on-accent: var(--md-sys-color-on-primary);
+  --accent-soft: var(--md-sys-color-secondary-container);
+  --on-accent-soft: var(--md-sys-color-on-secondary-container);
   --done-teal: #2dd4bf;
-  --done-teal-soft: rgba(45, 212, 191, 0.15);
+  --done-teal-soft: rgba(45, 212, 191, 0.16);
   --star: #ffc247;
   --warn: #ffc247;
-  --bad: #ff8c7d;
-  --lift: 0 10px 28px rgba(0, 0, 0, 0.42);
+  --bad: #ffb4ab;
+  --lift: 0 8px 24px rgba(0, 0, 0, 0.36);
   --glow: rgba(60, 190, 255, 0.20);
   color-scheme: dark;
+}
+
+/* @materialwebunofficial/md3e-web — Ripple Dalga Efekti */
+.md-ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.14;
+  transform: scale(0);
+  animation: md3e-ripple 420ms cubic-bezier(0.05, 0.7, 0.1, 1) forwards;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes md3e-ripple {
+  to {
+    transform: scale(2.4);
+    opacity: 0;
+  }
 }
 
 @supports (corner-shape: squircle) {
@@ -105,10 +205,6 @@
 }
 ::view-transition-group(dock) {
   animation: none;
-}
-::view-transition-group(pill) {
-  animation-duration: 0.28s;
-  animation-timing-function: var(--ease);
 }
 #dock {
   view-transition-name: dock;
@@ -253,43 +349,50 @@ svg {
   opacity: 1;
 }
 
-/* M3 Expressive Tonal Squircle Icon Button */
+/* @materialwebunofficial/md3e-web — md-icon-button (Tonal & Shape-Morphing) */
 .btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  border: 1px solid var(--line);
-  background: var(--glass);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--md-sys-shape-corner-full);
+  border: 0;
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
   display: grid;
   place-items: center;
   cursor: pointer;
   text-decoration: none;
+  box-shadow: none;
   transition:
-    transform 0.3s var(--spring),
-    border-radius 0.25s var(--spring),
-    background 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
+    transform var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing),
+    border-radius var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing),
+    background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing);
   flex: 0 0 auto;
 }
 
 .btn svg {
+  position: relative;
+  z-index: 1;
   width: 20px;
   height: 20px;
 }
 
 @media (hover: hover) {
   .btn:hover {
-    background: var(--glass-hi);
-    border-color: var(--line-strong);
-    border-radius: 11px;
-    color: var(--accent);
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, var(--md-sys-color-surface-container-high));
+    color: var(--md-sys-color-on-surface);
   }
 }
 
-.btn:active {
-  transform: scale(0.92);
-  border-radius: 10px;
+.btn:active,
+.btn[aria-pressed="true"] {
+  border-radius: var(--md-sys-shape-corner-medium);
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  transform: scale(0.95);
 }
 
 .bar-in > .btn {
@@ -345,7 +448,6 @@ svg {
   .btn {
     width: 40px;
     height: 40px;
-    border-radius: 13px;
   }
   .btn svg {
     width: 19px;
@@ -472,28 +574,28 @@ h1 {
 }
 
 /* ============================================================================
-   MATERIAL 3 NAVİGASYON (#dock)
-   - Mobil (≤768px): Zemine Oturan M3 Bottom Navigation Bar
-   - Masaüstü (≥769px): Sol Kenar M3 Navigation Rail (Dikey Şerit)
+   @materialwebunofficial/md3e-web — md-navigation-bar & md-navigation-rail
+   - Compact (<600px): md-navigation-bar (Alt Gezinme Çubuğu, min-height 64px)
+   - Medium/Expanded (≥600px): md-navigation-rail (Sol Yan Sütun, width 96px)
    ============================================================================ */
 .dock {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: auto 0 0 0;
   transform: none;
-  z-index: 15;
+  z-index: 80;
   width: 100%;
   max-width: none;
+  min-height: 64px;
   margin: 0;
-  padding: 6px 12px max(8px, env(safe-area-inset-bottom));
+  padding: 0 env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
   border-radius: 0;
   border: 0;
-  border-top: 1px solid var(--line);
-  background: var(--m3-nav-bg);
-  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.22);
-  -webkit-backdrop-filter: blur(22px) saturate(1.5);
-  backdrop-filter: blur(22px) saturate(1.5);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  backdrop-filter: blur(22px) saturate(1.4);
   display: flex !important;
   flex-direction: row !important;
   align-items: center;
@@ -501,7 +603,7 @@ h1 {
   flex-wrap: nowrap;
   overflow-x: auto;
   scrollbar-width: none;
-  gap: 4px;
+  gap: 0;
 }
 
 .dock::-webkit-scrollbar {
@@ -518,19 +620,21 @@ h1 {
   flex-direction: column !important;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 4px;
   flex: 1 1 0;
   min-width: 64px;
-  max-width: 128px;
-  padding: 6px 8px 4px !important;
-  border-radius: 16px;
-  color: var(--ink2);
+  max-width: 168px;
+  min-height: 64px;
+  padding: 6px 4px 8px !important;
+  border-radius: 0;
+  color: var(--md-sys-color-on-surface-variant);
   text-decoration: none;
-  font-size: 0.74rem;
-  font-weight: 560;
-  letter-spacing: 0.01em;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.4px;
   white-space: nowrap;
-  transition: color 0.2s ease, transform 0.25s var(--spring), background 0.2s ease;
+  transition: color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing);
 }
 
 .dock a > :not(.pill) {
@@ -539,108 +643,126 @@ h1 {
 }
 
 .dock a svg {
-  width: 22px;
-  height: 22px;
-  margin: 3px 0;
-  transition: transform 0.3s var(--spring), color 0.2s ease;
+  width: 24px;
+  height: 24px;
+  margin: 4px 0;
+  color: var(--md-sys-color-on-surface-variant);
+  transition:
+    transform var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing),
+    color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing);
 }
 
 .dock a span:not(.pill) {
   display: block !important;
-  font-size: 0.73rem;
-  line-height: 1.15;
-  letter-spacing: -0.005em;
+  font-size: 0.75rem;
+  line-height: 16px;
+  letter-spacing: 0.4px;
 }
 
-.dock a:hover {
-  color: var(--ink);
+/* M3 56x32 Indicator & State Layer Capsule (.pill) */
+.dock a .pill {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 56px;
+  height: 32px;
+  margin-left: -28px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: transparent;
+  border: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition:
+    background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    transform var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing);
 }
 
-.dock a:active {
-  transform: scale(0.93);
+@media (hover: hover) {
+  .dock a:not([aria-current]):hover .pill {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  }
+  .dock a:not([aria-current]):hover svg,
+  .dock a:not([aria-current]):hover {
+    color: var(--md-sys-color-on-surface);
+  }
+}
+
+.dock a:active svg {
+  transform: scale(0.92);
 }
 
 .dock a[aria-current] {
-  color: var(--ink);
+  color: var(--md-sys-color-on-surface);
   font-weight: 700;
 }
 
 .dock a[aria-current] svg {
-  color: var(--accent);
-  transform: translateY(-1px);
+  color: var(--md-sys-color-on-secondary-container);
 }
 
-/* M3 Active Indicator Pill (Sadece ikonu saran yatay hap) */
-.pill {
-  position: absolute;
-  top: 4px;
-  left: 50%;
-  width: 56px;
-  height: 30px;
-  margin-left: -28px;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  border: 1px solid rgba(99, 199, 255, 0.22);
+.dock a[aria-current] .pill {
+  background: var(--md-sys-color-secondary-container);
   view-transition-name: pill;
-  pointer-events: none;
 }
 
-:root:not([data-theme=dark]) .pill {
-  border-color: rgba(9, 105, 195, 0.18);
+@media (hover: hover) {
+  .dock a[aria-current]:hover .pill {
+    background: color-mix(in srgb, var(--md-sys-color-on-secondary-container) 8%, var(--md-sys-color-secondary-container));
+  }
 }
 
-/* Masaüstü (PC / Geniş Ekran): Material 3 Sol Yan Sütun — Navigation Rail */
-@media (min-width: 769px) {
+/* Medium & Expanded Windows (≥600px): @materialwebunofficial/md3e-web md-navigation-rail */
+@media (min-width: 600px) {
   body:has(#dock:not([hidden])) {
-    padding-left: 88px;
+    padding-left: 96px;
     padding-bottom: 48px;
   }
 
   .dock {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: auto;
-    width: 88px;
-    height: 100svh;
-    padding: 24px 8px;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inset-inline-end: auto;
+    width: 96px;
+    height: 100vh;
+    height: 100dvh;
+    padding-block-start: calc(44px + env(safe-area-inset-top, 0px));
+    padding-block-end: max(24px, env(safe-area-inset-bottom, 0px));
+    padding-inline: 0;
     border-top: 0;
-    border-right: 1px solid var(--line);
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.18);
+    border-right: 1px solid var(--md-sys-color-outline-variant);
+    background: var(--md-sys-color-surface);
+    box-shadow: none;
     flex-direction: column !important;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     overflow-x: hidden;
     overflow-y: auto;
-    gap: 14px;
+    overscroll-behavior-y: contain;
+    gap: 12px;
   }
 
   .dock a {
     flex: 0 0 auto;
-    width: 72px;
-    min-width: 72px;
-    max-width: 72px;
-    padding: 8px 4px 6px !important;
-    gap: 6px;
-    border-radius: 16px;
+    width: 96px;
+    min-width: 96px;
+    max-width: 96px;
+    min-height: 56px;
+    padding: 6px 8px 6px !important;
+    gap: 4px;
   }
 
-  .dock a:not([aria-current]):hover {
-    background: var(--glass);
-  }
-
-  .pill {
+  .dock a .pill {
     top: 6px;
-    width: 54px;
+    width: 56px;
     height: 32px;
-    margin-left: -27px;
+    margin-left: -28px;
   }
 }
 
 @media (min-width: 1024px) {
   .wrap,
   .bar-in {
-    max-width: 920px;
+    max-width: 960px;
   }
 }
 
@@ -950,33 +1072,39 @@ h1 {
 .search,
 .pick,
 .view {
-  height: 46px;
+  height: 48px;
 }
 
+/* @materialwebunofficial/md3e-web — md-search-bar (Surface Container High Pill) */
 .search {
   position: relative;
   display: flex !important;
   align-items: center;
   gap: 10px;
-  padding: 0 16px;
-  border-radius: 999px;
-  color: var(--ink2);
+  padding: 0 18px;
+  border-radius: var(--md-sys-shape-corner-full);
+  color: var(--md-sys-color-on-surface-variant);
   min-width: 0;
-  background: var(--glass);
-  border: 1px solid var(--line);
-  transition: border-color 0.2s, background 0.2s;
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid transparent;
+  box-shadow: none;
+  transition:
+    background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    border-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    box-shadow var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing);
 }
 
 .search svg {
-  width: 19px;
-  height: 19px;
+  width: 20px;
+  height: 20px;
   flex: none;
   display: block;
 }
 
 .search:has(input:focus-visible) {
-  border-color: var(--accent);
-  background: var(--glass-hi);
+  border-color: var(--md-sys-color-primary);
+  background: var(--md-sys-color-surface-container-highest);
+  box-shadow: var(--md-sys-elevation-level2);
   outline: none;
 }
 
@@ -1009,21 +1137,24 @@ input::placeholder {
   position: relative;
   display: flex;
   align-items: center;
-  border-radius: 14px;
-  background: var(--glass);
-  border: 1px solid var(--line);
-  transition: border-color 0.2s, background 0.2s;
+  border-radius: var(--md-sys-shape-corner-large);
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid transparent;
+  box-shadow: none;
+  transition:
+    border-radius var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing),
+    background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing);
 }
 
 .pick:hover {
-  border-color: var(--line-strong);
+  background: var(--md-sys-color-surface-container-highest);
 }
 
 .pick select {
   appearance: none;
   -webkit-appearance: none;
   height: 100%;
-  padding: 0 36px 0 14px;
+  padding: 0 36px 0 16px;
   cursor: pointer;
   border-radius: inherit;
   font-size: 0.88rem;
@@ -1039,59 +1170,82 @@ input::placeholder {
   color: var(--ink2);
 }
 
-/* M3 Segmented Button Group (.view) */
+/* @materialwebunofficial/md3e-web — md-button-group[variant="connected"] (.view) */
 .view {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 3px;
-  padding: 4px;
-  border-radius: 15px;
-  background: var(--glass);
-  border: 1px solid var(--line);
+  gap: 2px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
 
 .view button {
-  width: 38px;
-  height: 36px;
+  position: relative;
+  overflow: hidden;
+  width: 44px;
+  height: 40px;
   border: 0;
-  border-radius: 11px;
-  background: none;
-  color: var(--ink2);
+  border-radius: var(--md-sys-shape-corner-small);
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
   display: grid;
   place-items: center;
   transition:
-    background 0.22s var(--ease),
-    color 0.2s,
-    border-radius 0.25s var(--spring),
-    transform 0.25s var(--spring);
+    background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    border-radius var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing),
+    transform var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing);
+}
+
+.view button:first-child {
+  border-radius: var(--md-sys-shape-corner-full) var(--md-sys-shape-corner-small) var(--md-sys-shape-corner-small) var(--md-sys-shape-corner-full);
+}
+
+.view button:last-child {
+  border-radius: var(--md-sys-shape-corner-small) var(--md-sys-shape-corner-full) var(--md-sys-shape-corner-full) var(--md-sys-shape-corner-small);
+}
+
+.view button:only-child {
+  border-radius: var(--md-sys-shape-corner-full);
 }
 
 .view button:hover:not([aria-pressed=true]) {
-  color: var(--ink);
-  background: var(--glass2);
+  color: var(--md-sys-color-on-surface);
+  background: var(--md-sys-color-surface-container-highest);
 }
 
 .view button:active {
-  transform: scale(0.9);
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  transform: scaleX(1.06);
 }
 
 .view button svg {
+  position: relative;
+  z-index: 1;
   width: 19px;
   height: 19px;
 }
 
+/* Connected Group: Seçili buton tam yuvarlak hap (9999px) olur */
 .view button[aria-pressed=true] {
-  background: var(--accent-soft);
-  color: var(--accent);
-  border-radius: 10px;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-radius: var(--md-sys-shape-corner-full) !important;
 }
 
 #randomPickBtn {
-  width: 46px !important;
-  height: 46px !important;
-  border-radius: 14px;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: var(--md-sys-shape-corner-full);
   flex: none;
+}
+
+#randomPickBtn:active {
+  border-radius: var(--md-sys-shape-corner-medium);
 }
 
 .fw {
@@ -1100,9 +1254,8 @@ input::placeholder {
 }
 
 .fw .btn {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
+  width: 44px;
+  height: 44px;
 }
 
 @media (min-width: 540px) {
@@ -1120,10 +1273,10 @@ input::placeholder {
     flex: 0 0 auto;
   }
   #randomPickBtn {
-    flex: 0 0 46px;
+    flex: 0 0 44px;
   }
   .fw {
-    flex: 0 0 46px;
+    flex: 0 0 44px;
   }
 }
 
@@ -1157,8 +1310,8 @@ input::placeholder {
     height: 44px;
   }
   .view button {
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
   }
   #randomPickBtn {
     order: 5;
@@ -1168,7 +1321,11 @@ input::placeholder {
   }
 }
 
-/* M3 Expressive Shape-Morphing Filter Chips (.chips) */
+/* @materialwebunofficial/md3e-web — md-chip Expressive Shape Morphing (.chips)
+   - Default (unselected): 12px (--md-sys-shape-expressive-chip-default)
+   - Pressed (:active): 8px (--md-sys-shape-expressive-chip-pressed)
+   - Selected ([aria-pressed=true]): 9999px (--md-sys-shape-expressive-chip-selected)
+*/
 .chips {
   display: flex;
   gap: 8px;
@@ -1183,38 +1340,44 @@ input::placeholder {
 }
 
 .chips button {
+  position: relative;
+  overflow: hidden;
   flex: none;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 8px 16px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-expressive-chip-default);
+  padding: 0 16px;
   cursor: pointer;
-  color: var(--ink2);
+  color: var(--md-sys-color-on-surface-variant);
   font-weight: 560;
-  font-size: 0.88rem;
-  background: var(--glass);
+  font-size: 0.875rem;
+  letter-spacing: 0.1px;
+  background: var(--md-sys-color-surface-container-low);
   transition:
-    background 0.22s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    border-radius 0.28s var(--spring),
-    transform 0.25s var(--spring);
+    background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    border-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    border-radius var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing),
+    transform var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing);
 }
 
 .chips button:hover:not([aria-pressed=true]) {
-  color: var(--ink);
-  border-color: var(--line-strong);
-  background: var(--glass-hi);
+  color: var(--md-sys-color-on-surface);
+  background: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, var(--md-sys-color-surface-container-low));
 }
 
 .chips button:active {
-  transform: scale(0.95);
+  border-radius: var(--md-sys-shape-expressive-chip-pressed);
+  transform: scale(0.96);
 }
 
-/* Seçili çip M3 Expressive 12px squircle formuna dönüşür */
+/* Seçili çip @materialwebunofficial/md3e-web standardında tam yuvarlak hap (9999px) ve Secondary Container olur */
 .chips button[aria-pressed=true] {
-  border-radius: 12px;
-  background: var(--ink);
-  color: var(--bg);
+  border-radius: var(--md-sys-shape-expressive-chip-selected);
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
   border-color: transparent;
   font-weight: 680;
 }
@@ -1222,8 +1385,8 @@ input::placeholder {
 .chips button small {
   font-family: var(--mono);
   font-size: 0.74rem;
-  opacity: 0.7;
-  margin-left: 5px;
+  opacity: 0.72;
+  margin-left: 6px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -2219,9 +2382,10 @@ h3 a:focus-visible {
   border: 1px solid rgba(234, 179, 8, 0.25);
 }
 
+/* @materialwebunofficial/md3e-web — md-button-group[variant="connected"] (.sh-rb-tabs) */
 .sh-rb-tabs {
   display: flex;
-  gap: 6px;
+  gap: 2px;
   overflow-x: auto;
   padding: 2px 0 10px;
   margin-bottom: 10px;
@@ -2234,42 +2398,60 @@ h3 a:focus-visible {
 }
 
 .sh-rb-tab {
+  position: relative;
+  overflow: hidden;
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 6px 13px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
+  padding: 7px 14px;
+  border-radius: var(--md-sys-shape-corner-small);
+  border: 0;
   font-size: 0.76rem;
   font-weight: 620;
   cursor: pointer;
-  background: var(--glass);
-  color: var(--ink2);
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-radius 0.25s var(--spring),
-    border-color 0.2s ease;
+    background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    border-radius var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing),
+    transform var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing);
+}
+
+.sh-rb-tab:first-child {
+  border-radius: var(--md-sys-shape-corner-full) var(--md-sys-shape-corner-small) var(--md-sys-shape-corner-small) var(--md-sys-shape-corner-full);
+}
+
+.sh-rb-tab:last-child {
+  border-radius: var(--md-sys-shape-corner-small) var(--md-sys-shape-corner-full) var(--md-sys-shape-corner-full) var(--md-sys-shape-corner-small);
+}
+
+.sh-rb-tab:only-child {
+  border-radius: var(--md-sys-shape-corner-full);
 }
 
 .sh-rb-tab:hover:not(.active) {
-  color: var(--ink);
-  border-color: var(--line-strong);
+  color: var(--md-sys-color-on-surface);
+  background: var(--md-sys-color-surface-container-highest);
 }
 
-/* Aktif Sezon Sekmesi M3 Expressive 11px Squircle Formuna Dönüşür */
+.sh-rb-tab:active {
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  transform: scaleX(1.04);
+}
+
+/* Connected Group: Seçili Sezon Sekmesi Tam Yuvarlak Hap (9999px) ve Secondary Container Olur */
 .sh-rb-tab.active {
-  border-radius: 11px;
-  background: var(--ink);
-  color: var(--bg);
-  border-color: transparent;
+  border-radius: var(--md-sys-shape-corner-full) !important;
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
   font-weight: 700;
 }
 
 .sh-rb-tab.active .sh-rb-tab-score {
-  color: var(--bg);
-  opacity: 0.85;
+  color: var(--md-sys-color-on-secondary-container);
+  opacity: 0.9;
 }
 
 .sh-rb-tab-score {

@@ -1439,10 +1439,118 @@
   })();
 
   // ============================================================================
+  // [M3 EXPRESSIVE SEED COLOR PICKER]: @materialwebunofficial/md3e-web "Make it yours"
+  // ============================================================================
+  (() => {
+    const SEEDS = window.MD3_SEEDS || [
+      { id: 'purple', name: 'Mor',          hex: '#6750A4' },
+      { id: 'blue',   name: 'Mavi',         hex: '#185EAC' },
+      { id: 'ocean',  name: 'Okyanus',      hex: '#00639B' },
+      { id: 'green',  name: 'Orman Yeşili', hex: '#386A20' },
+      { id: 'amber',  name: 'Kehribar',     hex: '#7D5700' },
+      { id: 'coral',  name: 'Mercan',       hex: '#9C4146' }
+    ];
+
+    const getCurSeed = () => document.documentElement.dataset.seed || 'purple';
+
+    // 1. Üst Bar Palet Butonu ve Popover Menüsü (Tüm Sayfalarda)
+    const actions = document.querySelector('.bar-actions, .admin-bar-actions');
+    const themeBtn = document.getElementById('theme');
+    if (actions && !document.getElementById('seedBtn')) {
+      const wrap = el('div', 'm3-seed-pop-wrap');
+      const btn = el('button', 'btn glass');
+      btn.id = 'seedBtn';
+      btn.type = 'button';
+      btn.title = 'Material You Tema Rengi';
+      btn.setAttribute('aria-label', 'Material You Tema Rengi');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a10 10 0 0 0 0 20 2.5 2.5 0 0 0 2.5-2.5c0-.6-.2-1.2-.6-1.6-.4-.4-.6-1-.6-1.6a2.5 2.5 0 0 1 2.5-2.5H17a5 5 0 0 0 5-5c0-4.4-4.5-8-10-8Z"/><circle cx="7.5" cy="10.5" r="1" fill="currentColor"/><circle cx="12" cy="7.5" r="1" fill="currentColor"/><circle cx="16.5" cy="10.5" r="1" fill="currentColor"/></svg>`;
+
+      const pop = el('div', 'm3-seed-popover');
+      pop.hidden = true;
+      const popTitle = el('div', 'm3-seed-pop-title', 'Material You Rengi');
+      const popGrid = el('div', 'm3-seed-pop-grid');
+      for (const s of SEEDS) {
+        const b = el('button', 'm3-seed-pop-btn');
+        b.type = 'button';
+        b.dataset.seedId = s.id;
+        b.setAttribute('aria-pressed', String(s.id === getCurSeed()));
+        const sw = el('span', 'm3-seed-swatch');
+        sw.style.setProperty('--seed', s.hex);
+        const lb = el('span', '', s.name);
+        b.append(sw, lb);
+        b.addEventListener('click', () => {
+          if (window.setMaterialSeed) window.setMaterialSeed(s.id);
+        });
+        popGrid.append(b);
+      }
+      pop.append(popTitle, popGrid);
+      wrap.append(btn, pop);
+
+      if (themeBtn && themeBtn.parentNode === actions) {
+        actions.insertBefore(wrap, themeBtn);
+      } else {
+        actions.append(wrap);
+      }
+
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const next = pop.hidden;
+        pop.hidden = !next;
+        btn.setAttribute('aria-expanded', String(next));
+        btn.setAttribute('aria-pressed', String(next));
+      });
+
+      document.addEventListener('click', e => {
+        if (!pop.hidden && !wrap.contains(e.target)) {
+          pop.hidden = true;
+          btn.setAttribute('aria-expanded', 'false');
+          btn.setAttribute('aria-pressed', 'false');
+        }
+      });
+    }
+
+    // 2. Ana Sayfa "Make it yours / Kendi rengini seç" Bandı (materialwebunofficial.github.io stili)
+    const heroSec = document.getElementById('heroSection');
+    if (cur === 'home' && heroSec && !document.getElementById('m3SeedBand')) {
+      const band = el('section', 'm3-seed-band');
+      band.id = 'm3SeedBand';
+      band.setAttribute('aria-label', 'Material You Renk Seçici');
+      const txt = el('div', 'm3-seed-band-text');
+      txt.innerHTML = `<h2 class="m3-seed-band-title">Kendi rengini seç</h2><p class="m3-seed-band-desc">Bir Material You tohum rengi seçin; tüm yüzeyler ve vurgular anında bu renkten üretilir.</p>`;
+      const chips = el('div', 'm3-seed-chips');
+      chips.setAttribute('role', 'group');
+      for (const s of SEEDS) {
+        const c = el('button', 'm3-seed-chip');
+        c.type = 'button';
+        c.dataset.seedId = s.id;
+        c.setAttribute('aria-pressed', String(s.id === getCurSeed()));
+        const sw = el('span', 'm3-seed-swatch');
+        sw.style.setProperty('--seed', s.hex);
+        const lb = el('span', '', s.name);
+        c.append(sw, lb);
+        c.addEventListener('click', () => {
+          if (window.setMaterialSeed) window.setMaterialSeed(s.id);
+        });
+        chips.append(c);
+      }
+      band.append(txt, chips);
+      heroSec.insertAdjacentElement('afterend', band);
+    }
+
+    document.addEventListener('themechange', () => {
+      const activeSeed = getCurSeed();
+      document.querySelectorAll('[data-seed-id]').forEach(node => {
+        node.setAttribute('aria-pressed', String(node.dataset.seedId === activeSeed));
+      });
+    });
+  })();
+
+  // ============================================================================
   // [M3 EXPRESSIVE RIPPLE MOTORU]: @materialwebunofficial/md3e-web Uyumlu Dalga
   // ============================================================================
   (() => {
-    const RIPPLE_SEL = '.btn, .chips button, .view button, .seg button, .sh-rb-tab, .dock a, .btn-primary, .btn-secondary, .btn-subtle, .btn-danger, .btn-chip, .icon-btn, .auth-tab, .nav-tab, .page-text-tab, .fav-toggle-btn, .quick-ep-btn, .rq-strip-item, .rq-mini-sc, .part-criteria-btn, .cmd-palette-item, .stats-nav-item, .timeline-cat-btn, .timeline-mode-btn';
+    const RIPPLE_SEL = '.btn, .chips button, .view button, .seg button, .sh-rb-tab, .dock a, .m3-seed-chip, .m3-seed-pop-btn, .tile > a, .links a, .sheet-nav-btn, .sheet-share-btn, .sh-al, .btn-primary, .btn-secondary, .btn-subtle, .btn-danger, .btn-chip, .icon-btn, .auth-tab, .nav-tab, .page-text-tab, .fav-toggle-btn, .quick-ep-btn, .rq-strip-item, .rq-mini-sc, .part-criteria-btn, .cmd-palette-item, .stats-nav-item, .timeline-cat-btn, .timeline-mode-btn';
     document.addEventListener('pointerdown', e => {
       if (e.button !== 0) return;
       const host = e.target && e.target.closest ? e.target.closest(RIPPLE_SEL) : null;

@@ -10,29 +10,40 @@
 }
 
 .timeline-hero {
-  text-align: center;
-  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 48px);
+  margin-bottom: 24px;
+  border-radius: 32px;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: 0;
 }
 .timeline-hero h1 {
-  font-size: 2.2rem;
+  font-size: clamp(1.9rem, 4vw, 2.75rem);
   margin: 0 0 8px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--md-sys-color-on-primary-container);
 }
 .timeline-hero .sub {
-  color: var(--txt-sub, #9ca3af);
-  font-size: 0.95rem;
-  max-width: 580px;
-  margin: 0 auto;
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.88;
+  font-size: 1rem;
+  max-width: 640px;
+  margin: 0;
 }
 
 /* Kontroller: Kategori Filtresi & Sıralama Modu */
 .timeline-controls {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 12px;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 .timeline-cat-nav {
   display: inline-flex;
@@ -130,17 +141,17 @@
 /* Dikey Zaman Tüneli */
 .timeline-container {
   position: relative;
-  max-width: 880px;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 10px 16px 60px;
+  padding: 10px 8px 60px;
 }
 .timeline-spine {
   position: absolute;
   top: 30px;
   bottom: 30px;
   left: 28px;
-  width: 2px;
-  background: linear-gradient(to bottom, var(--accent), var(--star) 50%, var(--line));
+  width: 3px;
+  background: var(--md-sys-color-secondary-container);
   border-radius: 99px;
 }
 @media (min-width: 768px) {
@@ -165,29 +176,30 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 20px;
-  border-radius: 14px;
-  background: var(--glass2);
-  border: 1px solid var(--line-strong);
-  box-shadow: var(--lift);
+  padding: 8px 22px;
+  border-radius: var(--md-sys-shape-corner-full, 9999px);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: 0;
+  box-shadow: none;
   font-size: 1.1rem;
-  font-weight: 750;
+  font-weight: 700;
   font-family: var(--mono);
-  color: var(--ink);
   letter-spacing: -0.01em;
 }
 .timeline-year-count {
   font-size: 0.78rem;
   font-weight: 600;
   font-family: var(--sans);
-  color: var(--accent);
+  color: var(--md-sys-color-on-primary-container);
+  opacity: 0.85;
 }
 
 /* Kart Öğeleri */
 .timeline-items-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 .timeline-item {
   position: relative;
@@ -197,18 +209,16 @@
 }
 .timeline-node-dot {
   position: absolute;
-  left: 22px;
-  width: 15px;
-  height: 15px;
+  left: 21px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: #0b0d13;
-  border: 3px solid var(--accent, #0a7fd1);
-  box-shadow: 0 0 10px rgba(10, 127, 209, 0.5);
+  background: var(--md-sys-color-surface);
+  border: 4px solid var(--md-sys-color-primary);
   z-index: 2;
 }
 .timeline-item.is-fav .timeline-node-dot {
-  border-color: #f5a623;
-  box-shadow: 0 0 14px rgba(245, 166, 35, 0.7);
+  border-color: var(--md-sys-color-tertiary);
 }
 @media (min-width: 768px) {
   .timeline-node-dot {
@@ -220,11 +230,16 @@
 .timeline-card {
   display: flex;
   gap: 14px;
-  padding: 12px 14px;
-  border-radius: 16px;
+  padding: 12px 16px 12px 12px;
+  border-radius: var(--md-sys-shape-corner-extra-large, 28px);
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+  border: 0 !important;
+  box-shadow: none !important;
   text-decoration: none;
-  color: inherit;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color var(--md-sys-motion-effect-fast-duration, 150ms) var(--md-sys-motion-effect-fast-easing, ease),
+    border-radius var(--md-sys-motion-spatial-fast-duration, 350ms) var(--md-sys-motion-spatial-fast-easing, ease);
   width: calc(100% - 56px);
   margin-left: 56px;
 }
@@ -241,17 +256,17 @@
   }
 }
 .timeline-card:hover {
-  transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
-  border-color: rgba(255, 255, 255, 0.24);
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-radius: var(--md-sys-shape-corner-large, 16px);
 }
 .timeline-thumb {
-  width: 65px;
-  height: 95px;
-  border-radius: 9px;
+  width: 66px;
+  height: 96px;
+  border-radius: var(--md-sys-shape-corner-large, 16px);
   object-fit: cover;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  background: var(--md-sys-color-surface-container-highest);
 }
 .timeline-info {
   display: flex;
@@ -270,23 +285,24 @@
 .timeline-cat-pill {
   font-size: 0.72rem;
   font-weight: 700;
-  padding: 2px 7px;
+  padding: 3px 9px;
   border-radius: 99px;
-  background: rgba(10, 127, 209, 0.18);
-  color: #5cc8ff;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
 }
 .timeline-score-pill {
   font-size: 0.75rem;
-  font-weight: 800;
-  color: #ffc247;
+  font-weight: 700;
+  font-family: var(--mono);
+  color: var(--md-sys-color-primary);
 }
 .timeline-fav-pill {
   font-size: 0.72rem;
-  font-weight: 750;
-  color: #ffc247;
+  font-weight: 700;
+  color: var(--md-sys-color-tertiary);
 }
 .timeline-title {
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   font-weight: 700;
   margin: 0 0 4px;
   line-height: 1.3;
@@ -296,7 +312,7 @@
 }
 .timeline-sub-txt {
   font-size: 0.78rem;
-  color: var(--txt-sub, #9ca3af);
+  color: var(--md-sys-color-on-surface-variant);
   line-height: 1.4;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -304,6 +320,7 @@
 }
 .timeline-date-lbl {
   font-size: 0.72rem;
-  color: var(--txt-sub, #7e8798);
+  font-family: var(--mono);
+  color: var(--md-sys-color-on-surface-variant);
   margin-top: 4px;
 }

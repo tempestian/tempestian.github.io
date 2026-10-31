@@ -219,8 +219,8 @@ textarea.inp{height:auto;padding:10px 14px;resize:vertical;font-family:inherit}
 .rq-mini-sc:active{border-radius:var(--md-sys-shape-corner-extra-small,4px);transform:scale(.94)}
 .rq-mini-sc:hover,.rq-mini-sc.on{background:var(--md-sys-color-primary);color:var(--md-sys-color-on-primary);border-radius:var(--md-sys-shape-corner-full,9999px)}
 
-.rq-nav-footer{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding-top:14px;border-top:0}
-.rq-kbd-hint{font-size:.76rem;color:var(--md-sys-color-on-surface-variant)}
+.rq-nav-footer{position:sticky;bottom:12px;z-index:25;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px;border-radius:var(--md-sys-shape-corner-extra-large,24px);background:color-mix(in srgb,var(--md-sys-color-surface-container-high) 92%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--md-sys-color-outline-variant,rgba(255,255,255,0.08));box-shadow:0 8px 32px rgba(0,0,0,0.36);margin-top:14px}
+.rq-kbd-hint{font-size:.76rem;color:var(--md-sys-color-on-surface-variant);display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
 .rq-kbd-hint kbd{padding:3px 8px;border-radius:var(--md-sys-shape-corner-small,8px);background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container);border:0;font-family:var(--mono);font-size:.73rem}
 
 /* Adım 14: Veri Sağlığı Denetçisi ve Yedekleme Merkezi Stilleri */
@@ -293,10 +293,11 @@ textarea.inp{height:auto;padding:10px 14px;resize:vertical;font-family:inherit}
   .rq-progress-wrap{width:100%;min-width:0}
   .rq-subitem-row{grid-template-columns:1fr;gap:8px;padding:10px 12px}
   .rq-subitem-scores{width:100%;justify-content:flex-start}
-  .rq-nav-footer{flex-direction:column-reverse;align-items:stretch;gap:8px}
+  .rq-nav-footer{position:sticky;bottom:8px;z-index:25;flex-direction:column-reverse;align-items:stretch;gap:8px;padding:10px 14px;border-radius:var(--md-sys-shape-corner-large,16px);box-shadow:0 4px 20px rgba(0,0,0,0.45)}
   .rq-nav-footer .form-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:6px}
   .rq-nav-footer .form-actions:first-child{grid-template-columns:1fr 1fr}
-  .rq-kbd-hint{text-align:center;font-size:.72rem}
+  .rq-nav-footer .btn-primary,.rq-nav-footer .btn-secondary,.rq-nav-footer .btn-subtle{padding:10px 12px;font-size:.82rem;min-height:42px}
+  .rq-kbd-hint{text-align:center;font-size:.72rem;justify-content:center}
 }
 
 /* Çoklu Sezon & Edisyon Görsel Kapak Seçici Menüsü Stilleri */

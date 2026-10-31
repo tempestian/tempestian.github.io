@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-10-29",
+  "updated": "2026-10-31",
   "source": "site-first:movie",
   "customGenreCatalog": [
     "Bilim Kurgu",
@@ -64,7 +64,8 @@
       "8": 0,
       "9": 1,
       "10": 1
-    }
+    },
+    "episodes": 3
   },
   "items": [
     {
@@ -228,7 +229,9 @@
         "impact": 4
       },
       "imdbId": "tt0120903",
-      "director": ""
+      "director": "Bryan Singer",
+      "banner": "https://m.media-amazon.com/images/M/MV5BNzNjZjQwOTAtNWQ3NC00MmJlLThlZDEtZmUyMWQ3NmE4Y2Y5XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+      "year": 2000
     }
   ]
 }

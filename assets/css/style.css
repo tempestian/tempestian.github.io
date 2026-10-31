@@ -2747,10 +2747,21 @@ h3 a:focus-visible {
   display: flex;
   gap: 2px;
   overflow-x: auto;
+  overflow-y: hidden;
   padding: 2px 0 10px;
   margin-bottom: 10px;
   border-bottom: 0;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+  scroll-behavior: smooth;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.sh-rb-tabs.is-dragging {
+  cursor: grabbing !important;
 }
 
 .sh-rb-tabs::-webkit-scrollbar {
@@ -2772,6 +2783,7 @@ h3 a:focus-visible {
   cursor: pointer;
   background: var(--md-sys-color-surface-container-high);
   color: var(--md-sys-color-on-surface-variant);
+  touch-action: manipulation;
   transition:
     background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
     color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),

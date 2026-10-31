@@ -271,6 +271,9 @@
 
       const renderView = () => {
         const curTab = tabs[activeTabIdx] || tabs[0];
+        const existingTabsBar = containerEl.querySelector('.sh-rb-tabs');
+        const prevScrollLeft = existingTabsBar ? existingTabsBar.scrollLeft : 0;
+
         const tabsHtml = tabs.map((t, i) => `
           <button type="button" class="sh-rb-tab${i === activeTabIdx ? ' active' : ''}" data-tab-idx="${i}" role="tab" aria-selected="${i === activeTabIdx}">
             <span>${esc(t.name)}</span>
@@ -294,11 +297,20 @@
           </div>
         `;
 
+        const newTabsBar = containerEl.querySelector('.sh-rb-tabs');
+        if (newTabsBar && prevScrollLeft > 0) {
+          newTabsBar.scrollLeft = prevScrollLeft;
+        }
+
         containerEl.querySelectorAll('.sh-rb-tab').forEach(btn => {
           btn.onclick = e => {
             e.stopPropagation();
             activeTabIdx = Number(btn.dataset.tabIdx);
             renderView();
+            const activeBtn = containerEl.querySelector(`.sh-rb-tab[data-tab-idx="${activeTabIdx}"]`);
+            if (activeBtn && typeof activeBtn.scrollIntoView === 'function') {
+              activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+            }
           };
         });
       };
@@ -789,8 +801,10 @@
   // hem fareyle basılı tutup sürükleyerek (drag-to-scroll) hem de fare tekerleğiyle (wheel)
   // kaydırılabilmesini sağlayan evrensel olay dinleyicisi.
   (() => {
-    // [AI-MIMARI-NOTU: ADIM 21]: .cmdk-ScopeBar sekme şeridi de dahil edilerek arama modalında pürüzsüz kaydırma sağlandı.
-    const SELECTOR = '.chips, .dock, .rq-strip, .cmdk-ScopeBar, .cmdk-scope-bar';
+    // [AI-MIMARI-NOTU: ADIM 21]: .cmdk-ScopeBar, .sh-rb-tabs (Sezon Kriter Karnesi Sekmeleri), .criteria-profiles-bar
+    // ve yatay filtre şeritleri dahil edilerek hem fare tekerleği (wheel), hem dokunmatik (touch/swipe),
+    // hem de fare ile sürükleme (drag-to-scroll) pürüzsüz çalıştırıldı.
+    const SELECTOR = '.chips, .dock, .rq-strip, .cmdk-ScopeBar, .cmdk-scope-bar, .sh-rb-tabs, .criteria-profiles-bar, .tag-group-chips';
 
     document.addEventListener('wheel', e => {
       const el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
@@ -847,9 +861,9 @@
     });
 
     document.addEventListener('click', e => {
-      const btn = e.target && e.target.closest ? e.target.closest('.chips button') : null;
+      const btn = e.target && e.target.closest ? e.target.closest('.chips button, .sh-rb-tab') : null;
       if (!btn) return;
-      const bar = btn.closest('.chips');
+      const bar = btn.closest('.chips, .sh-rb-tabs');
       if (bar && bar.scrollWidth > bar.clientWidth && typeof btn.scrollIntoView === 'function') {
         btn.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
       }

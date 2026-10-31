@@ -8429,7 +8429,7 @@
   // hem fareyle basılı tutup sürükleyerek (drag-to-scroll) hem de fare tekerleğiyle (wheel)
   // kaydırılabilmesini sağlayan evrensel olay dinleyicisi.
   (() => {
-    const SELECTOR = '.chips, .dock, .rq-strip, .anime-stats-bar';
+    const SELECTOR = '.chips, .dock, .rq-strip, .anime-stats-bar, .criteria-profiles-bar, .tag-group-chips, .template-chips, .sh-rb-tabs';
 
     document.addEventListener('wheel', e => {
       const el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;

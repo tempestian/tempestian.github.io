@@ -639,7 +639,7 @@ function renderTierBoard(visibleNodes) {
     t('.sh-sub').textContent = bits.join(' · ');
     const gEl = t('.sh-genres');
     if (gEl) {
-      gEl.textContent = effGenres.join(' · ');
+      gEl.innerHTML = effGenres.map(g => `<span class="sh-genre-chip">${UI.esc(g)}</span>`).join('');
       gEl.hidden = !effGenres.length;
     }
     const im = t('.sheet-cover');

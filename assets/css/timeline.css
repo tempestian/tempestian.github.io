@@ -35,12 +35,14 @@
   margin-bottom: 32px;
 }
 .timeline-cat-nav {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   overflow-x: auto;
-  padding: 8px 12px;
-  border-radius: 99px;
+  padding: 5px;
+  border-radius: 18px;
+  background: var(--glass);
+  border: 1px solid var(--line);
   max-width: 100%;
   scrollbar-width: none;
 }
@@ -48,25 +50,26 @@
   display: none;
 }
 .timeline-cat-btn {
-  border: 0;
+  border: 1px solid transparent;
   background: transparent;
-  color: var(--txt-sub, #9ca3af);
-  font-size: 0.85rem;
+  color: var(--ink2);
+  font-size: 0.84rem;
   font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 99px;
+  padding: 7px 14px;
+  border-radius: 999px;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s ease;
+  transition: all 0.22s cubic-bezier(0.2, 0, 0, 1);
 }
 .timeline-cat-btn:hover {
-  color: var(--txt, #fff);
-  background: rgba(255, 255, 255, 0.06);
+  color: var(--ink);
+  background: var(--glass-hi);
 }
 .timeline-cat-btn.is-active {
-  color: #fff;
-  background: var(--accent, #0a7fd1);
-  box-shadow: 0 4px 12px rgba(10, 127, 209, 0.35);
+  color: var(--on-accent);
+  background: var(--accent);
+  border-radius: 12px;
+  font-weight: 700;
 }
 
 .timeline-mode-toggle {
@@ -74,24 +77,26 @@
   align-items: center;
   gap: 4px;
   padding: 4px;
-  border-radius: 99px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: var(--glass);
+  border: 1px solid var(--line);
 }
 .timeline-mode-btn {
   border: 0;
   background: transparent;
-  color: var(--txt-sub, #9ca3af);
+  color: var(--ink2);
   font-size: 0.78rem;
   font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 99px;
+  padding: 6px 14px;
+  border-radius: 999px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.22s cubic-bezier(0.2, 0, 0, 1);
 }
 .timeline-mode-btn.is-active {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--txt, #fff);
+  background: color-mix(in oklab, var(--accent) 18%, var(--glass-hi));
+  color: var(--ink);
+  border-radius: 11px;
+  font-weight: 700;
 }
 
 /* Dikey Zaman Tüneli */
@@ -106,8 +111,8 @@
   top: 30px;
   bottom: 30px;
   left: 28px;
-  width: 3px;
-  background: linear-gradient(to bottom, var(--accent, #0a7fd1), #f5a623 45%, #52e3a4 80%, rgba(10, 127, 209, 0.1));
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), var(--star) 50%, var(--line));
   border-radius: 99px;
 }
 @media (min-width: 768px) {
@@ -132,20 +137,22 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 22px;
-  border-radius: 99px;
-  background: var(--glass-hi);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(10, 127, 209, 0.2);
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: 0.03em;
+  padding: 7px 20px;
+  border-radius: 14px;
+  background: var(--glass2);
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--lift);
+  font-size: 1.1rem;
+  font-weight: 750;
+  font-family: var(--mono);
+  color: var(--ink);
+  letter-spacing: -0.01em;
 }
 .timeline-year-count {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  color: var(--accent, #5cc8ff);
+  font-family: var(--sans);
+  color: var(--accent);
 }
 
 /* Kart Öğeleri */

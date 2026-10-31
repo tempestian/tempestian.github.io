@@ -23,37 +23,37 @@
   const json = k => { try { return JSON.parse(ls(k)); } catch (e) { return null; } };
 
   const P = {
-    home: '<path d="M4 11.2 12 4.6l8 6.6V19a1 1 0 0 1-1 1h-4.2v-5.2H9.2V20H5a1 1 0 0 1-1-1z"/>',
-    anime: '<rect x="3.5" y="4.5" width="17" height="12.5" rx="3.6"/><path d="M10.4 8.6v4.4l3.8-2.2z"/><path d="M8.5 20.3h7"/>',
-    manga: '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 19.5V5.5"/><path d="M8 7h8M8 11h6"/>',
-    book: '<path d="M12 6.2c-1.8-1.5-4.4-2-7-1.7v13.8c2.6-.3 5.2.2 7 1.7 1.8-1.5 4.4-2 7-1.7V4.5c-2.6-.3-5.2.2-7 1.7z"/><path d="M12 6.2v13.8"/>',
-    movie: '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M7 5v14M17 5v14M3 9h4M17 9h4M3 15h4M17 15h4"/>',
-    series: '<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="m8 3 4 3 4-3"/><path d="M10 10.2v4.6l4-2.3z"/>',
-    guide: '<circle cx="12" cy="12" r="8.5"/><path d="m14.8 9.2-2 5.6-5.6 2 2-5.6z"/>',
-    game: '<rect x="2.5" y="7" width="19" height="10" rx="5"/><path d="M6.5 12h4M8.5 10v4"/><circle cx="15.5" cy="11" r=".8" fill="currentColor"/><circle cx="17.5" cy="13" r=".8" fill="currentColor"/>',
-    music: '<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
-    code: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12"/>',
-    info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',
+    home: '<path d="M3.5 10.6 12 3.5l8.5 7.1V19a2 2 0 0 1-2 2h-4.2v-5a1.3 1.3 0 0 0-1.3-1.3h-2a1.3 1.3 0 0 0-1.3 1.3v5H5.5a2 2 0 0 1-2-2z"/>',
+    anime: '<path d="M13 4H5.5A2.5 2.5 0 0 0 3 6.5v9A2.5 2.5 0 0 0 5.5 18h13a2.5 2.5 0 0 0 2.5-2.5V11"/><polygon points="10 8.5 14.8 11.2 10 14" fill="currentColor"/><path d="M8 21h8"/><path d="m18.5 2 1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z" fill="currentColor" stroke="none"/>',
+    manga: '<rect x="3.5" y="3" width="17" height="18" rx="2.5"/><path d="M3.5 10h17"/><path d="M13 3l-2 7"/><path d="M11 10v11"/>',
+    book: '<path d="M2.5 5.5A2.5 2.5 0 0 1 5 3h5.5A1.5 1.5 0 0 1 12 4.5v15a1.5 1.5 0 0 0-1.5-1.5H5a2.5 2.5 0 0 1-2.5-2.5z"/><path d="M21.5 5.5A2.5 2.5 0 0 0 19 3h-5.5A1.5 1.5 0 0 0 12 4.5v15a1.5 1.5 0 0 1 1.5-1.5H19a2.5 2.5 0 0 0 2.5-2.5z"/><path d="M16 3v5.5l1.5-1.2 1.5 1.2V3"/>',
+    movie: '<path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',
+    series: '<rect x="3" y="7" width="18" height="13" rx="3"/><path d="m8 2.8 4 4.2 4-4.2"/><polygon points="10.2 10.8 14.8 13.5 10.2 16.2" fill="currentColor"/>',
+    guide: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="m7.5 9.5 3 2.5-3 2.5"/><path d="M12.5 14.5h4.5"/>',
+    game: '<rect x="2.5" y="6.5" width="19" height="11" rx="5.5"/><path d="M6.5 12h4M8.5 10v4"/><circle cx="15.2" cy="10.8" r="1" fill="currentColor"/><circle cx="17.5" cy="13.2" r="1" fill="currentColor"/>',
+    music: '<path d="M9 18V5.5l10-2V16"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
+    code: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5.5l-3 13"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
     sparkle: '<path d="m12 3 2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/>',
     close: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
     dot: '<circle cx="12" cy="12" r="7.5"/>',
-    back: '<path d="M14.5 5.5 8 12l6.5 6.5"/>',
+    back: '<path d="M19 12H5.5M11.5 6l-6 6 6 6"/>',
     moon: '<path d="M19.6 14.6A8 8 0 0 1 9.4 4.4a8 8 0 1 0 10.2 10.2z"/>',
-    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.8v2M12 19.2v2M2.8 12h2M19.2 12h2M5.5 5.5l1.4 1.4M17.1 17.1l1.4 1.4M5.5 18.5l1.4-1.4M17.1 6.9l1.4-1.4"/>',
+    sun: '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M5.3 18.7l1.5-1.5M17.2 6.8l1.5-1.5"/>',
     next: '<path d="M9.5 5.5 16 12l-6.5 6.5"/>',
-    out: '<path d="M8 16 16 8M9 8h7v7"/>',
+    out: '<path d="M7.5 16.5 16.5 7.5M9 7.5h7.5V15"/>',
     search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.2 4.2"/>',
     down: '<path d="m6 9.5 6 6 6-6"/>',
-    grid: '<rect x="4" y="4" width="6.6" height="6.6" rx="2"/><rect x="13.4" y="4" width="6.6" height="6.6" rx="2"/><rect x="4" y="13.4" width="6.6" height="6.6" rx="2"/><rect x="13.4" y="13.4" width="6.6" height="6.6" rx="2"/>',
-    list: '<path d="M9.5 6.5H20M9.5 12H20M9.5 17.5H20"/><circle cx="5" cy="6.5" r=".6"/><circle cx="5" cy="12" r=".6"/><circle cx="5" cy="17.5" r=".6"/>',
+    grid: '<rect x="3.8" y="3.8" width="6.8" height="6.8" rx="2"/><rect x="13.4" y="3.8" width="6.8" height="6.8" rx="2"/><rect x="3.8" y="13.4" width="6.8" height="6.8" rx="2"/><rect x="13.4" y="13.4" width="6.8" height="6.8" rx="2"/>',
+    list: '<path d="M9.5 6.5H20M9.5 12H20M9.5 17.5H20"/><rect x="4" y="5.2" width="2.6" height="2.6" rx=".8" fill="currentColor"/><rect x="4" y="10.7" width="2.6" height="2.6" rx=".8" fill="currentColor"/><rect x="4" y="16.2" width="2.6" height="2.6" rx=".8" fill="currentColor"/>',
     filter: '<path d="M4 7h16M7 12h10M10 17h4"/>',
     chev: '<path d="m6 9.5 6 6 6-6"/>',
     star: '<path fill="currentColor" d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/>',
     tier: '<rect x="3.5" y="4.5" width="4.5" height="4.5" rx="1.2"/><path d="M11 6.8h9.5"/><rect x="3.5" y="10.8" width="4.5" height="4.5" rx="1.2"/><path d="M11 13h7.5"/><rect x="3.5" y="17" width="4.5" height="4.5" rx="1.2"/><path d="M11 19.2h5.5"/>',
     link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
-    dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/>',
-    clock: '<circle cx="12" cy="12" r="8.5"/><polyline points="12 7 12 12 15 14"/>',
-    chart: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>'
+    dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="4.2"/><circle cx="8.5" cy="8.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.25" fill="currentColor"/><circle cx="12" cy="12" r="1.25" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.25" fill="currentColor"/>',
+    clock: '<circle cx="12" cy="12" r="8.5"/><polyline points="12 7 12 12 15.2 14"/>',
+    chart: '<path d="M18 20V10M12 20V4M6 20v-6"/>'
   };
   const icon = n => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[n] || P.dot) + '</svg>';
 
@@ -138,7 +138,7 @@
         <div class="sh-rb-head">
           <span class="sh-rb-title">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/></svg>
-            Detaylı Değerlendirme
+            Detaylı Puanlama Karnesi
           </span>
           <span class="sh-rb-score">★ ${overallScore || '-'} / 10</span>
         </div>
@@ -171,7 +171,7 @@
       // Durum 1: Tek parça veya doğrudan yapım seviyesi değerlendirme
       if (ratedParts.length <= 1 && (!hasItemSubScores || !ratedParts.length)) {
         const targetScores = ratedParts.length === 1 ? ratedParts[0].subScores : item.subScores;
-        const targetTitle = ratedParts.length === 1 && ratedParts[0].name ? ratedParts[0].name : 'Detaylı Değerlendirme';
+        const targetTitle = ratedParts.length === 1 && ratedParts[0].name ? `Detaylı Puanlama Karnesi · ${ratedParts[0].name}` : 'Detaylı Puanlama Karnesi';
         const targetScore = ratedParts.length === 1 && ratedParts[0].score != null ? ratedParts[0].score : overallScore;
 
         containerEl.innerHTML = `
@@ -210,7 +210,7 @@
         const tabsHtml = tabs.map((t, i) => `
           <button type="button" class="sh-rb-tab${i === activeTabIdx ? ' active' : ''}" data-tab-idx="${i}" role="tab" aria-selected="${i === activeTabIdx}">
             <span>${esc(t.name)}</span>
-            <span class="sh-rb-tab-score">★ ${t.score || '-'}</span>
+            <span class="sh-rb-tab-score">· ${t.score || '-'}</span>
           </button>
         `).join('');
 
@@ -218,7 +218,7 @@
           <div class="sh-rb-head">
             <span class="sh-rb-title">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/></svg>
-              Detaylı Puanlama · ${esc(curTab.name)}
+              Detaylı Puanlama Karnesi
             </span>
             <span class="sh-rb-score">★ ${curTab.score || overallScore || '-'} / 10</span>
           </div>
@@ -577,7 +577,7 @@
     applySiteIdentity(d);
 
     const visibleSections = (d.sections || []).filter(Boolean).map(ensureSectionDefaults).filter(s => s.status !== 'hidden');
-    const active = visibleSections.filter(s => s.status === 'active');
+    const active = visibleSections.filter(s => s.status === 'active' || s.id === cur);
 
     // [AI-MIMARI-NOTU]: #dock zaten <nav id="dock" class="dock glass"> olduğu için
     // bağlantılar doğrudan #dock içine eklenir (iç içe <nav> kullanılmaz); böylece

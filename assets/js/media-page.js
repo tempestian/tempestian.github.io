@@ -572,9 +572,9 @@ function renderTierBoard(visibleNodes) {
     }
 
     // [AI-MIMARI-NOTU: ADIM 1 — KAPSAMLI İSTATİSTİK SAYFASINA BAĞLANTI]
-    const fullStatsLink = h('a', 'btn glass', `📊 Kapsamlı ${P.barTitle || ''} İstatistikleri Sayfası →`);
+    const fullStatsLink = h('a', 'btn full-stats-btn', `📊 Kapsamlı ${P.barTitle || ''} İstatistikleri Sayfası →`);
     fullStatsLink.href = 'istatistik/';
-    fullStatsLink.style.cssText = 'display:inline-flex;margin:12px 0 4px;font-size:0.85rem;font-weight:650;text-decoration:none';
+    fullStatsLink.style.cssText = 'display:inline-flex;margin:12px 22px 14px;font-size:0.86rem;font-weight:650;text-decoration:none';
     inn.append(fullStatsLink);
 
     more.onclick = () => { const o = box.classList.toggle('open'); more.setAttribute('aria-expanded', o); };

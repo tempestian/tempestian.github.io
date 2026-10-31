@@ -3059,10 +3059,33 @@
     const adapter = getActiveAdminAdapter();
     const effScore = resolveEffectiveScore(state.editingDraft, adapter.id);
     state.editingDraft.score = effScore;
+
+    // Otomatik Genel Yapım 5 Yıldız Kriter Karnesi Eşleme:
+    // Sezonlar, filmler veya yan içerikler puanlandığında genel yapımın puanı ve karnesi otomatik hesaplanır!
+    const parts = Array.isArray(state.editingDraft.parts) ? state.editingDraft.parts : [];
+    const hasRatedParts = parts.some(p => p && (p.score != null || (p.subScores && Object.keys(p.subScores).length > 0)));
+
+    if (hasRatedParts && effScore != null && effScore >= 2.0) {
+      if (window.TempestianRating && typeof window.TempestianRating.deriveSubScores === 'function') {
+        state.editingDraft.subScores = window.TempestianRating.deriveSubScores(adapter.id, effScore);
+      }
+    } else if (hasRatedParts && (effScore == null || effScore < 1.0)) {
+      delete state.editingDraft.subScores;
+    }
+
     const badge = $('#aeWeightedScoreDisplay');
     if (badge) {
       badge.textContent = effScore != null ? `★ ${effScore}` : 'Puansız';
     }
+
+    // Ana kriter stüdyosu açıksa güncelle
+    const mainCritMount = $('#aeCriteriaStudioMount');
+    if (mainCritMount && mainCritMount.children.length > 0) {
+      renderCriteriaRatingStudio(mainCritMount, state.editingDraft, adapter.id, (newSc) => {
+        state.editingDraft.score = newSc;
+      });
+    }
+
     renderQuickScoreChips();
   }
 
@@ -3185,8 +3208,10 @@
     const autoFillBtn = head.querySelector('#autoFillSubScoresBtn');
     if (autoFillBtn) {
       autoFillBtn.onclick = () => {
-        const scoreInput = document.getElementById('editScore') || document.getElementById('p_score');
-        let targetVal = scoreInput && scoreInput.value !== '' ? Number(scoreInput.value) : (item.score != null ? Number(item.score) : null);
+        const partRow = mountEl.closest ? mountEl.closest('.part-edit-row') : null;
+        const partScoreInp = partRow ? partRow.querySelector('[data-pf="score"]') : null;
+        const scoreInput = partScoreInp || document.getElementById('editScore') || document.getElementById('p_score');
+        let targetVal = (item && item.score != null) ? Number(item.score) : (scoreInput && scoreInput.value !== '' ? Number(scoreInput.value) : null);
         if (targetVal == null || isNaN(targetVal) || targetVal < 1) {
           const userVal = prompt('Lütfen kriter karnesine dağıtılacak genel puanı girin (örn: 8.5):', item.score || '8.0');
           if (!userVal) return;

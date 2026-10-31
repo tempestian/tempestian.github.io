@@ -1442,7 +1442,7 @@
   // [M3 EXPRESSIVE RIPPLE MOTORU]: @materialwebunofficial/md3e-web Uyumlu Dalga
   // ============================================================================
   (() => {
-    const RIPPLE_SEL = '.btn, .chips button, .seg button, .sh-rb-tab, .dock a, .btn-primary, .btn-secondary, .btn-subtle, .btn-chip, .nav-tab, .stats-nav-item, .timeline-cat-btn, .timeline-mode-btn';
+    const RIPPLE_SEL = '.btn, .chips button, .view button, .seg button, .sh-rb-tab, .dock a, .btn-primary, .btn-secondary, .btn-subtle, .btn-danger, .btn-chip, .icon-btn, .auth-tab, .nav-tab, .page-text-tab, .fav-toggle-btn, .quick-ep-btn, .rq-strip-item, .rq-mini-sc, .part-criteria-btn, .cmd-palette-item, .stats-nav-item, .timeline-cat-btn, .timeline-mode-btn';
     document.addEventListener('pointerdown', e => {
       if (e.button !== 0) return;
       const host = e.target && e.target.closest ? e.target.closest(RIPPLE_SEL) : null;

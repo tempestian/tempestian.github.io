@@ -1242,7 +1242,8 @@
               <label class="field" style="flex:1.4">
                 <span>Sıralama / Kuyruk Filtresi</span>
                 <select id="rqFilterSelect" class="inp glass">
-                  <option value="uncategorized">Özel Kategorisi Seçilmemiş Olanlar (Önerilen)</option>
+                  <option value="no_subscores">★ 5 Yıldız Kriter Karnesi Eksik Olanlar (Hızlı Puanlama)</option>
+                  <option value="uncategorized">Özel Kategorisi Seçilmemiş Olanlar</option>
                   <option value="all">Tüm Girdiler (Baştan Sona Sırayla)</option>
                   <option value="favorites">★ Sadece Başyapıtlar / Favoriler</option>
                   <option value="unscored">Puanı Girilmemiş Olanlar</option>
@@ -1360,7 +1361,7 @@
               <button type="button" class="btn-subtle" id="rqPrevBtn">← Önceki Girdi</button>
               <button type="button" class="btn-subtle" id="rqSkipBtn">Değiştirmeden Sıradakine Geç →</button>
             </div>
-            <span class="rq-kbd-hint">Kısayollar: <kbd>Ctrl</kbd>+<kbd>Enter</kbd> Kaydet ve Sıradakine Geç · <kbd>Alt</kbd>+<kbd>→</kbd> Atla · <kbd>Alt</kbd>+<kbd>←</kbd> Önceki</span>
+            <span class="rq-kbd-hint">Kısayollar: <kbd>1</kbd> Aksiyon · <kbd>2</kbd> Hikâye · <kbd>3</kbd> Karakter · <kbd>4</kbd> Dengeli · <kbd>Ctrl</kbd>+<kbd>Enter</kbd> Kaydet &amp; Geç</span>
             <div class="form-actions" style="margin:0">
               <button type="button" class="btn-secondary" id="rqSaveStayBtn">Sadece Kaydet</button>
               <button type="button" class="btn-primary" id="rqSaveNextBtn">Kaydet ve Sıradakine Geç →</button>
@@ -3203,47 +3204,66 @@
       grid.appendChild(row);
     });
 
+    // Akıllı Arketip Profilleri Barı (Hızlı ve gerçekçi puanlama)
+    const profilesBar = document.createElement('div');
+    profilesBar.className = 'criteria-profiles-bar';
+    profilesBar.innerHTML = `
+      <span class="crit-prof-label">⚡ Akıllı Profil:</span>
+      <button type="button" class="btn-subtle btn-xs" data-prof="action" title="Görsel, animasyon, ses ve aksiyonu öne çıkararak puana uyarlar">⚡ Aksiyon & Görsel</button>
+      <button type="button" class="btn-subtle btn-xs" data-prof="story" title="Senaryo, kurgu ve dünya inşasını öne çıkararak puana uyarlar">📖 Hikâye & Kurgu</button>
+      <button type="button" class="btn-subtle btn-xs" data-prof="character" title="Karakter derinliği, oyunculuk/seslendirme ve duyguyu öne çıkarır">🎭 Karakter & Duygu</button>
+      <button type="button" class="btn-subtle btn-xs" data-prof="balanced" title="Kriterler arasında dengeli ve homojen dağıtır">⚖️ Dengeli</button>
+    `;
+
+    function applyArchetypeProfile(profKey) {
+      const partRow = mountEl.closest ? mountEl.closest('.part-edit-row') : null;
+      const partScoreInp = partRow ? partRow.querySelector('[data-pf="score"]') : null;
+      const scoreInput = partScoreInp || document.getElementById('editScore') || document.getElementById('p_score');
+      let targetVal = (item && item.score != null) ? Number(item.score) : (scoreInput && scoreInput.value !== '' ? Number(scoreInput.value) : null);
+      if (targetVal == null || isNaN(targetVal) || targetVal < 1) {
+        const userVal = prompt('Lütfen profile göre dağıtılacak genel puanı girin (örn: 8.5):', item.score || '8.0');
+        if (!userVal) return;
+        targetVal = Number(userVal);
+      }
+      if (isNaN(targetVal) || targetVal < 1 || targetVal > 10) {
+        if (typeof showToast === 'function') showToast('Geçerli bir puan giriniz (1 - 10).', 'warn');
+        return;
+      }
+
+      const derived = window.TempestianRating ? window.TempestianRating.deriveSubScores(typeId, targetVal, profKey) : null;
+      if (!derived) {
+        if (typeof showToast === 'function') showToast('Kriter puanları türetilemedi.', 'warn');
+        return;
+      }
+
+      item.subScores = { ...derived };
+      item.adminModified = true;
+
+      const calculated = window.TempestianRating.computeScore(criteria, item.subScores);
+      if (calculated != null) {
+        item.score = calculated;
+      }
+
+      renderCriteriaRatingStudio(mountEl, item, typeId, onScoreChange, customTitle, customSub);
+      if (typeof onScoreChange === 'function' && calculated != null) {
+        onScoreChange(calculated);
+      }
+      if (typeof showToast === 'function') {
+        const profNames = { action: 'Aksiyon & Görsel', story: 'Hikâye & Kurgu', character: 'Karakter & Duygu', balanced: 'Dengeli' };
+        showToast(`[${profNames[profKey] || profKey}] profili ile 5 yıldızlı karnesi uyarlandı! (${targetVal})`, 'success');
+      }
+    }
+
+    profilesBar.querySelectorAll('[data-prof]').forEach(btn => {
+      btn.onclick = () => applyArchetypeProfile(btn.dataset.prof);
+    });
+
+    wrap.appendChild(profilesBar);
     wrap.appendChild(grid);
 
     const autoFillBtn = head.querySelector('#autoFillSubScoresBtn');
     if (autoFillBtn) {
-      autoFillBtn.onclick = () => {
-        const partRow = mountEl.closest ? mountEl.closest('.part-edit-row') : null;
-        const partScoreInp = partRow ? partRow.querySelector('[data-pf="score"]') : null;
-        const scoreInput = partScoreInp || document.getElementById('editScore') || document.getElementById('p_score');
-        let targetVal = (item && item.score != null) ? Number(item.score) : (scoreInput && scoreInput.value !== '' ? Number(scoreInput.value) : null);
-        if (targetVal == null || isNaN(targetVal) || targetVal < 1) {
-          const userVal = prompt('Lütfen kriter karnesine dağıtılacak genel puanı girin (örn: 8.5):', item.score || '8.0');
-          if (!userVal) return;
-          targetVal = Number(userVal);
-        }
-        if (isNaN(targetVal) || targetVal < 1 || targetVal > 10) {
-          if (typeof showToast === 'function') showToast('Geçerli bir puan giriniz (1 - 10).', 'warn');
-          return;
-        }
-
-        const derived = window.TempestianRating ? window.TempestianRating.deriveSubScores(typeId, targetVal) : null;
-        if (!derived) {
-          if (typeof showToast === 'function') showToast('Kriter puanları türetilemedi.', 'warn');
-          return;
-        }
-
-        item.subScores = { ...derived };
-        item.adminModified = true;
-
-        const calculated = window.TempestianRating.computeScore(criteria, item.subScores);
-        if (calculated != null) {
-          item.score = calculated;
-        }
-
-        renderCriteriaRatingStudio(mountEl, item, typeId, onScoreChange, customTitle, customSub);
-        if (typeof onScoreChange === 'function' && calculated != null) {
-          onScoreChange(calculated);
-        }
-        if (typeof showToast === 'function') {
-          showToast(`Genel puana (${targetVal}) göre 5 yıldızlı kriterler uyarlandı!`, 'success');
-        }
-      };
+      autoFillBtn.onclick = () => applyArchetypeProfile('balanced');
     }
 
     const clearBtn = head.querySelector('#clearSubScoresBtn');
@@ -5296,6 +5316,11 @@
       return items.filter(it => allowed.has(it.id));
     }
     return items.filter(it => {
+      if (filterMode === 'no_subscores') {
+        const hasSub = (it.subScores && Object.keys(it.subScores).length > 0) ||
+          (Array.isArray(it.parts) && it.parts.some(p => p.subScores && Object.keys(p.subScores).length > 0));
+        return !hasSub;
+      }
       if (filterMode === 'uncategorized') {
         return !Array.isArray(it.customGenres) || it.customGenres.length === 0;
       }
@@ -7718,6 +7743,9 @@
     document.addEventListener('keydown', e => {
       const rapidPanel = $('#panelRapid');
       if (!rapidPanel || rapidPanel.hidden) return;
+      const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+      const isInput = tag === 'input' || tag === 'textarea' || tag === 'select';
+
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
         commitCurrentRapidQueueDraft(true);
@@ -7727,6 +7755,20 @@
       } else if (e.altKey && e.key === 'ArrowLeft') {
         e.preventDefault();
         $('#rqPrevBtn').click();
+      } else if (!isInput && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        if (e.key === '1') {
+          const btn = $('#rqCriteriaStudioMount')?.querySelector('[data-prof="action"]');
+          if (btn) { e.preventDefault(); btn.click(); }
+        } else if (e.key === '2') {
+          const btn = $('#rqCriteriaStudioMount')?.querySelector('[data-prof="story"]');
+          if (btn) { e.preventDefault(); btn.click(); }
+        } else if (e.key === '3') {
+          const btn = $('#rqCriteriaStudioMount')?.querySelector('[data-prof="character"]');
+          if (btn) { e.preventDefault(); btn.click(); }
+        } else if (e.key === '4') {
+          const btn = $('#rqCriteriaStudioMount')?.querySelector('[data-prof="balanced"]');
+          if (btn) { e.preventDefault(); btn.click(); }
+        }
       }
     });
 

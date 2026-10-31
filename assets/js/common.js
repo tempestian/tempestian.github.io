@@ -115,15 +115,22 @@
       if (totalWeight <= 0) return null;
       return Math.round((totalScore / totalWeight) * 10) / 10;
     },
-    deriveSubScores(typeKey, targetScore) {
+    deriveSubScores(typeKey, targetScore, profile = 'balanced') {
       const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
       if (!criteria || targetScore == null || isNaN(targetScore) || Number(targetScore) < 1.0) return null;
       const target = Math.max(2.0, Math.min(10.0, Number(targetScore)));
       const n = criteria.length;
 
+      const profileWeights = {
+        action: { visuals: 2.2, sound: 1.6, enjoyment: 1.4, directing: 1.5, art: 2.0, story: 0.6, world: 0.8, characters: 0.8, prose: 0.5 },
+        story: { story: 2.2, world: 1.8, characters: 1.2, prose: 2.0, visuals: 0.7, sound: 0.6, enjoyment: 1.0, art: 0.8 },
+        character: { characters: 2.2, enjoyment: 1.8, acting: 2.0, impact: 1.5, story: 1.2, visuals: 0.7, sound: 0.7, world: 0.7, prose: 1.0 },
+        balanced: {}
+      }[profile] || {};
+
       let bestCombo = null;
       let minDiff = Infinity;
-      let minVar = Infinity;
+      let bestMetric = -Infinity;
 
       function recurse(idx, current) {
         if (idx === n) {
@@ -135,12 +142,23 @@
           }
           const score = Math.round((sum / totalW) * 10) / 10;
           const diff = Math.abs(score - target);
-          const avg = current.reduce((a, b) => a + b, 0) / n;
-          const variance = current.reduce((a, b) => a + Math.pow(b - avg, 2), 0);
 
-          if (diff < minDiff || (Math.abs(diff - minDiff) < 1e-6 && variance < minVar)) {
+          let metric = 0;
+          if (profile === 'balanced') {
+            const avg = current.reduce((a, b) => a + b, 0) / n;
+            const variance = current.reduce((a, b) => a + Math.pow(b - avg, 2), 0);
+            metric = -variance;
+          } else {
+            for (let i = 0; i < n; i++) {
+              const cid = criteria[i].id;
+              const pw = profileWeights[cid] || 1.0;
+              metric += current[i] * pw;
+            }
+          }
+
+          if (diff < minDiff || (Math.abs(diff - minDiff) < 1e-6 && metric > bestMetric)) {
             minDiff = diff;
-            minVar = variance;
+            bestMetric = metric;
             bestCombo = [...current];
           }
           return;

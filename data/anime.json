@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-10-29",
+  "updated": "2026-11-01",
   "source": "site-first:relations_only",
   "statsConfig": {
     "animeCountRule": "completed_season_or_movie",
@@ -371,15 +371,7 @@
           "year": 2018,
           "score": 10,
           "repeat": 21,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 106509,
@@ -393,15 +385,7 @@
           "year": 2019,
           "score": 10,
           "repeat": 5,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 108511,
@@ -415,15 +399,7 @@
           "year": 2021,
           "score": 10,
           "repeat": 21,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 116741,
@@ -437,15 +413,7 @@
           "year": 2021,
           "score": 10,
           "repeat": 3,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 116742,
@@ -459,15 +427,7 @@
           "year": 2021,
           "score": 10,
           "repeat": 20,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 146503,
@@ -480,15 +440,7 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 161802,
@@ -502,15 +454,7 @@
           "year": 2023,
           "score": 10,
           "repeat": 5,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 156822,
@@ -524,15 +468,7 @@
           "year": 2024,
           "score": 10,
           "repeat": 6,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 182206,
@@ -545,15 +481,7 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 182205,
@@ -566,15 +494,7 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 217330,
@@ -587,15 +507,7 @@
           "release": "NOT_YET_RELEASED",
           "year": 2027,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 217331,
@@ -608,15 +520,7 @@
           "release": "NOT_YET_RELEASED",
           "year": 2027,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2026-10",
@@ -1231,15 +1135,7 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 159074,
@@ -1252,15 +1148,7 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 170893,
@@ -1273,15 +1161,7 @@
           "release": "FINISHED",
           "year": 2024,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 170892,
@@ -1294,15 +1174,7 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         },
         {
           "id": 189326,
@@ -1315,15 +1187,7 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 10,
-          "adminModified": true,
-          "subScores": {
-            "story": 5,
-            "world": 5,
-            "characters": 5,
-            "visuals": 5,
-            "sound": 5,
-            "enjoyment": 5
-          }
+          "adminModified": true
         }
       ],
       "addedAt": "2026-01",

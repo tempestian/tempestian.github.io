@@ -1,8 +1,7 @@
 # ============================================================================
-# [AI-MIMARI-NOTU: DİZİ, FİLM, KİTAP, MANGA ÇOKLU-SAĞLAYICI İŞ AKIŞI]
-# Bu iş akışı (`sync-multimedia.yml`), IMDb, TVMaze, OpenLibrary ve AniList
-# API'lerini (100% keyless / sıfır API key) kullanarak sitedeki dizi, film, kitap
-# ve mangaların bölüm sayılarını, durumlarını ve kapak linklerini otomatik günceller.
+# [AI-MIMARI: DİZİ, FİLM, KİTAP & MANGA ÇOKLU API SENKRONİZASYONU]
+# Bu iş akışı hem haftalık otomatik zamanlayıcıyla hem de Admin Panelindeki
+# tetikleyiciyle sorunsuz çalışır. [skip ci] etiketiyle yarış durumunu önler.
 # ============================================================================
 name: Dizi, Film, Kitap & Manga Senkronu
 
@@ -16,11 +15,6 @@ on:
         required: false
         default: true
         type: boolean
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/sync-multimedia.mjs'
-      - '.github/workflows/sync-multimedia.yml'
 
 permissions:
   contents: write
@@ -31,37 +25,41 @@ concurrency:
 
 jobs:
   sync-multimedia:
+    name: Çoklu Sağlayıcı API Senkronu
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Depoyu Klonla
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
-      - name: Bot commit kontrolü (Sonsuz döngü koruması)
+      - name: Bot Commit Kontrolü
         id: check_bot
         run: |
           LAST_AUTHOR=$(git log -1 --pretty=format:'%an')
-          if [ "$LAST_AUTHOR" = "github-actions[bot]" ] && [ "${{ github.event_name }}" = "push" ]; then
+          LAST_MSG=$(git log -1 --pretty=format:'%s')
+          if ([ "$LAST_AUTHOR" = "github-actions[bot]" ] || echo "$LAST_MSG" | grep -q "\[skip ci\]") && [ "${{ github.event_name }}" = "push" ]; then
             echo "skip=true" >> $GITHUB_OUTPUT
           else
             echo "skip=false" >> $GITHUB_OUTPUT
           fi
 
-      - uses: actions/setup-node@v4
+      - name: Node.js 22 Kurulumu
         if: steps.check_bot.outputs.skip != 'true'
+        uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Multi-Provider API Senkronu (IMDb, TVMaze, OpenLibrary, AniList)
+      - name: Çoklu Sağlayıcı API Senkronu (IMDb, TVMaze, OpenLibrary, AniList)
         if: steps.check_bot.outputs.skip != 'true'
         run: node scripts/sync-multimedia.mjs
 
-      - name: Veri ve İçerik Bütünlüğü Doğrulaması (Güvenlik Ön Koşulu)
+      - name: Veri Bütünlüğü Doğrulaması
         if: steps.check_bot.outputs.skip != 'true'
         run: node scripts/validate-data.mjs
 
-      - name: Değişiklik varsa commit at ve pushla
+      - name: Değişiklik Varsa Kaydet ve Gönder
         if: steps.check_bot.outputs.skip != 'true'
         run: |
           for p in data/series.json data/movies.json data/books.json data/manga.json d f m k; do
@@ -76,4 +74,3 @@ jobs:
           git commit -m "chore(multimedia): dizi, film, kitap, manga verileri ve kartlari guncellendi [skip ci]"
           git pull --rebase origin main
           git push
-

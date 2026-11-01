@@ -1,40 +1,42 @@
-name: Sosyal Medya Paylaşım Kartları
+name: CI/CD Pipeline (Doğrulama & Statik Kartlar)
 
 on:
   push:
     branches: [main]
     paths:
-      - 'data/anime.json'
-      - 'data/series.json'
-      - 'data/movies.json'
-      - 'data/books.json'
-      - 'data/manga.json'
-      - 'scripts/generate-share-cards.mjs'
+      - 'data/**'
+      - 'scripts/**'
+      - 'assets/**'
+      - '*.html'
+      - 'admin/**'
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: generate-share-cards
-  cancel-in-progress: false
+  group: ci-pipeline-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  cards:
-    if: github.actor != 'github-actions[bot]'
-    name: Statik Kartları Üret
+  pipeline:
+    name: Doğrulama ve Kart Senkronizasyonu
     runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
     steps:
       - name: Depoyu Klonla
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
-      - name: Bot Commit Kontrolü
+      - name: Bot Commit Atlama Kontrolü
         id: check_bot
         run: |
           LAST_AUTHOR=$(git log -1 --pretty=format:'%an')
-          if [ "$LAST_AUTHOR" = "github-actions[bot]" ] && [ "${{ github.event_name }}" = "push" ]; then
+          LAST_MSG=$(git log -1 --pretty=format:'%s')
+          if ([ "$LAST_AUTHOR" = "github-actions[bot]" ] || echo "$LAST_MSG" | grep -q "\[skip ci\]") && [ "${{ github.event_name }}" = "push" ]; then
             echo "skip=true" >> $GITHUB_OUTPUT
           else
             echo "skip=false" >> $GITHUB_OUTPUT
@@ -46,16 +48,24 @@ jobs:
         with:
           node-version: 22
 
-      - name: Veri Bütünlüğü Doğrulaması (Güvenlik Ön Koşulu)
+      - name: Veri Bütünlüğü ve Şema Kontrolü
         if: steps.check_bot.outputs.skip != 'true'
         run: node scripts/validate-data.mjs
 
-      - name: Paylaşım Kartlarını Üret
+      - name: JS & Betik Sözdizimi Kontrolü
         if: steps.check_bot.outputs.skip != 'true'
+        run: |
+          node --check assets/js/common.js
+          node --check assets/js/anime.js
+          node --check assets/js/media-page.js
+          node --check assets/js/admin.js
+
+      - name: Paylaşım Kartlarını Üret
+        if: steps.check_bot.outputs.skip != 'true' && github.event_name != 'pull_request'
         run: node scripts/generate-share-cards.mjs
 
-      - name: Değişen Kartları Kaydet ve Gönder
-        if: steps.check_bot.outputs.skip != 'true'
+      - name: Yeni Kartları Kaydet (Değişiklik Varsa)
+        if: steps.check_bot.outputs.skip != 'true' && github.event_name != 'pull_request'
         run: |
           for p in a d f m k; do
             [ -e "$p" ] && git add "$p"
@@ -69,4 +79,3 @@ jobs:
           git commit -m "chore(cards): statik sosyal medya paylasim kartlari guncellendi [skip ci]"
           git pull --rebase origin main
           git push
-

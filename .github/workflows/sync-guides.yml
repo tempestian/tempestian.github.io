@@ -1,11 +1,7 @@
 # ============================================================================
-# [AI-MIMARI-NOTU: ADIM 15 — TECHNOPAT SOSYAL "REHBER" ÖN EKLİ KONU SENKRONU]
-# Bu iş akışı (`sync-guides.yml`) SADECE Admin Panelindeki "Technopat'tan Rehberleri Çek"
-# butonuna tıklandığında (`workflow_dispatch`) çalışır.
-# - Otomatik zamanlayıcı (`schedule`) veya `push` tetikleyicisi YOKTUR.
-# - Technopat Sosyal üzerinde Bayram Tempestian (user_id: 657641) tarafından açılan
-#   tüm konuları tarar, yalnızca "Rehber" ön ekine (prefix) sahip olanları ayıklar
-#   ve `data/guides.json` dosyasına yazar.
+# [AI-MIMARI: TECHNOPAT SOSYAL "REHBER" ÖN EKLİ KONU SENKRONU]
+# Bu iş akışı SADECE Admin Panelindeki "Technopat'tan Rehberleri Çek"
+# butonuna tıklandığında (workflow_dispatch) çalışır.
 # ============================================================================
 name: Technopat Sosyal Rehber Senkronu (Manuel)
 
@@ -37,26 +33,27 @@ concurrency:
 
 jobs:
   sync-guides:
+    name: Technopat Rehberlerini Çek
     runs-on: ubuntu-latest
     steps:
-      - name: Repo içeriğini çek
+      - name: Depoyu Klonla
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
-      - name: Node.js 22 kurulumu
+      - name: Node.js 22 Kurulumu
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Cloudflare koruması için FlareSolverr servisini başlat ve Playwright kur
+      - name: Cloudflare Koruması için FlareSolverr ve Playwright Kurulumu
         run: |
           docker run -d --name=flaresolverr -p 8191:8191 -e LOG_LEVEL=info ghcr.io/flaresolverr/flaresolverr:latest || true
           npm init -y >/dev/null 2>&1 || true
           npm install --no-save playwright >/dev/null 2>&1 || true
           npx playwright install chromium >/dev/null 2>&1 || true
 
-      - name: Technopat Sosyal üzerinden Rehber ön ekli konuları çek
+      - name: Technopat Sosyal Rehber Konularını Çek
         env:
           TECHNOPAT_USER_ID: ${{ github.event.inputs.user_id || '657641' }}
           TECHNOPAT_USERNAME: ${{ github.event.inputs.username || 'Bayram Tempestian' }}
@@ -64,10 +61,10 @@ jobs:
           FLARESOLVERR_URL: 'http://127.0.0.1:8191/v1'
         run: node scripts/sync-technopat-guides.mjs
 
-      - name: Veri ve İçerik Bütünlüğü Doğrulaması (Güvenlik Ön Koşulu)
+      - name: Veri Bütünlüğü Doğrulaması
         run: node scripts/validate-data.mjs
 
-      - name: Değişiklik varsa data/guides.json dosyasını kaydet ve gönder
+      - name: Değişiklik Varsa Kaydet ve Gönder
         run: |
           [ -e "data/guides.json" ] && git add data/guides.json
           if git diff --cached --quiet; then
@@ -79,4 +76,3 @@ jobs:
           git commit -m "chore(guides): technopat sosyal rehber senkronu [skip ci]"
           git pull --rebase origin main
           git push
-

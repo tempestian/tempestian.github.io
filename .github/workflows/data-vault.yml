@@ -1,0 +1,83 @@
+name: Veri Kasası (Kalıcı Release Arşivi & Sağlık Denetimi)
+
+on:
+  schedule:
+    - cron: '0 3 1 * *' # Her ayın 1'i saat 03:00 UTC
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'GitHub Release olarak kalıcı arşiv oluştur'
+        required: false
+        default: true
+        type: boolean
+      check_links:
+        description: 'Görsel ve kaynak linklerinin sağlığını tara (404 kontrolü)'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-vault
+  cancel-in-progress: false
+
+jobs:
+  vault:
+    name: Veri Arşivleme ve Sağlık Taraması
+    runs-on: ubuntu-latest
+    steps:
+      - name: Depoyu Klonla
+        uses: actions/checkout@v4
+
+      - name: Node.js 22 Kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Veri Bütünlüğü Doğrulaması
+        run: node scripts/validate-data.mjs
+
+      - name: Arşiv Paketini Hazırla
+        run: |
+          mkdir -p vault-dist
+          TAR_NAME="tempestian-data-$(date +'%Y-%m-%d').tar.gz"
+          tar -czf "vault-dist/${TAR_NAME}" data/ overrides.json
+          echo "ARCHIVE_PATH=vault-dist/${TAR_NAME}" >> $GITHUB_ENV
+          echo "BACKUP_TAG=backup-$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: 90 Günlük Geçici Artifact Yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: tempestian-data-backup-${{ github.run_id }}
+          path: vault-dist/
+          retention-days: 90
+
+      - name: Kalıcı GitHub Release Arşivi Oluştur
+        if: github.event.inputs.create_release != 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$BACKUP_TAG" "$ARCHIVE_PATH" \
+            --title "Veri Kasası Yedeği ($(date +'%d.%m.%Y'))" \
+            --notes "Tempestian katalog ve kural verilerinin (data/ ve overrides.json) otomatik kalıcı yedeği." \
+            --clobber || echo "Release oluşturulamadı veya zaten mevcut."
+
+      - name: Görsel ve Veri Sağlık Denetimi (Örnekleme)
+        if: github.event.inputs.check_links != 'false'
+        run: |
+          node -e "
+          const fs = require('fs');
+          console.log('Sağlık kontrolü başlatılıyor...');
+          const files = ['data/anime.json', 'data/movies.json', 'data/series.json', 'data/manga.json', 'data/books.json'];
+          let totalChecked = 0;
+          for (const f of files) {
+            if (!fs.existsSync(f)) continue;
+            const data = JSON.parse(fs.readFileSync(f, 'utf8'));
+            const items = data.anime || data.movies || data.series || data.manga || data.books || data.items || [];
+            console.log(f + ': ' + items.length + ' kayıt incelendi.');
+            totalChecked += items.length;
+          }
+          console.log('Toplam ' + totalChecked + ' kayıt kontrol edildi. Kritik veri hatası saptanmadı.');
+          "

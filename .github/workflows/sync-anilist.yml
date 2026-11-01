@@ -1,22 +1,17 @@
 # ============================================================================
-# [AI-MIMARI-NOTU: ADIM 6 & 10 — ANILIST PROFİLİNDEN BAĞIMSIZ KAPAK & YAN İÇERİK SENKRONU]
-# Bu iş akışı (`sync-anilist.yml`) Adım 10 itibarıyla varsayılan olarak `relations_only`
-# modunda çalışır:
-# - Kullanıcının AniList profil listesine (`MediaListCollection`) bakmaz; yeni girdiler
-#   yalnızca sitenin kendi Admin Panelinden eklenir.
-# - `data/anime.json` içindeki her animenin İlk Sezon AniList Linki (`firstSeasonUrl`)
-#   üzerinden kapak görseli CDN URL'lerini ve yeni çıkan sezon, film ve yan içerikleri
-#   (`PREQUEL`, `SEQUEL`, `SIDE_STORY`, `PARENT`, `SUMMARY`, `SPIN_OFF`) çekip günceller.
+# [AI-MIMARI: ANILIST KAPAK & İLİŞKİLİ İÇERİK SENKRONİZASYONU]
+# Bu iş akışı hem haftalık otomatik zamanlayıcıyla hem de Admin Panelindeki
+# tetikleyiciyle sorunsuz çalışır. [skip ci] etiketiyle yarış durumunu önler.
 # ============================================================================
 name: Bağlantılı Anime & Kapak Senkronu
 
 on:
   schedule:
-    - cron: '17 3 * * *'
+    - cron: '17 3 * * 0' # Her Pazar 03:17 UTC
   workflow_dispatch:
     inputs:
       sync_mode:
-        description: 'Senkronizasyon modu (relations_only: Sadece sitedeki animelerin kapak ve yan içeriklerini çek | hybrid: AniList profil listesini de dahil et)'
+        description: 'Senkronizasyon modu (relations_only / hybrid)'
         required: false
         default: 'relations_only'
         type: choice
@@ -33,29 +28,33 @@ concurrency:
 
 jobs:
   sync:
+    name: AniList İlişkili İçerik ve Kapak Senkronu
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Depoyu Klonla
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
-      - name: Bot commit kontrolü (Sonsuz döngü koruması)
+      - name: Bot Commit Kontrolü
         id: check_bot
         run: |
           LAST_AUTHOR=$(git log -1 --pretty=format:'%an')
-          if [ "$LAST_AUTHOR" = "github-actions[bot]" ] && [ "${{ github.event_name }}" = "push" ]; then
+          LAST_MSG=$(git log -1 --pretty=format:'%s')
+          if ([ "$LAST_AUTHOR" = "github-actions[bot]" ] || echo "$LAST_MSG" | grep -q "\[skip ci\]") && [ "${{ github.event_name }}" = "push" ]; then
             echo "skip=true" >> $GITHUB_OUTPUT
           else
             echo "skip=false" >> $GITHUB_OUTPUT
           fi
 
-      - uses: actions/setup-node@v4
+      - name: Node.js 22 Kurulumu
         if: steps.check_bot.outputs.skip != 'true'
+        uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: İlk sezon linklerinden kapak URL ve yan içerikleri çek
+      - name: AniList İlişkili İçerikleri ve Kapakları Çek
         if: steps.check_bot.outputs.skip != 'true'
         env:
           ANILIST_USER: TurkTempestian
@@ -64,11 +63,11 @@ jobs:
           SYNC_MODE: ${{ github.event.inputs.sync_mode || 'relations_only' }}
         run: node scripts/sync-anilist.mjs
 
-      - name: Veri ve İçerik Bütünlüğü Doğrulaması (Güvenlik Ön Koşulu)
+      - name: Veri Bütünlüğü Doğrulaması
         if: steps.check_bot.outputs.skip != 'true'
         run: node scripts/validate-data.mjs
 
-      - name: Değişiklik varsa kaydet
+      - name: Değişiklik Varsa Kaydet ve Gönder
         if: steps.check_bot.outputs.skip != 'true'
         run: |
           for p in data/anime.json a d f m k; do
@@ -83,4 +82,3 @@ jobs:
           git commit -m "chore(media): kapak, yan icerik ve paylasim kartlari senkronu [skip ci]"
           git pull --rebase origin main
           git push
-

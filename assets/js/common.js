@@ -1588,34 +1588,6 @@
       });
     }
 
-    // 2. Ana Sayfa "Make it yours / Kendi rengini seç" Bandı (materialwebunofficial.github.io stili)
-    const heroSec = document.getElementById('heroSection');
-    if (cur === 'home' && heroSec && !document.getElementById('m3SeedBand')) {
-      const band = el('section', 'm3-seed-band');
-      band.id = 'm3SeedBand';
-      band.setAttribute('aria-label', 'Material You Renk Seçici');
-      const txt = el('div', 'm3-seed-band-text');
-      txt.innerHTML = `<h2 class="m3-seed-band-title">Kendi rengini seç</h2><p class="m3-seed-band-desc">Bir Material You tohum rengi seçin; tüm yüzeyler ve vurgular anında bu renkten üretilir.</p>`;
-      const chips = el('div', 'm3-seed-chips');
-      chips.setAttribute('role', 'group');
-      for (const s of SEEDS) {
-        const c = el('button', 'm3-seed-chip');
-        c.type = 'button';
-        c.dataset.seedId = s.id;
-        c.setAttribute('aria-pressed', String(s.id === getCurSeed()));
-        const sw = el('span', 'm3-seed-swatch');
-        sw.style.setProperty('--seed', s.hex);
-        const lb = el('span', '', s.name);
-        c.append(sw, lb);
-        c.addEventListener('click', () => {
-          if (window.setMaterialSeed) window.setMaterialSeed(s.id);
-        });
-        chips.append(c);
-      }
-      band.append(txt, chips);
-      heroSec.insertAdjacentElement('afterend', band);
-    }
-
     document.addEventListener('themechange', () => {
       const activeSeed = getCurSeed();
       document.querySelectorAll('[data-seed-id]').forEach(node => {

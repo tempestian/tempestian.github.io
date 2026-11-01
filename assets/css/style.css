@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @view-transition {
   navigation: auto;
 }
@@ -62,7 +64,7 @@
   --rs: 12px;
   --ease: var(--md-sys-motion-effect-fast-easing);
   --spring: var(--md-sys-motion-spatial-fast-easing);
-  --sans: "Roboto", "Google Sans", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sans: "Inter", "Roboto", "Google Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "Roboto Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* 1. Purple Seed (#6750A4 — @materialwebunofficial/md3e-web Varsayılan Light) */

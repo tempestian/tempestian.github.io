@@ -1132,32 +1132,34 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 6px 14px;
+  gap: 4px 8px;
   color: var(--md-sys-color-on-surface-variant);
-  font-family: var(--mono);
-  font-size: 0.84rem;
-  font-variant-numeric: tabular-nums;
+  font-family: inherit;
+  font-size: 0.82rem;
   line-height: 1.4;
 }
 
 .nums span {
   display: inline-flex;
   align-items: baseline;
-  gap: 5px;
+  gap: 4px;
+  white-space: nowrap;
 }
 
-.nums span + span::before {
+.nums span:not(:last-child)::after {
   content: "·";
-  margin-right: 9px;
+  margin-left: 8px;
   color: var(--md-sys-color-on-surface-variant);
-  opacity: 0.5;
+  opacity: 0.45;
+  font-weight: 400;
 }
 
 .nums b {
   color: var(--md-sys-color-on-surface);
-  font-size: 0.96rem;
+  font-size: 0.94rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
 }
 
 /* 4'lü Yan Yana Poster Sahnesi — @materialwebunofficial/md3e-web .comp-preview */
@@ -2968,10 +2970,11 @@ h3 a:focus-visible {
 
 .box-txt {
   color: var(--md-sys-color-on-surface-variant);
-  font-size: 0.93rem;
-  line-height: 1.48;
+  font-size: 0.88rem;
+  line-height: 1.5;
   white-space: pre-line;
-  padding: 6px 12px 10px;
+  padding: 0;
+  margin: 2px 0 0;
 }
 
 /* Başyapıt Yıldız Rozeti (.fav-badge) — Material You Tertiary Container Pill */

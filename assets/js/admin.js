@@ -5726,6 +5726,9 @@
               `#${idx + 1} ${AdminSecurity.sanitizeText(p.name || 'Parça', 40)} · Kriter Puanlaması`,
               'Kriterlere 1–5 yıldız verin; sezonun puanı ve genel yapım puanı otomatik güncellenir.'
             );
+            setTimeout(() => {
+              critMount.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 60);
           }
         };
       }

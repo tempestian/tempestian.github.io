@@ -179,6 +179,106 @@
       }
       return res;
     },
+    computeWeightedSubScores(typeKey, item) {
+      if (!item) return null;
+      const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
+      if (!criteria) return null;
+
+      const parts = Array.isArray(item.parts) ? item.parts : [];
+      const ratedParts = parts.filter(p => p && p.subScores && typeof p.subScores === 'object' && Object.values(p.subScores).some(v => v != null && v > 0));
+
+      if (ratedParts.length === 0) {
+        return (item.subScores && typeof item.subScores === 'object' && Object.values(item.subScores).some(v => v != null && v > 0))
+          ? { ...item.subScores }
+          : null;
+      }
+      if (ratedParts.length === 1) {
+        return { ...ratedParts[0].subScores };
+      }
+
+      const continuousAvg = {};
+      let totalPartWeight = 0;
+      let weightedSumScore = 0;
+
+      for (const p of ratedParts) {
+        const sc = p.score != null ? Number(p.score) : this.computeScore(criteria, p.subScores);
+        let w = 1.0;
+        if (p.kind === 'movie' || p.format === 'MOVIE') w = 0.35;
+        else if (p.kind === 'other' || ['OVA', 'SPECIAL', 'TV_SHORT'].includes(p.format)) w = 0.15;
+
+        if (sc != null && !isNaN(sc)) {
+          weightedSumScore += sc * w;
+          totalPartWeight += w;
+        }
+      }
+
+      for (const c of criteria) {
+        let cSum = 0;
+        let cWeight = 0;
+        for (const p of ratedParts) {
+          const star = Number(p.subScores[c.id]);
+          if (!isNaN(star) && star >= 1 && star <= 5) {
+            let w = 1.0;
+            if (p.kind === 'movie' || p.format === 'MOVIE') w = 0.35;
+            else if (p.kind === 'other' || ['OVA', 'SPECIAL', 'TV_SHORT'].includes(p.format)) w = 0.15;
+            cSum += star * w;
+            cWeight += w;
+          }
+        }
+        continuousAvg[c.id] = cWeight > 0 ? cSum / cWeight : 3;
+      }
+
+      const targetScore = totalPartWeight > 0 ? Math.round((weightedSumScore / totalPartWeight) * 10) / 10 : (Number(item.score) || 5);
+
+      const n = criteria.length;
+      const options = criteria.map(c => {
+        const a = continuousAvg[c.id];
+        const fl = Math.max(1, Math.min(5, Math.floor(a)));
+        const ce = Math.max(1, Math.min(5, Math.ceil(a)));
+        const set = new Set([fl, ce]);
+        if (fl > 1) set.add(fl - 1);
+        if (ce < 5) set.add(ce + 1);
+        return Array.from(set);
+      });
+
+      let bestCombo = null;
+      let minDiffToTarget = Infinity;
+      let minDeviationFromAvg = Infinity;
+
+      function recurse(idx, current) {
+        if (idx === n) {
+          let sum = 0, tw = 0, dev = 0;
+          for (let i = 0; i < n; i++) {
+            const val = current[i];
+            sum += val * 2 * criteria[i].weight;
+            tw += criteria[i].weight;
+            const diff = val - continuousAvg[criteria[i].id];
+            dev += diff * diff;
+          }
+          const s = Math.round((sum / tw) * 10) / 10;
+          const targetDiff = Math.abs(s - targetScore);
+          if (targetDiff < minDiffToTarget || (Math.abs(targetDiff - minDiffToTarget) < 1e-6 && dev < minDeviationFromAvg)) {
+            minDiffToTarget = targetDiff;
+            minDeviationFromAvg = dev;
+            bestCombo = [...current];
+          }
+          return;
+        }
+        for (const val of options[idx]) {
+          current.push(val);
+          recurse(idx + 1, current);
+          current.pop();
+        }
+      }
+      recurse(0, []);
+
+      if (!bestCombo) return null;
+      const res = {};
+      for (let i = 0; i < n; i++) {
+        res[criteria[i].id] = bestCombo[i];
+      }
+      return res;
+    },
     renderBreakdownGrid(typeKey, subScores) {
       const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
       if (!criteria) return '';
@@ -222,9 +322,15 @@
 
       const parts = Array.isArray(item.parts) ? item.parts : [];
       const ratedParts = parts.filter(p => p && p.subScores && typeof p.subScores === 'object' && Object.values(p.subScores).some(v => v != null && v > 0));
-      const hasItemSubScores = item.subScores && typeof item.subScores === 'object' && Object.values(item.subScores).some(v => v != null && v > 0);
+      let effectiveItemSubScores = (item.subScores && typeof item.subScores === 'object' && Object.values(item.subScores).some(v => v != null && v > 0))
+        ? item.subScores
+        : null;
 
-      if (!ratedParts.length && !hasItemSubScores) {
+      if (!effectiveItemSubScores && ratedParts.length > 0) {
+        effectiveItemSubScores = this.computeWeightedSubScores(typeKey, item);
+      }
+
+      if (!ratedParts.length && !effectiveItemSubScores) {
         containerEl.hidden = true;
         containerEl.replaceChildren();
         return;
@@ -233,10 +339,12 @@
       containerEl.hidden = false;
 
       // Durum 1: Tek parça veya doğrudan yapım seviyesi değerlendirme
-      if (ratedParts.length <= 1 && (!hasItemSubScores || !ratedParts.length)) {
-        const targetScores = ratedParts.length === 1 ? ratedParts[0].subScores : item.subScores;
-        const targetTitle = ratedParts.length === 1 && ratedParts[0].name ? `Detaylı Puanlama Karnesi · ${ratedParts[0].name}` : 'Detaylı Puanlama Karnesi';
-        const targetScore = ratedParts.length === 1 && ratedParts[0].score != null ? ratedParts[0].score : overallScore;
+      if (ratedParts.length <= 1) {
+        const targetScores = effectiveItemSubScores || (ratedParts.length === 1 ? ratedParts[0].subScores : null);
+        const targetTitle = (ratedParts.length === 1 && ratedParts[0].name && ratedParts[0].name !== item.title)
+          ? `Detaylı Puanlama Karnesi · ${ratedParts[0].name}`
+          : 'Detaylı Puanlama Karnesi';
+        const targetScore = overallScore || (ratedParts.length === 1 && ratedParts[0].score != null ? ratedParts[0].score : null);
 
         containerEl.innerHTML = `
           <div class="sh-rb-head">
@@ -255,8 +363,8 @@
 
       // Durum 2: Çoklu Sezon / Parça Değerlendirmesi (Kompakt ve şık yatay sekme şeridi ile minimal görünüm)
       const tabs = [];
-      if (hasItemSubScores) {
-        tabs.push({ id: 'item_overall', name: 'Genel', score: overallScore, subScores: item.subScores });
+      if (effectiveItemSubScores) {
+        tabs.push({ id: 'item_overall', name: 'Genel', score: overallScore, subScores: effectiveItemSubScores });
       }
       ratedParts.forEach((p, idx) => {
         tabs.push({

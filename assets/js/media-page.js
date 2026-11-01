@@ -156,11 +156,6 @@
     const typeKey = document.body.dataset.section || 'series';
     const criteria = window.TempestianRating ? (window.TempestianRating.CRITERIA[typeKey] || window.TempestianRating.CRITERIA.anime) : null;
 
-    if (it.subScores && typeof it.subScores === 'object' && criteria) {
-      const sc = window.TempestianRating.computeScore(criteria, it.subScores);
-      if (sc != null) return sc;
-    }
-
     const parts = Array.isArray(it.parts) ? it.parts : [];
     let weightedSum = 0, totalWeight = 0;
     for (const p of parts) {
@@ -177,6 +172,11 @@
       }
     }
     if (totalWeight > 0) return Math.round((weightedSum / totalWeight) * 10) / 10;
+
+    if (it.subScores && typeof it.subScores === 'object' && criteria) {
+      const sc = window.TempestianRating.computeScore(criteria, it.subScores);
+      if (sc != null) return sc;
+    }
 
     const s = Number(it.score);
     return !isNaN(s) && s > 0 ? Math.round(s * 10) / 10 : null;

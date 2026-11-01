@@ -112,12 +112,6 @@ export function computeCriteriaScore(criteria, subScores) {
 export function resolveEffectiveScore(a, type = 'anime') {
   if (!a || typeof a !== 'object') return null;
 
-  if (a.subScores && typeof a.subScores === 'object') {
-    const criteria = RATING_CRITERIA[type] || RATING_CRITERIA.anime;
-    const s = computeCriteriaScore(criteria, a.subScores);
-    if (s != null) return s;
-  }
-
   const parts = Array.isArray(a.parts) ? a.parts : [];
   let weightedSum = 0;
   let totalWeight = 0;
@@ -134,6 +128,12 @@ export function resolveEffectiveScore(a, type = 'anime') {
 
   if (totalWeight > 0) {
     return Math.round((weightedSum / totalWeight) * 10) / 10;
+  }
+
+  if (a.subScores && typeof a.subScores === 'object') {
+    const criteria = RATING_CRITERIA[type] || RATING_CRITERIA.anime;
+    const s = computeCriteriaScore(criteria, a.subScores);
+    if (s != null) return s;
   }
 
   const direct = Number(a.score);

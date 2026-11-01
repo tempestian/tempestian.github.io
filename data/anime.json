@@ -360,7 +360,14 @@
         "addedAt",
         "image"
       ],
-      "subScores": {}
+      "subScores": {
+        "story": 3,
+        "world": 3,
+        "characters": 3,
+        "visuals": 3,
+        "sound": 3,
+        "enjoyment": 3
+      }
     },
     {
       "id": "al-101280",
@@ -741,7 +748,14 @@
         "addedAt",
         "image"
       ],
-      "subScores": {}
+      "subScores": {
+        "story": 2,
+        "world": 2,
+        "characters": 3,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-20931",
@@ -803,7 +817,14 @@
         "genres",
         "addedAt"
       ],
-      "subScores": {}
+      "subScores": {
+        "story": 4,
+        "world": 3,
+        "characters": 4,
+        "visuals": 3,
+        "sound": 3,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-98503",
@@ -882,7 +903,14 @@
         "genres",
         "addedAt"
       ],
-      "subScores": {}
+      "subScores": {
+        "story": 2,
+        "world": 3,
+        "characters": 4,
+        "visuals": 2,
+        "sound": 4,
+        "enjoyment": 3
+      }
     },
     {
       "id": "al-20555",
@@ -938,7 +966,14 @@
         "genres",
         "addedAt"
       ],
-      "subScores": {}
+      "subScores": {
+        "story": 4,
+        "world": 3,
+        "characters": 4,
+        "visuals": 5,
+        "sound": 4,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-2981",
@@ -1000,7 +1035,14 @@
         "genres",
         "addedAt"
       ],
-      "subScores": {}
+      "subScores": {
+        "story": 2,
+        "world": 1,
+        "characters": 2,
+        "visuals": 2,
+        "sound": 2,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-181447",
@@ -1055,7 +1097,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 2,
+        "characters": 2,
+        "visuals": 5,
+        "sound": 4,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-114124",
@@ -1142,7 +1192,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 1,
+        "world": 1,
+        "characters": 1,
+        "visuals": 5,
+        "sound": 3,
+        "enjoyment": 2
+      }
     },
     {
       "id": "al-21613",
@@ -1277,7 +1335,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 3,
+        "characters": 3,
+        "visuals": 4,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-199",
@@ -1332,7 +1398,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 4,
+        "characters": 4,
+        "visuals": 4,
+        "sound": 3,
+        "enjoyment": 3
+      }
     },
     {
       "id": "al-108463",
@@ -1707,7 +1781,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 5,
+        "characters": 5,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-179696",
@@ -1764,7 +1846,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 3,
+        "characters": 2,
+        "visuals": 3,
+        "sound": 2,
+        "enjoyment": 3
+      }
     },
     {
       "id": "al-126288",
@@ -1845,7 +1935,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 1,
+        "world": 2,
+        "characters": 2,
+        "visuals": 4,
+        "sound": 2,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-16417",
@@ -1942,7 +2040,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 1,
+        "world": 1,
+        "characters": 2,
+        "visuals": 2,
+        "sound": 4,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-163623",
@@ -2001,7 +2107,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 2,
+        "characters": 4,
+        "visuals": 3,
+        "sound": 3,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-181444",
@@ -2060,7 +2174,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 3,
+        "characters": 4,
+        "visuals": 5,
+        "sound": 4,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-101001",
@@ -2308,7 +2430,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 3,
+        "characters": 3,
+        "visuals": 3,
+        "sound": 4,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-6574",
@@ -2374,7 +2504,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 3,
+        "characters": 2,
+        "visuals": 4,
+        "sound": 4,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-21196",
@@ -2656,7 +2794,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 4,
+        "characters": 4,
+        "visuals": 4,
+        "sound": 4,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-98659",
@@ -2785,7 +2931,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 4,
+        "characters": 4,
+        "visuals": 3,
+        "sound": 3,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-5081",
@@ -3102,7 +3256,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 3,
+        "characters": 2,
+        "visuals": 4,
+        "sound": 2,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-20464",
@@ -3360,7 +3522,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 1,
+        "world": 3,
+        "characters": 4,
+        "visuals": 3,
+        "sound": 3,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-21827",
@@ -3494,7 +3664,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 3,
+        "characters": 3,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-150672",
@@ -3599,7 +3777,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 4,
+        "characters": 4,
+        "visuals": 4,
+        "sound": 5,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-7088",
@@ -3673,7 +3859,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 1,
+        "world": 1,
+        "characters": 1,
+        "visuals": 1,
+        "sound": 1,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-20829",
@@ -3831,7 +4025,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 5,
+        "characters": 5,
+        "visuals": 3,
+        "sound": 3,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-99750",
@@ -3886,7 +4088,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 2,
+        "characters": 3,
+        "visuals": 4,
+        "sound": 1,
+        "enjoyment": 2
+      }
     },
     {
       "id": "al-20832",
@@ -4100,7 +4310,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 4,
+        "characters": 3,
+        "visuals": 3,
+        "sound": 2,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-108465",
@@ -4325,7 +4543,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 4,
+        "characters": 2,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-98460",
@@ -4388,7 +4614,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 1,
+        "world": 4,
+        "characters": 1,
+        "visuals": 5,
+        "sound": 2,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-14813",
@@ -4550,7 +4784,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 5,
+        "characters": 5,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-98549",
@@ -4626,7 +4868,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 1,
+        "world": 1,
+        "characters": 1,
+        "visuals": 1,
+        "sound": 2,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-114963",
@@ -4681,7 +4931,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 1,
+        "characters": 1,
+        "visuals": 4,
+        "sound": 2,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-21234",
@@ -4741,7 +4999,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 5,
+        "characters": 5,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-14719",
@@ -4971,7 +5237,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 5,
+        "characters": 4,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-5680",
@@ -5301,7 +5575,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 5,
+        "characters": 5,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-20954",
@@ -5356,7 +5638,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 2,
+        "characters": 3,
+        "visuals": 2,
+        "sound": 1,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-21311",
@@ -5546,7 +5836,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 4,
+        "characters": 4,
+        "visuals": 4,
+        "sound": 2,
+        "enjoyment": 3
+      }
     },
     {
       "id": "al-21290",
@@ -5608,7 +5906,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 4,
+        "characters": 2,
+        "visuals": 4,
+        "sound": 2,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-20",
@@ -6012,7 +6318,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 3,
+        "characters": 3,
+        "visuals": 3,
+        "sound": 3,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-20613",
@@ -6073,7 +6387,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 1,
+        "world": 2,
+        "characters": 1,
+        "visuals": 2,
+        "sound": 2,
+        "enjoyment": 3
+      }
     },
     {
       "id": "al-131548",
@@ -6190,7 +6512,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 4,
+        "characters": 4,
+        "visuals": 4,
+        "sound": 2,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-16498",
@@ -6494,7 +6824,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 4,
+        "characters": 5,
+        "visuals": 4,
+        "sound": 4,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-100388",
@@ -6551,7 +6889,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 1,
+        "characters": 2,
+        "visuals": 3,
+        "sound": 2,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-269",
@@ -6731,7 +7077,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 3,
+        "characters": 3,
+        "visuals": 3,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-20596",
@@ -6886,7 +7240,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 5,
+        "characters": 5,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-101922",
@@ -7059,7 +7421,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 3,
+        "characters": 2,
+        "visuals": 5,
+        "sound": 4,
+        "enjoyment": 3
+      }
     },
     {
       "id": "al-17513",
@@ -7176,7 +7546,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 4,
+        "characters": 4,
+        "visuals": 5,
+        "sound": 4,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-97682",
@@ -7267,7 +7645,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 4,
+        "characters": 2,
+        "visuals": 3,
+        "sound": 2,
+        "enjoyment": 2
+      }
     },
     {
       "id": "al-20987",
@@ -7491,7 +7877,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 1,
+        "world": 1,
+        "characters": 2,
+        "visuals": 4,
+        "sound": 2,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-101921",
@@ -7672,7 +8066,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 5,
+        "characters": 4,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-98314",
@@ -7760,7 +8162,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 4,
+        "characters": 3,
+        "visuals": 4,
+        "sound": 4,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-512",
@@ -7817,7 +8227,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 3,
+        "characters": 2,
+        "visuals": 4,
+        "sound": 3,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-21421",
@@ -7872,7 +8290,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 2,
+        "characters": 3,
+        "visuals": 2,
+        "sound": 2,
+        "enjoyment": 2
+      }
     },
     {
       "id": "al-132405",
@@ -7942,7 +8368,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 3,
+        "characters": 3,
+        "visuals": 4,
+        "sound": 3,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-523",
@@ -8010,7 +8444,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 4,
+        "characters": 3,
+        "visuals": 4,
+        "sound": 3,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-21",
@@ -8644,7 +9086,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 1,
+        "world": 2,
+        "characters": 2,
+        "visuals": 3,
+        "sound": 4,
+        "enjoyment": 3
+      }
     },
     {
       "id": "al-101291",
@@ -8770,7 +9220,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 4,
+        "characters": 4,
+        "visuals": 3,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-21049",
@@ -8864,7 +9322,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 3,
+        "characters": 4,
+        "visuals": 2,
+        "sound": 3,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-140960",
@@ -9009,7 +9475,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 4,
+        "characters": 4,
+        "visuals": 4,
+        "sound": 5,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-129201",
@@ -9069,7 +9543,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 5,
+        "characters": 5,
+        "visuals": 5,
+        "sound": 4,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-21804",
@@ -9218,7 +9700,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 3,
+        "characters": 2,
+        "visuals": 4,
+        "sound": 2,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-10620",
@@ -9316,7 +9806,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 5,
+        "characters": 4,
+        "visuals": 3,
+        "sound": 4,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-130586",
@@ -9377,7 +9875,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 1,
+        "characters": 2,
+        "visuals": 3,
+        "sound": 3,
+        "enjoyment": 4
+      }
     },
     {
       "id": "al-20605",
@@ -9502,7 +10008,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 1,
+        "characters": 1,
+        "visuals": 2,
+        "sound": 4,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-6211",
@@ -9568,7 +10082,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 3,
+        "characters": 1,
+        "visuals": 1,
+        "sound": 1,
+        "enjoyment": 1
+      }
     },
     {
       "id": "al-120120",
@@ -9677,7 +10199,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 2,
+        "world": 1,
+        "characters": 1,
+        "visuals": 2,
+        "sound": 3,
+        "enjoyment": 2
+      }
     },
     {
       "id": "al-141014",
@@ -9734,7 +10264,15 @@
         "genres",
         "addedAt",
         "image"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 3,
+        "characters": 4,
+        "visuals": 4,
+        "sound": 4,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-141774",
@@ -9801,7 +10339,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 3,
+        "world": 4,
+        "characters": 4,
+        "visuals": 4,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-20665",
@@ -9868,7 +10414,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 5,
+        "world": 5,
+        "characters": 5,
+        "visuals": 5,
+        "sound": 5,
+        "enjoyment": 5
+      }
     },
     {
       "id": "al-21519",
@@ -9925,7 +10479,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4,
+        "world": 4,
+        "characters": 5,
+        "visuals": 4,
+        "sound": 4,
+        "enjoyment": 4
+      }
     }
   ]
 }

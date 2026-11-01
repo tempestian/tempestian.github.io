@@ -3067,7 +3067,14 @@
     const hasRatedParts = parts.some(p => p && (p.score != null || (p.subScores && Object.keys(p.subScores).length > 0)));
 
     if (hasRatedParts && effScore != null && effScore >= 2.0) {
-      if (window.TempestianRating && typeof window.TempestianRating.deriveSubScores === 'function') {
+      if (window.TempestianRating && typeof window.TempestianRating.computeWeightedSubScores === 'function') {
+        const weightedSub = window.TempestianRating.computeWeightedSubScores(adapter.id, state.editingDraft);
+        if (weightedSub) {
+          state.editingDraft.subScores = weightedSub;
+        } else if (typeof window.TempestianRating.deriveSubScores === 'function') {
+          state.editingDraft.subScores = window.TempestianRating.deriveSubScores(adapter.id, effScore);
+        }
+      } else if (window.TempestianRating && typeof window.TempestianRating.deriveSubScores === 'function') {
         state.editingDraft.subScores = window.TempestianRating.deriveSubScores(adapter.id, effScore);
       }
     } else if (hasRatedParts && (effScore == null || effScore < 1.0)) {

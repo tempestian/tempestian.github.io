@@ -54,7 +54,7 @@
     dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="4.2"/><circle cx="8.5" cy="8.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.25" fill="currentColor"/><circle cx="12" cy="12" r="1.25" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.25" fill="currentColor"/>',
     clock: '<circle cx="12" cy="12" r="8.5"/><polyline points="12 7 12 12 15.2 14"/>',
     chart: '<path d="M18 20V10M12 20V4M6 20v-6"/>',
-    slime: '<path d="M12 4C7.5 4 4 7.2 4 11.5c0 4.2 3.2 8.5 8 8.5s8-4.3 8-8.5C20 7.2 16.5 4 12 4z" fill="currentColor" opacity="0.25"/><path d="M12 4C7.5 4 4 7.2 4 11.5c0 4.2 3.2 8.5 8 8.5s8-4.3 8-8.5C20 7.2 16.5 4 12 4z"/><ellipse cx="9" cy="12" rx="1.5" ry="2" fill="currentColor"/><ellipse cx="15" cy="12" rx="1.5" ry="2" fill="currentColor"/>'
+    slime: '<path d="M12 3.5C7.2 3.5 3.5 7.2 3.5 12c0 4.8 3.5 8.5 8.5 8.5s8.5-3.7 8.5-8.5c0-4.8-3.7-8.5-8.5-8.5z" fill="#38bdf8"/><ellipse cx="10" cy="7.2" rx="3" ry="1.6" transform="rotate(-28 10 7.2)" fill="#ffffff" opacity="0.7"/><ellipse cx="8.8" cy="12.2" rx="1.6" ry="2.2" fill="#0369a1"/><circle cx="9.2" cy="11.5" r="0.7" fill="#ffffff"/><ellipse cx="15.2" cy="12.2" rx="1.6" ry="2.2" fill="#0369a1"/><circle cx="15.6" cy="11.5" r="0.7" fill="#ffffff"/><circle cx="6.5" cy="14" r="1.2" fill="#f43f5e" opacity="0.45"/><circle cx="17.5" cy="14" r="1.2" fill="#f43f5e" opacity="0.45"/>'
   };
   const icon = n => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[n] || P.dot) + '</svg>';
 
@@ -636,11 +636,21 @@
       nums = [[items.length, s.unit || 'içerik']];
     }
     const guideSnippets = s.id === 'guide'
-      ? items.slice(0, 3).map(g => ({ title: g.title, url: g.url, tag: (g.customGenres && g.customGenres[0]) || g.forumSection || 'Linux' }))
+      ? items.slice(0, 8).map(g => ({ title: g.title, url: g.url, tag: (g.customGenres && g.customGenres[0]) || g.forumSection || 'Linux' }))
       : null;
+    let stripCovers = [];
+    if (s.showStrip !== false) {
+      if (s.id === 'anime') {
+        const slimeAnime = items.find(a => (a.title || '').toLowerCase().includes('slime') || (a.title || '').toLowerCase().includes('tensura'));
+        const otherAnime = items.filter(a => a !== slimeAnime);
+        stripCovers = [slimeAnime, ...otherAnime].filter(Boolean).map(cover).filter(Boolean).slice(0, 14);
+      } else {
+        stripCovers = items.map(cover).filter(Boolean).slice(0, 14);
+      }
+    }
     return {
       nums: j ? nums : null,
-      imgs: s.showStrip === false ? [] : items.map(cover).filter(Boolean).slice(0, 8),
+      imgs: stripCovers,
       guideSnippets,
       totalCount: items.length
     };
@@ -796,21 +806,36 @@
     if (dock) {
       if (active.length) {
         const homeLabel = (d.site && d.site.homeLabel) || 'Ana sayfa';
-        const items = [{ id: 'home', title: homeLabel, href: root || './', icon: 'home' }, ...active.map(s => ({ id: s.id, title: s.title, href: root + s.path, icon: s.icon || s.id }))];
+        const homeItem = { id: 'home', title: homeLabel, href: root || './', icon: 'slime', isSlime: true };
+        const activeItems = active.map(s => ({ id: s.id, title: s.title, href: root + s.path, icon: s.icon || s.id }));
+        
+        let leftItems = [], rightItems = [];
+        if (activeItems.length === 3) {
+          const statsItem = { id: 'stats', title: 'İstatistik', href: (root || '') + 'istatistik/', icon: 'chart' };
+          leftItems = activeItems.slice(0, 2);
+          rightItems = [activeItems[2], statsItem];
+        } else {
+          const half = Math.ceil(activeItems.length / 2);
+          leftItems = activeItems.slice(0, half);
+          rightItems = activeItems.slice(half);
+        }
+        const items = [...leftItems, homeItem, ...rightItems];
+
         const fr = document.createDocumentFragment();
         for (const it of items) {
           const a = el('a');
           a.href = it.href;
+          a.title = it.title;
           if (it.id === cur) {
             a.setAttribute('aria-current', 'page');
           }
-          if (it.id === 'home') {
+          if (it.id === 'home' || it.isSlime) {
             a.classList.add('dock-home-slime');
           }
           const pill = el('span', 'pill');
           pill.setAttribute('aria-hidden', 'true');
           a.append(pill);
-          const iconName = (it.id === 'home' && (d.site && d.site.slimeDockIcon !== false)) ? 'slime' : it.icon;
+          const iconName = (it.id === 'home' || it.isSlime) ? 'slime' : it.icon;
           a.insertAdjacentHTML('beforeend', icon(iconName));
           a.append(el('span', '', it.title));
           a.addEventListener('click', () => {
@@ -918,9 +943,11 @@
           }
         } else {
           const placeholders = [1, 2, 3, 4];
+          const PH_LABEL = { manga: 'Cilt', book: 'Cilt', series: 'Sezon' };
+          const pPrefix = PH_LABEL[s.id] || 'Kayıt';
           for (const p of placeholders) {
             const item = el('div', 'strip-item placeholder');
-            item.innerHTML = `<div class="strip-ph-inner"><span>${esc(s.title)} #${p}</span></div>`;
+            item.innerHTML = `<div class="strip-ph-inner"><span class="strip-ph-icon">${icon(s.icon || s.id)}</span><span>${pPrefix} ${p}</span></div>`;
             st.append(item);
           }
         }

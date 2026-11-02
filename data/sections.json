@@ -9,9 +9,7 @@
     "logo": "assets/img/logo.png",
     "favicon32": "assets/img/favicon-32.png",
     "icon192": "assets/img/icon-192.png",
-    "appleTouchIcon": "assets/img/apple-touch-icon.png",
-    "currentActivity": "🍿 One Piece & Severance · 📖 Tensura LN · 🐧 Wayland & NixOS",
-    "slimeDockIcon": true
+    "appleTouchIcon": "assets/img/apple-touch-icon.png"
   },
   "gift": {
     "enabled": true,
@@ -59,6 +57,43 @@
       "showStrip": true
     },
     {
+      "id": "guide",
+      "title": "Rehber",
+      "path": "rehber/",
+      "description": "Technopat Sosyal rehber kataloğum",
+      "subtitle": "Technopat Sosyal üzerinde yayınladığım GNU/Linux, donanım ve yazılım rehberleri.",
+      "data": "data/guides.json",
+      "countKey": "guides",
+      "unit": "rehber",
+      "status": "active",
+      "icon": "guide",
+      "showStrip": false
+    },
+    {
+      "id": "series",
+      "title": "Dizi",
+      "path": "dizi/",
+      "description": "Yakında",
+      "data": "data/series.json",
+      "countKey": "series",
+      "unit": "dizi",
+      "status": "soon",
+      "icon": "series",
+      "showStrip": true
+    },
+    {
+      "id": "movie",
+      "title": "Film",
+      "path": "film/",
+      "description": "Yakında",
+      "data": "data/movies.json",
+      "countKey": "movies",
+      "unit": "film",
+      "status": "soon",
+      "icon": "movie",
+      "showStrip": true
+    },
+    {
       "id": "manga",
       "title": "Manga",
       "path": "manga/",
@@ -81,43 +116,6 @@
       "status": "soon",
       "icon": "book",
       "showStrip": true
-    },
-    {
-      "id": "movie",
-      "title": "Film",
-      "path": "film/",
-      "description": "İzlediğim filmler",
-      "data": "data/movies.json",
-      "countKey": "movies",
-      "unit": "film",
-      "status": "active",
-      "icon": "movie",
-      "showStrip": true
-    },
-    {
-      "id": "series",
-      "title": "Dizi",
-      "path": "dizi/",
-      "description": "Yakında",
-      "data": "data/series.json",
-      "countKey": "series",
-      "unit": "dizi",
-      "status": "soon",
-      "icon": "series",
-      "showStrip": true
-    },
-    {
-      "id": "guide",
-      "title": "Rehber",
-      "path": "rehber/",
-      "description": "Technopat Sosyal rehber kataloğum",
-      "subtitle": "Technopat Sosyal üzerinde yayınladığım GNU/Linux, donanım ve yazılım rehberleri.",
-      "data": "data/guides.json",
-      "countKey": "guides",
-      "unit": "rehber",
-      "status": "active",
-      "icon": "guide",
-      "showStrip": false
     }
   ],
   "links": [

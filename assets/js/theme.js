@@ -2,13 +2,12 @@
   const root = document.documentElement;
   const mq = matchMedia('(prefers-color-scheme: dark)');
   const SEEDS = [
-    { id: 'tensura', name: 'Tensura Azure (Varsayılan)', hex: '#00A3E0', surfaceLight: '#f0f9ff', surfaceDark: '#070b12' },
-    { id: 'blue',   name: 'Mavi',                       hex: '#185EAC', surfaceLight: '#f9f9fe', surfaceDark: '#0c0e12' },
-    { id: 'ocean',  name: 'Okyanus',                    hex: '#00639B', surfaceLight: '#f8f9fe', surfaceDark: '#0c0e12' },
-    { id: 'purple', name: 'Mor',                        hex: '#6750A4', surfaceLight: '#fdf7fe', surfaceDark: '#0f0d12' },
-    { id: 'green',  name: 'Orman Yeşili',               hex: '#386A20', surfaceLight: '#f9faf1', surfaceDark: '#0c0f0a' },
-    { id: 'amber',  name: 'Kehribar',                   hex: '#7D5700', surfaceLight: '#fff8f3', surfaceDark: '#110e08' },
-    { id: 'coral',  name: 'Mercan',                     hex: '#9C4146', surfaceLight: '#fff8f7', surfaceDark: '#130c0c' }
+    { id: 'purple', name: 'Mor (Varsayılan)', hex: '#6750A4', surfaceLight: '#fdf7fe', surfaceDark: '#0f0d12' },
+    { id: 'blue',   name: 'Mavi',             hex: '#185EAC', surfaceLight: '#f9f9fe', surfaceDark: '#0c0e12' },
+    { id: 'ocean',  name: 'Okyanus',          hex: '#00639B', surfaceLight: '#f8f9fe', surfaceDark: '#0c0e12' },
+    { id: 'green',  name: 'Orman Yeşili',     hex: '#386A20', surfaceLight: '#f9faf1', surfaceDark: '#0c0f0a' },
+    { id: 'amber',  name: 'Kehribar',         hex: '#7D5700', surfaceLight: '#fff8f3', surfaceDark: '#110e08' },
+    { id: 'coral',  name: 'Mercan',           hex: '#9C4146', surfaceLight: '#fff8f7', surfaceDark: '#130c0c' }
   ];
   window.MD3_SEEDS = SEEDS;
 
@@ -18,10 +17,9 @@
   const savedSeed = () => {
     try {
       const s = localStorage.getItem('md3e_seed');
-      if (s === 'purple') return 'tensura'; // upgrade legacy purple to tensura azure
-      return SEEDS.some(x => x.id === s) ? s : 'tensura';
+      return SEEDS.some(x => x.id === s) ? s : 'purple';
     } catch (e) {
-      return 'tensura';
+      return 'purple';
     }
   };
 

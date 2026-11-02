@@ -53,8 +53,7 @@
     link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
     dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="4.2"/><circle cx="8.5" cy="8.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.25" fill="currentColor"/><circle cx="12" cy="12" r="1.25" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.25" fill="currentColor"/>',
     clock: '<circle cx="12" cy="12" r="8.5"/><polyline points="12 7 12 12 15.2 14"/>',
-    chart: '<path d="M18 20V10M12 20V4M6 20v-6"/>',
-    slime: '<path d="M12 3.5C7.2 3.5 3.5 7.2 3.5 12c0 4.8 3.5 8.5 8.5 8.5s8.5-3.7 8.5-8.5c0-4.8-3.7-8.5-8.5-8.5z" fill="#38bdf8"/><ellipse cx="10" cy="7.2" rx="3" ry="1.6" transform="rotate(-28 10 7.2)" fill="#ffffff" opacity="0.7"/><ellipse cx="8.8" cy="12.2" rx="1.6" ry="2.2" fill="#0369a1"/><circle cx="9.2" cy="11.5" r="0.7" fill="#ffffff"/><ellipse cx="15.2" cy="12.2" rx="1.6" ry="2.2" fill="#0369a1"/><circle cx="15.6" cy="11.5" r="0.7" fill="#ffffff"/><circle cx="6.5" cy="14" r="1.2" fill="#f43f5e" opacity="0.45"/><circle cx="17.5" cy="14" r="1.2" fill="#f43f5e" opacity="0.45"/>'
+    chart: '<path d="M18 20V10M12 20V4M6 20v-6"/>'
   };
   const icon = n => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[n] || P.dot) + '</svg>';
 
@@ -635,25 +634,7 @@
     } else {
       nums = [[items.length, s.unit || 'içerik']];
     }
-    const guideSnippets = s.id === 'guide'
-      ? items.slice(0, 8).map(g => ({ title: g.title, url: g.url, tag: (g.customGenres && g.customGenres[0]) || g.forumSection || 'Linux' }))
-      : null;
-    let stripCovers = [];
-    if (s.showStrip !== false) {
-      if (s.id === 'anime') {
-        const slimeAnime = items.find(a => (a.title || '').toLowerCase().includes('slime') || (a.title || '').toLowerCase().includes('tensura'));
-        const otherAnime = items.filter(a => a !== slimeAnime);
-        stripCovers = [slimeAnime, ...otherAnime].filter(Boolean).map(cover).filter(Boolean).slice(0, 14);
-      } else {
-        stripCovers = items.map(cover).filter(Boolean).slice(0, 14);
-      }
-    }
-    return {
-      nums: j ? nums : null,
-      imgs: stripCovers,
-      guideSnippets,
-      totalCount: items.length
-    };
+    return { nums: j ? nums : null, imgs: s.showStrip === false ? [] : items.map(cover).filter(Boolean).slice(0, 4) };
   };
 
   function renderCustomBoxes(container, boxItems) {
@@ -666,22 +647,50 @@
     }
     const fr = document.createDocumentFragment();
     for (const b of activeBoxes) {
-      const win = el('li', 'retro-window custom-box-window');
-      const tb = el('div', 'retro-titlebar');
-      tb.innerHTML = `
-        <div class="rt-title">
-          <span class="rt-icon">📝</span>
-          <span>C:\\NOTES\\${esc((b.title || 'DURUM').toUpperCase())}.TXT</span>
-        </div>
-        <div class="rt-controls"><span class="rtc-btn">✕</span></div>
-      `;
-      win.append(tb);
-      const wb = el('div', 'retro-window-body cb-body');
-      if (b.text) {
-        wb.append(el('p', 'cb-text', b.text));
+      const li = el('li', 'tile glass sq custom-box' + (b.span === 'full' ? ' span-full' : ''));
+      const isLink = Boolean(b.url);
+      const box = isLink ? Object.assign(el('a'), { href: resolveAsset(b.url) }) : el('div');
+      if (isLink && /^https?:\/\//i.test(b.url)) box.rel = 'noopener';
+      const top = el('div', 'tile-top');
+      const titleWrap = el('div', 'box-head-left');
+      if (b.image) {
+        const img = el('img', 'box-thumb');
+        img.src = resolveAsset(b.image);
+        img.alt = '';
+        img.width = 40;
+        img.height = 40;
+        img.decoding = 'async';
+        titleWrap.append(img);
+      } else if (b.icon && P[b.icon]) {
+        const ic = el('span', 'box-ic');
+        ic.innerHTML = icon(b.icon);
+        titleWrap.append(ic);
       }
-      win.append(wb);
-      fr.append(win);
+      titleWrap.append(el('h2', '', b.title || ''));
+      top.append(titleWrap);
+      if (b.badge) {
+        top.append(el('span', 'tag', b.badge));
+      } else if (isLink) {
+        const g = el('span', 'go');
+        g.innerHTML = icon(/^https?:\/\//i.test(b.url) ? 'out' : 'next');
+        top.append(g);
+      }
+      box.append(top);
+      if (b.text) {
+        box.append(el('p', 'box-txt', b.text));
+      }
+      if (Array.isArray(b.stats) && b.stats.length) {
+        const n = el('p', 'nums');
+        for (const st of b.stats) {
+          if (!st || (st.value == null && !st.label)) continue;
+          const sp = el('span');
+          sp.append(el('b', '', st.value ?? ''), ' ' + (st.label || ''));
+          n.append(sp);
+        }
+        box.append(n);
+      }
+      li.append(box);
+      fr.append(li);
     }
     container.replaceChildren(fr);
     container.hidden = false;
@@ -718,24 +727,6 @@
       }
       const hl = document.getElementById('heroLogo') || document.querySelector('.hero .mark');
       if (hl && site.logo) hl.src = resolveAsset(site.logo);
-      const hnwActivity = document.getElementById('hnwActivity');
-      if (hnwActivity && site.currentActivity) {
-        hnwActivity.textContent = site.currentActivity;
-      }
-      const hero = document.getElementById('heroSection') || document.querySelector('.hero');
-      if (hero && !hnwActivity) {
-        let curAct = hero.querySelector('.hero-activity-badge');
-        if (site.currentActivity && site.currentActivity.trim()) {
-          if (!curAct) {
-            curAct = el('div', 'hero-activity-badge glass');
-            hero.append(curAct);
-          }
-          curAct.innerHTML = `<span class="hab-pulse" aria-hidden="true"></span><span class="hab-txt">${esc(site.currentActivity)}</span>`;
-          curAct.hidden = false;
-        } else if (curAct) {
-          curAct.hidden = true;
-        }
-      }
     } else if (cur && d && d.pages && d.pages[cur]) {
       const pg = d.pages[cur];
       if (pg.metaTitle) document.title = pg.metaTitle;
@@ -772,84 +763,33 @@
     const visibleSections = (d.sections || []).filter(Boolean).map(ensureSectionDefaults).filter(s => s.status !== 'hidden');
     const active = visibleSections.filter(s => s.status === 'active' || s.id === cur);
 
-    // Update Raphael Skill Metrics in Master Console
-    const anmSum = sum.anime || {};
-    const gdSum = sum.guide || {};
-    const mvSum = sum.movie || {};
-    const mAnime = document.getElementById('metricAnime');
-    const mGuides = document.getElementById('metricGuides');
-    const mMovies = document.getElementById('metricMovies');
-    if (mAnime) mAnime.textContent = anmSum.totalCount || 89;
-    if (mGuides) mGuides.textContent = gdSum.totalCount || 54;
-    if (mMovies) mMovies.textContent = mvSum.totalCount || 3;
-
-    // Taskbar Navigation (#dock / #taskbarTasks)
-    let taskContainer = document.getElementById('taskbarTasks');
-    if (dock && !taskContainer) {
-      dock.className = 'retro-taskbar';
-      dock.removeAttribute('hidden');
-      const startBtn = el('button', 'taskbar-start-btn');
-      startBtn.id = 'taskbarStartBtn';
-      startBtn.type = 'button';
-      startBtn.setAttribute('aria-expanded', 'false');
-      startBtn.setAttribute('aria-controls', 'retroStartMenu');
-      startBtn.innerHTML = '<span class="tsb-icon">🫧</span><span class="tsb-label">Rimuru</span>';
-
-      taskContainer = el('div', 'taskbar-tasks');
-      taskContainer.id = 'taskbarTasks';
-
-      const tray = el('div', 'taskbar-tray');
-      const themeToggle = el('button', 'tray-theme-btn');
-      themeToggle.type = 'button';
-      themeToggle.title = 'Tema Değiştir (Açık/Koyu)';
-      themeToggle.textContent = document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙';
-      themeToggle.addEventListener('click', () => {
-        if (window.toggleTheme) window.toggleTheme();
-      });
-
-      const clock = el('div', 'tray-clock');
-      clock.id = 'trayClock';
-
-      tray.append(themeToggle, clock);
-      dock.replaceChildren(startBtn, taskContainer, tray);
-
-      if (!document.getElementById('retroStartMenu')) {
-        const sm = el('div', 'retro-start-menu');
-        sm.id = 'retroStartMenu';
-        sm.hidden = true;
-        sm.innerHTML = `
-          <div class="rsm-sidebar"><span>TEMPEST OS 98</span></div>
-          <div class="rsm-items">
-            <a class="rsm-item" href="${root || './'}"><span class="rsm-ic">🏠</span> Ana Sayfa</a>
-            <a class="rsm-item" href="${root}anime/"><span class="rsm-ic">📺</span> Anime Arşivi</a>
-            <a class="rsm-item" href="${root}film/"><span class="rsm-ic">🎬</span> Film Arşivi</a>
-            <a class="rsm-item" href="${root}rehber/"><span class="rsm-ic">🐧</span> Linux Rehberleri</a>
-            <a class="rsm-item" href="${root}istatistik/"><span class="rsm-ic">📊</span> İstatistik Hub</a>
-            <a class="rsm-item" href="${root}zaman-tuneli/"><span class="rsm-ic">⏳</span> Zaman Tüneli</a>
-            <div class="rsm-div"></div>
-            <a class="rsm-item" href="${root}admin/"><span class="rsm-ic">⚙️</span> Yönetici Paneli</a>
-          </div>
-        `;
-        document.body.append(sm);
+    // [AI-MIMARI-NOTU]: #dock zaten <nav id="dock" class="dock glass"> olduğu için
+    // bağlantılar doğrudan #dock içine eklenir (iç içe <nav> kullanılmaz); böylece
+    // tüm alt menü öğeleri yan yana (yatay flex satırı halinde) dizilir.
+    if (dock) {
+      if (active.length) {
+        const homeLabel = (d.site && d.site.homeLabel) || 'Ana sayfa';
+        const items = [{ id: 'home', title: homeLabel, href: root || './', icon: 'home' }, ...active.map(s => ({ id: s.id, title: s.title, href: root + s.path, icon: s.icon || s.id }))];
+        const fr = document.createDocumentFragment();
+        for (const it of items) {
+          const a = el('a');
+          a.href = it.href;
+          if (it.id === cur) {
+            a.setAttribute('aria-current', 'page');
+          }
+          const pill = el('span', 'pill');
+          pill.setAttribute('aria-hidden', 'true');
+          a.append(pill);
+          a.insertAdjacentHTML('beforeend', icon(it.icon));
+          a.append(el('span', '', it.title));
+          fr.append(a);
+        }
+        dock.replaceChildren(fr);
+        dock.hidden = false;
+      } else {
+        dock.replaceChildren();
+        dock.hidden = true;
       }
-    }
-
-    if (taskContainer) {
-      const fr = document.createDocumentFragment();
-      const items = [
-        { id: 'home', title: 'Ana sayfa', href: root || './', icon: 'home' },
-        ...active.map(s => ({ id: s.id, title: s.title, href: root + s.path, icon: s.icon || s.id })),
-        { id: 'stats', title: 'İstatistik', href: (root || '') + 'istatistik/', icon: 'chart' }
-      ];
-      for (const it of items) {
-        const a = el('a', 'taskbar-task-btn');
-        a.href = it.href;
-        if (it.id === cur) a.setAttribute('aria-current', 'page');
-        const iconSymbol = it.id === 'home' ? '🫧' : it.id === 'anime' ? '📺' : it.id === 'movie' ? '🎬' : it.id === 'guide' ? '🐧' : '📊';
-        a.innerHTML = `<span class="ttb-ic">${iconSymbol}</span><span>${esc(it.title)}</span>`;
-        fr.append(a);
-      }
-      taskContainer.replaceChildren(fr);
     }
 
     if (boxesTop || boxesBottom) {
@@ -860,117 +800,46 @@
 
     if (list) {
       const fr = document.createDocumentFragment();
-      const EXT_MAP = {
-        anime: 'ANIME_ARCHIVE.EXE',
-        movie: 'CINE_VAULT.EXE',
-        series: 'TV_SERIES.EXE',
-        manga: 'MANGA_READER.DAT',
-        book: 'GRIMOIRE_LIB.DAT',
-        guide: 'root@jura-tempest:~/rehberler$'
-      };
-      const THOUGHT_MAP = {
-        anime: 'That Time I Got Reincarnated as a Slime · Favori Yapım',
-        manga: 'Güncel okuma ve takip listesi',
-        book: 'Bilim kurgu, distopya ve felsefe arşivi',
-        movie: 'Toy Story, X-Men ve kült sinema seçkisi',
-        series: 'Dizi ve mini-dizi arşivi',
-        guide: 'Technopat Sosyal GNU/Linux rehber kataloğu'
-      };
-
       for (const s of visibleSections) {
         const on = s.status === 'active', m = sum[s.id] || {};
-        const win = el('section', 'retro-window archive-win');
-
-        // Retro Titlebar
-        const tb = el('div', 'retro-titlebar');
-        const titleText = EXT_MAP[s.id] || `${(s.title || '').toUpperCase()}.EXE`;
-        const iconSymbol = s.id === 'guide' ? '🐧' : s.id === 'anime' ? '📺' : s.id === 'movie' ? '🎬' : '📖';
-        tb.innerHTML = `
-          <div class="rt-title">
-            <span class="rt-icon">${iconSymbol}</span>
-            <span>${esc(titleText)}</span>
-          </div>
-          <div class="rt-controls">
-            <span class="rtc-btn" title="Simge Durumuna">_</span>
-            <span class="rtc-btn" title="Pencere Boyutu">□</span>
-            <span class="rtc-btn" title="Kapat">✕</span>
-          </div>
-        `;
-        win.append(tb);
-
-        // Retro Window Body
-        const wb = el('div', 'retro-window-body archive-win-body');
-
-        // Header Row: Count Pill + Catalog Button
-        const countTxt = m.nums && m.nums.length
-          ? m.nums.map(([v, u]) => `${v} ${u}`).join(' · ')
-          : (s.badgeText || (on ? `${m.totalCount || 0} ${s.unit || 'içerik'}` : 'Yakında'));
-        
-        const headRow = el('div', 'aw-header-row');
-        headRow.innerHTML = `
-          <span class="aw-badge">${esc(countTxt)}</span>
-          <a class="retro-link-btn" href="${esc(root + s.path)}">[ Kataloğu Aç → ]</a>
-        `;
-        wb.append(headRow);
-
-        // Shelf Content: Linux Terminal vs. Real Poster Shelf vs. Volume Placeholders
-        if (s.id === 'guide') {
-          const termBox = el('div', 'linux-terminal-box');
-          const guides = Array.isArray(m.guideSnippets) && m.guideSnippets.length ? m.guideSnippets : [
-            { title: "NixOS'te OmenCtl kurulumu", tag: "NixOS" },
-            { title: "R36S için PortMaster kurulum rehberi", tag: "Linux" },
-            { title: "KWin pencere yöneticisini yapılandırma", tag: "Masaüstü" },
-            { title: "Plasma masaüstü ortamını özelleştirme", tag: "Özelleştirme" }
-          ];
-          let termHtml = `<div class="lt-cmd">$ cat /var/log/technopat-guides.log [STATUS: READY]</div><div class="lt-list">`;
-          for (let i = 0; i < guides.length; i++) {
-            const g = guides[i];
-            termHtml += `<a class="lt-item" href="${esc(root + s.path)}"><span class="lt-tag">[${esc(g.tag)}]</span><span>${esc(g.title)}</span></a>`;
-          }
-          termHtml += `</div>`;
-          termBox.innerHTML = termHtml;
-          wb.append(termBox);
-        } else if (m.imgs && m.imgs.length) {
-          const shelfWrap = el('div', 'shelf-wrap');
-          const shelfGrid = el('div', 'shelf-grid');
-          for (const imgUrl of m.imgs) {
-            const item = el('div', 'shelf-item');
-            item.onclick = () => { window.location.href = root + s.path; };
-            const img = el('img', 'shelf-poster');
-            img.src = resolveAsset(imgUrl);
-            img.alt = '';
-            img.loading = 'lazy';
-            img.decoding = 'async';
-            item.append(img);
-            shelfGrid.append(item);
-          }
-          shelfWrap.append(shelfGrid);
-          wb.append(shelfWrap);
+        const li = el('li', 'tile glass sq' + (on ? '' : ' soon'));
+        const box = on ? Object.assign(el('a'), { href: root + s.path }) : el('div');
+        const top = el('div', 'tile-top');
+        const headLeft = el('div', 'box-head-left');
+        if (s.customImage) {
+          const cimg = el('img', 'box-thumb');
+          cimg.src = resolveAsset(s.customImage);
+          cimg.alt = '';
+          cimg.width = 36;
+          cimg.height = 36;
+          headLeft.append(cimg);
+        } else if (s.icon && P[s.icon]) {
+          const ic = el('span', 'box-ic');
+          ic.innerHTML = icon(s.icon);
+          headLeft.append(ic);
+        }
+        headLeft.append(el('h2', '', s.title));
+        top.append(headLeft);
+        if (on) {
+          const g = el('span', 'go'); g.innerHTML = icon('next'); top.append(g);
         } else {
-          const shelfWrap = el('div', 'shelf-wrap');
-          const shelfGrid = el('div', 'shelf-grid');
-          const placeholders = [1, 2, 3, 4];
-          const ic = s.id === 'manga' ? '📖' : s.id === 'book' ? '📜' : '📺';
-          const pfx = s.id === 'series' ? 'Sezon' : 'Cilt';
-          for (const p of placeholders) {
-            const card = el('div', 'shelf-ph-card');
-            card.innerHTML = `<span class="shelf-ph-ic">${ic}</span><span class="shelf-ph-lbl">${pfx} ${p}</span>`;
-            shelfGrid.append(card);
-          }
-          shelfWrap.append(shelfGrid);
-          wb.append(shelfWrap);
+          top.append(el('span', 'tag', s.badgeText || s.description || 'Yakında'));
         }
-
-        // Thought Note Footer
-        const thoughtTxt = s.thought || s.subtitle || THOUGHT_MAP[s.id] || '';
-        if (thoughtTxt) {
-          const ft = el('div', 'aw-footer-thought');
-          ft.innerHTML = `<span>💬</span><span><b>Not:</b> ${esc(thoughtTxt)}</span>`;
-          wb.append(ft);
+        box.append(top);
+        if (s.subtitle) {
+          box.append(el('p', 'box-txt', s.subtitle));
         }
-
-        win.append(wb);
-        fr.append(win);
+        if (on && m.nums) {
+          const n = el('p', 'nums');
+          for (const [v, u] of m.nums) { const sp = el('span'); sp.append(el('b', '', v), ' ' + u); n.append(sp); }
+          box.append(n);
+        }
+        if (on && m.imgs && m.imgs.length && s.showStrip !== false) {
+          const st = el('div', 'strip');
+          for (const u of m.imgs) { const im = el('img'); im.src = resolveAsset(u); im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.width = 88; im.height = 132; im.onload = () => im.classList.add('in'); st.append(im); }
+          box.append(st);
+        }
+        li.append(box); fr.append(li);
       }
       list.replaceChildren(fr);
     }
@@ -978,27 +847,12 @@
     if (links) {
       const activeLinks = (d.links || []).filter(l => l && l.enabled !== false);
       const fr = document.createDocumentFragment();
-      const staticBadges = [
-        { title: '🐧 LINUX', sub: 'NixOS', cls: 'badge-linux' },
-        { title: '🫧 RIMURU', sub: 'Tempest', cls: 'badge-tensura' }
-      ];
-      for (const sb of staticBadges) {
-        const div = el('div', `badge-88x31 ${sb.cls}`);
-        div.innerHTML = `<span>${esc(sb.title)}</span><small>${esc(sb.sub)}</small>`;
-        fr.append(div);
-      }
       for (const l of activeLinks) {
-        const a = el('a', 'badge-88x31 ' + (l.url.includes('technopat') ? 'badge-tp' : l.url.includes('github') ? 'badge-gh' : 'badge-al'));
-        a.href = l.url;
-        a.target = '_blank';
-        a.rel = 'noopener me';
-        const ic = l.url.includes('technopat') ? '🌐 ' : l.url.includes('github') ? '🐙 ' : '📺 ';
-        a.innerHTML = `<span>${ic}${esc(l.title)}</span><small>Bağlantı</small>`;
-        fr.append(a);
+        const li = el('li'), a = el('a', 'glass', l.title);
+        a.href = l.url; a.target = '_blank'; a.rel = 'noopener me';
+        const o = el('span', 'out'); o.innerHTML = icon('out'); a.append(o);
+        li.append(a); fr.append(li);
       }
-      const endBadge = el('div', 'badge-88x31 badge-retro');
-      endBadge.innerHTML = `<span>⚡ 800x600</span><small>Ready</small>`;
-      fr.append(endBadge);
       links.replaceChildren(fr);
     }
   }
@@ -1874,70 +1728,4 @@
     }, { passive: true });
   })();
 
-  // ============================================================================
-  // [RETRO OS TASKBAR & START MENU MOTORU]
-  // ============================================================================
-  (() => {
-    const clockEl = document.getElementById('trayClock');
-    if (clockEl) {
-      const updateClock = () => {
-        const now = new Date();
-        const h = String(now.getHours()).padStart(2, '0');
-        const m = String(now.getMinutes()).padStart(2, '0');
-        const s = String(now.getSeconds()).padStart(2, '0');
-        clockEl.textContent = `${h}:${m}:${s}`;
-      };
-      updateClock();
-      setInterval(updateClock, 1000);
-    }
-
-    const startBtn = document.getElementById('taskbarStartBtn');
-    const startMenu = document.getElementById('retroStartMenu');
-    if (startBtn && startMenu) {
-      startBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        const isHidden = startMenu.hasAttribute('hidden') || startMenu.hidden;
-        if (isHidden) {
-          startMenu.removeAttribute('hidden');
-          startMenu.hidden = false;
-          startBtn.classList.add('active');
-          startBtn.setAttribute('aria-expanded', 'true');
-        } else {
-          startMenu.setAttribute('hidden', '');
-          startMenu.hidden = true;
-          startBtn.classList.remove('active');
-          startBtn.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      document.addEventListener('click', e => {
-        if (!startMenu.contains(e.target) && !startBtn.contains(e.target)) {
-          startMenu.setAttribute('hidden', '');
-          startMenu.hidden = true;
-          startBtn.classList.remove('active');
-          startBtn.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && !startMenu.hidden) {
-          startMenu.setAttribute('hidden', '');
-          startMenu.hidden = true;
-          startBtn.classList.remove('active');
-          startBtn.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
-
-    const syncTrayThemeBtns = () => {
-      const isDark = document.documentElement.dataset.theme === 'dark';
-      document.querySelectorAll('.tray-theme-btn').forEach(btn => {
-        btn.textContent = isDark ? '☀️' : '🌙';
-      });
-    };
-    syncTrayThemeBtns();
-    document.addEventListener('themechange', syncTrayThemeBtns);
-  })();
-
 })();
-

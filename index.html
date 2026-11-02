@@ -4,20 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#0284c7">
-<title>Tempestian · Jura Tempest Archive</title>
-<meta name="description" content="Bayram Tempestian'ın kişisel retro anime medya arşivi: Anime, GNU/Linux rehberleri, puanlar ve incelemeler.">
+<meta name="theme-color" content="#eceef3">
+<title>Tempestian</title>
+<meta name="description" content="Bayram Tempestian'ın kişisel sitesi ve medya arşivi: Anime, GNU/Linux rehberleri, puanlar ve incelemeler.">
+<!-- [AI-MIMARI-NOTU: ADIM 22 — SOSYAL MEDYA PAYLAŞIM KARTLARI (OPEN GRAPH & TWITTER)] -->
 <meta property="og:site_name" content="Tempestian">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tempestian.github.io/">
 <meta property="og:title" content="Tempestian · Bayram">
-<meta property="og:description" content="Bayram Tempestian'ın kişisel retro anime medya arşivi: Anime, GNU/Linux rehberleri, puanlar ve incelemeler.">
+<meta property="og:description" content="Bayram Tempestian'ın kişisel sitesi ve medya arşivi: Anime, GNU/Linux rehberleri, puanlar ve incelemeler.">
 <meta property="og:image" content="https://tempestian.github.io/assets/img/icon-512.png">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tempestian · Bayram">
-<meta name="twitter:description" content="Bayram Tempestian'ın kişisel retro anime medya arşivi: Anime, GNU/Linux rehberleri, puanlar ve incelemeler.">
+<meta name="twitter:description" content="Bayram Tempestian'ın kişisel sitesi ve medya arşivi: Anime, GNU/Linux rehberleri, puanlar ve incelemeler.">
 <meta name="twitter:image" content="https://tempestian.github.io/assets/img/icon-512.png">
 <link rel="icon" id="fav32" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="icon" id="fav192" href="assets/img/icon-192.png" type="image/png" sizes="192x192">
@@ -25,188 +26,74 @@
 <script src="assets/js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:wght@400;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
 <link rel="stylesheet" href="assets/css/style.css">
 <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-root="" data-section="home">
-<!-- 1. RETRO ANIME BROADCAST TICKER -->
-<div class="retro-ticker-bar" role="marquee" aria-label="Canlı Sistem Duyurusu">
-  <div class="rtb-inner">
-    <span class="rtb-tag">⚡ JURA TEMPEST BROADCAST ⚡</span>
-    <span class="rtb-msg" id="tickerMsg">🍿 Şimdi İzleniyor: <b>One Piece &amp; Severance S2</b> · 📖 Okunuyor: <b>Tensura LN Cilt 21</b> · 🐧 Sistem: <b>NixOS &amp; Wayland</b> · 🫧 Rimuru: <i>"Birlikte huzurla yaşayabileceğimiz bir dünya inşa ediyoruz!"</i></span>
-  </div>
-</div>
-
-<!-- SUBPAGES BAR (Home dışındaki sayfalarda görünür) -->
 <header class="bar">
   <div class="bar-in">
     <span class="bar-title" id="barTitle" aria-hidden="true">Tempestian</span>
     <div class="bar-actions">
-      <a class="btn" href="zaman-tuneli/" title="Zaman Tüneli" aria-label="Zaman Tüneli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></a>
-      <a class="btn" href="istatistik/" title="İstatistikler" aria-label="İstatistikler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></a>
-      <button class="btn" id="themeBarBtn" type="button" aria-label="Tema Değiştir" onclick="window.toggleTheme()">🌓</button>
+      <a class="btn glass bar-stats-btn" href="zaman-tuneli/" title="Zaman Tüneli" aria-label="Zaman Tüneli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></a>
+      <a class="btn glass bar-stats-btn" href="istatistik/" title="İstatistikler" aria-label="İstatistikler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></a>
+      <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
     </div>
   </div>
 </header>
-
 <main class="wrap">
-  <!-- 2. MASTER CONSOLE WINDOW: PROFILE & RAPHAEL SKILL TERMINAL -->
-  <header class="retro-window main-console-window" id="heroSection">
-    <div class="retro-titlebar">
-      <div class="rt-title">
-        <span class="rt-icon">📁</span>
-        <span>C:\JURA_TEMPEST\SYSTEM\TEMPESTIAN_ARCHIVE.EXE</span>
-      </div>
-      <div class="rt-controls">
-        <span class="rtc-btn" title="Simge Durumuna Küçült">_</span>
-        <span class="rtc-btn" title="Tam Ekran">□</span>
-        <span class="rtc-btn" title="Kapat">✕</span>
-      </div>
-    </div>
-    
-    <div class="retro-window-body console-body">
-      <div class="console-left">
-        <div class="retro-avatar-frame">
-          <img class="retro-avatar" id="heroLogo" src="assets/img/logo.png" width="72" height="72" alt="Tempestian Avatar" decoding="async">
-          <div class="retro-avatar-status">
-            <span class="ras-dot"></span>
-            <span>AKTİF</span>
-          </div>
-        </div>
-        <div class="console-bio">
-          <h1 class="console-name" id="heroTitle">Tempestian</h1>
-          <p class="console-class">Unvan: <b>Demon Lord / Archiver</b></p>
-          <p class="console-realm" id="heroSub">Bölge: <b>Jura Tempest Federation</b></p>
-        </div>
-      </div>
-
-      <!-- Raphael Skill / Great Sage Terminal -->
-      <div class="sage-terminal" id="sageTerminal">
-        <div class="st-head">
-          <span class="st-pulse">✦</span>
-          <span>RAPHAEL SKILL // APPRAISAL TERMINAL</span>
-        </div>
-        <p class="st-text" id="sageNotice">
-          [BİLDİRİM]: Arşiv veritabanı başarıyla senkronize edildi. Toplam <b>89 anime</b>, <b>54 Linux rehberi</b> ve <b>3 sinema yapımı</b> analiz edildi. Çekirdek büyü gücü (magikule) kararlı durumda.
-        </p>
-        <div class="st-metrics">
-          <div class="stm-item"><span class="stm-lbl">ANİME:</span><b class="stm-val" id="metricAnime">89</b></div>
-          <div class="stm-item"><span class="stm-lbl">REHBER:</span><b class="stm-val" id="metricGuides">54</b></div>
-          <div class="stm-item"><span class="stm-lbl">FİLM:</span><b class="stm-val" id="metricMovies">3</b></div>
-          <div class="stm-item"><span class="stm-lbl">MAGIKULE:</span><b class="stm-val">089420</b></div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- 3. SÜRPRİZ KUTUSU WINDOW -->
-  <section class="retro-window gift-window" id="gift" aria-label="Sürpriz">
-    <div class="retro-titlebar gift-titlebar">
-      <div class="rt-title">
-        <span class="rt-icon">🎁</span>
-        <span>A:\EVENTS\SPECIAL_GIFT_BOX.DAT</span>
-      </div>
-      <div class="rt-controls">
-        <span class="rtc-btn">✕</span>
-      </div>
-    </div>
-    <div class="retro-window-body gift-window-body">
-      <div class="gift-banner-left">
-        <span class="gift-retro-slime" aria-hidden="true">🎁</span>
-        <div>
-          <h2 class="gift-banner-title" id="giftLead">Hediyenin açılma zamanı geldi!</h2>
-          <p class="gift-banner-sub">Özel sürpriz içeriğini ve mesajı görüntülemek için tıklayın.</p>
-        </div>
-      </div>
-      <button class="retro-link-btn" id="giftBtn" type="button" aria-expanded="false" aria-controls="giftPanel" style="padding:6px 14px;font-size:0.8rem">
-        Sürprizi İncele ✨
-      </button>
-    </div>
+  <section class="hero" id="heroSection">
+    <img class="mark" id="heroLogo" src="assets/img/logo.png" width="64" height="64" alt="" decoding="async">
+    <h1 id="heroTitle">Tempestian</h1>
+    <p class="sub" id="heroSub">Bayram</p>
+  </section>
+  <section class="gift glass sq open" id="gift" aria-label="Sürpriz">
+    <span class="gift-bg" aria-hidden="true"></span>
+    <button class="gift-btn" id="giftBtn" type="button" aria-expanded="true" aria-controls="giftPanel" aria-label="Sürprizi kapat" title="Sürprizi okumak için tıkla ✨">
+      <span class="gift-glow" aria-hidden="true"></span>
+      <svg class="gift-box" viewBox="0 -16 120 136" aria-hidden="true">
+        <defs>
+          <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8fc0"/><stop offset="1" stop-color="#f23d8f"/></linearGradient>
+          <linearGradient id="gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa3cc"/><stop offset="1" stop-color="#f7529f"/></linearGradient>
+          <linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0f7"/><stop offset="1" stop-color="#ffc4de"/></linearGradient>
+        </defs>
+        <g class="gift-body">
+          <rect x="22" y="58" width="76" height="52" rx="10" fill="url(#gb)"/>
+          <rect x="54" y="58" width="12" height="52" fill="url(#gr)"/>
+          <rect x="22" y="58" width="76" height="8" fill="#000" opacity=".1"/>
+        </g>
+        <g class="gift-lid">
+          <rect x="15" y="40" width="90" height="23" rx="9" fill="url(#gl)"/>
+          <rect x="54" y="40" width="12" height="23" fill="url(#gr)"/>
+          <path d="M60 40C52 20 31 13 33 29C35 41 52 41 60 40Z" fill="url(#gr)"/>
+          <path d="M60 40C68 20 89 13 87 29C85 41 68 41 60 40Z" fill="url(#gr)"/>
+          <circle cx="60" cy="40" r="6.5" fill="#ffd9ea"/>
+        </g>
+      </svg>
+    </button>
     <div class="gift-panel" id="giftPanel">
-      <div class="gift-in" style="padding:14px 18px;text-align:center">
-        <div class="cd" id="giftCd" role="timer" aria-live="off" hidden>
-          <div><b data-u="d">0</b><span data-ul="d">Gün</span></div>
-          <div><b data-u="h">00</b><span data-ul="h">Saat</span></div>
-          <div><b data-u="m">00</b><span data-ul="m">Dakika</span></div>
-          <div><b data-u="s">00</b><span data-ul="s">Saniye</span></div>
+      <div class="gift-in">
+        <div class="gift-body-txt">
+          <p class="gift-lead" id="giftLead">Hediyenin açılma zamanı geldi</p>
+          <div class="cd" id="giftCd" role="timer" aria-live="off" hidden>
+            <div><b data-u="d">0</b><span data-ul="d">Gün</span></div>
+            <div><b data-u="h">00</b><span data-ul="h">Saat</span></div>
+            <div><b data-u="m">00</b><span data-ul="m">Dakika</span></div>
+            <div><b data-u="s">00</b><span data-ul="s">Saniye</span></div>
+          </div>
+          <p class="gift-date" id="giftDate"><a href="hediye/" style="color:var(--accent);font-weight:600">Sürprizi okumak için tıkla ✨</a></p>
         </div>
-        <p class="gift-date" id="giftDate" style="margin-top:8px"><a href="hediye/" style="color:var(--primary);font-weight:700">Sürprizi okumak için tıkla ✨</a></p>
       </div>
     </div>
   </section>
-
-  <!-- 4. ÖZEL DURUM NOTLARI (#boxesTop) -->
-  <ul class="custom-boxes-grid" id="boxesTop" hidden></ul>
-
-  <!-- 5. BÜYÜK ARŞİV KATEGORİ PENCERELERİ (#sections) -->
-  <div class="archive-windows-grid" id="sections"></div>
-
-  <!-- 6. ALT ÖZEL KUTULAR (#boxesBottom) -->
-  <ul class="custom-boxes-grid" id="boxesBottom" hidden></ul>
-
-  <!-- 7. RETRO WEBRING & 88x31 PIXEL STAMPS FOOTER -->
-  <footer class="retro-window footer-window">
-    <div class="retro-titlebar">
-      <div class="rt-title">
-        <span class="rt-icon">🌐</span>
-        <span>C:\NETSCAPE\WEBRING_&amp;SYSTEM_LINKS.HTM</span>
-      </div>
-    </div>
-    <div class="retro-window-body footer-body">
-      <div class="web-badges-row" id="links">
-        <div class="badge-88x31 badge-linux"><span>🐧 LINUX</span><small>NixOS</small></div>
-        <div class="badge-88x31 badge-tensura"><span>🫧 RIMURU</span><small>Tempest</small></div>
-        <a class="badge-88x31 badge-tp" href="https://www.technopat.net/sosyal/uye/bayram-tempestian.657641/" target="_blank" rel="noopener"><span>🌐 TECHNOPAT</span><small>Sosyal</small></a>
-        <a class="badge-88x31 badge-gh" href="https://github.com/tempestian" target="_blank" rel="noopener"><span>🐙 GITHUB</span><small>tempestian</small></a>
-        <a class="badge-88x31 badge-al" href="https://anilist.co/user/TurkTempestian" target="_blank" rel="noopener"><span>📺 ANILIST</span><small>Arşiv</small></a>
-        <div class="badge-88x31 badge-retro"><span>⚡ 800x600</span><small>Ready</small></div>
-      </div>
-      <div class="retro-hit-counter">
-        <span>MAGIKULE HIT COUNTER:</span>
-        <div class="odometer-box" title="Arşiv Büyü Gücü Sayacı">
-          <b>0</b><b>8</b><b>9</b><b>4</b><b>5</b><b>6</b>
-        </div>
-      </div>
-      <p class="retro-copyright">© 2026 Bayram Tempestian · Jura Tempest Federation Media Archive · Powered by Wayland &amp; NixOS</p>
-    </div>
-  </footer>
+  <!-- [AI-MIMARI-NOTU]: Admin panelinden eklenen üst özel kutucuklar (#boxesTop), ana kategoriler (#sections), alt özel kutucuklar (#boxesBottom) ve dış bağlantılar (#links) common.js tarafından dinamik olarak doldurulur. -->
+  <ul class="tiles custom-boxes" id="boxesTop" hidden></ul>
+  <ul class="tiles" id="sections"></ul>
+  <ul class="tiles custom-boxes" id="boxesBottom" hidden></ul>
+  <ul class="links" id="links" aria-label="Bağlantılar"></ul>
+  <noscript><p class="note">Bölümler için JavaScript gerekiyor.</p></noscript>
 </main>
-
-<!-- 8. RETRO OS TASKBAR (#dock) — EKRAN ALTINDA SABİT GÖREV ÇUBUĞU -->
-<nav class="retro-taskbar" id="dock" role="navigation" aria-label="Sistem Görev Çubuğu">
-  <button class="taskbar-start-btn" id="taskbarStartBtn" type="button" aria-expanded="false" aria-controls="retroStartMenu">
-    <span class="tsb-icon">🫧</span>
-    <span class="tsb-label">Rimuru</span>
-  </button>
-
-  <div class="taskbar-tasks" id="taskbarTasks">
-    <!-- common.js tarafından doldurulacak bağlantılar -->
-  </div>
-
-  <div class="taskbar-tray">
-    <button class="tray-theme-btn" id="theme" type="button" title="Tema Değiştir (Açık/Koyu)">☀️</button>
-    <div class="tray-clock" id="trayClock">16:42:00</div>
-  </div>
-</nav>
-
-<!-- 9. RETRO START MENU POPUP -->
-<div class="retro-start-menu" id="retroStartMenu" hidden>
-  <div class="rsm-sidebar">
-    <span>TEMPEST OS 98</span>
-  </div>
-  <div class="rsm-items">
-    <a class="rsm-item" href="./"><span class="rsm-ic">🏠</span> Ana Sayfa</a>
-    <a class="rsm-item" href="anime/"><span class="rsm-ic">📺</span> Anime Arşivi</a>
-    <a class="rsm-item" href="film/"><span class="rsm-ic">🎬</span> Film Arşivi</a>
-    <a class="rsm-item" href="rehber/"><span class="rsm-ic">🐧</span> Linux Rehberleri</a>
-    <a class="rsm-item" href="istatistik/"><span class="rsm-ic">📊</span> İstatistik Hub</a>
-    <a class="rsm-item" href="zaman-tuneli/"><span class="rsm-ic">⏳</span> Zaman Tüneli</a>
-    <div class="rsm-div"></div>
-    <a class="rsm-item" href="admin/"><span class="rsm-ic">⚙️</span> Yönetici Paneli</a>
-  </div>
-</div>
-
+<nav id="dock" class="dock glass sq" aria-label="Ana menü"></nav>
 <script src="assets/js/common.js"></script>
 <script src="assets/js/gift.js"></script>
 </body>

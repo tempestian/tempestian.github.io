@@ -53,7 +53,8 @@
     link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
     dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="4.2"/><circle cx="8.5" cy="8.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.25" fill="currentColor"/><circle cx="12" cy="12" r="1.25" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.25" fill="currentColor"/>',
     clock: '<circle cx="12" cy="12" r="8.5"/><polyline points="12 7 12 12 15.2 14"/>',
-    chart: '<path d="M18 20V10M12 20V4M6 20v-6"/>'
+    chart: '<path d="M18 20V10M12 20V4M6 20v-6"/>',
+    slime: '<path d="M12 4C7.5 4 4 7.2 4 11.5c0 4.2 3.2 8.5 8 8.5s8-4.3 8-8.5C20 7.2 16.5 4 12 4z" fill="currentColor" opacity="0.25"/><path d="M12 4C7.5 4 4 7.2 4 11.5c0 4.2 3.2 8.5 8 8.5s8-4.3 8-8.5C20 7.2 16.5 4 12 4z"/><ellipse cx="9" cy="12" rx="1.5" ry="2" fill="currentColor"/><ellipse cx="15" cy="12" rx="1.5" ry="2" fill="currentColor"/>'
   };
   const icon = n => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[n] || P.dot) + '</svg>';
 
@@ -634,7 +635,15 @@
     } else {
       nums = [[items.length, s.unit || 'içerik']];
     }
-    return { nums: j ? nums : null, imgs: s.showStrip === false ? [] : items.map(cover).filter(Boolean).slice(0, 4) };
+    const guideSnippets = s.id === 'guide'
+      ? items.slice(0, 3).map(g => ({ title: g.title, url: g.url, tag: (g.customGenres && g.customGenres[0]) || g.forumSection || 'Linux' }))
+      : null;
+    return {
+      nums: j ? nums : null,
+      imgs: s.showStrip === false ? [] : items.map(cover).filter(Boolean).slice(0, 4),
+      guideSnippets,
+      totalCount: items.length
+    };
   };
 
   function renderCustomBoxes(container, boxItems) {
@@ -727,6 +736,20 @@
       }
       const hl = document.getElementById('heroLogo') || document.querySelector('.hero .mark');
       if (hl && site.logo) hl.src = resolveAsset(site.logo);
+      const hero = document.getElementById('heroSection') || document.querySelector('.hero');
+      if (hero) {
+        let curAct = hero.querySelector('.hero-activity-badge');
+        if (site.currentActivity && site.currentActivity.trim()) {
+          if (!curAct) {
+            curAct = el('div', 'hero-activity-badge glass');
+            hero.append(curAct);
+          }
+          curAct.innerHTML = `<span class="hab-pulse" aria-hidden="true"></span><span class="hab-txt">${esc(site.currentActivity)}</span>`;
+          curAct.hidden = false;
+        } else if (curAct) {
+          curAct.hidden = true;
+        }
+      }
     } else if (cur && d && d.pages && d.pages[cur]) {
       const pg = d.pages[cur];
       if (pg.metaTitle) document.title = pg.metaTitle;
@@ -777,11 +800,20 @@
           if (it.id === cur) {
             a.setAttribute('aria-current', 'page');
           }
+          if (it.id === 'home') {
+            a.classList.add('dock-home-slime');
+          }
           const pill = el('span', 'pill');
           pill.setAttribute('aria-hidden', 'true');
           a.append(pill);
-          a.insertAdjacentHTML('beforeend', icon(it.icon));
+          const iconName = (it.id === 'home' && (d.site && d.site.slimeDockIcon !== false)) ? 'slime' : it.icon;
+          a.insertAdjacentHTML('beforeend', icon(iconName));
           a.append(el('span', '', it.title));
+          a.addEventListener('click', () => {
+            a.classList.remove('slime-squish');
+            void a.offsetWidth;
+            a.classList.add('slime-squish');
+          });
           fr.append(a);
         }
         dock.replaceChildren(fr);
@@ -838,6 +870,16 @@
           const st = el('div', 'strip');
           for (const u of m.imgs) { const im = el('img'); im.src = resolveAsset(u); im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.width = 88; im.height = 132; im.onload = () => im.classList.add('in'); st.append(im); }
           box.append(st);
+        } else if (on && s.id === 'guide' && Array.isArray(m.guideSnippets) && m.guideSnippets.length) {
+          const gw = el('div', 'guide-strip-preview');
+          for (const g of m.guideSnippets) {
+            const item = el('div', 'gsp-item');
+            const tag = el('span', 'gsp-tag', g.tag);
+            const tit = el('span', 'gsp-tit', g.title);
+            item.append(tag, tit);
+            gw.append(item);
+          }
+          box.append(gw);
         }
         li.append(box); fr.append(li);
       }

@@ -9,7 +9,9 @@
     "logo": "assets/img/logo.png",
     "favicon32": "assets/img/favicon-32.png",
     "icon192": "assets/img/icon-192.png",
-    "appleTouchIcon": "assets/img/apple-touch-icon.png"
+    "appleTouchIcon": "assets/img/apple-touch-icon.png",
+    "currentActivity": "🍿 One Piece & Severance · 📖 Tensura LN · 🐧 Wayland & NixOS",
+    "slimeDockIcon": true
   },
   "gift": {
     "enabled": true,

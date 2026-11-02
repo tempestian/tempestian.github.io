@@ -341,9 +341,19 @@ body {
   font: 16px/1.5 var(--sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 90% 15%, color-mix(in srgb, #38bdf8 8%, transparent) 0%, transparent 60%);
+  background-attachment: fixed;
 }
 
-/* Material You mat yüzey: neon gradyan ve kumlanma gizlendi */
+:root[data-theme="dark"] body {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 10% 20%, color-mix(in srgb, #0ea5e9 6%, transparent) 0%, transparent 60%);
+  background-attachment: fixed;
+}
+
 body::before,
 body::after {
   display: none !important;
@@ -1050,13 +1060,15 @@ h1 {
   border-radius: var(--md-sys-shape-corner-extra-large);
   overflow: hidden;
   background: var(--md-sys-color-surface-container-low);
-  border: 0;
-  box-shadow: none;
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 35%, transparent);
+  box-shadow: var(--md-sys-elevation-level1);
   padding: 8px;
   transition:
     transform var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing),
     border-radius var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing),
-    background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing);
+    background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    border-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
+    box-shadow var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing);
 }
 
 .tile > a,
@@ -1081,6 +1093,8 @@ h1 {
 @media (hover: hover) {
   .tile:has(> a:hover) {
     background: var(--md-sys-color-surface-container-high);
+    border-color: color-mix(in srgb, var(--md-sys-color-primary) 45%, transparent);
+    box-shadow: var(--md-sys-elevation-level2);
     transform: translateY(-2px);
   }
   .tile > a:hover .go {
@@ -1185,6 +1199,121 @@ h1 {
   box-shadow: none;
   background: var(--md-sys-color-surface-container);
   transition: transform var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing);
+}
+
+/* Jura & Tensura Tarzı Canlı Durum Rozeti (.hero-activity-badge) */
+.hero-activity-badge {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  margin-top: 10px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: color-mix(in srgb, var(--md-sys-color-surface) 72%, transparent);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.88rem;
+  font-weight: 560;
+  max-width: fit-content;
+  box-shadow: var(--md-sys-elevation-level1);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 45%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.hab-pulse {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  animation: hab-pulse-glow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  flex: none;
+}
+
+@keyframes hab-pulse-glow {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+  70% { transform: scale(1.15); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.hab-txt {
+  line-height: 1.35;
+  white-space: normal;
+}
+
+/* Rehber Bölüm Kartı İçin Canlı Başlık Önizleme Şeridi (.guide-strip-preview) */
+.guide-strip-preview {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  margin: 6px -8px -8px;
+  border-radius: var(--md-sys-shape-corner-large-increased);
+  background-color: var(--md-sys-color-surface);
+}
+
+.gsp-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: var(--md-sys-shape-corner-medium);
+  background: var(--md-sys-color-surface-container-low);
+  font-size: 0.82rem;
+  overflow: hidden;
+  transition: background-color 0.18s, transform 0.18s;
+}
+
+.tile > a:hover .gsp-item {
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.gsp-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  flex: none;
+  white-space: nowrap;
+}
+
+.gsp-tit {
+  font-weight: 520;
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1 1 auto;
+}
+
+/* Slime Esneme & Sıçrama Animasyonu (Squishy Rimuru Dock Icon) */
+@keyframes slimeSquishAnim {
+  0% { transform: scale(1, 1); }
+  30% { transform: scale(1.28, 0.75); }
+  50% { transform: scale(0.85, 1.22); }
+  70% { transform: scale(1.1, 0.92); }
+  100% { transform: scale(1, 1); }
+}
+
+.dock a.slime-squish svg,
+.dock a.dock-home-slime:active svg {
+  animation: slimeSquishAnim 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dock a.dock-home-slime svg {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dock a.dock-home-slime:hover svg {
+  transform: translateY(-3px) scale(1.12);
+  color: #38bdf8;
+}
+
+:root[data-theme="dark"] .dock a.dock-home-slime:hover svg {
+  color: #7dd3fc;
+  filter: drop-shadow(0 2px 8px rgba(56, 189, 248, 0.4));
 }
 
 .tile.soon {

@@ -1395,6 +1395,15 @@
                 <input type="text" id="cfgSiteHomeLabel" class="inp glass" placeholder="Ana sayfa">
               </label>
               <label class="field">
+                <span>Anlık Durum &amp; Okunuyor/İzleniyor Notu (Hero Rozeti)</span>
+                <input type="text" id="cfgSiteCurrentActivity" class="inp glass" placeholder="Örn: 🍿 Severance S2 · 📖 Tensura Cilt 12 · 🐧 Wayland Denemeleri">
+                <small>Ana sayfada başlığın altında canlı nabız ikonuyla gösterilir (boş bırakarak gizleyebilirsiniz).</small>
+              </label>
+              <label class="chk" style="display:inline-flex;align-items:center;gap:0.5rem;cursor:pointer;user-select:none;">
+                <input type="checkbox" id="cfgSiteSlimeDockIcon" checked>
+                <span>Alt menü (Dock) Ana Sayfa ikonunu sevimli Slime yap</span>
+              </label>
+              <label class="field">
                 <span>Site Meta Açıklaması (description)</span>
                 <textarea id="cfgSiteDesc" class="inp glass" rows="2" placeholder="Bayram Tempestian'ın kişisel sitesi."></textarea>
               </label>
@@ -6687,6 +6696,8 @@
     $('#cfgSiteBarTitle').value = site.barTitle || '';
     $('#cfgSiteHomeLabel').value = site.homeLabel || '';
     $('#cfgSiteDesc').value = site.description || '';
+    if ($('#cfgSiteCurrentActivity')) $('#cfgSiteCurrentActivity').value = site.currentActivity || '';
+    if ($('#cfgSiteSlimeDockIcon')) $('#cfgSiteSlimeDockIcon').checked = site.slimeDockIcon !== false;
 
     populatePageTextInputsForSection(state.activeTextPageId || 'anime');
 
@@ -6718,6 +6729,8 @@
     site.barTitle = S($('#cfgSiteBarTitle').value, 120) || site.title;
     site.homeLabel = S($('#cfgSiteHomeLabel').value, 80) || 'Ana sayfa';
     site.description = S($('#cfgSiteDesc').value, 300);
+    if ($('#cfgSiteCurrentActivity')) site.currentActivity = S($('#cfgSiteCurrentActivity').value, 160);
+    if ($('#cfgSiteSlimeDockIcon')) site.slimeDockIcon = Boolean($('#cfgSiteSlimeDockIcon').checked);
 
     saveCurrentPageTextInputsToConfig();
 

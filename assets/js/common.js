@@ -640,7 +640,7 @@
       : null;
     return {
       nums: j ? nums : null,
-      imgs: s.showStrip === false ? [] : items.map(cover).filter(Boolean).slice(0, 4),
+      imgs: s.showStrip === false ? [] : items.map(cover).filter(Boolean).slice(0, 8),
       guideSnippets,
       totalCount: items.length
     };
@@ -736,8 +736,12 @@
       }
       const hl = document.getElementById('heroLogo') || document.querySelector('.hero .mark');
       if (hl && site.logo) hl.src = resolveAsset(site.logo);
+      const hnwActivity = document.getElementById('hnwActivity');
+      if (hnwActivity && site.currentActivity) {
+        hnwActivity.textContent = site.currentActivity;
+      }
       const hero = document.getElementById('heroSection') || document.querySelector('.hero');
-      if (hero) {
+      if (hero && !hnwActivity) {
         let curAct = hero.querySelector('.hero-activity-badge');
         if (site.currentActivity && site.currentActivity.trim()) {
           if (!curAct) {
@@ -832,56 +836,117 @@
 
     if (list) {
       const fr = document.createDocumentFragment();
+      const BANNER_MAP = {
+        anime: 'assets/img/banners/banner-anime.svg',
+        manga: 'assets/img/banners/banner-manga.svg',
+        book: 'assets/img/banners/banner-books.svg',
+        movie: 'assets/img/banners/banner-movies.svg',
+        series: 'assets/img/banners/banner-series.svg',
+        guide: 'assets/img/banners/banner-guides.svg'
+      };
+      const THOUGHT_MAP = {
+        anime: '💬 That Time I Got Reincarnated as a Slime · Favori',
+        manga: '💬 Güncel okuma ve takip listesi',
+        book: '📖 Bilim kurgu, distopya ve felsefe arşivi',
+        movie: '🎬 Toy Story, X-Men ve kült sinema seçkisi',
+        series: '📺 Dizi ve mini-dizi arşivi',
+        guide: '🐧 Technopat Sosyal GNU/Linux rehber kataloğu'
+      };
+
       for (const s of visibleSections) {
         const on = s.status === 'active', m = sum[s.id] || {};
         const li = el('li', 'tile glass sq' + (on ? '' : ' soon'));
-        const box = on ? Object.assign(el('a'), { href: root + s.path }) : el('div');
-        const top = el('div', 'tile-top');
-        const headLeft = el('div', 'box-head-left');
-        if (s.customImage) {
-          const cimg = el('img', 'box-thumb');
-          cimg.src = resolveAsset(s.customImage);
-          cimg.alt = '';
-          cimg.width = 36;
-          cimg.height = 36;
-          headLeft.append(cimg);
-        } else if (s.icon && P[s.icon]) {
-          const ic = el('span', 'box-ic');
-          ic.innerHTML = icon(s.icon);
-          headLeft.append(ic);
-        }
-        headLeft.append(el('h2', '', s.title));
-        top.append(headLeft);
-        if (on) {
-          const g = el('span', 'go'); g.innerHTML = icon('next'); top.append(g);
+        const box = Object.assign(el('a'), { href: root + s.path });
+
+        // 1. Üst İllüstrasyon Banner
+        const bannerWrap = el('div', 'tile-banner-wrap');
+        const bImg = el('img', 'tile-banner-img');
+        bImg.src = resolveAsset(s.customBanner || BANNER_MAP[s.id] || 'assets/img/banners/banner-anime.svg');
+        bImg.alt = '';
+        bImg.loading = 'lazy';
+        bImg.decoding = 'async';
+        const bOverlay = el('div', 'tile-banner-overlay');
+        bannerWrap.append(bImg, bOverlay);
+        box.append(bannerWrap);
+
+        // 2. Başlık, Vurgu Çizgisi ve Sayaç Rozeti
+        const headBar = el('div', 'tile-head-bar');
+        const titleWrap = el('div', 'tile-head-title-wrap');
+        const h2 = el('h2', 'tile-head-title', s.title);
+        const line = el('span', 'tile-title-line');
+        titleWrap.append(h2, line);
+        headBar.append(titleWrap);
+
+        let counterTxt = '';
+        if (m.nums && m.nums.length) {
+          counterTxt = m.nums.map(([v, u]) => `${v} ${u}`).join(' · ');
+        } else if (s.status === 'soon') {
+          counterTxt = s.badgeText || 'Yakında';
         } else {
-          top.append(el('span', 'tag', s.badgeText || s.description || 'Yakında'));
+          counterTxt = `${m.totalCount || 0} ${s.unit || 'içerik'}`;
         }
-        box.append(top);
-        if (s.subtitle) {
-          box.append(el('p', 'box-txt', s.subtitle));
-        }
-        if (on && m.nums) {
-          const n = el('p', 'nums');
-          for (const [v, u] of m.nums) { const sp = el('span'); sp.append(el('b', '', v), ' ' + u); n.append(sp); }
-          box.append(n);
-        }
-        if (on && m.imgs && m.imgs.length && s.showStrip !== false) {
-          const st = el('div', 'strip');
-          for (const u of m.imgs) { const im = el('img'); im.src = resolveAsset(u); im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.width = 88; im.height = 132; im.onload = () => im.classList.add('in'); st.append(im); }
-          box.append(st);
-        } else if (on && s.id === 'guide' && Array.isArray(m.guideSnippets) && m.guideSnippets.length) {
-          const gw = el('div', 'guide-strip-preview');
-          for (const g of m.guideSnippets) {
-            const item = el('div', 'gsp-item');
-            const tag = el('span', 'gsp-tag', g.tag);
-            const tit = el('span', 'gsp-tit', g.title);
-            item.append(tag, tit);
-            gw.append(item);
+        headBar.append(el('span', 'tile-counter-badge', counterTxt));
+        box.append(headBar);
+
+        // 3. Yatay Poster Kaydırma Şeridi (.strip-wrap & .strip)
+        const stripWrap = el('div', 'strip-wrap');
+        const st = el('div', 'strip');
+        const displayImgs = (m.imgs && m.imgs.length) ? m.imgs : [];
+
+        if (s.id === 'guide') {
+          const guides = Array.isArray(m.guideSnippets) && m.guideSnippets.length ? m.guideSnippets : [
+            { title: "NixOS'te OmenCtl kurulumu", tag: "NixOS" },
+            { title: "R36S PortMaster rehberi", tag: "Linux" },
+            { title: "Wayland Hyprland optimizasyonu", tag: "Wayland" }
+          ];
+          for (const g of guides) {
+            const gc = el('div', 'guide-card-item');
+            gc.innerHTML = `<span class="gci-tag">${esc(g.tag)}</span><span class="gci-title">${esc(g.title)}</span>`;
+            st.append(gc);
           }
-          box.append(gw);
+        } else if (displayImgs.length) {
+          for (const u of displayImgs) {
+            const item = el('div', 'strip-item');
+            const im = el('img');
+            im.src = resolveAsset(u);
+            im.alt = '';
+            im.loading = 'lazy';
+            im.decoding = 'async';
+            im.onload = () => im.classList.add('in');
+            item.append(im);
+            st.append(item);
+          }
+        } else {
+          const placeholders = [1, 2, 3, 4];
+          for (const p of placeholders) {
+            const item = el('div', 'strip-item placeholder');
+            item.innerHTML = `<div class="strip-ph-inner"><span>${esc(s.title)} #${p}</span></div>`;
+            st.append(item);
+          }
         }
-        li.append(box); fr.append(li);
+        stripWrap.append(st);
+
+        const arrow = el('button', 'strip-arrow', '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>');
+        arrow.type = 'button';
+        arrow.setAttribute('aria-label', 'Kaydır');
+        arrow.addEventListener('click', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          st.scrollBy({ left: 160, behavior: 'smooth' });
+        });
+        stripWrap.append(arrow);
+        box.append(stripWrap);
+
+        // 4. Alt Düşünce / Durum Notu (.tile-thought)
+        const thoughtTxt = s.thought || s.subtitle || THOUGHT_MAP[s.id] || '';
+        if (thoughtTxt) {
+          const thoughtEl = el('div', 'tile-thought');
+          thoughtEl.innerHTML = `<span class="tile-thought-icon">💬</span><span class="tile-thought-txt">${esc(thoughtTxt)}</span>`;
+          box.append(thoughtEl);
+        }
+
+        li.append(box);
+        fr.append(li);
       }
       list.replaceChildren(fr);
     }

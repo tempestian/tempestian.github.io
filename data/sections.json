@@ -87,11 +87,11 @@
       "id": "movie",
       "title": "Film",
       "path": "film/",
-      "description": "Yakında",
+      "description": "İzlediğim filmler",
       "data": "data/movies.json",
       "countKey": "movies",
       "unit": "film",
-      "status": "soon",
+      "status": "active",
       "icon": "movie",
       "showStrip": true
     },

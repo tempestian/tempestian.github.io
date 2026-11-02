@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bookBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#451a03"/>
+      <stop offset="50%" stop-color="#78350f"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <linearGradient id="goldGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+    <filter id="bookGlow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="600" height="160" fill="url(#bookBg)"/>
+  
+  <!-- Silhouette of library bookshelves -->
+  <rect x="0" y="0" width="600" height="160" fill="#000000" opacity="0.25"/>
+  <g fill="#ffffff" opacity="0.08">
+    <rect x="30" y="20" width="18" height="120" rx="2"/>
+    <rect x="52" y="30" width="22" height="110" rx="2"/>
+    <rect x="78" y="15" width="16" height="125" rx="2"/>
+    <rect x="98" y="25" width="24" height="115" rx="2"/>
+    <rect x="126" y="35" width="20" height="105" rx="2"/>
+    <rect x="480" y="20" width="18" height="120" rx="2"/>
+    <rect x="502" y="15" width="22" height="125" rx="2"/>
+    <rect x="528" y="28" width="16" height="112" rx="2"/>
+    <rect x="548" y="22" width="24" height="118" rx="2"/>
+  </g>
+
+  <!-- Open Magical Grimoire in Center -->
+  <g transform="translate(300, 95)" filter="url(#bookGlow)">
+    <!-- Book Cover Spine -->
+    <path d="M-90,20 Q0,35 90,20 L95,25 Q0,42 -95,25 Z" fill="#92400e"/>
+    <!-- Left Page -->
+    <path d="M-85,15 Q-45,-5 0,15 L0,-40 Q-45,-60 -85,-40 Z" fill="#fef3c7"/>
+    <path d="M-75,10 Q-40,-8 0,10 L0,-35 Q-40,-53 -75,-35 Z" fill="#fffbeb"/>
+    <!-- Right Page -->
+    <path d="M0,15 Q45,-5 85,15 L85,-40 Q45,-60 0,-40 Z" fill="#fef3c7"/>
+    <path d="M0,10 Q40,-8 75,10 L75,-35 Q40,-53 0,-35 Z" fill="#fffbeb"/>
+    <!-- Golden Text Lines on Pages -->
+    <g stroke="#d97706" stroke-width="1.8" opacity="0.55">
+      <line x1="-70" y1="-28" x2="-15" y2="-18"/>
+      <line x1="-70" y1="-18" x2="-20" y2="-8"/>
+      <line x1="-65" y1="-8" x2="-25" y2="0"/>
+      <line x1="15" y1="-18" x2="70" y2="-28"/>
+      <line x1="20" y1="-8" x2="70" y2="-18"/>
+      <line x1="25" y1="0" x2="65" y2="-8"/>
+    </g>
+    <!-- Magical Light Particles Rising -->
+    <circle cx="-30" cy="-65" r="3" fill="#fef08a" opacity="0.9"/>
+    <circle cx="-10" cy="-75" r="2" fill="#fde047" opacity="0.8"/>
+    <circle cx="15" cy="-80" r="3.5" fill="#fef08a" opacity="0.95"/>
+    <circle cx="35" cy="-60" r="2.5" fill="#fde047" opacity="0.85"/>
+    <circle cx="0" cy="-55" r="4" fill="#ffffff" opacity="0.9"/>
+  </g>
+
+  <!-- Ambient Golden Dust -->
+  <circle cx="180" cy="50" r="2" fill="#fde047" opacity="0.6"/>
+  <circle cx="230" cy="80" r="1.5" fill="#fde047" opacity="0.5"/>
+  <circle cx="380" cy="40" r="2" fill="#fde047" opacity="0.7"/>
+  <circle cx="430" cy="70" r="1.5" fill="#fde047" opacity="0.6"/>
+</svg>

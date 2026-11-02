@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="linuxBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#022c22"/>
+      <stop offset="60%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="termCode" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+  </defs>
+  <!-- Background Terminal -->
+  <rect width="600" height="160" fill="url(#linuxBg)"/>
+  
+  <!-- Terminal Window Shape -->
+  <rect x="25" y="16" width="550" height="128" rx="8" fill="#0b1319" opacity="0.88"/>
+  <rect x="25" y="16" width="550" height="128" rx="8" fill="none" stroke="#10b981" stroke-width="1.2" opacity="0.35"/>
+  
+  <!-- Terminal Title Bar -->
+  <rect x="25" y="16" width="550" height="26" rx="8" fill="#13232c"/>
+  <!-- Traffic Light Dots -->
+  <circle cx="45" cy="29" r="4.5" fill="#ef4444"/>
+  <circle cx="60" cy="29" r="4.5" fill="#f59e0b"/>
+  <circle cx="75" cy="29" r="4.5" fill="#10b981"/>
+  <text x="300" y="33" fill="#64748b" font-family="monospace" font-size="11" text-anchor="middle">tempestian@nixos ~ GNU/Linux &amp; Wayland Guides</text>
+
+  <!-- Terminal Content Lines -->
+  <!-- Line 1: Shell prompt and command -->
+  <text x="45" y="66" fill="#10b981" font-family="monospace" font-size="13" font-weight="bold">tempestian@nixos</text>
+  <text x="175" y="66" fill="#94a3b8" font-family="monospace" font-size="13">:</text>
+  <text x="185" y="66" fill="#38bdf8" font-family="monospace" font-size="13">~/rehberler</text>
+  <text x="270" y="66" fill="#ffffff" font-family="monospace" font-size="13">$ nixos-rebuild switch --flake .</text>
+
+  <!-- Line 2: Building status -->
+  <text x="45" y="90" fill="#34d399" font-family="monospace" font-size="12">[OK] building NixOS configuration · 54 Guides Active</text>
+
+  <!-- Line 3: Wayland / Hyprland / Niri tag line -->
+  <text x="45" y="114" fill="#a7f3d0" font-family="monospace" font-size="12">&gt; Wayland · Kernel · Donanım &amp; Yazılım Rehberleri</text>
+
+  <!-- Cursor Blink -->
+  <rect x="420" y="103" width="8" height="14" fill="#34d399">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- NixOS Snowflake Motif (Right side watermark) -->
+  <g transform="translate(505, 82) scale(0.65)" stroke="#10b981" stroke-width="2.5" opacity="0.35" fill="none">
+    <line x1="0" y1="-30" x2="0" y2="30"/>
+    <line x1="-26" y1="-15" x2="26" y2="15"/>
+    <line x1="-26" y1="15" x2="26" y2="-15"/>
+    <circle cx="0" cy="0" r="10"/>
+  </g>
+</svg>

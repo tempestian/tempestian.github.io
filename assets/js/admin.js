@@ -6931,7 +6931,17 @@
           </label>
           <label class="toggle-switch">
             <input type="checkbox" data-f="showStrip">
-            <span>4'lü Kapak Şeridini Göster</span>
+            <span>Kapak Kaydırma Şeridini Göster</span>
+          </label>
+        </div>
+        <div class="field-row">
+          <label class="field">
+            <span>Özel Banner Görseli (URL veya Dosya Yolu)</span>
+            <input type="text" class="inp glass" data-f="customBanner" placeholder="assets/img/banners/banner-anime.svg">
+          </label>
+          <label class="field">
+            <span>Alt Düşünce / Not Balonu (💬)</span>
+            <input type="text" class="inp glass" data-f="thought" placeholder="💬 That Time I Got Reincarnated as a Slime">
           </label>
         </div>
       `;

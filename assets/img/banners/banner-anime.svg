@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="anmSky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="45%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#bae6fd"/>
+    </linearGradient>
+    <linearGradient id="slimeGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#67e8f9"/>
+      <stop offset="60%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <!-- Background Sky -->
+  <rect width="600" height="160" fill="url(#anmSky)"/>
+  
+  <!-- Subtle Anime Mountains & Clouds -->
+  <path d="M0,160 L120,80 L240,130 L380,65 L520,120 L600,75 L600,160 Z" fill="#ffffff" opacity="0.22"/>
+  <path d="M0,160 L80,105 L200,145 L320,95 L460,140 L600,105 L600,160 Z" fill="#ffffff" opacity="0.32"/>
+  
+  <!-- Fluffy Cloud Puffs -->
+  <ellipse cx="90" cy="135" rx="75" ry="32" fill="#ffffff" opacity="0.55"/>
+  <ellipse cx="280" cy="142" rx="95" ry="38" fill="#ffffff" opacity="0.55"/>
+  <ellipse cx="490" cy="138" rx="85" ry="34" fill="#ffffff" opacity="0.55"/>
+  <ellipse cx="560" cy="145" rx="70" ry="28" fill="#ffffff" opacity="0.55"/>
+
+  <!-- Celestial Magic Rings -->
+  <circle cx="510" cy="65" r="55" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4,6" opacity="0.45"/>
+  <circle cx="510" cy="65" r="75" fill="none" stroke="#ffffff" stroke-width="1" stroke-dasharray="8,8" opacity="0.3"/>
+  
+  <!-- Rimuru Slime Mascot (Center-Right) -->
+  <g transform="translate(470, 35) scale(0.95)" filter="url(#glow)">
+    <!-- Slime Body -->
+    <path d="M45,10 C20,10 5,26 5,48 C5,70 22,90 45,90 C68,90 85,70 85,48 C85,26 70,10 45,10 Z" fill="url(#slimeGrad)"/>
+    <!-- Highlight Sheen -->
+    <ellipse cx="32" cy="30" rx="14" ry="7" transform="rotate(-30 32 30)" fill="#ffffff" opacity="0.75"/>
+    <ellipse cx="62" cy="35" rx="6" ry="3" transform="rotate(25 62 35)" fill="#ffffff" opacity="0.6"/>
+    <!-- Cute Eyes -->
+    <ellipse cx="32" cy="52" rx="4" ry="6" fill="#083344"/>
+    <ellipse cx="33" cy="50" rx="1.5" ry="2" fill="#ffffff"/>
+    <ellipse cx="58" cy="52" rx="4" ry="6" fill="#083344"/>
+    <ellipse cx="59" cy="50" rx="1.5" ry="2" fill="#ffffff"/>
+    <!-- Cute Blush -->
+    <ellipse cx="23" cy="58" rx="5" ry="3" fill="#f43f5e" opacity="0.35"/>
+    <ellipse cx="67" cy="58" rx="5" ry="3" fill="#f43f5e" opacity="0.35"/>
+  </g>
+
+  <!-- Sparkles & Stars -->
+  <path d="M120,40 L123,49 L132,52 L123,55 L120,64 L117,55 L108,52 L117,49 Z" fill="#ffffff" opacity="0.8"/>
+  <path d="M220,25 L222,31 L228,33 L222,35 L220,41 L218,35 L212,33 L218,31 Z" fill="#ffffff" opacity="0.7"/>
+  <path d="M350,45 L352,53 L360,55 L352,57 L350,65 L348,57 L340,55 L348,53 Z" fill="#ffffff" opacity="0.85"/>
+  <circle cx="160" cy="70" r="2.5" fill="#ffffff" opacity="0.7"/>
+  <circle cx="280" cy="30" r="2" fill="#ffffff" opacity="0.6"/>
+  <circle cx="400" cy="75" r="3" fill="#ffffff" opacity="0.8"/>
+</svg>

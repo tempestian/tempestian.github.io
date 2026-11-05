@@ -53,7 +53,10 @@
     link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
     dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="4.2"/><circle cx="8.5" cy="8.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.25" fill="currentColor"/><circle cx="12" cy="12" r="1.25" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.25" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.25" fill="currentColor"/>',
     clock: '<circle cx="12" cy="12" r="8.5"/><polyline points="12 7 12 12 15.2 14"/>',
-    chart: '<path d="M18 20V10M12 20V4M6 20v-6"/>'
+    chart: '<path d="M18 20V10M12 20V4M6 20v-6"/>',
+    technopat: '<path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/><path d="m9 12 2 2 4-4"/>',
+    github: '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>',
+    anilist: '<path d="m11.9 2 9.6 18.5H16.8l-2.1-4.2H9.3l-2.1 4.2H2.5L11.9 2zm0 6.8-2.6 5.5h5.2l-2.6-5.5z"/>'
   };
   const icon = n => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[n] || P.dot) + '</svg>';
 
@@ -802,7 +805,8 @@
       const fr = document.createDocumentFragment();
       for (const s of visibleSections) {
         const on = s.status === 'active', m = sum[s.id] || {};
-        const li = el('li', 'tile glass sq' + (on ? '' : ' soon'));
+        const isFeatured = on && (s.id === 'anime' || s.id === 'guide');
+        const li = el('li', 'tile glass sq' + (isFeatured ? ' tile-featured' : on ? ' tile-active' : ' tile-companion soon'));
         const box = on ? Object.assign(el('a'), { href: root + s.path }) : el('div');
         const top = el('div', 'tile-top');
         const headLeft = el('div', 'box-head-left');
@@ -814,13 +818,15 @@
           cimg.height = 36;
           headLeft.append(cimg);
         } else if (s.icon && P[s.icon]) {
-          const ic = el('span', 'box-ic');
+          const ic = el('span', 'box-ic' + (isFeatured ? ' box-ic-gold' : ''));
           ic.innerHTML = icon(s.icon);
           headLeft.append(ic);
         }
         headLeft.append(el('h2', '', s.title));
         top.append(headLeft);
         if (on) {
+          const badge = el('span', 'tag tag-active', isFeatured && s.id === 'anime' ? 'Aktif Arşiv' : isFeatured && s.id === 'guide' ? 'Technopat Rehber' : 'Aktif');
+          top.append(badge);
           const g = el('span', 'go'); g.innerHTML = icon('next'); top.append(g);
         } else {
           top.append(el('span', 'tag', s.badgeText || s.description || 'Yakında'));
@@ -828,6 +834,15 @@
         box.append(top);
         if (s.subtitle) {
           box.append(el('p', 'box-txt', s.subtitle));
+        } else if (s.description && !on) {
+          box.append(el('p', 'box-txt', s.description));
+        }
+        if (isFeatured && s.id === 'guide') {
+          const tagsRow = el('div', 'guide-chips-row');
+          for (const t of ['GNU/Linux', 'Donanım', 'Optimizasyon']) {
+            tagsRow.append(el('span', 'chip-mini', t));
+          }
+          box.append(tagsRow);
         }
         if (on && m.nums) {
           const n = el('p', 'nums');
@@ -848,12 +863,41 @@
       const activeLinks = (d.links || []).filter(l => l && l.enabled !== false);
       const fr = document.createDocumentFragment();
       for (const l of activeLinks) {
-        const li = el('li'), a = el('a', 'glass', l.title);
+        const li = el('li', 'link-item');
+        const a = el('a', 'glass sq link-btn');
         a.href = l.url; a.target = '_blank'; a.rel = 'noopener me';
+        let icName = 'link';
+        if (/technopat\.net/i.test(l.url)) icName = 'technopat';
+        else if (/github\.com/i.test(l.url)) icName = 'github';
+        else if (/anilist\.co/i.test(l.url)) icName = 'anilist';
+        const ic = el('span', 'link-ic');
+        ic.innerHTML = icon(icName);
+        a.append(ic);
+        a.append(el('span', 'link-title', l.title));
         const o = el('span', 'out'); o.innerHTML = icon('out'); a.append(o);
         li.append(a); fr.append(li);
       }
       links.replaceChildren(fr);
+    }
+
+    // Dynamic greeting and hero counters
+    const gEl = document.getElementById('irisGreeting');
+    if (gEl) {
+      const hr = new Date().getHours();
+      let g = 'İyi akşamlar';
+      if (hr >= 5 && hr < 12) g = 'Günaydın';
+      else if (hr >= 12 && hr < 18) g = 'İyi günler';
+      else if (hr >= 18 && hr < 23) g = 'İyi akşamlar';
+      else g = 'İyi geceler';
+      gEl.textContent = g;
+    }
+    if (sum && sum.anime && sum.anime.nums && sum.anime.nums[0]) {
+      const ca = document.getElementById('chipAnimeCount');
+      if (ca) ca.textContent = sum.anime.nums[0][0];
+    }
+    if (sum && sum.guide && sum.guide.nums && sum.guide.nums[0]) {
+      const cg = document.getElementById('chipGuideCount');
+      if (cg) cg.textContent = sum.guide.nums[0][0];
     }
   }
 

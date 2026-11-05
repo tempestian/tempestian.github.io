@@ -17,24 +17,24 @@
   const savedSeed = () => {
     try {
       const s = localStorage.getItem('md3e_seed');
-      return SEEDS.some(x => x.id === s) ? s : 'purple';
+      return SEEDS.some(x => x.id === s) ? s : 'amber';
     } catch (e) {
-      return 'purple';
+      return 'amber';
     }
   };
 
   const apply = (mode, seedId) => {
-    const m = mode || root.dataset.theme || (mq.matches ? 'dark' : 'light');
+    const m = mode || root.dataset.theme || savedTheme() || (mq.matches ? 'dark' : 'dark');
     const s = seedId || root.dataset.seed || savedSeed();
     root.dataset.theme = m;
     root.dataset.seed = s;
-    const seedMeta = SEEDS.find(x => x.id === s) || SEEDS[0];
+    const seedMeta = SEEDS.find(x => x.id === s) || SEEDS[4];
     const c = document.querySelector('meta[name=theme-color]');
     if (c) c.content = m === 'dark' ? seedMeta.surfaceDark : seedMeta.surfaceLight;
     document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: m, seed: s } }));
   };
 
-  apply(savedTheme() || (mq.matches ? 'dark' : 'light'), savedSeed());
+  apply(savedTheme() || 'dark', savedSeed());
 
   mq.addEventListener('change', e => {
     if (!savedTheme()) apply(e.matches ? 'dark' : 'light', root.dataset.seed);

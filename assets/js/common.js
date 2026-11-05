@@ -725,8 +725,8 @@
       if (ht && site.title !== undefined) ht.textContent = site.title;
       const hs = document.getElementById('heroSub') || document.querySelector('.hero .sub');
       if (hs) {
-        if (site.subtitle !== undefined) hs.textContent = site.subtitle;
-        hs.hidden = site.subtitle === '';
+        hs.textContent = '';
+        hs.hidden = true;
       }
       const hl = document.getElementById('heroLogo') || document.querySelector('.hero .mark');
       if (hl && site.logo) hl.src = resolveAsset(site.logo);

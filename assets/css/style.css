@@ -1041,11 +1041,11 @@ h1 {
   }
 }
 
-/* Floating Glass Bottom Dock (iNiR Iris Dock) */
+/* Grounded Glass Bottom Dock (iNiR Iris Attached Dock) */
 .dock {
   position: fixed !important;
   inset: auto 0 0 0 !important;
-  bottom: 18px !important;
+  bottom: 0 !important;
   left: 50% !important;
   right: auto !important;
   top: auto !important;
@@ -1053,28 +1053,79 @@ h1 {
   z-index: 100 !important;
   width: auto !important;
   max-width: calc(100vw - 32px) !important;
-  height: 56px !important;
-  min-height: 56px !important;
+  height: 52px !important;
+  min-height: 52px !important;
   margin: 0 !important;
-  padding: 0 12px !important;
-  border-radius: 9999px !important;
-  background: rgba(18, 20, 26, 0.76) !important;
+  padding: 4px 18px max(4px, env(safe-area-inset-bottom)) !important;
+  border-radius: 22px 22px 0 0 !important;
+  background: rgba(20, 22, 28, 0.88) !important;
   backdrop-filter: blur(28px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
-  border: 1px solid rgba(229, 169, 60, 0.3) !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 20px -2px rgba(229, 169, 60, 0.16) !important;
+  border: 1.5px solid rgba(229, 169, 60, 0.42) !important;
+  border-bottom: none !important;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.55), 0 0 16px -2px rgba(229, 169, 60, 0.18) !important;
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 6px !important;
+  gap: 8px !important;
   overflow: visible !important;
 }
 
+.dock::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -20px;
+  width: 20px;
+  height: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 6px 6px 0 0 rgba(20, 22, 28, 0.88);
+  pointer-events: none;
+}
+
+.dock::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -20px;
+  width: 20px;
+  height: 20px;
+  border-bottom-left-radius: 20px;
+  box-shadow: -6px 6px 0 0 rgba(20, 22, 28, 0.88);
+  pointer-events: none;
+}
+
 :root[data-theme="light"] .dock {
-  background: rgba(255, 255, 255, 0.85) !important;
-  border: 1px solid rgba(212, 143, 24, 0.28) !important;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1.5px solid rgba(212, 143, 24, 0.35) !important;
+  border-bottom: none !important;
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+:root[data-theme="light"] .dock::before {
+  box-shadow: 6px 6px 0 0 rgba(255, 255, 255, 0.92);
+}
+
+:root[data-theme="light"] .dock::after {
+  box-shadow: -6px 6px 0 0 rgba(255, 255, 255, 0.92);
+}
+
+/* Ground border line running along bottom of viewport */
+body::after {
+  content: '';
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: rgba(229, 169, 60, 0.35);
+  z-index: 95;
+  pointer-events: none;
+}
+
+:root[data-theme="light"] body::after {
+  background: rgba(212, 143, 24, 0.3);
 }
 
 .dock a {
@@ -1140,6 +1191,20 @@ h1 {
 .dock a[aria-current] svg {
   color: #e5a93c !important;
   transform: scale(1.08) !important;
+}
+
+.dock a[aria-current]::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #e5a93c;
+  box-shadow: 0 0 6px #e5a93c;
+  z-index: 2;
 }
 
 /* ============================================================================
@@ -4220,16 +4285,24 @@ body {
   color: #121316;
 }
 
-.iris-hero .sub {
-  align-self: flex-start !important;
-  font-size: 1rem;
-  font-weight: 450;
-  color: rgba(255, 255, 255, 0.72);
-  margin: 0;
+.iris-hero .sub,
+#heroSub {
+  display: none !important;
 }
 
-:root[data-theme="light"] .iris-hero .sub {
-  color: rgba(20, 22, 28, 0.72);
+.dock a:first-child {
+  margin-right: 8px !important;
+}
+
+.dock a:first-child::before {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 11px;
+  bottom: 11px;
+  width: 1px;
+  background: rgba(229, 169, 60, 0.28);
+  pointer-events: none;
 }
 
 .iris-chips-row {

@@ -1648,28 +1648,37 @@ input::placeholder {
   position: relative;
   display: flex;
   align-items: center;
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: 9999px !important;
   background: var(--md-sys-color-surface-container-high);
   border: 1px solid transparent;
   box-shadow: none;
-  transition:
-    border-radius var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing),
-    background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing);
+  transition: background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing);
 }
 
 .pick:hover {
   background: var(--md-sys-color-surface-container-highest);
 }
 
-.pick select {
+.pick select,
+select {
   appearance: none;
   -webkit-appearance: none;
+  color-scheme: dark !important;
   height: 100%;
   padding: 0 36px 0 18px;
   cursor: pointer;
   border-radius: inherit;
   font-size: 0.88rem;
   font-weight: 560;
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface);
+}
+
+.pick select option,
+select option {
+  background-color: #14161f !important;
+  color: #f1f2f5 !important;
+  padding: 8px 12px;
 }
 
 .pick > svg,
@@ -1863,7 +1872,7 @@ input::placeholder {
   display: inline-flex;
   align-items: center;
   border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: var(--md-sys-shape-expressive-chip-default);
+  border-radius: 9999px !important;
   padding: 0 16px;
   cursor: pointer;
   color: var(--md-sys-color-on-surface-variant);
@@ -1875,22 +1884,22 @@ input::placeholder {
     background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
     color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
     border-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing),
-    border-radius var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing),
     transform var(--md-sys-motion-spatial-fast-duration) var(--md-sys-motion-spatial-fast-easing);
 }
 
 .chips button:hover:not([aria-pressed=true]) {
   color: var(--md-sys-color-on-surface);
   background: var(--md-sys-color-surface-container-high);
+  border-radius: 9999px !important;
 }
 
 .chips button:active {
-  border-radius: var(--md-sys-shape-expressive-chip-pressed);
+  border-radius: 9999px !important;
   transform: scale(0.96);
 }
 
 .chips button[aria-pressed=true] {
-  border-radius: var(--md-sys-shape-expressive-chip-selected);
+  border-radius: 9999px !important;
   background: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   border-color: transparent;
@@ -1925,6 +1934,9 @@ input::placeholder {
 #list.grid li {
   content-visibility: auto;
   contain-intrinsic-size: auto 280px;
+  max-width: 260px;
+  width: 100%;
+  box-sizing: border-box;
   padding: 8px 8px 14px;
   border-radius: var(--md-sys-shape-corner-extra-large);
   background: var(--md-sys-color-surface-container-low);
@@ -2169,8 +2181,15 @@ h3 a:focus-visible {
     border-end-end-radius: var(--md-sys-shape-corner-large-increased);
   }
   #list.grid {
-    grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  #list.grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
   }
 }
 
@@ -4763,10 +4782,13 @@ body {
 .tile > a,
 .tile > div,
 .btn,
-.chips button,
 .seg button {
   border-radius: 20px !important;
   transition: transform 0.25s cubic-bezier(0.34, 1.45, 0.5, 1), border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease !important;
+}
+
+.chips button {
+  border-radius: 9999px !important;
 }
 
 .links li:first-child,
@@ -4791,3 +4813,56 @@ body {
 .md-ripple-effect {
   display: none !important;
 }
+
+/* 12. Sleek Amber Custom Scrollbars (Thin Orange Thumb across Modals & Page) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(229, 169, 60, 0.45) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(229, 169, 60, 0.45);
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(229, 169, 60, 0.85);
+}
+
+.sheet-card,
+.sheet-card .parts,
+.dialog,
+.cmdk-results,
+.ins,
+.ins-in {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(229, 169, 60, 0.45) transparent;
+}
+
+.sheet-card::-webkit-scrollbar,
+.sheet-card .parts::-webkit-scrollbar {
+  width: 7px;
+}
+
+.sheet-card::-webkit-scrollbar-thumb,
+.sheet-card .parts::-webkit-scrollbar-thumb {
+  background: rgba(229, 169, 60, 0.45);
+  border-radius: 9999px;
+}
+
+.sheet-card::-webkit-scrollbar-thumb:hover,
+.sheet-card .parts::-webkit-scrollbar-thumb:hover {
+  background: rgba(229, 169, 60, 0.85);
+}
+

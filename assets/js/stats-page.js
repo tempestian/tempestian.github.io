@@ -453,7 +453,7 @@
               ? (item.image.startsWith('http') ? item.image.replace('/cover/medium/', '/cover/large/') : (item.image.startsWith('/') ? item.image : rootPath + item.image))
               : `${rootPath}assets/img/icon-512.png`;
             return `
-              <a class="fame-card glass sq" href="${targetAppUrl}" title="${esc(item.title)}">
+              <a class="fame-card glass sq" href="${targetAppUrl}" data-id="${esc(item.id)}" title="${esc(item.title)}">
                 <div class="fame-thumb-box">
                   <img class="fame-thumb" src="${esc(cover)}" alt="${esc(item.title)}" loading="lazy">
                   ${item.effectiveScore ? `<span class="fame-score-badge">★ ${item.effectiveScore}</span>` : ''}
@@ -465,6 +465,227 @@
         </div>
       `;
       mount.appendChild(fameSection);
+
+      // In-Place Modal Sheet Engine for Statistics Page
+      let sheetEl = null;
+      let currentSheetItem = null;
+      const sheetItems = hallOfFame;
+
+      function ensureSheet() {
+        if (sheetEl) return sheetEl;
+        sheetEl = document.createElement('div');
+        sheetEl.className = 'sheet';
+        sheetEl.hidden = true;
+        sheetEl.setAttribute('role', 'dialog');
+        sheetEl.setAttribute('aria-modal', 'true');
+        sheetEl.setAttribute('aria-labelledby', 'sh-title');
+        sheetEl.innerHTML = `
+          <div class="sheet-bg"></div>
+          <div class="sheet-card glass sq">
+            <div class="sheet-backdrop" hidden>
+              <img class="sheet-backdrop-img" alt="" decoding="async">
+              <div class="sheet-backdrop-grad"></div>
+            </div>
+            <div class="sheet-head">
+              <img class="sheet-cover" alt="" decoding="async">
+              <div class="sheet-t">
+                <h2 id="sh-title"></h2>
+                <p class="sh-sub"></p>
+                <p class="sh-genres meta" style="margin-top:4px"></p>
+              </div>
+              <button class="btn glass" type="button" aria-label="Kapat" data-close>${window.UI && window.UI.icon ? window.UI.icon('close') : '✕'}</button>
+            </div>
+            <div class="sh-pg" hidden><i></i></div>
+            <div class="sh-rating-breakdown" id="shRatingBreakdown" hidden></div>
+            <ol class="parts"></ol>
+            <div class="sheet-foot-bar">
+              <div class="sheet-nav-grp">
+                <button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki yapım (←)">← Önceki</button>
+                <span class="sheet-pos-lbl" data-sh-pos></span>
+                <button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki yapım (→)">Sonraki →</button>
+              </div>
+              <div class="sheet-act-grp">
+                <button type="button" class="sheet-share-btn" data-sh-share title="Bu yapımın doğrudan bağlantısını kopyala">🔗 Bağlantıyı Kopyala</button>
+                <a class="sh-al" target="_blank" rel="noopener"></a>
+              </div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(sheetEl);
+
+        sheetEl.querySelector('.sheet-bg').onclick = closeSheet;
+        sheetEl.querySelector('[data-close]').onclick = closeSheet;
+
+        const shareBtn = sheetEl.querySelector('[data-sh-share]');
+        if (shareBtn) {
+          shareBtn.onclick = () => {
+            if (!currentSheetItem) return;
+            const url = `${location.origin}${location.pathname}#${encodeURIComponent(currentSheetItem.id)}`;
+            navigator.clipboard.writeText(url).then(() => {
+              const old = shareBtn.textContent;
+              shareBtn.textContent = '✓ Kopyalandı!';
+              setTimeout(() => { shareBtn.textContent = old; }, 2000);
+            });
+          };
+        }
+
+        window.addEventListener('keydown', (e) => {
+          if (sheetEl.hidden) return;
+          if (e.key === 'Escape') {
+            closeSheet();
+          } else if (e.key === 'ArrowLeft') {
+            const prev = sheetEl.querySelector('[data-sh-prev]');
+            if (prev && !prev.disabled) prev.click();
+          } else if (e.key === 'ArrowRight') {
+            const next = sheetEl.querySelector('[data-sh-next]');
+            if (next && !next.disabled) next.click();
+          }
+        });
+
+        return sheetEl;
+      }
+
+      function fillSheet(it) {
+        const el = ensureSheet();
+        const t = s => el.querySelector(s);
+        const cardEl = t('.sheet-card');
+        const bdEl = t('.sheet-backdrop');
+        const bdImg = t('.sheet-backdrop-img');
+        const bdUrl = it.banner || it.backdrop || null;
+        if (bdUrl) {
+          bdEl.hidden = false;
+          bdImg.src = bdUrl;
+          cardEl.classList.add('has-backdrop');
+        } else {
+          bdEl.hidden = true;
+          bdImg.src = '';
+          cardEl.classList.remove('has-backdrop');
+        }
+
+        t('#sh-title').textContent = it.title;
+
+        const bits = [];
+        if (it.favorite) bits.push('★ Başyapıt');
+        const stLabels = { completed: 'İzlendi', watching: 'İzleniyor', paused: 'Beklemede', dropped: 'Bırakıldı', planned: 'İzlenecek' };
+        if (it.status) bits.push(stLabels[it.status] || it.status);
+        if (it.effectiveScore) bits.push('★ ' + it.effectiveScore);
+
+        const parts = (window.UI && window.UI.parts) ? window.UI.parts(it) : (Array.isArray(it.parts) ? it.parts : []);
+        if (parts.length > 1) bits.push(parts.length + ' parça / sezon');
+        t('.sh-sub').textContent = bits.join(' · ');
+
+        const gEl = t('.sh-genres');
+        const genres = it.genres || it.genre || [];
+        if (Array.isArray(genres) && genres.length) {
+          gEl.innerHTML = genres.map(g => `<span class="sh-genre-chip">${esc(g)}</span>`).join('');
+          gEl.hidden = false;
+        } else {
+          gEl.hidden = true;
+        }
+
+        const coverEl = t('.sheet-cover');
+        const coverSrc = it.image
+          ? (it.image.startsWith('http') ? itemCover(it.image) : (it.image.startsWith('/') ? it.image : rootPath + it.image))
+          : `${rootPath}assets/img/icon-512.png`;
+        coverEl.src = coverSrc;
+        coverEl.hidden = false;
+
+        const rbEl = t('#shRatingBreakdown');
+        if (rbEl && window.TempestianRating) {
+          window.TempestianRating.renderSheetBreakdown(rbEl, cfg.id, it, it.effectiveScore);
+        }
+
+        const ol = t('.parts');
+        ol.replaceChildren();
+        const FMT = { TV: 'TV', MOVIE: 'Film', OVA: 'OVA', ONA: 'ONA', SPECIAL: 'Özel', MANGA: 'Manga', NOVEL: 'Roman' };
+        for (const p of parts) {
+          const li = document.createElement('li');
+          const isDone = p.status === 'COMPLETED' || (p.watched && p.episodes && p.watched >= p.episodes);
+          li.className = 'part ' + (isDone ? 'done' : '');
+          const isNumericId = typeof p.id === 'number' || /^\d+$/.test(String(p.id || ''));
+          const partUrl = p.url || (cfg.id === 'anime' && isNumericId ? 'https://anilist.co/anime/' + p.id : '');
+          li.innerHTML = `
+            <span class="pd" aria-hidden="true"></span>
+            <div class="pt">
+              ${partUrl ? `<a href="${partUrl}" target="_blank" rel="noopener"></a>` : `<span class="pt-name"></span>`}
+              <span class="pm"></span>
+            </div>
+            <span class="ps"></span>
+          `;
+          const nameNode = li.querySelector('a, .pt-name');
+          nameNode.textContent = p.name || it.title;
+          if (partUrl && nameNode.tagName === 'A') nameNode.href = partUrl;
+          const pmBits = [FMT[p.format] || (p.kind === 'movie' ? 'Film' : ''), p.year, p.episodes && p.episodes > 1 ? p.episodes + ' bölüm' : '', p.score ? '★ ' + p.score : ''].filter(Boolean);
+          li.querySelector('.pm').textContent = pmBits.join(' · ');
+          li.querySelector('.ps').textContent = isDone ? 'Tamamlandı' : (p.watched ? `${p.watched}/${p.episodes || '?'} bölüm` : '');
+          ol.appendChild(li);
+        }
+
+        const al = t('.sh-al');
+        const extUrl = it.url || (cfg.id === 'anime' && it.anilistId ? 'https://anilist.co/anime/' + it.anilistId : '');
+        if (extUrl) {
+          al.href = extUrl;
+          al.textContent = cfg.id === 'anime' ? "AniList'te aç" : 'Dış Kaynakta Aç';
+          al.hidden = false;
+        } else {
+          al.hidden = true;
+        }
+
+        const curIdx = sheetItems.findIndex(x => String(x.id) === String(it.id));
+        const prevBtn = t('[data-sh-prev]');
+        const nextBtn = t('[data-sh-next]');
+        const posLbl = t('[data-sh-pos]');
+        if (posLbl) posLbl.textContent = curIdx >= 0 ? `${curIdx + 1} / ${sheetItems.length}` : '';
+        if (prevBtn) {
+          prevBtn.disabled = curIdx <= 0;
+          prevBtn.onclick = () => { if (curIdx > 0) openSheet(sheetItems[curIdx - 1]); };
+        }
+        if (nextBtn) {
+          nextBtn.disabled = curIdx < 0 || curIdx >= sheetItems.length - 1;
+          nextBtn.onclick = () => { if (curIdx >= 0 && curIdx < sheetItems.length - 1) openSheet(sheetItems[curIdx + 1]); };
+        }
+
+        cardEl.scrollTop = 0;
+      }
+
+      function itemCover(img) {
+        if (!img) return `${rootPath}assets/img/icon-512.png`;
+        if (img.startsWith('http')) return img.replace('/cover/medium/', '/cover/large/');
+        return img.startsWith('/') ? img : rootPath + img;
+      }
+
+      function openSheet(it) {
+        currentSheetItem = it;
+        ensureSheet();
+        fillSheet(it);
+        sheetEl.hidden = false;
+        document.body.style.overflow = 'hidden';
+        history.replaceState(null, '', location.pathname + location.search + '#' + encodeURIComponent(it.id));
+      }
+
+      function closeSheet() {
+        if (sheetEl) sheetEl.hidden = true;
+        document.body.style.overflow = '';
+        currentSheetItem = null;
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+
+      fameSection.addEventListener('click', (e) => {
+        const card = e.target.closest('.fame-card');
+        if (!card) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        const id = card.dataset.id;
+        const target = items.find(x => String(x.id) === String(id)) || hallOfFame.find(x => String(x.id) === String(id));
+        if (target) openSheet(target);
+      });
+
+      // Initial hash check
+      const initialHash = location.hash ? decodeURIComponent(location.hash.slice(1)) : '';
+      if (initialHash) {
+        const target = items.find(x => String(x.id) === initialHash) || hallOfFame.find(x => String(x.id) === initialHash);
+        if (target) openSheet(target);
+      }
     }
   }
 

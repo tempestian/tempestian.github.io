@@ -4559,3 +4559,235 @@ body {
   --accent: #e5a93c;
   --accent-soft: rgba(229, 169, 60, 0.15);
 }
+
+/* 9. Flyout Control Capsule (Idea 3) */
+.flyout-trigger {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 9999px;
+  padding: 4px 8px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.flyout-trigger:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.flyout-chevron {
+  width: 16px;
+  height: 16px;
+  color: #e5a93c;
+  transition: transform 0.3s cubic-bezier(0.34, 1.45, 0.5, 1);
+}
+
+.flyout-trigger[aria-expanded="true"] .flyout-chevron,
+.flyout-trigger.open .flyout-chevron {
+  transform: rotate(180deg);
+}
+
+.flyout-menu {
+  pointer-events: auto;
+  position: absolute;
+  top: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(390px, calc(100vw - 32px));
+  border-radius: 26px !important;
+  background: #12141a !important;
+  background: rgba(18, 20, 26, 0.96) !important;
+  backdrop-filter: blur(36px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(200%) !important;
+  border: 1px solid rgba(229, 169, 60, 0.42) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.85), 0 0 28px -2px rgba(229, 169, 60, 0.25) !important;
+  padding: 16px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 200;
+  animation: flyout-drop 0.28s cubic-bezier(0.34, 1.45, 0.5, 1);
+}
+
+:root[data-theme="light"] .flyout-menu {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border-color: rgba(212, 143, 24, 0.4) !important;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.16) !important;
+}
+
+.flyout-menu[hidden] {
+  display: none !important;
+}
+
+@keyframes flyout-drop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+.flyout-header {
+  padding: 4px 8px 2px;
+}
+
+.flyout-sec-title {
+  font-size: 0.72rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #e5a93c;
+}
+
+.flyout-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.flyout-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 18px;
+  text-decoration: none;
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.22s cubic-bezier(0.34, 1.45, 0.5, 1);
+}
+
+:root[data-theme="light"] .flyout-item {
+  color: #1a1c22 !important;
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.flyout-item:hover {
+  background: rgba(229, 169, 60, 0.18);
+  border-color: rgba(229, 169, 60, 0.45);
+  transform: translateX(4px);
+  color: #fff !important;
+}
+
+.flyout-item.active {
+  background: rgba(229, 169, 60, 0.22);
+  border-color: rgba(229, 169, 60, 0.5);
+}
+
+.flyout-ic {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(229, 169, 60, 0.2) !important;
+  border: 1px solid rgba(229, 169, 60, 0.4) !important;
+  color: #e5a93c !important;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.flyout-ic svg {
+  width: 20px;
+  height: 20px;
+  color: #e5a93c !important;
+}
+
+.flyout-info {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.flyout-name {
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: #fff !important;
+}
+
+:root[data-theme="light"] .flyout-name {
+  color: #12141a !important;
+}
+
+.flyout-desc {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+:root[data-theme="light"] .flyout-desc {
+  color: rgba(20, 22, 28, 0.65) !important;
+}
+
+.flyout-badge {
+  font-size: 0.72rem;
+  font-weight: 650;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background: rgba(56, 239, 125, 0.15);
+  border: 1px solid rgba(56, 239, 125, 0.35);
+  color: #38ef7d;
+}
+
+.flyout-sep {
+  height: 1px;
+  background: rgba(229, 169, 60, 0.22);
+  margin: 6px 6px;
+}
+
+/* 10. Hide Dock & Ground Lines Completely */
+.dock,
+body::after {
+  display: none !important;
+}
+
+body {
+  padding-bottom: 32px !important;
+}
+
+.wrap {
+  padding-bottom: 48px !important;
+}
+
+/* 11. Purge Material Design 3 Shape Morphing & Ripple Traces */
+.links li,
+.links a,
+.tile,
+.tile > a,
+.tile > div,
+.btn,
+.chips button,
+.seg button {
+  border-radius: 20px !important;
+  transition: transform 0.25s cubic-bezier(0.34, 1.45, 0.5, 1), border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease !important;
+}
+
+.links li:first-child,
+.links li:last-child,
+.links li:only-child {
+  border-radius: 20px !important;
+}
+
+.links li:hover,
+.links li:hover a {
+  border-radius: 20px !important;
+  background: transparent !important;
+}
+
+.btn {
+  border-radius: 50% !important;
+}
+
+.m3-seed-pop-wrap,
+.m3-seed-popover,
+#seedBtn,
+.md-ripple-effect {
+  display: none !important;
+}

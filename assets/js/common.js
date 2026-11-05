@@ -767,32 +767,11 @@
     const active = visibleSections.filter(s => s.status === 'active' || s.id === cur);
 
     // [AI-MIMARI-NOTU]: #dock zaten <nav id="dock" class="dock glass"> olduğu için
-    // bağlantılar doğrudan #dock içine eklenir (iç içe <nav> kullanılmaz); böylece
-    // tüm alt menü öğeleri yan yana (yatay flex satırı halinde) dizilir.
+    // Dock completely removed in favor of Top Flyout Capsule (Idea 3)
     if (dock) {
-      if (active.length) {
-        const homeLabel = (d.site && d.site.homeLabel) || 'Ana sayfa';
-        const items = [{ id: 'home', title: homeLabel, href: root || './', icon: 'home' }, ...active.map(s => ({ id: s.id, title: s.title, href: root + s.path, icon: s.icon || s.id }))];
-        const fr = document.createDocumentFragment();
-        for (const it of items) {
-          const a = el('a');
-          a.href = it.href;
-          if (it.id === cur) {
-            a.setAttribute('aria-current', 'page');
-          }
-          const pill = el('span', 'pill');
-          pill.setAttribute('aria-hidden', 'true');
-          a.append(pill);
-          a.insertAdjacentHTML('beforeend', icon(it.icon));
-          a.append(el('span', '', it.title));
-          fr.append(a);
-        }
-        dock.replaceChildren(fr);
-        dock.hidden = false;
-      } else {
-        dock.replaceChildren();
-        dock.hidden = true;
-      }
+      dock.replaceChildren();
+      dock.hidden = true;
+      dock.remove();
     }
 
     if (boxesTop || boxesBottom) {
@@ -1669,107 +1648,60 @@
   })();
 
   // ============================================================================
-  // [M3 EXPRESSIVE SEED COLOR PICKER]: @materialwebunofficial/md3e-web "Make it yours"
+  // [IRIS FLYOUT CONTROL CAPSULE]: Minimal Island & Dropdown Control Center (Idea 3)
   // ============================================================================
-  (() => {
-    const SEEDS = window.MD3_SEEDS || [
-      { id: 'purple', name: 'Mor',          hex: '#6750A4' },
-      { id: 'blue',   name: 'Mavi',         hex: '#185EAC' },
-      { id: 'ocean',  name: 'Okyanus',      hex: '#00639B' },
-      { id: 'green',  name: 'Orman Yeşili', hex: '#386A20' },
-      { id: 'amber',  name: 'Kehribar',     hex: '#7D5700' },
-      { id: 'coral',  name: 'Mercan',       hex: '#9C4146' }
-    ];
+  const initFlyoutCapsule = (sum) => {
+    const trigger = document.getElementById('flyoutTrigger');
+    const menu = document.getElementById('flyoutMenu');
+    if (!trigger || !menu) return;
 
-    const getCurSeed = () => document.documentElement.dataset.seed || 'purple';
+    const toggle = (force) => {
+      const open = force !== undefined ? force : menu.hidden;
+      menu.hidden = !open;
+      trigger.setAttribute('aria-expanded', String(open));
+      trigger.classList.toggle('open', open);
+    };
 
-    // 1. Üst Bar Palet Butonu ve Popover Menüsü (Tüm Sayfalarda)
-    const actions = document.querySelector('.bar-actions, .admin-bar-actions');
-    const themeBtn = document.getElementById('theme');
-    if (actions && !document.getElementById('seedBtn')) {
-      const wrap = el('div', 'm3-seed-pop-wrap');
-      const btn = el('button', 'btn glass');
-      btn.id = 'seedBtn';
-      btn.type = 'button';
-      btn.title = 'Material You Tema Rengi';
-      btn.setAttribute('aria-label', 'Material You Tema Rengi');
-      btn.setAttribute('aria-expanded', 'false');
-      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a10 10 0 0 0 0 20 2.5 2.5 0 0 0 2.5-2.5c0-.6-.2-1.2-.6-1.6-.4-.4-.6-1-.6-1.6a2.5 2.5 0 0 1 2.5-2.5H17a5 5 0 0 0 5-5c0-4.4-4.5-8-10-8Z"/><circle cx="7.5" cy="10.5" r="1" fill="currentColor"/><circle cx="12" cy="7.5" r="1" fill="currentColor"/><circle cx="16.5" cy="10.5" r="1" fill="currentColor"/></svg>`;
-
-      const pop = el('div', 'm3-seed-popover');
-      pop.hidden = true;
-      const popTitle = el('div', 'm3-seed-pop-title', 'Material You Rengi');
-      const popGrid = el('div', 'm3-seed-pop-grid');
-      for (const s of SEEDS) {
-        const b = el('button', 'm3-seed-pop-btn');
-        b.type = 'button';
-        b.dataset.seedId = s.id;
-        b.setAttribute('aria-pressed', String(s.id === getCurSeed()));
-        const sw = el('span', 'm3-seed-swatch');
-        sw.style.setProperty('--seed', s.hex);
-        const lb = el('span', '', s.name);
-        b.append(sw, lb);
-        b.addEventListener('click', () => {
-          if (window.setMaterialSeed) window.setMaterialSeed(s.id);
-        });
-        popGrid.append(b);
-      }
-      pop.append(popTitle, popGrid);
-      wrap.append(btn, pop);
-
-      if (themeBtn && themeBtn.parentNode === actions) {
-        actions.insertBefore(wrap, themeBtn);
-      } else {
-        actions.append(wrap);
-      }
-
-      btn.addEventListener('click', e => {
-        e.stopPropagation();
-        const next = pop.hidden;
-        pop.hidden = !next;
-        btn.setAttribute('aria-expanded', String(next));
-        btn.setAttribute('aria-pressed', String(next));
-      });
-
-      document.addEventListener('click', e => {
-        if (!pop.hidden && !wrap.contains(e.target)) {
-          pop.hidden = true;
-          btn.setAttribute('aria-expanded', 'false');
-          btn.setAttribute('aria-pressed', 'false');
-        }
-      });
-    }
-
-    document.addEventListener('themechange', () => {
-      const activeSeed = getCurSeed();
-      document.querySelectorAll('[data-seed-id]').forEach(node => {
-        node.setAttribute('aria-pressed', String(node.dataset.seedId === activeSeed));
-      });
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggle();
     });
-  })();
 
-  // ============================================================================
-  // [M3 EXPRESSIVE RIPPLE MOTORU]: @materialwebunofficial/md3e-web Uyumlu Dalga
-  // ============================================================================
-  (() => {
-    const RIPPLE_SEL = '.btn, .chips button, .view button, .seg button, .sh-rb-tab, .dock a, .m3-seed-chip, .m3-seed-pop-btn, .tile > a, .links a, .sheet-nav-btn, .sheet-share-btn, .sh-al, .btn-primary, .btn-secondary, .btn-subtle, .btn-danger, .btn-chip, .icon-btn, .auth-tab, .nav-tab, .page-text-tab, .fav-toggle-btn, .quick-ep-btn, .rq-strip-item, .rq-mini-sc, .part-criteria-btn, .cmd-palette-item, .stats-nav-item, .timeline-cat-btn, .timeline-mode-btn';
-    document.addEventListener('pointerdown', e => {
-      if (e.button !== 0) return;
-      const host = e.target && e.target.closest ? e.target.closest(RIPPLE_SEL) : null;
-      if (!host || host.disabled) return;
-      const targetBox = host.matches('.dock a') ? (host.querySelector('.pill') || host) : host;
-      const rect = targetBox.getBoundingClientRect();
-      if (!rect.width || !rect.height) return;
-      const size = Math.max(rect.width, rect.height) * 1.35;
-      const rip = document.createElement('span');
-      rip.className = 'md-ripple-effect';
-      rip.style.width = rip.style.height = `${size}px`;
-      rip.style.left = `${e.clientX - rect.left - size / 2}px`;
-      rip.style.top = `${e.clientY - rect.top - size / 2}px`;
-      targetBox.appendChild(rip);
-      rip.addEventListener('animationend', () => rip.remove(), { once: true });
-      setTimeout(() => { if (rip.parentNode) rip.remove(); }, 500);
-    }, { passive: true });
-  })();
+    menu.addEventListener('click', (e) => {
+      if (e.target.closest('a')) {
+        toggle(false);
+      } else {
+        e.stopPropagation();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menu.hidden && !trigger.contains(e.target) && !menu.contains(e.target)) {
+        toggle(false);
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) {
+        toggle(false);
+        trigger.focus();
+      }
+    });
+
+    if (sum && sum.anime && sum.anime.nums && sum.anime.nums[0]) {
+      const el = document.getElementById('flyAnimeDesc');
+      if (el) el.textContent = `${sum.anime.nums[0][0]} Anime · Arşiv`;
+    }
+    if (sum && sum.guide && sum.guide.nums && sum.guide.nums[0]) {
+      const el = document.getElementById('flyGuideDesc');
+      if (el) el.textContent = `${sum.guide.nums[0][0]} Rehber · Donanım & Linux`;
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => initFlyoutCapsule());
+  } else {
+    initFlyoutCapsule();
+  }
 
 })();

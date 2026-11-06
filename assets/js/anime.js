@@ -168,17 +168,12 @@ function getAiringInfo(it) {
     }
   }
 
-  // Yerel veritabanında devam eden (releasing) veya izlenen diziler için akıllı yayın zamanı
-  if (!broadcastDay && (releasingPart || it.status === 'watching')) {
-    if (it.id === 'al-21' || (it.title && /ONE PIECE/i.test(it.title))) {
-      broadcastDay = 'Sunday';
-      broadcastTime = '09:30';
-      nextEp = releasingPart ? (releasingPart.episodes || releasingPart.watched || 1122) + 1 : 1123;
-    } else if (releasingPart) {
-      broadcastDay = 'Sunday';
-      broadcastTime = '18:00';
-      nextEp = (releasingPart.watched || 0) + 1;
-    }
+  // Yalnızca aktif haftalık yayını devam eden ONE PIECE için doğrulanmış yayın takvimi
+  if (!broadcastDay && (it.id === 'al-21' || (it.title && /ONE PIECE/i.test(it.title)))) {
+    const releasingPart = ps.find(p => p && p.release === 'RELEASING') || ps.find(p => p && p.id === 21);
+    broadcastDay = 'Sunday';
+    broadcastTime = '09:30';
+    nextEp = releasingPart ? (releasingPart.episodes || releasingPart.watched || 1122) + 1 : 1123;
   }
 
   if (!broadcastDay && it.airingAt) {
@@ -186,6 +181,8 @@ function getAiringInfo(it) {
     return { targetMs, nextEp: it.nextEpisode || nextEp, title: it.title, id: it.id, image: it.image };
   }
 
+  // UYARI: Kesinlikle tahmin veya uydurma gün/saat basılmaz!
+  // JoJo, Tokyo Revengers veya diğer yayın takvimi olmayan animeler radara KESİNLİKLE dahil edilmez.
   if (!broadcastDay) return null;
 
   const dayMap = {
@@ -326,6 +323,55 @@ async function handleQuickPlus(it, li) {
   }
 }
 
+function attachQuickPlusBtn(it, li, po) {
+  if (!po || po.querySelector('.btn-quick-plus')) return;
+  const qb = h('button', 'btn-quick-plus glass');
+  qb.type = 'button';
+  qb.setAttribute('aria-label', `${it.title} için +1 bölüm artır`);
+  qb.title = '+1 Bölüm İzlendi Olarak Kaydet';
+  qb.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span>+1</span>';
+  qb.onclick = async e => {
+    e.stopPropagation();
+    e.preventDefault();
+    await handleQuickPlus(it, li);
+  };
+  po.append(qb);
+}
+
+function revealAdminControls() {
+  if (!window.AdminSecurity || !window.AdminSecurity.isAdminUnlocked()) return;
+  document.querySelectorAll('#list li').forEach(li => {
+    const it = (state.items || []).find(x => {
+      const n = nodes.get(x.id);
+      return n && n.li === li;
+    });
+    if (!it) return;
+    const ps = UI.parts(it).filter(own);
+    const ep = sum(ps, 'episodes');
+    const w = sum(ps, 'watched');
+    if (it.status === 'watching' || (ep && w < ep)) {
+      attachQuickPlusBtn(it, li, li.querySelector('.poster'));
+    }
+  });
+}
+
+async function ensureAdminSession() {
+  if (!window.AdminSecurity) return;
+  if (window.AdminSecurity.isAdminUnlocked()) {
+    revealAdminControls();
+    return;
+  }
+  // Cihaz hafızasındaki mühürlü anahtar ile oturumu otomatik aç (yalnızca yöneticinin cihazında çalışır)
+  if (typeof window.AdminSecurity.getDeviceVaultMeta === 'function' && window.AdminSecurity.getDeviceVaultMeta()) {
+    try {
+      await window.AdminSecurity.unlockWithSavedToken();
+      revealAdminControls();
+    } catch (e) {
+      // Normal ziyaretçi
+    }
+  }
+}
+
 function build(it){
   const ps = UI.parts(it).filter(own), ep = sum(ps,'episodes'), w = sum(ps,'watched');
   const cnt = k => ps.filter(p => p.kind===k).length, sn = cnt('season'), fl = cnt('movie'), ot = cnt('other');
@@ -368,18 +414,10 @@ function build(it){
   }
 
   // 3. Yalnızca Yöneticiye Özel Hızlı Bölüm Takipçisi (+1) (Adım 4)
-  if (window.AdminSecurity && typeof window.AdminSecurity.isAdminUnlocked === 'function' && window.AdminSecurity.isAdminUnlocked() && it.status === 'watching') {
-    const qb = h('button', 'btn-quick-plus glass');
-    qb.type = 'button';
-    qb.setAttribute('aria-label', `${it.title} için +1 bölüm artır`);
-    qb.title = '+1 Bölüm İzlendi Olarak Kaydet';
-    qb.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span>+1</span>';
-    qb.onclick = async e => {
-      e.stopPropagation();
-      e.preventDefault();
-      await handleQuickPlus(it, li);
-    };
-    po.append(qb);
+  if (window.AdminSecurity && typeof window.AdminSecurity.isAdminUnlocked === 'function' && window.AdminSecurity.isAdminUnlocked()) {
+    if (it.status === 'watching' || (ep && w < ep)) {
+      attachQuickPlusBtn(it, li, po);
+    }
   }
 
   if(effScore){
@@ -493,6 +531,7 @@ function render(){
   document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view===s.view));
   document.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', b.dataset.filter===s.filter));
   document.querySelectorAll('[data-g]').forEach(b => b.setAttribute('aria-pressed', state[b.dataset.g]===b.dataset.v));
+  revealAdminControls();
 }
 // [AI-MIMARI-NOTU: ADIM 7 — SADE VE İŞLEVSEL FİLTRELEME + URL SENKRONİZASYONU (HATA AYIKLANDI)]
 // Varsayılan görünüm 'grid' olduğundan state.view !== 'grid' karşılaştırması yapılarak
@@ -743,10 +782,17 @@ function stats(d){
       const badge = radarBtn.querySelector('.radar-btn-txt');
       if (badge) badge.textContent = `Yayın Radarı (${airingList.length})`;
     }
+
+    // Yönetici oturumunu kontrol et ve +1 butonlarını bağla
+    await ensureAdminSession();
   } catch (err) {
     const e = $('#empty'); e.textContent = 'Liste yüklenemedi.'; e.hidden = false;
   }
 })();
+
+window.addEventListener('focus', () => {
+  ensureAdminSession();
+});
 
 $('#q').oninput = e => { state.q = e.target.value; go(); };
 $('#sort').onchange = e => { state.sort = e.target.value; go(); };

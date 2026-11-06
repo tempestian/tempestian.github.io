@@ -338,15 +338,20 @@
     activeSession = session;
     try {
       if (session && session.pat) {
-        sessionStorage.setItem('tp_admin_active', '1');
-        sessionStorage.setItem('tp_admin_pat', session.pat);
-        sessionStorage.setItem('tp_admin_meta', JSON.stringify({
+        localStorage.setItem('tp_admin_active', '1');
+        localStorage.setItem('tp_admin_pat', session.pat);
+        localStorage.setItem('tp_admin_meta', JSON.stringify({
           username: session.username,
           repoOwner: session.repoOwner,
           repoName: session.repoName,
           branch: session.branch
         }));
+        sessionStorage.setItem('tp_admin_active', '1');
+        sessionStorage.setItem('tp_admin_pat', session.pat);
       } else {
+        localStorage.removeItem('tp_admin_active');
+        localStorage.removeItem('tp_admin_pat');
+        localStorage.removeItem('tp_admin_meta');
         sessionStorage.removeItem('tp_admin_active');
         sessionStorage.removeItem('tp_admin_pat');
         sessionStorage.removeItem('tp_admin_meta');
@@ -355,13 +360,16 @@
     if (session) resetIdleTimer();
   }
 
-  // Tarayıcı sekmesi boyunca aktif oturumu geri yükle
+  // Tarayıcı sekmeleri boyunca aktif oturumu geri yükle
   try {
-    if (sessionStorage.getItem('tp_admin_active') === '1' && sessionStorage.getItem('tp_admin_pat')) {
-      const meta = JSON.parse(sessionStorage.getItem('tp_admin_meta') || '{}');
+    const storedPat = localStorage.getItem('tp_admin_pat') || sessionStorage.getItem('tp_admin_pat');
+    const isActive = localStorage.getItem('tp_admin_active') === '1' || sessionStorage.getItem('tp_admin_active') === '1';
+    if (isActive && storedPat) {
+      const rawMeta = localStorage.getItem('tp_admin_meta') || sessionStorage.getItem('tp_admin_meta') || '{}';
+      const meta = JSON.parse(rawMeta);
       activeSession = {
         username: meta.username || 'tempestian',
-        pat: sessionStorage.getItem('tp_admin_pat'),
+        pat: storedPat,
         repoOwner: meta.repoOwner || 'tempestian',
         repoName: meta.repoName || 'tempestian.github.io',
         branch: meta.branch || 'main',

@@ -142,235 +142,7 @@ const SORTS = {
   eps: (a,b) => nodes.get(b.id).ep-nodes.get(a.id).ep
 };
 
-// ============================================================================
-// CANLI YAYIN RADARI (AIRING RADAR) & YÖNETİCİ HIZLI BÖLÜM TAKİPÇİSİ (+1)
-// ============================================================================
 
-function getAiringInfo(it) {
-  if (!it) return null;
-  const ps = UI.parts(it);
-  const releasingPart = ps.find(p => p && p.release === 'RELEASING');
-
-  let broadcastDay = null;
-  let broadcastTime = null;
-  let nextEp = null;
-
-  if (it.broadcast) {
-    if (typeof it.broadcast === 'object') {
-      broadcastDay = it.broadcast.day;
-      broadcastTime = it.broadcast.time;
-    } else if (typeof it.broadcast === 'string') {
-      const match = it.broadcast.match(/([A-Za-zÇŞĞÜÖİçşğüöı]+)\s*(\d{1,2}:\d{2})/);
-      if (match) {
-        broadcastDay = match[1];
-        broadcastTime = match[2];
-      }
-    }
-  }
-
-  // Yalnızca aktif haftalık yayını devam eden ONE PIECE için doğrulanmış yayın takvimi
-  if (!broadcastDay && (it.id === 'al-21' || (it.title && /ONE PIECE/i.test(it.title)))) {
-    const releasingPart = ps.find(p => p && p.release === 'RELEASING') || ps.find(p => p && p.id === 21);
-    broadcastDay = 'Sunday';
-    broadcastTime = '09:30';
-    nextEp = releasingPart ? (releasingPart.episodes || releasingPart.watched || 1122) + 1 : 1123;
-  }
-
-  if (!broadcastDay && it.airingAt) {
-    const targetMs = typeof it.airingAt === 'number' ? it.airingAt * 1000 : new Date(it.airingAt).getTime();
-    return { targetMs, nextEp: it.nextEpisode || nextEp, title: it.title, id: it.id, image: it.image };
-  }
-
-  // UYARI: Kesinlikle tahmin veya uydurma gün/saat basılmaz!
-  // JoJo, Tokyo Revengers veya diğer yayın takvimi olmayan animeler radara KESİNLİKLE dahil edilmez.
-  if (!broadcastDay) return null;
-
-  const dayMap = {
-    sunday: 0, pazar: 0,
-    monday: 1, pazartesi: 1,
-    tuesday: 2, sali: 2, salı: 2,
-    wednesday: 3, carsamba: 3, çarşamba: 3,
-    thursday: 4, persembe: 4, perşembe: 4,
-    friday: 5, cuma: 5,
-    saturday: 6, cumartesi: 6
-  };
-  const targetDayIdx = typeof broadcastDay === 'number' ? broadcastDay : dayMap[String(broadcastDay).trim().toLowerCase()];
-  if (targetDayIdx == null) return null;
-
-  const [tH, tM] = (broadcastTime || '12:00').split(':').map(Number);
-  const now = new Date();
-  const next = new Date(now);
-  let daysDiff = (targetDayIdx - now.getDay() + 7) % 7;
-  next.setHours(tH || 0, tM || 0, 0, 0);
-
-  if (daysDiff === 0 && next.getTime() <= now.getTime()) {
-    if (now.getTime() - next.getTime() > 3 * 3600 * 1000) {
-      daysDiff = 7;
-    }
-  }
-  next.setDate(now.getDate() + daysDiff);
-
-  const dayNames = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
-
-  return {
-    targetMs: next.getTime(),
-    nextEp,
-    dayName: dayNames[targetDayIdx],
-    timeStr: `${String(tH).padStart(2, '0')}:${String(tM).padStart(2, '0')}`,
-    title: it.title,
-    id: it.id,
-    image: it.image
-  };
-}
-
-function formatCountdown(targetMs) {
-  const diff = targetMs - Date.now();
-  if (diff <= 0 && diff > -3 * 3600 * 1000) {
-    return { label: '🔴 Yayında!', isLive: true };
-  }
-  if (diff <= -3 * 3600 * 1000) {
-    return { label: 'Yeni Bölüm Çıktı', isLive: false };
-  }
-  const s = Math.floor(diff / 1000);
-  const m = Math.floor(s / 60);
-  const h = Math.floor(m / 60);
-  const d = Math.floor(h / 24);
-
-  if (d > 0) {
-    return { label: `${d}g ${h % 24}s`, isLive: false };
-  }
-  if (h > 0) {
-    return { label: `${h}s ${m % 60}d`, isLive: false };
-  }
-  return { label: `${m}d ${s % 60}sn`, isLive: true };
-}
-
-function escapeHtml(s) {
-  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
-async function handleQuickPlus(it, li) {
-  const ps = UI.parts(it);
-  let targetPart = ps.find(p => p && (p.status === 'CURRENT' || p.release === 'RELEASING')) ||
-                   ps.find(p => p && p.episodes && (p.watched || 0) < p.episodes) ||
-                   ps[0];
-  if (!targetPart) return;
-
-  const btn = li.querySelector('.btn-quick-plus');
-  if (btn) {
-    btn.disabled = true;
-    btn.classList.add('loading');
-  }
-
-  const prevWatched = targetPart.watched || 0;
-  targetPart.watched = prevWatched + 1;
-  targetPart.adminModified = true;
-  it.adminModified = true;
-
-  // Optimistic UI güncellemesi
-  const newPs = UI.parts(it).filter(own);
-  const newEp = sum(newPs, 'episodes');
-  const newW = sum(newPs, 'watched');
-  const metaP = li.querySelector('.meta');
-  if (metaP) {
-    const effGenres = getEffectiveGenres(it, (state.statsConfig && state.statsConfig.genreSourceRule) || 'custom_only');
-    const genrePreview = effGenres.slice(0, 2).join(' · ');
-    const sn = newPs.filter(p => p.kind === 'season').length;
-    const fl = newPs.filter(p => p.kind === 'movie').length;
-    const ot = newPs.filter(p => p.kind === 'other').length;
-    metaP.textContent = [it.favorite ? '★ Başyapıt' : '', sn && sn + ' sezon', fl && fl + ' film', ot && ot + ' ek', rew(newPs), !newEp ? newW + ' bölüm' : newW === newEp ? newEp + ' bölüm' : newW + '/' + newEp + ' bölüm', genrePreview].filter(Boolean).join(', ');
-  }
-  const pgBar = li.querySelector('.pg i');
-  if (pgBar && newEp) {
-    pgBar.style.setProperty('--w', Math.min(100, Math.round(newW / newEp * 100)) + '%');
-  }
-
-  try {
-    const allAnime = (state.data && state.data.anime) || state.items || [];
-    const payload = {
-      updated: new Date().toISOString().slice(0, 10),
-      statsConfig: state.statsConfig || {},
-      stats: (state.data && state.data.stats) || {},
-      anime: allAnime
-    };
-    if (window.AdminSecurity && typeof window.AdminSecurity.githubPutFile === 'function') {
-      await window.AdminSecurity.githubPutFile(
-        'data/anime.json',
-        JSON.stringify(payload, null, 2) + '\n',
-        `Bölüm izlendi: ${it.title} (Bölüm ${targetPart.watched})`
-      );
-    }
-    if (btn) {
-      btn.classList.remove('loading');
-      btn.classList.add('success');
-      setTimeout(() => {
-        btn.classList.remove('success');
-        btn.disabled = false;
-      }, 1800);
-    }
-    if (window.showToast) {
-      window.showToast(`✓ ${it.title}: ${targetPart.watched}. bölüm izlendi.`);
-    }
-  } catch (err) {
-    targetPart.watched = prevWatched;
-    if (btn) {
-      btn.classList.remove('loading');
-      btn.disabled = false;
-    }
-    if (window.showToast) {
-      window.showToast(`Hata: ${err.message}`, 'error');
-    }
-  }
-}
-
-function attachQuickPlusBtn(it, li, po) {
-  if (!po || po.querySelector('.btn-quick-plus')) return;
-  const qb = h('button', 'btn-quick-plus glass');
-  qb.type = 'button';
-  qb.setAttribute('aria-label', `${it.title} için +1 bölüm artır`);
-  qb.title = '+1 Bölüm İzlendi Olarak Kaydet';
-  qb.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span>+1</span>';
-  qb.onclick = async e => {
-    e.stopPropagation();
-    e.preventDefault();
-    await handleQuickPlus(it, li);
-  };
-  po.append(qb);
-}
-
-function revealAdminControls() {
-  if (!window.AdminSecurity || !window.AdminSecurity.isAdminUnlocked()) return;
-  document.querySelectorAll('#list li').forEach(li => {
-    const it = (state.items || []).find(x => {
-      const n = nodes.get(x.id);
-      return n && n.li === li;
-    });
-    if (!it) return;
-    const ps = UI.parts(it).filter(own);
-    const ep = sum(ps, 'episodes');
-    const w = sum(ps, 'watched');
-    if (it.status === 'watching' || (ep && w < ep)) {
-      attachQuickPlusBtn(it, li, li.querySelector('.poster'));
-    }
-  });
-}
-
-async function ensureAdminSession() {
-  if (!window.AdminSecurity) return;
-  if (window.AdminSecurity.isAdminUnlocked()) {
-    revealAdminControls();
-    return;
-  }
-  // Cihaz hafızasındaki mühürlü anahtar ile oturumu otomatik aç (yalnızca yöneticinin cihazında çalışır)
-  if (typeof window.AdminSecurity.getDeviceVaultMeta === 'function' && window.AdminSecurity.getDeviceVaultMeta()) {
-    try {
-      await window.AdminSecurity.unlockWithSavedToken();
-      revealAdminControls();
-    } catch (e) {
-      // Normal ziyaretçi
-    }
-  }
-}
 
 function build(it){
   const ps = UI.parts(it).filter(own), ep = sum(ps,'episodes'), w = sum(ps,'watched');
@@ -403,22 +175,7 @@ function build(it){
     po.append(pg);
   }
 
-  // 2. Canlı Yayın Radarı Rozeti (Adım 3)
-  const airing = getAiringInfo(it);
-  if (airing) {
-    const cd = formatCountdown(airing.targetMs);
-    const rb = h('span', 'radar-badge glass' + (cd.isLive ? ' live' : ''));
-    rb.innerHTML = `<span class="radar-dot ${cd.isLive ? 'live' : ''}"></span><span>${airing.nextEp ? 'B.' + airing.nextEp + ' · ' : ''}${cd.label}</span>`;
-    rb.title = `Yayın: Her ${airing.dayName} ${airing.timeStr}`;
-    po.append(rb);
-  }
 
-  // 3. Yalnızca Yöneticiye Özel Hızlı Bölüm Takipçisi (+1) (Adım 4)
-  if (window.AdminSecurity && typeof window.AdminSecurity.isAdminUnlocked === 'function' && window.AdminSecurity.isAdminUnlocked()) {
-    if (it.status === 'watching' || (ep && w < ep)) {
-      attachQuickPlusBtn(it, li, po);
-    }
-  }
 
   if(effScore){
     const sc = h('span','score glass');
@@ -531,7 +288,6 @@ function render(){
   document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view===s.view));
   document.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', b.dataset.filter===s.filter));
   document.querySelectorAll('[data-g]').forEach(b => b.setAttribute('aria-pressed', state[b.dataset.g]===b.dataset.v));
-  revealAdminControls();
 }
 // [AI-MIMARI-NOTU: ADIM 7 — SADE VE İŞLEVSEL FİLTRELEME + URL SENKRONİZASYONU (HATA AYIKLANDI)]
 // Varsayılan görünüm 'grid' olduğundan state.view !== 'grid' karşılaştırması yapılarak
@@ -775,24 +531,10 @@ function stats(d){
     syncUrlToState();
     render(); syncSheet();
 
-    // Canlı Yayın Radarı buton sayacını güncelle
-    const airingList = d.anime.filter(it => Boolean(getAiringInfo(it)));
-    const radarBtn = $('#radarBtn');
-    if (radarBtn && airingList.length) {
-      const badge = radarBtn.querySelector('.radar-btn-txt');
-      if (badge) badge.textContent = `Yayın Radarı (${airingList.length})`;
-    }
-
-    // Yönetici oturumunu kontrol et ve +1 butonlarını bağla
-    await ensureAdminSession();
   } catch (err) {
     const e = $('#empty'); e.textContent = 'Liste yüklenemedi.'; e.hidden = false;
   }
 })();
-
-window.addEventListener('focus', () => {
-  ensureAdminSession();
-});
 
 $('#q').oninput = e => { state.q = e.target.value; go(); };
 $('#sort').onchange = e => { state.sort = e.target.value; go(); };
@@ -1065,87 +807,4 @@ if (rndBtn) {
   };
 }
 
-// ============================================================================
-// CANLI YAYIN RADARI ETKİLEŞİMİ & GERİ SAYIM SAYACI MOTORU
-// ============================================================================
 
-function renderRadarPanel() {
-  const panel = $('#radarPanel');
-  const panelIn = $('#radarPanelIn');
-  if (!panel || !panelIn) return;
-
-  const airingItems = (state.items || [])
-    .map(it => ({ it, airing: getAiringInfo(it) }))
-    .filter(x => Boolean(x.airing));
-
-  if (!airingItems.length) {
-    panelIn.innerHTML = '<p class="radar-empty" style="color:var(--iris-ink-muted);font-size:0.85rem;padding:8px 12px;">Şu anda canlı yayın takviminde bekleyen dizi bulunmuyor.</p>';
-    return;
-  }
-
-  panelIn.innerHTML = airingItems.map(({ it, airing }) => {
-    const cd = formatCountdown(airing.targetMs);
-    const epBadge = airing.nextEp ? `<span style="color:#38bdf8;font-weight:700;">Bölüm ${airing.nextEp}</span> · ` : '';
-    return `
-      <div class="radar-item" data-id="${it.id}">
-        <img class="radar-thumb" src="${big(it.image)}" alt="" loading="lazy">
-        <div class="radar-info">
-          <h4>${escapeHtml(it.title)}</h4>
-          <div class="radar-meta">${epBadge}Her ${airing.dayName} ${airing.timeStr}</div>
-          <div class="radar-clock" data-target="${airing.targetMs}">
-            <span class="radar-dot ${cd.isLive ? 'live' : ''}"></span>
-            <span class="clock-txt">${cd.label}</span>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  panelIn.querySelectorAll('.radar-item').forEach(el => {
-    el.onclick = () => openSheet(el.dataset.id, true);
-  });
-}
-
-const radarBtn = $('#radarBtn');
-const radarPanel = $('#radarPanel');
-if (radarBtn && radarPanel) {
-  radarBtn.onclick = () => {
-    const isOpen = !radarPanel.hidden;
-    radarPanel.hidden = isOpen;
-    radarBtn.setAttribute('aria-expanded', !isOpen);
-    if (!isOpen) {
-      renderRadarPanel();
-      radarPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-  };
-}
-
-// Radar geri sayım sayaçlarını dinamik olarak güncelle
-setInterval(() => {
-  document.querySelectorAll('.radar-badge').forEach(badge => {
-    const li = badge.closest('li');
-    if (!li) return;
-    const it = (state.items || []).find(x => {
-      const n = nodes.get(x.id);
-      return n && n.li === li;
-    });
-    if (!it) return;
-    const airing = getAiringInfo(it);
-    if (airing) {
-      const cd = formatCountdown(airing.targetMs);
-      badge.className = 'radar-badge glass' + (cd.isLive ? ' live' : '');
-      badge.innerHTML = `<span class="radar-dot ${cd.isLive ? 'live' : ''}"></span><span>${airing.nextEp ? 'B.' + airing.nextEp + ' · ' : ''}${cd.label}</span>`;
-    }
-  });
-
-  const panel = $('#radarPanel');
-  if (panel && !panel.hidden) {
-    panel.querySelectorAll('.radar-clock').forEach(clock => {
-      const target = Number(clock.dataset.target);
-      if (target) {
-        const cd = formatCountdown(target);
-        clock.innerHTML = `<span class="radar-dot ${cd.isLive ? 'live' : ''}"></span><span class="clock-txt">${cd.label}</span>`;
-      }
-    });
-  }
-}, 30000);

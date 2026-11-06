@@ -965,6 +965,29 @@
       });
     }
 
+    const barActions = barIn.querySelector('.bar-actions');
+    if (barActions) {
+      let searchBtn = document.getElementById('searchTrigger');
+      if (!searchBtn) {
+        searchBtn = el('button', 'btn glass');
+        searchBtn.id = 'searchTrigger';
+        searchBtn.type = 'button';
+        searchBtn.setAttribute('aria-label', 'Hızlı Arama');
+        searchBtn.title = 'Hızlı Arama (/ veya Ctrl+K)';
+        searchBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
+        barActions.insertBefore(searchBtn, barActions.firstChild);
+      }
+      if (searchBtn && !searchBtn._boundCmd) {
+        searchBtn._boundCmd = true;
+        searchBtn.onclick = (e) => {
+          e.preventDefault();
+          if (typeof window.openCommandPalette === 'function') {
+            window.openCommandPalette();
+          }
+        };
+      }
+    }
+
     if (sum && sum.anime && sum.anime.nums && sum.anime.nums[0]) {
       const animeDescEl = document.getElementById('flyAnimeDesc');
       if (animeDescEl) animeDescEl.textContent = `${sum.anime.nums[0][0]} Anime · Arşiv`;
@@ -972,6 +995,439 @@
     if (sum && sum.guide && sum.guide.nums && sum.guide.nums[0]) {
       const guideDescEl = document.getElementById('flyGuideDesc');
       if (guideDescEl) guideDescEl.textContent = `${sum.guide.nums[0][0]} Rehber · Donanım & Linux`;
+    }
+
+    initCommandPalette();
+  }
+
+  // ============================================================================
+  // [IRIS COMMAND PALETTE & FLOATING LAUNCHER]: Zero-API Global Search (Quickshell Aesthetic)
+  // ============================================================================
+  let cmdPaletteMounted = false;
+  let cachedAnimeData = null;
+  let cachedGuidesData = null;
+  let cmdActiveIndex = -1;
+
+  function initCommandPalette() {
+    if (cmdPaletteMounted || cur === 'admin') return;
+    cmdPaletteMounted = true;
+
+    // Create Modal Backdrop
+    const backdrop = el('div', 'cmd-palette-backdrop');
+    backdrop.id = 'cmdPalette';
+    backdrop.hidden = true;
+
+    backdrop.innerHTML = `
+      <div class="cmd-palette-modal" role="dialog" aria-modal="true" aria-label="iRiS Komut ve Hızlı Arama Paleti">
+        <div class="cmd-palette-head">
+          <span class="cmd-search-ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </span>
+          <input type="text" class="cmd-palette-input" id="cmdInput" placeholder="Bölüm, anime veya rehber ara... (/ veya Ctrl+K)" autocomplete="off" spellcheck="false" />
+          <span class="cmd-kbd-badge">ESC</span>
+          <button type="button" class="cmd-close-btn" id="cmdClose" aria-label="Kapat" title="Kapat (ESC)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="cmd-palette-results" id="cmdResults" role="listbox"></div>
+        <div class="cmd-palette-footer">
+          <span class="cmd-hint"><kbd>↑</kbd><kbd>↓</kbd> Gezin</span>
+          <span class="cmd-hint"><kbd>↵</kbd> Seç</span>
+          <span class="cmd-hint"><kbd>ESC</kbd> Kapat</span>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(backdrop);
+
+    const input = backdrop.querySelector('#cmdInput');
+    const resultsContainer = backdrop.querySelector('#cmdResults');
+    const closeBtn = backdrop.querySelector('#cmdClose');
+
+    const defaultSections = [
+      { id: 'home', title: 'Ana Sayfa', desc: 'Portal görünümü ve özet metrikler', path: '', badge: 'Portal' },
+      { id: 'anime', title: 'Anime Arşivi', desc: 'İzleme listesi, puanlar ve sıralama', path: 'anime/', badge: 'Aktif' },
+      { id: 'rehber', title: 'Rehberler', desc: 'GNU/Linux ve Donanım makaleleri', path: 'rehber/', badge: 'Technopat' },
+      { id: 'zaman-tuneli', title: 'Zaman Tüneli', desc: 'Kronolojik arşiv akışı', path: 'zaman-tuneli/', badge: 'Akış' },
+      { id: 'istatistik', title: 'İstatistikler', desc: 'Grafikler ve sayısal metrikler', path: 'istatistik/', badge: 'Metrik' },
+      { id: 'dizi', title: 'Dizi', desc: 'Dizi arşivi', path: 'dizi/', badge: 'Yakında' },
+      { id: 'film', title: 'Film', desc: 'Sinema arşivi', path: 'film/', badge: 'Yakında' },
+      { id: 'manga', title: 'Manga', desc: 'Manga ve çizgi roman listesi', path: 'manga/', badge: 'Yakında' },
+      { id: 'kitap', title: 'Kitap', desc: 'Kitaplık ve okuma notları', path: 'kitap/', badge: 'Yakında' }
+    ];
+
+    function getSections() {
+      if (window.SITE_CONFIG && Array.isArray(window.SITE_CONFIG.sections)) {
+        return window.SITE_CONFIG.sections.map(s => ({
+          id: s.id,
+          title: s.title || s.name || s.id,
+          desc: s.desc || (s.id === 'anime' ? 'Anime arşivi ve puanlama' : s.id === 'guide' ? 'GNU/Linux ve donanım rehberleri' : 'Bölüm'),
+          path: s.path || (s.id === 'home' ? '' : s.id + '/'),
+          badge: s.status === 'active' ? 'Aktif' : 'Bölüm'
+        }));
+      }
+      return defaultSections;
+    }
+
+    async function loadData() {
+      if (!cachedAnimeData) {
+        try {
+          const res = await fetch(root + 'data/anime.json');
+          if (res.ok) {
+            const json = await res.json();
+            cachedAnimeData = Array.isArray(json.anime) ? json.anime : (Array.isArray(json) ? json : []);
+          }
+        } catch (_) {
+          cachedAnimeData = [];
+        }
+      }
+      if (!cachedGuidesData) {
+        try {
+          const res = await fetch(root + 'data/guides.json');
+          if (res.ok) {
+            const json = await res.json();
+            cachedGuidesData = Array.isArray(json.items) ? json.items : (Array.isArray(json) ? json : []);
+          }
+        } catch (_) {
+          cachedGuidesData = [];
+        }
+      }
+    }
+
+    function matchesText(str, query) {
+      if (!str || !query) return false;
+      const s = String(str).toLocaleLowerCase('tr-TR');
+      const q = String(query).toLocaleLowerCase('tr-TR').trim();
+      return s.includes(q);
+    }
+
+    function renderResults(q) {
+      resultsContainer.replaceChildren();
+      cmdActiveIndex = -1;
+
+      const trimmed = (q || '').trim();
+      const sections = getSections();
+
+      const quickActions = [
+        {
+          id: 'act-random',
+          title: '🎲 Rastgele Bir Anime Seç',
+          desc: 'Katalogdan rastgele bir yapım seçip açar',
+          badge: 'Kısayol',
+          run: () => {
+            const rndBtn = document.getElementById('randomPickBtn');
+            if (rndBtn) {
+              rndBtn.click();
+            } else if (cachedAnimeData && cachedAnimeData.length) {
+              const pick = cachedAnimeData[Math.floor(Math.random() * cachedAnimeData.length)];
+              location.href = root + 'anime/#' + encodeURIComponent(pick.id);
+            } else {
+              location.href = root + 'anime/';
+            }
+          }
+        },
+        {
+          id: 'act-theme',
+          title: '🌗 Temayı Değiştir',
+          desc: 'Açık ve koyu görünüm modu arasında anında geçiş yap',
+          badge: 'Görünüm',
+          run: () => {
+            if (typeof window.toggleTheme === 'function') window.toggleTheme();
+          }
+        },
+        {
+          id: 'act-timeline',
+          title: '⏳ Zaman Tüneline Git',
+          desc: 'Kronolojik arşiv ve izleme geçmişi akışı',
+          badge: 'Akış',
+          run: () => { location.href = root + 'zaman-tuneli/'; }
+        },
+        {
+          id: 'act-stats',
+          title: '📊 İstatistikler ve Metrikler',
+          desc: 'Arşiv grafikleri, sayısal analizler ve puan dağılımları',
+          badge: 'Metrik',
+          run: () => { location.href = root + 'istatistik/'; }
+        }
+      ];
+
+      let matchedActions = [];
+      let matchedSections = [];
+      let matchedAnime = [];
+      let matchedGuides = [];
+
+      if (!trimmed) {
+        matchedActions = quickActions.slice(0, 2);
+        matchedSections = sections.slice(0, 4);
+        if (cachedAnimeData && cachedAnimeData.length) {
+          matchedAnime = cachedAnimeData.filter(a => a.favorite || (a.score && a.score >= 8.5)).slice(0, 4);
+        }
+        if (cachedGuidesData && cachedGuidesData.length) {
+          matchedGuides = cachedGuidesData.filter(g => g.favorite).slice(0, 3);
+          if (!matchedGuides.length) matchedGuides = cachedGuidesData.slice(0, 3);
+        }
+      } else {
+        matchedActions = quickActions.filter(act => matchesText(act.title, trimmed) || matchesText(act.desc, trimmed));
+        matchedSections = sections.filter(s => matchesText(s.title, trimmed) || matchesText(s.desc, trimmed)).slice(0, 4);
+        if (cachedAnimeData) {
+          matchedAnime = cachedAnimeData.filter(a =>
+            matchesText(a.title, trimmed) ||
+            matchesText(a.orig, trimmed) ||
+            (Array.isArray(a.genres) && a.genres.some(g => matchesText(g, trimmed))) ||
+            (Array.isArray(a.customGenres) && a.customGenres.some(g => matchesText(g, trimmed)))
+          ).slice(0, 8);
+        }
+        if (cachedGuidesData) {
+          matchedGuides = cachedGuidesData.filter(g =>
+            matchesText(g.title, trimmed) ||
+            matchesText(g.forumSection, trimmed) ||
+            (Array.isArray(g.genres) && g.genres.some(gen => matchesText(gen, trimmed))) ||
+            (Array.isArray(g.customGenres) && g.customGenres.some(cgen => matchesText(cgen, trimmed)))
+          ).slice(0, 6);
+        }
+      }
+
+      if (!matchedActions.length && !matchedSections.length && !matchedAnime.length && !matchedGuides.length) {
+        const empty = el('div', 'cmd-empty');
+        empty.textContent = `"${trimmed}" için sonuç bulunamadı.`;
+        resultsContainer.appendChild(empty);
+        return;
+      }
+
+      // 0. Quick Actions Group
+      if (matchedActions.length) {
+        const title = el('div', 'cmd-group-title');
+        title.textContent = 'Hızlı Eylemler & Kısayollar';
+        resultsContainer.appendChild(title);
+
+        matchedActions.forEach(act => {
+          const item = el('button', 'cmd-item');
+          item.type = 'button';
+          item.innerHTML = `
+            <div class="cmd-item-left">
+              <span class="cmd-item-ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </span>
+              <div class="cmd-item-info">
+                <span class="cmd-item-title">${esc(act.title)}</span>
+                <span class="cmd-item-desc">${esc(act.desc)}</span>
+              </div>
+            </div>
+            <span class="cmd-item-badge">${esc(act.badge)}</span>
+          `;
+          item.onclick = (e) => {
+            e.preventDefault();
+            window.closeCommandPalette();
+            act.run();
+          };
+          resultsContainer.appendChild(item);
+        });
+      }
+
+      // 1. Sections Group
+      if (matchedSections.length) {
+        const title = el('div', 'cmd-group-title');
+        title.textContent = 'Bölümler & Gezinme';
+        resultsContainer.appendChild(title);
+
+        matchedSections.forEach(s => {
+          const item = el('a', 'cmd-item');
+          item.href = root + s.path;
+          item.innerHTML = `
+            <div class="cmd-item-left">
+              <span class="cmd-item-ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </span>
+              <div class="cmd-item-info">
+                <span class="cmd-item-title">${esc(s.title)}</span>
+                <span class="cmd-item-desc">${esc(s.desc)}</span>
+              </div>
+            </div>
+            <span class="cmd-item-badge">${esc(s.badge || 'Bölüm')}</span>
+          `;
+          item.onclick = () => {
+            window.closeCommandPalette();
+          };
+          resultsContainer.appendChild(item);
+        });
+      }
+
+      // 2. Anime Group
+      if (matchedAnime.length) {
+        const title = el('div', 'cmd-group-title');
+        title.textContent = 'Anime Kataloğu';
+        resultsContainer.appendChild(title);
+
+        matchedAnime.forEach(a => {
+          const item = el('a', 'cmd-item');
+          const isAnimePage = cur === 'anime';
+          item.href = isAnimePage ? ('#' + encodeURIComponent(a.id)) : (root + 'anime/#' + encodeURIComponent(a.id));
+
+          const thumbHtml = a.image
+            ? `<img class="cmd-item-thumb" src="${esc(a.image)}" alt="" loading="lazy" />`
+            : `<span class="cmd-item-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>`;
+
+          const scoreTxt = (a.score !== undefined && a.score !== null) ? `★ ${a.score}` : '';
+          const statusTxt = a.status === 'completed' ? 'Tamamlandı' : a.status === 'watching' ? 'İzleniyor' : '';
+          const metaDesc = [scoreTxt, statusTxt, (a.genres || []).slice(0, 2).join(', ')].filter(Boolean).join(' · ');
+
+          item.innerHTML = `
+            <div class="cmd-item-left">
+              ${thumbHtml}
+              <div class="cmd-item-info">
+                <span class="cmd-item-title">${esc(a.title)}</span>
+                <span class="cmd-item-desc">${esc(metaDesc || a.orig || 'Anime')}</span>
+              </div>
+            </div>
+            <span class="cmd-item-badge">${scoreTxt ? esc(scoreTxt) : 'Anime'}</span>
+          `;
+
+          item.onclick = (e) => {
+            window.closeCommandPalette();
+            if (isAnimePage && typeof openSheet === 'function') {
+              e.preventDefault();
+              openSheet(a.id, true);
+            }
+          };
+          resultsContainer.appendChild(item);
+        });
+      }
+
+      // 3. Guides Group
+      if (matchedGuides.length) {
+        const title = el('div', 'cmd-group-title');
+        title.textContent = 'Technopat Rehberleri';
+        resultsContainer.appendChild(title);
+
+        matchedGuides.forEach(g => {
+          const item = el('a', 'cmd-item');
+          item.href = g.url || (root + 'rehber/?q=' + encodeURIComponent(g.title));
+          if (g.url && g.url.startsWith('http')) {
+            item.target = '_blank';
+            item.rel = 'noopener';
+          }
+
+          const cat = g.forumSection || (g.genres && g.genres[0]) || 'Rehber';
+
+          item.innerHTML = `
+            <div class="cmd-item-left">
+              <span class="cmd-item-ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+              </span>
+              <div class="cmd-item-info">
+                <span class="cmd-item-title">${esc(g.title)}</span>
+                <span class="cmd-item-desc">${esc(cat)} · Technopat Sosyal</span>
+              </div>
+            </div>
+            <span class="cmd-item-badge">Rehber</span>
+          `;
+
+          item.onclick = () => {
+            window.closeCommandPalette();
+          };
+          resultsContainer.appendChild(item);
+        });
+      }
+
+      updateSelection(0);
+    }
+
+    function updateSelection(idx) {
+      const items = resultsContainer.querySelectorAll('.cmd-item');
+      if (!items.length) {
+        cmdActiveIndex = -1;
+        return;
+      }
+      if (idx < 0) idx = items.length - 1;
+      if (idx >= items.length) idx = 0;
+      cmdActiveIndex = idx;
+
+      items.forEach((it, i) => {
+        if (i === cmdActiveIndex) {
+          it.classList.add('selected');
+          it.scrollIntoView({ block: 'nearest' });
+        } else {
+          it.classList.remove('selected');
+        }
+      });
+    }
+
+    input.oninput = () => {
+      renderResults(input.value);
+    };
+
+    input.onkeydown = (e) => {
+      const items = resultsContainer.querySelectorAll('.cmd-item');
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        updateSelection(cmdActiveIndex + 1);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        updateSelection(cmdActiveIndex - 1);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (cmdActiveIndex >= 0 && items[cmdActiveIndex]) {
+          items[cmdActiveIndex].click();
+        }
+      }
+    };
+
+    closeBtn.onclick = (e) => {
+      e.preventDefault();
+      window.closeCommandPalette();
+    };
+
+    backdrop.onclick = (e) => {
+      if (e.target === backdrop) {
+        window.closeCommandPalette();
+      }
+    };
+
+    window.openCommandPalette = (initialQuery) => {
+      backdrop.hidden = false;
+      document.body.style.overflow = 'hidden';
+      input.value = typeof initialQuery === 'string' ? initialQuery : '';
+      loadData().then(() => {
+        if (!backdrop.hidden) renderResults(input.value);
+      });
+      renderResults(input.value);
+      setTimeout(() => input.focus(), 30);
+    };
+
+    window.closeCommandPalette = () => {
+      backdrop.hidden = true;
+      document.body.style.overflow = '';
+      const trigger = document.getElementById('searchTrigger');
+      if (trigger && trigger.focus) trigger.focus({ preventScroll: true });
+    };
+
+    // Global Key Listener for Desktop Shortcut Parity
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+        e.preventDefault();
+        if (backdrop.hidden) window.openCommandPalette();
+        else window.closeCommandPalette();
+        return;
+      }
+      if (e.key === '/' && backdrop.hidden) {
+        const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+        if (activeTag === 'input' || activeTag === 'textarea' || (document.activeElement && document.activeElement.isContentEditable)) {
+          return;
+        }
+        e.preventDefault();
+        window.openCommandPalette();
+        return;
+      }
+      if (e.key === 'Escape' && !backdrop.hidden) {
+        e.preventDefault();
+        window.closeCommandPalette();
+      }
+    });
+
+    const urlParams = new URLSearchParams(location.search);
+    if (urlParams.has('cmd') || urlParams.has('search')) {
+      const qVal = urlParams.get('cmd') || urlParams.get('search') || '';
+      setTimeout(() => window.openCommandPalette(qVal), 100);
     }
   }
 
@@ -1275,407 +1731,7 @@
   })();
 
 
-  // ============================================================================
-  // [AI-MIMARI-NOTU: ADIM 16 — EVRENSEL KOMUT PALETİ VE GLOBAL ARAMA (Ctrl+K)]
-  // Tüm sayfalarda (`index.html`, `/anime/`, `/rehber/`, `/dizi/`, `/film/`, `/manga/`, `/kitap/`)
-  // üst çubuğa arama ikonu ekler ve `Ctrl+K` / `⌘K` kısayoluyla tüm arşivlerde eşzamanlı
-  // anlık arama ve hızlı gezinme sağlar.
-  // ============================================================================
-  (() => {
-    if (cur === 'admin') return;
-
-    const barIn = document.querySelector('.bar-in');
-    if (barIn && themeBtn && !document.getElementById('globalSearchBtn')) {
-      const sBtn = el('button', 'btn glass bar-search-btn');
-      sBtn.id = 'globalSearchBtn';
-      sBtn.type = 'button';
-      sBtn.title = 'Tüm sitede ara (Ctrl+K)';
-      sBtn.setAttribute('aria-label', 'Tüm sitede ara (Ctrl+K)');
-      sBtn.innerHTML = icon('search');
-      if (themeBtn.parentNode) {
-        themeBtn.parentNode.insertBefore(sBtn, themeBtn);
-      } else {
-        barIn.insertBefore(sBtn, themeBtn);
-      }
-      sBtn.onclick = () => openCommandPalette();
-    }
-
-    let modal = null;
-    let inp = null;
-    let listEl = null;
-    let scopeBar = null;
-    let indexedItems = null;
-    let loadingPromise = null;
-    let activeScope = 'all';
-    let activeIdx = 0;
-    let currentMatches = [];
-
-    const SECTION_DEFS = [
-      { id: 'anime', label: 'Anime', path: 'anime/', data: 'data/anime.json', key: 'anime', icon: 'anime' },
-      { id: 'guide', label: 'Rehber', path: 'rehber/', data: 'data/guides.json', key: 'items', icon: 'guide', isGuide: true },
-      { id: 'series', label: 'Dizi', path: 'dizi/', data: 'data/series.json', key: 'items', icon: 'series' },
-      { id: 'movie', label: 'Film', path: 'film/', data: 'data/movies.json', key: 'items', icon: 'movie' },
-      { id: 'manga', label: 'Manga', path: 'manga/', data: 'data/manga.json', key: 'items', icon: 'manga' },
-      { id: 'book', label: 'Kitap', path: 'kitap/', data: 'data/books.json', key: 'items', icon: 'book' }
-    ];
-
-    function computeQuickScore(it) {
-      if (!it || typeof it !== 'object') return null;
-      const ps = Array.isArray(it.parts) ? it.parts : [];
-      let wSum = 0, wTot = 0;
-      for (const p of ps) {
-        if (!p) continue;
-        const sc = Number(p.score);
-        if (!isNaN(sc) && sc > 0) {
-          const w = (p.kind === 'movie' || p.format === 'MOVIE') ? 0.35 : (p.kind === 'other' || ['OVA', 'SPECIAL', 'TV_SHORT'].includes(p.format)) ? 0.15 : 1.0;
-          wSum += sc * w;
-          wTot += w;
-        }
-      }
-      if (wTot > 0) return Math.round((wSum / wTot) * 10) / 10;
-      const d = Number(it.score);
-      return (!isNaN(d) && d > 0) ? Math.round(d * 10) / 10 : null;
-    }
-
-    async function ensureIndexLoaded() {
-      if (indexedItems) return indexedItems;
-      if (loadingPromise) return loadingPromise;
-      loadingPromise = (async () => {
-        const all = [];
-        const prevAnime = json('tp_anime_preview');
-        const prevMulti = json('tp_multimedia_preview') || {};
-
-        await Promise.all(SECTION_DEFS.map(async sec => {
-          try {
-            let doc = null;
-            const r = await fetch(root + sec.data, { cache: 'no-store' }).catch(() => null);
-            if (r && r.ok) doc = await r.json();
-            if (sec.id === 'anime' && prevAnime && Array.isArray(prevAnime.anime) && prevAnime.anime.length >= ((doc && doc.anime && doc.anime.length) || 0)) {
-              doc = prevAnime;
-            } else if (prevMulti[sec.id] && Array.isArray(prevMulti[sec.id].items) && prevMulti[sec.id].items.length > 0 && prevMulti[sec.id].items.length >= ((doc && (doc.items || doc[sec.key]) || []).length)) {
-              doc = prevMulti[sec.id];
-            }
-            const arr = (doc && (doc.items || doc[sec.key] || doc.anime || doc.guides)) || [];
-            for (const it of arr) {
-              if (!it || !it.title) continue;
-              const cats = Array.isArray(it.customGenres) && it.customGenres.length ? it.customGenres : (it.genres || []);
-              const sc = sec.isGuide ? null : computeQuickScore(it);
-              const extra = it.author || it.director || it.network || it.forumSection || '';
-              // [AI-MIMARI-NOTU: ADIM 21]: Sezon/film/yan içerik alt başlıkları (ör. Mugen Train) ve çıkış yılları da arama indeksine eklendi.
-              const partNames = Array.isArray(it.parts) ? it.parts.map(p => (p && p.name) || '').filter(Boolean).join(' ') : '';
-              const yearStr = it.year || (Array.isArray(it.parts) && it.parts.find(p => p && p.year) ? String(it.parts.find(p => p && p.year).year) : '');
-              const hay = `${it.title} ${cats.join(' ')} ${extra} ${it.summary || ''} ${partNames} ${yearStr}`.toLocaleLowerCase('tr');
-              all.push({
-                id: it.id,
-                title: it.title,
-                sectionId: sec.id,
-                sectionLabel: sec.label,
-                sectionPath: sec.path,
-                icon: sec.icon,
-                isGuide: Boolean(sec.isGuide),
-                url: it.url || it.firstSeasonUrl || '',
-                image: it.image || '',
-                score: sc,
-                favorite: Boolean(it.favorite),
-                categories: cats.slice(0, 3),
-                extra,
-                addedAt: it.addedAt || '',
-                hay
-              });
-            }
-          } catch (e) {}
-        }));
-
-        indexedItems = all;
-        return all;
-      })();
-      return loadingPromise;
-    }
-
-    function ensureModalDOM() {
-      if (modal) return;
-      modal = el('div', 'cmdk-modal');
-      modal.hidden = true;
-      modal.setAttribute('role', 'dialog');
-      modal.setAttribute('aria-modal', 'true');
-      modal.setAttribute('aria-label', 'Evrensel Arama ve Komut Paleti');
-      modal.innerHTML = `
-        <div class="cmdk-bg"></div>
-        <div class="cmdk-card sq">
-          <div class="cmdk-top">
-            ${icon('search')}
-            <input type="search" class="cmdk-inp" placeholder="Anime, rehber, dizi, film, manga, kitap veya komut ara..." autocomplete="off">
-            <button type="button" class="cmdk-kbd" data-cmdk-close>ESC</button>
-          </div>
-          <div class="cmdk-ScopeBar cmdk-scope-bar" role="group" aria-label="Bölüm filtresi"></div>
-          <div class="cmdk-list" role="listbox"></div>
-          <div class="cmdk-foot">
-            <span>↑↓ Gezin · Enter Aç · ESC Kapat</span>
-            <span id="cmdkCountLbl"></span>
-          </div>
-        </div>
-      `;
-      document.body.append(modal);
-      inp = modal.querySelector('.cmdk-inp');
-      listEl = modal.querySelector('.cmdk-list');
-      scopeBar = modal.querySelector('.cmdk-ScopeBar');
-
-      const scopes = [
-        ['all', 'Tümü'],
-        ['fav', '★ Başyapıt / Öne Çıkan'],
-        ['anime', 'Anime'],
-        ['guide', 'Rehber'],
-        ['series', 'Dizi'],
-        ['movie', 'Film'],
-        ['manga', 'Manga'],
-        ['book', 'Kitap']
-      ];
-      for (const [val, lbl] of scopes) {
-        const b = el('button', 'cmdk-scope-btn', lbl);
-        b.type = 'button';
-        b.dataset.scope = val;
-        b.setAttribute('aria-pressed', val === activeScope);
-        b.onclick = () => {
-          activeScope = val;
-          scopeBar.querySelectorAll('.cmdk-scope-btn').forEach(x => x.setAttribute('aria-pressed', x.dataset.scope === activeScope));
-          if (typeof b.scrollIntoView === 'function') {
-            b.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
-          }
-          activeIdx = 0;
-          renderResults();
-          inp.focus();
-        };
-        scopeBar.append(b);
-      }
-
-      modal.querySelector('.cmdk-bg').onclick = closeCommandPalette;
-      modal.querySelector('[data-cmdk-close]').onclick = closeCommandPalette;
-      inp.oninput = () => {
-        activeIdx = 0;
-        renderResults();
-      };
-      inp.onkeydown = e => {
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          if (currentMatches.length) {
-            activeIdx = (activeIdx + 1) % currentMatches.length;
-            syncActiveHighlight();
-          }
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          if (currentMatches.length) {
-            activeIdx = (activeIdx - 1 + currentMatches.length) % currentMatches.length;
-            syncActiveHighlight();
-          }
-        } else if (e.key === 'Enter') {
-          e.preventDefault();
-          if (currentMatches[activeIdx]) {
-            triggerResultItem(currentMatches[activeIdx]);
-          }
-        } else if (e.key === 'Escape') {
-          e.preventDefault();
-          closeCommandPalette();
-        }
-      };
-    }
-
-    function syncActiveHighlight() {
-      if (!listEl) return;
-      const rows = [...listEl.querySelectorAll('.cmdk-item')];
-      rows.forEach((r, i) => {
-        r.classList.toggle('active', i === activeIdx);
-        if (i === activeIdx && typeof r.scrollIntoView === 'function') {
-          r.scrollIntoView({ block: 'nearest' });
-        }
-      });
-    }
-
-    function triggerResultItem(entry) {
-      if (!entry) return;
-      if (entry.isCommand && typeof entry.run === 'function') {
-        closeCommandPalette();
-        entry.run();
-        return;
-      }
-      if (entry.isGuide) {
-        closeCommandPalette();
-        if (entry.url) {
-          window.open(entry.url, '_blank', 'noopener');
-        } else {
-          location.href = root + entry.sectionPath;
-        }
-        return;
-      }
-      closeCommandPalette();
-      if (cur === entry.sectionId) {
-        // [AI-MIMARI-NOTU: ADIM 21]: Hash zaten hedef yapıma aitse tarayıcı hashchange tetiklemeyebilir; yapay HashChangeEvent ile modal açılışı garantiye alınır.
-        const targetHash = '#' + encodeURIComponent(entry.id);
-        if (location.hash === targetHash) {
-          window.dispatchEvent(new HashChangeEvent('hashchange'));
-        } else {
-          location.hash = targetHash;
-        }
-      } else {
-        location.href = `${root}${entry.sectionPath}#${encodeURIComponent(entry.id)}`;
-      }
-    }
-
-    function renderResults() {
-      if (!listEl) return;
-      listEl.replaceChildren();
-      const q = (inp.value || '').trim().toLocaleLowerCase('tr');
-      const all = indexedItems || [];
-
-      const quickCommands = [];
-      if (activeScope === 'all' && (!q || 'rastgele seç ne izlesem okusam'.includes(q))) {
-        quickCommands.push({
-          isCommand: true,
-          title: '🎲 Rastgele Bir Yapım / Rehber Öner',
-          sub: 'Arşivdeki kayıtlar arasından rastgele birini seçip açar',
-          badge: 'Kısayol',
-          icon: 'dice',
-          run: () => {
-            const rndBtn = document.getElementById('randomPickBtn');
-            if (rndBtn) {
-              rndBtn.click();
-            } else if (all.length) {
-              const pick = all[Math.floor(Math.random() * all.length)];
-              triggerResultItem(pick);
-            }
-          }
-        });
-      }
-      if (activeScope === 'all' && (!q || 'tema değiştir karanlık açık koyu'.includes(q))) {
-        quickCommands.push({
-          isCommand: true,
-          title: '🌗 Temayı Değiştir (Açık / Koyu)',
-          sub: 'Görünüm temasını anında değiştirir',
-          badge: 'Komut',
-          icon: document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon',
-          run: () => window.toggleTheme && window.toggleTheme()
-        });
-      }
-      if (activeScope === 'all' && (!q || 'zaman tüneli yolculuk kronoloji timeline geçmiş'.includes(q))) {
-        quickCommands.push({
-          isCommand: true,
-          title: '⏳ Zaman Tüneline Git',
-          sub: 'Yıllara göre izlenen ve okunan yapımların kronolojik akışı',
-          badge: 'Sayfa',
-          icon: 'clock',
-          run: () => { location.href = root + 'zaman-tuneli/'; }
-        });
-      }
-      if (activeScope === 'all' && (!q || 'istatistik grafikler analiz stats rapor'.includes(q))) {
-        quickCommands.push({
-          isCommand: true,
-          title: '📊 Genel İstatistiklere Git',
-          sub: 'Tüm kategorilerin arşiv özet ve grafik dağılımları',
-          badge: 'Sayfa',
-          icon: 'chart',
-          run: () => { location.href = root + 'istatistik/'; }
-        });
-      }
-
-      const matched = all.filter(item => {
-        if (activeScope === 'fav' && !item.favorite) return false;
-        if (activeScope !== 'all' && activeScope !== 'fav' && item.sectionId !== activeScope) return false;
-        if (q && !item.hay.includes(q)) return false;
-        return true;
-      });
-
-      matched.sort((a, b) => {
-        if (q) {
-          const aStarts = a.title.toLocaleLowerCase('tr').startsWith(q) ? 1 : 0;
-          const bStarts = b.title.toLocaleLowerCase('tr').startsWith(q) ? 1 : 0;
-          if (aStarts !== bStarts) return bStarts - aStarts;
-        }
-        return (Number(b.favorite) - Number(a.favorite)) || ((b.score || 0) - (a.score || 0)) || (b.addedAt || '').localeCompare(a.addedAt || '');
-      });
-
-      currentMatches = [...quickCommands, ...matched.slice(0, 45)];
-      const countLbl = document.getElementById('cmdkCountLbl');
-      if (countLbl) countLbl.textContent = `${matched.length} sonuç`;
-
-      if (!currentMatches.length) {
-        const empty = el('p', 'note', 'Eşleşen içerik bulunamadı.');
-        empty.style.padding = '28px 12px';
-        listEl.append(empty);
-        return;
-      }
-
-      const fr = document.createDocumentFragment();
-      currentMatches.forEach((m, idx) => {
-        const btn = el('button', 'cmdk-item' + (idx === activeIdx ? ' active' : ''));
-        btn.type = 'button';
-        if (m.image) {
-          const im = el('img', 'cmdk-thumb');
-          im.src = resolveAsset(m.image);
-          im.alt = '';
-          im.loading = 'lazy';
-          btn.append(im);
-        } else {
-          const ic = el('span', 'cmdk-ic');
-          ic.innerHTML = icon(m.icon || 'sparkle');
-          btn.append(ic);
-        }
-        const info = el('div', 'cmdk-info');
-        const tRow = el('div', 'cmdk-title', m.title);
-        info.append(tRow);
-        const subParts = m.isCommand
-          ? [m.sub]
-          : [m.sectionLabel, m.extra, ...(m.categories || [])].filter(Boolean);
-        info.append(el('div', 'cmdk-sub', subParts.join(' · ')));
-        btn.append(info);
-
-        if (m.favorite) {
-          btn.append(el('span', 'cmdk-badge fav', m.isGuide ? '★ Öne Çıkan' : '★ Başyapıt'));
-        }
-        if (m.score) {
-          btn.append(el('span', 'cmdk-badge', '★ ' + m.score));
-        } else if (m.badge) {
-          btn.append(el('span', 'cmdk-badge', m.badge));
-        } else {
-          btn.append(el('span', 'cmdk-badge', m.sectionLabel));
-        }
-
-        btn.onclick = () => triggerResultItem(m);
-        fr.append(btn);
-      });
-      listEl.append(fr);
-    }
-
-    async function openCommandPalette(initialScope = 'all') {
-      ensureModalDOM();
-      if (initialScope) {
-        activeScope = initialScope;
-        scopeBar.querySelectorAll('.cmdk-scope-btn').forEach(x => x.setAttribute('aria-pressed', x.dataset.scope === activeScope));
-      }
-      modal.hidden = false;
-      renderResults();
-      inp.focus();
-      inp.select();
-      await ensureIndexLoaded();
-      renderResults();
-    }
-
-    function closeCommandPalette() {
-      if (!modal || modal.hidden) return;
-      modal.hidden = true;
-    }
-
-    window.openCommandPalette = openCommandPalette;
-
-    document.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        if (modal && !modal.hidden) closeCommandPalette();
-        else openCommandPalette('all');
-      } else if (e.key === 'Escape' && modal && !modal.hidden) {
-        e.preventDefault();
-        closeCommandPalette();
-      }
-    });
-  })();
+  // [IRIS ARCHITECTURE]: Legacy ADIM 16 (cmdk-modal) replaced by unified iRiS Floating Launcher & Command Palette.
 
   // ============================================================================
   // [YENİ ÖZELLİK 1]: AKILLI YUKARI ÇIK (BACK TO TOP) BUTONU

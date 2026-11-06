@@ -567,7 +567,23 @@
   function openTrailer() {}
   function closeTrailer() {}
 
-  window.UI = { icon, el, parts, tally, resolveAsset, esc, icons: Object.keys(P), updateAmbientGlow, hideAmbientGlow, openTrailer, closeTrailer };
+  function showToast(msg, type = 'info') {
+    let t = document.getElementById('tpToast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'tpToast';
+      t.className = 'tp-toast glass';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.dataset.type = type;
+    t.classList.add('visible');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('visible'), 3200);
+  }
+  window.showToast = showToast;
+
+  window.UI = { icon, el, parts, tally, resolveAsset, esc, icons: Object.keys(P), updateAmbientGlow, hideAmbientGlow, openTrailer, closeTrailer, showToast };
   try { localStorage.removeItem('wall'); } catch (e) {}
 
   const dock = document.getElementById('dock'), list = document.getElementById('sections'), links = document.getElementById('links');

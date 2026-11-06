@@ -2165,6 +2165,19 @@
       };
     }
 
+    const sess = AdminSecurity.getSessionInfo();
+    if (sess && sess.hasToken) {
+      try {
+        await Promise.allSettled([
+          AdminSecurity.githubGetFile('data/anime.json'),
+          AdminSecurity.githubGetFile('data/sections.json'),
+          AdminSecurity.githubGetFile('data/overrides.json')
+        ]);
+      } catch (e) {
+        console.warn('Taban SHA önbelleklenirken hata:', e);
+      }
+    }
+
     populateEditorFields();
     renderAnimeAdminPanel();
     renderOverridesEditor();

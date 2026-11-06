@@ -334,8 +334,45 @@
   }
   bindIdleListeners();
 
+  function persistActiveSession(session) {
+    activeSession = session;
+    try {
+      if (session && session.pat) {
+        sessionStorage.setItem('tp_admin_active', '1');
+        sessionStorage.setItem('tp_admin_pat', session.pat);
+        sessionStorage.setItem('tp_admin_meta', JSON.stringify({
+          username: session.username,
+          repoOwner: session.repoOwner,
+          repoName: session.repoName,
+          branch: session.branch
+        }));
+      } else {
+        sessionStorage.removeItem('tp_admin_active');
+        sessionStorage.removeItem('tp_admin_pat');
+        sessionStorage.removeItem('tp_admin_meta');
+      }
+    } catch (e) {}
+    if (session) resetIdleTimer();
+  }
+
+  // Tarayıcı sekmesi boyunca aktif oturumu geri yükle
+  try {
+    if (sessionStorage.getItem('tp_admin_active') === '1' && sessionStorage.getItem('tp_admin_pat')) {
+      const meta = JSON.parse(sessionStorage.getItem('tp_admin_meta') || '{}');
+      activeSession = {
+        username: meta.username || 'tempestian',
+        pat: sessionStorage.getItem('tp_admin_pat'),
+        repoOwner: meta.repoOwner || 'tempestian',
+        repoName: meta.repoName || 'tempestian.github.io',
+        branch: meta.branch || 'main',
+        unlockedAt: Date.now()
+      };
+      resetIdleTimer();
+    }
+  } catch (e) {}
+
   function lockSession(reason = '') {
-    activeSession = null;
+    persistActiveSession(null);
     clearTimeout(idleTimer);
     idleTimer = 0;
     if (typeof onLockCallback === 'function') onLockCallback(reason);
@@ -367,7 +404,7 @@
     // GitHub API ile token'ın hâlâ geçerli olduğunu doğrula
     await verifyGithubWriteAccess(data.pat, data.repoOwner || 'tempestian', data.repoName || 'tempestian.github.io');
     clearFailedAttempts();
-    activeSession = {
+    persistActiveSession({
       username: data.username || 'tempestian',
       pat: data.pat,
       repoOwner: data.repoOwner || 'tempestian',
@@ -375,8 +412,7 @@
       branch: data.branch || 'main',
       totpSecret: data.totpSecret || '',
       unlockedAt: Date.now()
-    };
-    resetIdleTimer();
+    });
     return getSessionInfo();
   }
 
@@ -412,8 +448,7 @@
       }
     }
 
-    activeSession = sessionData;
-    resetIdleTimer();
+    persistActiveSession(sessionData);
     return getSessionInfo();
   }
 
@@ -445,7 +480,7 @@
     if (bindDevice && data.pat) {
       try { await saveDeviceVault(data); } catch (e) {}
     }
-    activeSession = {
+    persistActiveSession({
       username: data.username,
       pat: data.pat || '',
       repoOwner: data.repoOwner || 'tempestian',
@@ -453,8 +488,7 @@
       branch: data.branch || 'main',
       totpSecret: data.totpSecret,
       unlockedAt: Date.now()
-    };
-    resetIdleTimer();
+    });
     return getSessionInfo();
   }
 
@@ -467,6 +501,18 @@
       opts.saveToDevice !== false,
       opts.pat || ''
     );
+  }
+
+  const fileShaCache = {};
+
+  function cacheFileSha(path, sha) {
+    if (path && sha) {
+      fileShaCache[String(path).replace(/^\/+/, '')] = sha;
+    }
+  }
+
+  function getCachedFileSha(path) {
+    return fileShaCache[String(path).replace(/^\/+/, '')] || null;
   }
 
   async function githubGetFile(path) {
@@ -490,6 +536,9 @@
       throw new Error(`GitHub okuma hatası (${res.status}): ${txt.slice(0, 180)}`);
     }
     const j = await res.json();
+    if (j && j.sha) {
+      cacheFileSha(cleanPath, j.sha);
+    }
     return {
       sha: j.sha,
       content: j.content ? b64ToUtf8(j.content) : '',
@@ -497,7 +546,7 @@
     };
   }
 
-  async function githubPutFile(path, contentStrOrBytes, message, isBinary = false) {
+  async function githubPutFile(path, contentStrOrBytes, message, isBinary = false, expectedSha = null) {
     if (!activeSession || !activeSession.pat) {
       throw new Error('GitHub API üzerinden kaydetmek için yetkilendirilmiş oturum gereklidir.');
     }
@@ -505,6 +554,15 @@
     const { repoOwner, repoName, branch, pat } = activeSession;
     const cleanPath = String(path).replace(/^\/+/, '');
     const existing = await githubGetFile(cleanPath);
+
+    // Optimistic Concurrency Locking: Uzak depodaki dosya sürümü ile tarayıcıdaki taban sürümü karşılaştırılır
+    const targetSha = expectedSha !== null ? expectedSha : getCachedFileSha(cleanPath);
+    if (targetSha && existing && existing.sha && existing.sha !== targetSha) {
+      throw new Error(
+        `Çakışma Önleyici (Concurrency Lock) Uyarısı: "${cleanPath}" dosyası siz düzenlerken uzak depoda başka bir işlem tarafından güncellendi (Beklenen SHA: ${targetSha.slice(0, 7)}, Uzak SHA: ${existing.sha.slice(0, 7)}).\n\nVeri kaybını önlemek için yazma işlemi durduruldu. Lütfen sayfayı yenileyip güncel veriyi aldıktan sonra tekrar deneyin.`
+      );
+    }
+
     const url = `https://api.github.com/repos/${encodeURIComponent(repoOwner)}/${encodeURIComponent(repoName)}/contents/${cleanPath}`;
     const b64Content = isBinary ? toB64(contentStrOrBytes) : utf8ToB64(contentStrOrBytes);
     const body = {
@@ -526,7 +584,11 @@
       const txt = await res.text();
       throw new Error(`GitHub yazma hatası (${res.status}): ${txt.slice(0, 220)}`);
     }
-    return await res.json();
+    const result = await res.json();
+    if (result && result.content && result.content.sha) {
+      cacheFileSha(cleanPath, result.content.sha);
+    }
+    return result;
   }
 
   async function githubListFileCommits(path = 'data/anime.json', perPage = 20) {
@@ -686,9 +748,12 @@
     lockSession,
     setOnLock,
     getSessionInfo,
+    isAdminUnlocked: () => Boolean(activeSession && activeSession.pat),
     updateSessionCredentials,
     githubGetFile,
     githubPutFile,
+    cacheFileSha,
+    getCachedFileSha,
     githubTriggerWorkflow,
     githubGetLatestWorkflowRun,
     githubListFileCommits,

@@ -10,13 +10,13 @@
   padding-bottom: 80px;
 }
 
-/* Üst Kategori Sekmeleri Barı — @materialwebunofficial/md3e-web Connected Button Group */
+/* Üst Kategori Sekmeleri Barı — iRiS Liquid Glass Nav Capsules */
 .stats-nav {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
   overflow-x: auto;
-  padding: 0;
+  padding: 4px 0;
   margin-bottom: 24px;
   border-radius: 0;
   background: transparent !important;
@@ -34,43 +34,43 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 9px 18px;
-  border-radius: var(--md-sys-shape-corner-small, 8px);
+  padding: 8px 18px;
+  border-radius: 9999px !important;
   font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--md-sys-color-on-surface-variant, var(--ink2));
+  font-weight: 560;
+  color: var(--iris-ink-muted, var(--ink2));
   text-decoration: none;
   white-space: nowrap;
-  transition:
-    border-radius var(--md-sys-motion-spatial-fast-duration, 333ms) var(--md-sys-motion-spatial-fast-easing, ease),
-    background-color var(--md-sys-motion-effect-fast-duration, 225ms) var(--md-sys-motion-effect-fast-easing, ease),
-    color var(--md-sys-motion-effect-fast-duration, 225ms) var(--md-sys-motion-effect-fast-easing, ease),
-    transform var(--md-sys-motion-spatial-fast-duration, 333ms) var(--md-sys-motion-spatial-fast-easing, ease);
-  background: var(--md-sys-color-surface-container-high, var(--glass-hi));
-  border: 0;
+  background: var(--iris-surface, rgba(14, 21, 37, 0.65));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--iris-border, rgba(56, 189, 248, 0.16));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
 }
-.stats-nav-item:first-child {
-  border-radius: var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-full, 9999px);
-}
+.stats-nav-item:first-child,
 .stats-nav-item:last-child {
-  border-radius: var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-small, 8px);
+  border-radius: 9999px !important;
 }
 .stats-nav-item:hover:not(.is-active) {
-  color: var(--md-sys-color-on-surface, var(--ink));
-  background: var(--md-sys-color-surface-container-highest, var(--glass-hi));
+  color: var(--iris-ink, #f0f6fc);
+  background: var(--iris-surface-high, rgba(18, 28, 50, 0.8));
+  border-color: var(--iris-border-glow, rgba(56, 189, 248, 0.45));
 }
 .stats-nav-item:active {
-  border-radius: var(--md-sys-shape-corner-extra-small, 4px);
-  transform: scaleX(1.04);
+  transform: scale(0.96);
+  border-radius: 9999px !important;
 }
 .stats-nav-item.is-active {
-  color: var(--md-sys-color-on-secondary-container, var(--on-accent));
-  background: var(--md-sys-color-secondary-container, var(--accent));
-  border-radius: var(--md-sys-shape-corner-full, 9999px) !important;
-  font-weight: 700;
+  color: var(--iris-accent, #38bdf8) !important;
+  background: rgba(56, 189, 248, 0.22) !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25) !important;
+  border-radius: 9999px !important;
+  font-weight: 650;
 }
 
-/* Hero Başlığı — Material You Hero Pane (.home-hero-pane) */
+/* Hero Başlığı — iRiS Liquid Glass Hero */
 .stats-hero {
   display: flex;
   flex-direction: column;
@@ -78,9 +78,13 @@
   text-align: left;
   padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 48px);
   margin-bottom: 24px;
-  border-radius: 32px;
-  background: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
+  border-radius: 24px;
+  background: var(--iris-surface, rgba(14, 21, 37, 0.68));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--iris-border, rgba(56, 189, 248, 0.16));
+  color: var(--iris-ink, #f0f6fc);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   border: 0;
 }
 .stats-badge {

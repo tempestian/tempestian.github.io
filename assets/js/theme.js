@@ -9,10 +9,9 @@
   const apply = (mode) => {
     const m = mode || root.dataset.theme || savedTheme() || 'dark';
     root.dataset.theme = m;
-    root.dataset.seed = 'blue';
     const c = document.querySelector('meta[name=theme-color]');
     if (c) c.content = m === 'dark' ? '#080c14' : '#f8fafc';
-    document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: m, seed: 'blue' } }));
+    document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: m } }));
   };
 
   apply(savedTheme() || 'dark');

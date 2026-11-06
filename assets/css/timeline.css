@@ -16,21 +16,24 @@
   text-align: left;
   padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 48px);
   margin-bottom: 24px;
-  border-radius: 32px;
-  background: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
-  border: 0;
+  border-radius: 24px;
+  background: var(--iris-surface, rgba(14, 21, 37, 0.68));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--iris-border, rgba(56, 189, 248, 0.16));
+  color: var(--iris-ink, #f0f6fc);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 .timeline-hero h1 {
   font-size: clamp(1.9rem, 4vw, 2.75rem);
   margin: 0 0 8px;
   font-weight: 700;
   letter-spacing: -0.025em;
-  color: var(--md-sys-color-on-primary-container);
+  color: inherit;
 }
 .timeline-hero .sub {
-  color: var(--md-sys-color-on-primary-container);
-  opacity: 0.88;
+  color: var(--iris-ink-muted, #94a3b8);
+  opacity: 0.9;
   font-size: 1rem;
   max-width: 640px;
   margin: 0;
@@ -48,9 +51,9 @@
 .timeline-cat-nav {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
   overflow-x: auto;
-  padding: 0;
+  padding: 4px 0;
   border-radius: 0;
   background: transparent !important;
   border: 0 !important;
@@ -64,40 +67,40 @@
 .timeline-cat-btn {
   position: relative;
   overflow: hidden;
-  border: 0;
-  background: var(--md-sys-color-surface-container-high, var(--glass-hi));
-  color: var(--md-sys-color-on-surface-variant, var(--ink2));
+  border: 1px solid var(--iris-border, rgba(56, 189, 248, 0.16));
+  background: var(--iris-surface, rgba(14, 21, 37, 0.65));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--iris-ink-muted, var(--ink2));
   font-size: 0.84rem;
-  font-weight: 600;
-  padding: 8px 16px;
-  border-radius: var(--md-sys-shape-corner-small, 8px);
+  font-weight: 560;
+  padding: 8px 18px;
+  border-radius: 9999px !important;
   cursor: pointer;
   white-space: nowrap;
-  transition:
-    border-radius var(--md-sys-motion-spatial-fast-duration, 333ms) var(--md-sys-motion-spatial-fast-easing, ease),
-    background-color var(--md-sys-motion-effect-fast-duration, 225ms) var(--md-sys-motion-effect-fast-easing, ease),
-    color var(--md-sys-motion-effect-fast-duration, 225ms) var(--md-sys-motion-effect-fast-easing, ease),
-    transform var(--md-sys-motion-spatial-fast-duration, 333ms) var(--md-sys-motion-spatial-fast-easing, ease);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
 }
-.timeline-cat-btn:first-child {
-  border-radius: var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-full, 9999px);
-}
+.timeline-cat-btn:first-child,
 .timeline-cat-btn:last-child {
-  border-radius: var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-small, 8px);
+  border-radius: 9999px !important;
 }
 .timeline-cat-btn:hover:not(.is-active) {
-  color: var(--md-sys-color-on-surface, var(--ink));
-  background: var(--md-sys-color-surface-container-highest, var(--glass-hi));
+  color: var(--iris-ink, #f0f6fc);
+  background: var(--iris-surface-high, rgba(18, 28, 50, 0.8));
+  border-color: var(--iris-border-glow, rgba(56, 189, 248, 0.45));
 }
 .timeline-cat-btn:active {
-  border-radius: var(--md-sys-shape-corner-extra-small, 4px);
-  transform: scaleX(1.04);
+  transform: scale(0.96);
+  border-radius: 9999px !important;
 }
 .timeline-cat-btn.is-active {
-  color: var(--md-sys-color-on-secondary-container, var(--on-accent));
-  background: var(--md-sys-color-secondary-container, var(--accent));
-  border-radius: var(--md-sys-shape-corner-full, 9999px) !important;
-  font-weight: 700;
+  color: var(--iris-accent, #38bdf8) !important;
+  background: rgba(56, 189, 248, 0.22) !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.25) !important;
+  border-radius: 9999px !important;
+  font-weight: 650;
 }
 
 .timeline-mode-toggle {

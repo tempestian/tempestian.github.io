@@ -782,6 +782,199 @@
     }
   }
 
+  // ============================================================================
+  // [IRIS FLYOUT CONTROL CAPSULE]: Minimal Island & Dropdown Control Center (Idea 3)
+  // ============================================================================
+  function initFlyoutCapsule(sum) {
+    if (cur === 'admin') return;
+
+    const bar = document.querySelector('.bar');
+    if (!bar) return;
+    const barIn = bar.querySelector('.bar-in');
+    if (!barIn) return;
+
+    let trigger = document.getElementById('flyoutTrigger');
+    let menu = document.getElementById('flyoutMenu');
+
+    if (trigger && !trigger.querySelector('.flyout-chevron')) {
+      const ch = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      ch.setAttribute('class', 'flyout-chevron');
+      ch.setAttribute('viewBox', '0 0 24 24');
+      ch.setAttribute('fill', 'none');
+      ch.setAttribute('stroke', 'currentColor');
+      ch.setAttribute('stroke-width', '2.2');
+      ch.setAttribute('stroke-linecap', 'round');
+      ch.setAttribute('stroke-linejoin', 'round');
+      ch.setAttribute('aria-hidden', 'true');
+      ch.innerHTML = '<polyline points="6 9 12 15 18 9"/>';
+      trigger.appendChild(ch);
+    }
+
+    // Alt sayfalarda flyoutTrigger veya flyoutMenu yoksa dinamik olarak inşa et
+    if (!trigger || !menu) {
+      const titleEl = barIn.querySelector('.bar-title');
+      const curTitle = titleEl ? titleEl.textContent.trim() : (cur ? cur.charAt(0).toUpperCase() + cur.slice(1) : 'Menü');
+
+      if (!trigger) {
+        trigger = el('button', 'bar-title flyout-trigger');
+        trigger.id = 'flyoutTrigger';
+        trigger.type = 'button';
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.setAttribute('aria-controls', 'flyoutMenu');
+        trigger.setAttribute('aria-label', 'Bölüm Değiştir');
+        trigger.title = 'Bölümler Arasında Geçiş Yap';
+        trigger.innerHTML = `<span>${esc(curTitle)}</span><svg class="flyout-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>`;
+
+        if (titleEl) {
+          titleEl.replaceWith(trigger);
+        } else {
+          barIn.insertBefore(trigger, barIn.querySelector('.bar-actions') || null);
+        }
+      }
+
+      if (!menu) {
+        menu = el('div', 'flyout-menu');
+        menu.id = 'flyoutMenu';
+        menu.hidden = true;
+
+        const isAct = (sec) => (cur === sec ? ' active' : '');
+
+        menu.innerHTML = `
+          <div class="flyout-header">
+            <span class="flyout-sec-title">Gezinme & Arşiv</span>
+          </div>
+          <div class="flyout-grid">
+            <a class="flyout-item${isAct('home')}" href="${root}">
+              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 18 9"/></svg></span>
+              <div class="flyout-info">
+                <span class="flyout-name">Ana Sayfa</span>
+                <span class="flyout-desc">Portal görünümü</span>
+              </div>
+            </a>
+            <a class="flyout-item${isAct('anime')}" href="${root}anime/">
+              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
+              <div class="flyout-info">
+                <span class="flyout-name">Anime Arşivi</span>
+                <span class="flyout-desc" id="flyAnimeDesc">İzleme Listesi · Puanlar</span>
+              </div>
+              <span class="flyout-badge">Aktif</span>
+            </a>
+            <a class="flyout-item${isAct('guide') || isAct('rehber')}" href="${root}rehber/">
+              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></span>
+              <div class="flyout-info">
+                <span class="flyout-name">Rehberler</span>
+                <span class="flyout-desc" id="flyGuideDesc">GNU/Linux & Donanım</span>
+              </div>
+              <span class="flyout-badge">Technopat</span>
+            </a>
+            <a class="flyout-item${isAct('series') || isAct('dizi')}" href="${root}dizi/">
+              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
+              <div class="flyout-info">
+                <span class="flyout-name">Dizi</span>
+                <span class="flyout-desc">Dizi Arşivi</span>
+              </div>
+            </a>
+            <a class="flyout-item${isAct('movie') || isAct('film')}" href="${root}film/">
+              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18M17 3v18M3 7.5h4M3 12h18M3 16.5h4M17 7.5h4M17 16.5h4"/></svg></span>
+              <div class="flyout-info">
+                <span class="flyout-name">Film</span>
+                <span class="flyout-desc">Sinema Arşivi</span>
+              </div>
+            </a>
+            <a class="flyout-item${isAct('manga')}" href="${root}manga/">
+              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+              <div class="flyout-info">
+                <span class="flyout-name">Manga</span>
+                <span class="flyout-desc">Okuma Listesi</span>
+              </div>
+            </a>
+            <a class="flyout-item${isAct('book') || isAct('kitap')}" href="${root}kitap/">
+              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg></span>
+              <div class="flyout-info">
+                <span class="flyout-name">Kitap</span>
+                <span class="flyout-desc">Kitaplık</span>
+              </div>
+            </a>
+          </div>
+          <div class="flyout-sep"></div>
+          <div class="flyout-header">
+            <span class="flyout-sec-title">Zaman ve Metrikler</span>
+          </div>
+          <div class="flyout-grid">
+            <a class="flyout-item${isAct('zaman-tuneli')}" href="${root}zaman-tuneli/">
+              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+              <div class="flyout-info">
+                <span class="flyout-name">Zaman Tüneli</span>
+                <span class="flyout-desc">Kronolojik arşiv akışı</span>
+              </div>
+            </a>
+            <a class="flyout-item${isAct('istatistik')}" href="${root}istatistik/">
+              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+              <div class="flyout-info">
+                <span class="flyout-name">İstatistikler</span>
+                <span class="flyout-desc">Metrik ve grafikler</span>
+              </div>
+            </a>
+          </div>
+        `;
+        bar.appendChild(menu);
+      }
+    }
+
+    if (!trigger || !menu) return;
+
+    if (!trigger._flyoutBound) {
+      trigger._flyoutBound = true;
+
+      const toggle = (force) => {
+        const open = force !== undefined ? force : menu.hidden;
+        menu.hidden = !open;
+        trigger.setAttribute('aria-expanded', String(open));
+        trigger.classList.toggle('open', open);
+      };
+
+      trigger.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggle();
+      };
+
+      if (new URLSearchParams(location.search).has('flyout')) {
+        toggle(true);
+      }
+
+      menu.onclick = (e) => {
+        if (e.target.closest('a')) {
+          toggle(false);
+        } else {
+          e.stopPropagation();
+        }
+      };
+
+      document.addEventListener('click', (e) => {
+        if (!menu.hidden && !trigger.contains(e.target) && !menu.contains(e.target)) {
+          toggle(false);
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !menu.hidden) {
+          toggle(false);
+          trigger.focus();
+        }
+      });
+    }
+
+    if (sum && sum.anime && sum.anime.nums && sum.anime.nums[0]) {
+      const animeDescEl = document.getElementById('flyAnimeDesc');
+      if (animeDescEl) animeDescEl.textContent = `${sum.anime.nums[0][0]} Anime · Arşiv`;
+    }
+    if (sum && sum.guide && sum.guide.nums && sum.guide.nums[0]) {
+      const guideDescEl = document.getElementById('flyGuideDesc');
+      if (guideDescEl) guideDescEl.textContent = `${sum.guide.nums[0][0]} Rehber · Donanım & Linux`;
+    }
+  }
+
   function render(d, sum) {
     window.SITE_CONFIG = d;
     document.dispatchEvent(new CustomEvent('siteconfig', { detail: d }));
@@ -789,8 +982,6 @@
 
     const visibleSections = (d.sections || []).filter(Boolean).map(ensureSectionDefaults).filter(s => s.status !== 'hidden');
     const active = visibleSections.filter(s => s.status === 'active' || s.id === cur);
-
-    initFlyoutCapsule(sum);
 
     // [AI-MIMARI-NOTU]: #dock zaten <nav id="dock" class="dock glass"> olduğu için
     // Dock completely removed in favor of Top Flyout Capsule (Idea 3)
@@ -903,6 +1094,12 @@
     if (sum && sum.guide && sum.guide.nums && sum.guide.nums[0]) {
       const cg = document.getElementById('chipGuideCount');
       if (cg) cg.textContent = sum.guide.nums[0][0];
+    }
+
+    try {
+      initFlyoutCapsule(sum);
+    } catch (e) {
+      console.warn('initFlyoutCapsule error:', e);
     }
   }
 
@@ -1673,195 +1870,6 @@
     }, true);
   })();
 
-  // ============================================================================
-  // [IRIS FLYOUT CONTROL CAPSULE]: Minimal Island & Dropdown Control Center (Idea 3)
-  // ============================================================================
-  const initFlyoutCapsule = (sum) => {
-    if (cur === 'admin') return;
-
-    const bar = document.querySelector('.bar');
-    if (!bar) return;
-    const barIn = bar.querySelector('.bar-in');
-    if (!barIn) return;
-
-    let trigger = document.getElementById('flyoutTrigger');
-    let menu = document.getElementById('flyoutMenu');
-
-    if (trigger && !trigger.querySelector('.flyout-chevron')) {
-      const ch = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      ch.setAttribute('class', 'flyout-chevron');
-      ch.setAttribute('viewBox', '0 0 24 24');
-      ch.setAttribute('fill', 'none');
-      ch.setAttribute('stroke', 'currentColor');
-      ch.setAttribute('stroke-width', '2.2');
-      ch.setAttribute('stroke-linecap', 'round');
-      ch.setAttribute('stroke-linejoin', 'round');
-      ch.setAttribute('aria-hidden', 'true');
-      ch.innerHTML = '<polyline points="6 9 12 15 18 9"/>';
-      trigger.appendChild(ch);
-    }
-
-    // Alt sayfalarda flyoutTrigger veya flyoutMenu yoksa dinamik olarak inşa et
-    if (!trigger || !menu) {
-      const titleEl = barIn.querySelector('.bar-title');
-      const curTitle = titleEl ? titleEl.textContent.trim() : (cur ? cur.charAt(0).toUpperCase() + cur.slice(1) : 'Menü');
-
-      if (!trigger) {
-        trigger = el('button', 'bar-title flyout-trigger');
-        trigger.id = 'flyoutTrigger';
-        trigger.type = 'button';
-        trigger.setAttribute('aria-expanded', 'false');
-        trigger.setAttribute('aria-controls', 'flyoutMenu');
-        trigger.setAttribute('aria-label', 'Bölüm Değiştir');
-        trigger.title = 'Bölümler Arasında Geçiş Yap';
-        trigger.innerHTML = `<span>${esc(curTitle)}</span><svg class="flyout-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>`;
-
-        if (titleEl) {
-          titleEl.replaceWith(trigger);
-        } else {
-          barIn.insertBefore(trigger, barIn.querySelector('.bar-actions') || null);
-        }
-      }
-
-      if (!menu) {
-        menu = el('div', 'flyout-menu');
-        menu.id = 'flyoutMenu';
-        menu.hidden = true;
-
-        const isAct = (sec) => (cur === sec ? ' active' : '');
-
-        menu.innerHTML = `
-          <div class="flyout-header">
-            <span class="flyout-sec-title">Gezinme & Arşiv</span>
-          </div>
-          <div class="flyout-grid">
-            <a class="flyout-item${isAct('home')}" href="${root}">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Ana Sayfa</span>
-                <span class="flyout-desc">Portal görünümü</span>
-              </div>
-            </a>
-            <a class="flyout-item${isAct('anime')}" href="${root}anime/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Anime Arşivi</span>
-                <span class="flyout-desc" id="flyAnimeDesc">İzleme Listesi · Puanlar</span>
-              </div>
-              <span class="flyout-badge">Aktif</span>
-            </a>
-            <a class="flyout-item${isAct('guide') || isAct('rehber')}" href="${root}rehber/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Rehberler</span>
-                <span class="flyout-desc" id="flyGuideDesc">GNU/Linux & Donanım</span>
-              </div>
-              <span class="flyout-badge">Technopat</span>
-            </a>
-            <a class="flyout-item${isAct('series') || isAct('dizi')}" href="${root}dizi/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Dizi</span>
-                <span class="flyout-desc">Dizi Arşivi</span>
-              </div>
-            </a>
-            <a class="flyout-item${isAct('movie') || isAct('film')}" href="${root}film/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18M17 3v18M3 7.5h4M3 12h18M3 16.5h4M17 7.5h4M17 16.5h4"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Film</span>
-                <span class="flyout-desc">Sinema Arşivi</span>
-              </div>
-            </a>
-            <a class="flyout-item${isAct('manga')}" href="${root}manga/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Manga</span>
-                <span class="flyout-desc">Okuma Listesi</span>
-              </div>
-            </a>
-            <a class="flyout-item${isAct('book') || isAct('kitap')}" href="${root}kitap/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Kitap</span>
-                <span class="flyout-desc">Kitaplık</span>
-              </div>
-            </a>
-          </div>
-          <div class="flyout-sep"></div>
-          <div class="flyout-header">
-            <span class="flyout-sec-title">Zaman ve Metrikler</span>
-          </div>
-          <div class="flyout-grid">
-            <a class="flyout-item${isAct('zaman-tuneli')}" href="${root}zaman-tuneli/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Zaman Tüneli</span>
-                <span class="flyout-desc">Kronolojik arşiv akışı</span>
-              </div>
-            </a>
-            <a class="flyout-item${isAct('istatistik')}" href="${root}istatistik/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">İstatistikler</span>
-                <span class="flyout-desc">Metrik ve grafikler</span>
-              </div>
-            </a>
-          </div>
-        `;
-        bar.appendChild(menu);
-      }
-    }
-
-    if (!trigger._flyoutBound) {
-      trigger._flyoutBound = true;
-
-      const toggle = (force) => {
-        const open = force !== undefined ? force : menu.hidden;
-        menu.hidden = !open;
-        trigger.setAttribute('aria-expanded', String(open));
-        trigger.classList.toggle('open', open);
-      };
-
-      trigger.onclick = (e) => {
-        e.stopPropagation();
-        toggle();
-      };
-
-      if (new URLSearchParams(location.search).has('flyout')) {
-        toggle(true);
-      }
-
-      menu.onclick = (e) => {
-        if (e.target.closest('a')) {
-          toggle(false);
-        } else {
-          e.stopPropagation();
-        }
-      };
-
-      document.addEventListener('click', (e) => {
-        if (!menu.hidden && !trigger.contains(e.target) && !menu.contains(e.target)) {
-          toggle(false);
-        }
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !menu.hidden) {
-          toggle(false);
-          trigger.focus();
-        }
-      });
-    }
-
-    if (sum && sum.anime && sum.anime.nums && sum.anime.nums[0]) {
-      const el = document.getElementById('flyAnimeDesc');
-      if (el) el.textContent = `${sum.anime.nums[0][0]} Anime · Arşiv`;
-    }
-    if (sum && sum.guide && sum.guide.nums && sum.guide.nums[0]) {
-      const el = document.getElementById('flyGuideDesc');
-      if (el) el.textContent = `${sum.guide.nums[0][0]} Rehber · Donanım & Linux`;
-    }
-  };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => initFlyoutCapsule());

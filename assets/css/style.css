@@ -2697,13 +2697,15 @@ h3 a:focus-visible {
   border-radius: var(--md-sys-shape-corner-full);
 }
 
-/* Detaylı Puanlama Karnesi (.sh-rating-breakdown) — Material You Tonal Surface Container */
+/* Detaylı Puanlama Karnesi (.sh-rating-breakdown) — iRiS Likit Cam */
 .sh-rating-breakdown {
-  background: var(--md-sys-color-surface);
-  border: 0;
-  border-radius: var(--md-sys-shape-corner-large-increased);
-  padding: 16px;
-  margin: 12px 0 16px;
+  background: var(--iris-surface);
+  border: 1px solid var(--iris-border);
+  border-radius: 20px;
+  padding: 18px 20px;
+  margin: 14px 0 18px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .sh-rating-breakdown[hidden] {
@@ -2714,23 +2716,23 @@ h3 a:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   gap: 8px;
 }
 
 .sh-rb-title {
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--md-sys-color-on-surface-variant);
+  color: var(--iris-ink-muted);
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
 .sh-rb-title svg {
-  color: var(--md-sys-color-primary);
+  color: var(--iris-accent);
   flex: none;
 }
 
@@ -2738,11 +2740,12 @@ h3 a:focus-visible {
   font-family: var(--mono);
   font-size: 0.84rem;
   font-weight: 700;
-  color: var(--md-sys-color-on-primary-container);
-  background: var(--md-sys-color-primary-container);
-  padding: 4px 12px;
-  border-radius: var(--md-sys-shape-corner-full);
-  border: 0;
+  color: var(--iris-accent);
+  background: rgba(56, 189, 248, 0.16);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+  padding: 4px 14px;
+  border-radius: 9999px;
 }
 
 /* Sezon / Bölüm Sekmeleri (.sh-rb-tabs) — iRiS Likit Cam Hap Sekmeler */
@@ -2833,23 +2836,26 @@ h3 a:focus-visible {
 .sh-rb-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 155px), 1fr));
-  gap: 4px;
+  gap: 8px;
 }
 
 .sh-rb-item {
-  background: var(--md-sys-color-surface-container-low);
-  border: 0;
-  border-radius: var(--md-sys-shape-corner-medium);
-  padding: 10px 12px;
+  background: var(--iris-surface);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--iris-border);
+  border-radius: 14px;
+  padding: 10px 14px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  transition: background-color var(--md-sys-motion-effect-fast-duration) var(--md-sys-motion-effect-fast-easing);
+  gap: 6px;
+  transition: all 0.2s ease;
 }
 
 .sh-rb-item:hover {
-  background: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
+  background: var(--iris-surface-high);
+  border-color: var(--iris-border-glow);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
 }
 
 .sh-rb-top {
@@ -2862,7 +2868,7 @@ h3 a:focus-visible {
 .sh-rb-lbl {
   font-size: 0.75rem;
   font-weight: 600;
-  color: inherit;
+  color: var(--iris-ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2870,14 +2876,14 @@ h3 a:focus-visible {
 
 .sh-rb-num {
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 700;
-  color: var(--md-sys-color-on-surface-variant);
+  color: var(--iris-accent);
 }
 
 .sh-rb-stars {
-  font-size: 0.76rem;
-  color: var(--md-sys-color-primary);
+  font-size: 0.78rem;
+  color: #fbbf24;
   letter-spacing: 0.08em;
 }
 

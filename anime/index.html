@@ -33,7 +33,10 @@
 <header class="bar">
   <div class="bar-in">
     <a class="btn glass" href="../" data-icon="back" aria-label="Ana sayfa"></a>
-    <span class="bar-title" aria-hidden="true">Anime</span>
+    <button class="bar-title flyout-trigger" id="flyoutTrigger" type="button" aria-expanded="false" aria-controls="flyoutMenu" aria-label="Bölüm Menüsü" title="Bölümler Arasında Geçiş Yap">
+      <span>Anime</span>
+      <svg class="flyout-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
     <div class="bar-actions">
       <a class="btn glass bar-stats-btn" href="istatistik/" title="Anime İstatistikleri" aria-label="Anime İstatistikleri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></a>
       <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>

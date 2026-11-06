@@ -754,9 +754,9 @@ function syncSheet(){
   const it = state.items.find(i => i.id === hashId());
   if(it){
     if(sheet.hidden) opener = document.activeElement;
-    fillSheet(it); sheet.hidden = false; document.body.style.overflow = 'hidden'; closeBtn.focus({preventScroll:true});
+    fillSheet(it); sheet.hidden = false; document.body.style.overflow = 'hidden'; document.body.classList.add('sheet-open'); closeBtn.focus({preventScroll:true});
   } else if(!sheet.hidden){
-    sheet.hidden = true; document.body.style.overflow = ''; pushed = false;
+    sheet.hidden = true; document.body.style.overflow = ''; document.body.classList.remove('sheet-open'); pushed = false;
     UI.hideAmbientGlow();
     if(opener && opener.focus) opener.focus({preventScroll:true}); opener = null;
   }

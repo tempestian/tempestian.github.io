@@ -1160,19 +1160,36 @@
     // hem de fare ile sürükleme (drag-to-scroll) pürüzsüz çalıştırıldı.
     const SELECTOR = '.chips, .dock, .rq-strip, .cmdk-ScopeBar, .cmdk-scope-bar, .sh-rb-tabs, .criteria-profiles-bar, .tag-group-chips';
 
-    document.addEventListener('wheel', e => {
-      const el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
-      if (!el || el.scrollWidth <= el.clientWidth) return;
+    // [PERFORMANS İYİLEŞTİRMESİ]: document seviyesinde { passive: false } wheel dinleyicisi
+    // tarayıcının yerel dikey kaydırma motorunu (compositor thread) JavaScript ana iş parçacığına
+    // bağımlı kılarak sayfada takılmalara (jank/freeze) yol açıyordu. Wheel dinleyicisi sadece
+    // yatay şeridin üzerine gelindiğinde izole olarak o elemana bağlanır.
+    let activeWheelEl = null;
+
+    const onContainerWheel = e => {
+      if (!activeWheelEl || activeWheelEl.scrollWidth <= activeWheelEl.clientWidth) return;
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        const maxScroll = el.scrollWidth - el.clientWidth;
-        const canRight = e.deltaY > 0 && el.scrollLeft < maxScroll - 1;
-        const canLeft = e.deltaY < 0 && el.scrollLeft > 1;
+        const maxScroll = activeWheelEl.scrollWidth - activeWheelEl.clientWidth;
+        const canRight = e.deltaY > 0 && activeWheelEl.scrollLeft < maxScroll - 1;
+        const canLeft = e.deltaY < 0 && activeWheelEl.scrollLeft > 1;
         if (canRight || canLeft) {
           e.preventDefault();
-          el.scrollLeft += e.deltaY;
+          activeWheelEl.scrollLeft += e.deltaY;
         }
       }
-    }, { passive: false });
+    };
+
+    document.addEventListener('pointerover', e => {
+      const el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
+      if (el && el !== activeWheelEl) {
+        if (activeWheelEl) activeWheelEl.removeEventListener('wheel', onContainerWheel);
+        activeWheelEl = el;
+        activeWheelEl.addEventListener('wheel', onContainerWheel, { passive: false });
+      } else if (!el && activeWheelEl) {
+        activeWheelEl.removeEventListener('wheel', onContainerWheel);
+        activeWheelEl = null;
+      }
+    }, { passive: true });
 
     document.addEventListener('mousedown', e => {
       if (e.button !== 0) return;

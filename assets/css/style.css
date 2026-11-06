@@ -359,13 +359,12 @@ svg {
   gap: 16px;
   border-radius: 9999px;
   background: rgba(18, 20, 26, 0.78);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(56, 189, 248, 0.32);
   box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.55), 0 0 18px -2px rgba(56, 189, 248, 0.16);
   transform: translateZ(0);
-  will-change: transform;
-  transition: all 0.3s cubic-bezier(0.34, 1.45, 0.5, 1);
+  transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 :root[data-theme="light"] .bar-in {
@@ -1015,10 +1014,11 @@ body::after {
   border: 1px solid var(--iris-border);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
   padding: 8px;
-  contain: layout paint;
-  transform: translateZ(0);
-  will-change: transform;
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.tile:hover {
+  will-change: transform;
 }
 
 .tile > a,
@@ -1748,20 +1748,19 @@ select option {
 #list.grid li {
   content-visibility: auto;
   contain-intrinsic-size: auto 280px;
-  contain: layout paint;
-  transform: translateZ(0);
-  will-change: transform;
   max-width: 260px;
   width: 100%;
   box-sizing: border-box;
   padding: 10px;
   border-radius: 18px !important;
   background: var(--iris-surface) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
   border: 1px solid var(--iris-border) !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease !important;
+}
+
+#list.grid li:hover {
+  will-change: transform;
 }
 
 #list li {
@@ -4045,38 +4044,56 @@ body.sheet-open .bar {
 /* 1. Global Ambient Wallpaper & Frosted Surface */
 body {
   background-color: #0c0d11 !important;
+  color: #f1f2f5 !important;
+  padding-bottom: 110px !important;
+  position: relative;
+}
+
+body::before {
+  content: "" !important;
+  display: block !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: -999 !important;
+  pointer-events: none !important;
+  background-color: #0c0d11 !important;
   background-image: 
     radial-gradient(ellipse at 85% 25%, rgba(20, 24, 32, 0.45) 0%, rgba(9, 10, 14, 0.92) 80%),
     url('../img/wallpaper.jpg') !important;
-  background-attachment: fixed !important;
   background-position: center center !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
-  color: #f1f2f5 !important;
-  padding-bottom: 110px !important;
+  transform: translateZ(0);
 }
 
 :root[data-theme="light"] body {
   background-color: #f6f4ee !important;
+  color: #1a1c22 !important;
+}
+
+:root[data-theme="light"] body::before {
+  background-color: #f6f4ee !important;
   background-image: 
     radial-gradient(ellipse at 85% 25%, rgba(255, 255, 255, 0.88) 0%, rgba(244, 238, 226, 0.96) 80%),
     url('../img/wallpaper.jpg') !important;
-  color: #1a1c22 !important;
 }
 
 /* 2. Glassmorphism Card System */
 .glass {
   background: rgba(18, 20, 26, 0.76) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
   border: 1px solid rgba(56, 189, 248, 0.24) !important;
-  box-shadow: 0 14px 34px -4px rgba(0, 0, 0, 0.48), 0 0 14px -2px rgba(56, 189, 248, 0.08) !important;
+  box-shadow: 0 10px 28px -4px rgba(0, 0, 0, 0.45), 0 0 14px -2px rgba(56, 189, 248, 0.08) !important;
 }
 
 :root[data-theme="light"] .glass {
   background: rgba(255, 255, 255, 0.84) !important;
   border: 1px solid rgba(2, 132, 199, 0.28) !important;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
 }
 
 /* 3. Iris Hero Profile Banner */

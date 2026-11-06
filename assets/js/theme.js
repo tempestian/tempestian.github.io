@@ -9,10 +9,10 @@
   const apply = (mode) => {
     const m = mode || root.dataset.theme || savedTheme() || 'dark';
     root.dataset.theme = m;
-    root.dataset.seed = 'amber';
+    root.dataset.seed = 'blue';
     const c = document.querySelector('meta[name=theme-color]');
-    if (c) c.content = m === 'dark' ? '#110e08' : '#fff8f3';
-    document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: m, seed: 'amber' } }));
+    if (c) c.content = m === 'dark' ? '#080c14' : '#f8fafc';
+    document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: m, seed: 'blue' } }));
   };
 
   apply(savedTheme() || 'dark');

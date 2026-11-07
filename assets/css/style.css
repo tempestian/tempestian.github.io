@@ -30,14 +30,14 @@
 }
 
 ::view-transition-group(pill) {
-  animation-duration: 333ms;
-  animation-timing-function: var(--md-sys-motion-spatial-fast-easing, cubic-bezier(0.34, 1.45, 0.5, 1));
+  animation-duration: 280ms;
+  animation-timing-function: var(--iris-curve-emerge, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 225ms;
-  animation-timing-function: var(--md-sys-motion-effect-fast-easing, cubic-bezier(0.2, 0.8, 0.2, 1));
+  animation-duration: 240ms;
+  animation-timing-function: var(--iris-curve-move, cubic-bezier(0.2, 0, 0, 1));
 }
 
 :root {
@@ -47,6 +47,20 @@
   --iris-font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --iris-font-title: "Inter Display", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --iris-font-numbers: "Rubik", "Inter", system-ui, sans-serif;
+
+  /* IrisStyle.qml Authentic Motion Curves & Durations */
+  --iris-curve-emerge: cubic-bezier(0.16, 1, 0.3, 1);     /* expressive / directCurve / emergeCurve */
+  --iris-curve-spring: cubic-bezier(0.22, 1.18, 0.36, 1); /* liquid / emergeSpring (damped bounce 0.22) */
+  --iris-curve-move: cubic-bezier(0.2, 0, 0, 1);          /* standard / moveCurve */
+  --iris-curve-recede: cubic-bezier(0.3, 0, 0.2, 1);      /* fold / recedeCurve */
+  --iris-curve-feedback: cubic-bezier(0.22, 0.61, 0.36, 1); /* OutCubic feedbackEasing */
+
+  --iris-dur-press: 90ms;
+  --iris-dur-feedback: 120ms;
+  --iris-dur-move: 240ms;
+  --iris-dur-recede: 260ms;
+  --iris-dur-emerge: 380ms;
+  --iris-dur-arrival: 460ms;
 
   --iris-bg: #f0f6ff;
   --iris-surface: rgba(242, 248, 255, 0.84);
@@ -112,16 +126,16 @@
   --md-sys-shape-expressive-chip-selected: 11px;
   --md-sys-shape-expressive-chip-pressed: 11px;
 
-  --md-sys-motion-spatial-fast-duration: 220ms;
-  --md-sys-motion-spatial-fast-easing: cubic-bezier(0.22, 1, 0.36, 1);
-  --md-sys-motion-spatial-default-duration: 300ms;
-  --md-sys-motion-spatial-default-easing: cubic-bezier(0.22, 1, 0.36, 1);
-  --md-sys-motion-spatial-medium-duration: 300ms;
-  --md-sys-motion-spatial-medium-easing: cubic-bezier(0.22, 1, 0.36, 1);
-  --md-sys-motion-effect-fast-duration: 180ms;
-  --md-sys-motion-effect-fast-easing: ease;
-  --md-sys-motion-effect-default-duration: 220ms;
-  --md-sys-motion-effect-default-easing: ease;
+  --md-sys-motion-spatial-fast-duration: var(--iris-dur-move);
+  --md-sys-motion-spatial-fast-easing: var(--iris-curve-emerge);
+  --md-sys-motion-spatial-default-duration: var(--iris-dur-emerge);
+  --md-sys-motion-spatial-default-easing: var(--iris-curve-emerge);
+  --md-sys-motion-spatial-medium-duration: var(--iris-dur-emerge);
+  --md-sys-motion-spatial-medium-easing: var(--iris-curve-emerge);
+  --md-sys-motion-effect-fast-duration: var(--iris-dur-feedback);
+  --md-sys-motion-effect-fast-easing: var(--iris-curve-feedback);
+  --md-sys-motion-effect-default-duration: var(--iris-dur-move);
+  --md-sys-motion-effect-default-easing: var(--iris-curve-move);
 
   --md-sys-elevation-level0: none;
   --md-sys-elevation-level1: 0 4px 14px rgba(10, 45, 100, 0.08);
@@ -132,8 +146,8 @@
   --rl: 22px;
   --rm: 18px;
   --rs: 11px;
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --spring: cubic-bezier(0.34, 1.45, 0.5, 1);
+  --ease: var(--iris-curve-emerge);
+  --spring: var(--iris-curve-spring);
   --sans: var(--iris-font-main);
   --mono: var(--iris-font-numbers);
 
@@ -6620,4 +6634,347 @@ body::after {
     display: none !important;
   }
 }
+
+/* ============================================================================
+   17. iRiS AUTHENTIC MOTION ARCHITECTURE (IrisStyle.qml & IrisMorphSurface.qml)
+   ============================================================================ */
+
+/* 17.1 Keyframes — IrisMorphSurface Two-Stage & Shell Arrival */
+@keyframes iris-island-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -14px, 0) scale(0.968);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes iris-surface-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.974);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes iris-card-emerge {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.962);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes iris-morph-drop {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes iris-sheet-emerge {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.955);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes iris-backdrop-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes iris-row-settle {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 17.2 Shell Arrival Choreography (IrisStyle.arrival) */
+  .bar-in {
+    animation: iris-island-arrive 420ms var(--iris-curve-emerge) both;
+  }
+
+  .iris-hero {
+    animation: iris-surface-arrive 440ms var(--iris-curve-emerge) 40ms backwards;
+  }
+
+  .iris-hero .iris-deck-cell:nth-child(1) {
+    animation: iris-row-settle 380ms var(--iris-curve-emerge) 90ms backwards;
+  }
+  .iris-hero .iris-deck-cell:nth-child(2) {
+    animation: iris-row-settle 380ms var(--iris-curve-emerge) 130ms backwards;
+  }
+  .iris-hero .iris-deck-cell:nth-child(3) {
+    animation: iris-row-settle 380ms var(--iris-curve-emerge) 170ms backwards;
+  }
+  .iris-hero .iris-deck-cell:nth-child(4) {
+    animation: iris-row-settle 380ms var(--iris-curve-emerge) 210ms backwards;
+  }
+
+  .home-spotlight-row > *:nth-child(1) {
+    animation: iris-surface-arrive 440ms var(--iris-curve-emerge) 95ms backwards;
+  }
+  .home-spotlight-row > *:nth-child(2) {
+    animation: iris-surface-arrive 440ms var(--iris-curve-emerge) 140ms backwards;
+  }
+
+  #sections > .tile:nth-child(1) {
+    animation: iris-surface-arrive 440ms var(--iris-curve-emerge) 165ms backwards;
+  }
+  #sections > .tile:nth-child(2) {
+    animation: iris-surface-arrive 440ms var(--iris-curve-emerge) 205ms backwards;
+  }
+  #sections > .tile:nth-child(3) {
+    animation: iris-surface-arrive 440ms var(--iris-curve-emerge) 245ms backwards;
+  }
+
+  .links > li:nth-child(1) {
+    animation: iris-row-settle 380ms var(--iris-curve-emerge) 220ms backwards;
+  }
+  .links > li:nth-child(2) {
+    animation: iris-row-settle 380ms var(--iris-curve-emerge) 255ms backwards;
+  }
+  .links > li:nth-child(3) {
+    animation: iris-row-settle 380ms var(--iris-curve-emerge) 290ms backwards;
+  }
+  .links > li:nth-child(4) {
+    animation: iris-row-settle 380ms var(--iris-curve-emerge) 325ms backwards;
+  }
+
+  body:not([data-section="home"]) .hero {
+    animation: iris-surface-arrive 420ms var(--iris-curve-emerge) 35ms backwards;
+  }
+  body:not([data-section="home"]) .stats {
+    animation: iris-surface-arrive 440ms var(--iris-curve-emerge) 75ms backwards;
+  }
+  body:not([data-section="home"]) .tools {
+    animation: iris-surface-arrive 420ms var(--iris-curve-emerge) 115ms backwards;
+  }
+  body:not([data-section="home"]) > main > .chips,
+  body:not([data-section="home"]) .toolbar-panel {
+    animation: iris-surface-arrive 420ms var(--iris-curve-emerge) 145ms backwards;
+  }
+
+  /* 17.3 Recompose & Staggered Card Reveal (IrisStyle.recompose) */
+  #list.iris-recompose > li:not([hidden]),
+  #guideList.iris-recompose > li,
+  #tierBoard .tier-row {
+    animation: iris-card-emerge 360ms var(--iris-curve-emerge) var(--stagger, 0ms) backwards;
+  }
+
+  /* Poster Image Load & Hover Depth Physics */
+  .poster img {
+    opacity: 0;
+    transform: scale(1.035);
+    transition:
+      opacity 320ms var(--iris-curve-emerge),
+      transform 460ms var(--iris-curve-emerge) !important;
+  }
+
+  .poster img.in {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  #list.grid li:hover .poster img.in {
+    transform: scale(1.045);
+  }
+
+  /* 17.4 Two-Stage IrisMorphSurface Accordion (#stats.open .ins & #fp.open) */
+  .ins,
+  .fp {
+    transition: grid-template-rows 380ms var(--iris-curve-emerge) !important;
+  }
+
+  .ins-in > .blk,
+  .ins-in > .ins-foot-row,
+  .fp-in > div {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0) scale(0.975);
+    transition:
+      opacity 180ms var(--iris-curve-recede),
+      transform 200ms var(--iris-curve-recede);
+  }
+
+  .stats.open .ins-in > .blk,
+  .stats.open .ins-in > .ins-foot-row,
+  .fp.open .fp-in > div {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    transition:
+      opacity 340ms var(--iris-curve-emerge) 65ms,
+      transform 380ms var(--iris-curve-emerge) 65ms;
+  }
+
+  .stats.open .ins-in > .blk:nth-child(2) {
+    transition-delay: 95ms;
+  }
+  .stats.open .ins-in > .blk:nth-child(3) {
+    transition-delay: 125ms;
+  }
+  .stats.open .ins-in > .blk:nth-child(4) {
+    transition-delay: 155ms;
+  }
+  .stats.open .ins-in > .blk:nth-child(5),
+  .stats.open .ins-in > .ins-foot-row {
+    transition-delay: 185ms;
+  }
+
+  /* Equalizer & Genre Telemetry Bars Grow on Surface Open */
+  .hb-slot i {
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition:
+      transform 480ms var(--iris-curve-spring) 110ms,
+      filter 160ms var(--iris-curve-feedback),
+      box-shadow 160ms var(--iris-curve-feedback) !important;
+  }
+
+  .stats.open .hb-slot i {
+    transform: scaleY(1);
+  }
+
+  .gb-track i {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 520ms var(--iris-curve-emerge) 130ms !important;
+  }
+
+  .stats.open .gb-track i {
+    transform: scaleX(1);
+  }
+
+  /* 17.5 Two-Stage IrisMorphSurface Popups (Flyout, Command Palette, Sheet) */
+  .flyout-menu {
+    transform-origin: top center;
+    animation: iris-morph-drop 300ms var(--iris-curve-spring) !important;
+  }
+
+  .flyout-menu .flyout-item {
+    animation: iris-row-settle 260ms var(--iris-curve-emerge) backwards;
+  }
+  .flyout-menu .flyout-item:nth-child(1) { animation-delay: 30ms; }
+  .flyout-menu .flyout-item:nth-child(2) { animation-delay: 50ms; }
+  .flyout-menu .flyout-item:nth-child(3) { animation-delay: 70ms; }
+  .flyout-menu .flyout-item:nth-child(4) { animation-delay: 90ms; }
+  .flyout-menu .flyout-item:nth-child(5) { animation-delay: 110ms; }
+  .flyout-menu .flyout-item:nth-child(6) { animation-delay: 130ms; }
+
+  .cmd-palette-backdrop {
+    animation: iris-backdrop-fade 200ms var(--iris-curve-move) !important;
+  }
+
+  .cmd-palette-modal {
+    transform-origin: top center;
+    animation: iris-morph-drop 320ms var(--iris-curve-spring) !important;
+  }
+
+  .sheet:not([hidden]) .sheet-bg {
+    animation: iris-backdrop-fade 240ms var(--iris-curve-move) !important;
+  }
+
+  .sheet:not([hidden]) .sheet-card {
+    animation: iris-sheet-emerge 380ms var(--iris-curve-emerge) !important;
+  }
+
+  .sheet:not([hidden]) .sheet-head,
+  .sheet:not([hidden]) .sh-rating-breakdown,
+  .sheet:not([hidden]) .parts > .part {
+    animation: iris-row-settle 340ms var(--iris-curve-emerge) backwards;
+  }
+  .sheet:not([hidden]) .sheet-head { animation-delay: 45ms; }
+  .sheet:not([hidden]) .sh-rating-breakdown { animation-delay: 80ms; }
+  .sheet:not([hidden]) .parts > .part:nth-child(1) { animation-delay: 95ms; }
+  .sheet:not([hidden]) .parts > .part:nth-child(2) { animation-delay: 120ms; }
+  .sheet:not([hidden]) .parts > .part:nth-child(3) { animation-delay: 145ms; }
+  .sheet:not([hidden]) .parts > .part:nth-child(4) { animation-delay: 170ms; }
+  .sheet:not([hidden]) .parts > .part:nth-child(5) { animation-delay: 195ms; }
+}
+
+/* 17.6 Tactile IrisButton Physics (pressScale: 0.96, zero Material ripple/morph) */
+.btn,
+.bar-links > a,
+.bar-links .flyout-trigger,
+.chips button,
+.seg-view button,
+.more,
+.sheet-nav-btn,
+.sheet-share-btn,
+.sh-al,
+.full-stats-btn,
+.iris-pill-action {
+  transition:
+    transform var(--iris-dur-feedback, 120ms) var(--iris-curve-feedback),
+    background-color var(--iris-dur-feedback, 120ms) var(--iris-curve-feedback),
+    border-color var(--iris-dur-feedback, 120ms) var(--iris-curve-feedback),
+    color var(--iris-dur-feedback, 120ms) var(--iris-curve-feedback),
+    box-shadow var(--iris-dur-move, 240ms) var(--iris-curve-emerge) !important;
+}
+
+.btn:active,
+.bar-links > a:active,
+.bar-links .flyout-trigger:active,
+.chips button:active,
+.seg-view button:active,
+.more:active,
+.sheet-nav-btn:not(:disabled):active,
+.sheet-share-btn:active,
+.sh-al:active,
+.full-stats-btn:active,
+.iris-pill-action:active {
+  transform: scale(0.96) !important;
+  transition-duration: var(--iris-dur-press, 90ms) !important;
+}
+
+.tile,
+#list.grid li,
+#list.list li,
+.guide-card,
+.links a,
+.tier-card,
+.iris-deck-cell {
+  transition:
+    transform var(--iris-dur-move, 240ms) var(--iris-curve-emerge),
+    border-color var(--iris-dur-feedback, 120ms) var(--iris-curve-feedback),
+    background-color var(--iris-dur-feedback, 120ms) var(--iris-curve-feedback),
+    box-shadow var(--iris-dur-move, 240ms) var(--iris-curve-emerge) !important;
+}
+
+a.tile:active,
+#list.grid li:active,
+#list.list li:active,
+.guide-card:active,
+.links a:active,
+.tier-card:active {
+  transform: scale(0.986) !important;
+  transition-duration: var(--iris-dur-press, 90ms) !important;
+}
+
 

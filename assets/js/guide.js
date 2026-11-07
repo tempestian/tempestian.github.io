@@ -177,6 +177,7 @@
   function renderList() {
     const ul = $('#guideList');
     if (!ul) return;
+    ul.classList.remove('iris-recompose');
     ul.replaceChildren();
 
     document.querySelectorAll('#chips [data-filter]').forEach(b => {
@@ -205,8 +206,10 @@
     if (!filtered.length) return;
 
     const fr = document.createDocumentFragment();
+    let idx = 0;
     for (const it of filtered) {
       const li = h('li', 'tile glass sq guide-card' + (it.favorite ? ' is-fav' : ''));
+      li.style.setProperty('--stagger', `${Math.min(idx++, 15) * 20}ms`);
       const targetUrl = it.url || it.firstSeasonUrl || 'https://www.technopat.net/sosyal/';
       const a = h('a', 'guide-card-link');
       a.href = targetUrl;
@@ -247,6 +250,8 @@
       fr.append(li);
     }
     ul.append(fr);
+    void ul.offsetWidth;
+    ul.classList.add('iris-recompose');
   }
 
   (async () => {

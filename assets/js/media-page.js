@@ -290,9 +290,11 @@ function renderTierBoard(visibleNodes) {
     else tiers[5].items.push(n);
   }
   const fr = document.createDocumentFragment();
+  let tierIdx = 0;
   for (const t of tiers) {
     if (!t.items.length) continue;
     const row = h('div', 'tier-row');
+    row.style.setProperty('--stagger', `${Math.min(tierIdx++, 8) * 32}ms`);
     const head = h('div', 'tier-head');
     head.style.setProperty('--tier-bg', t.bg);
     head.style.setProperty('--tier-fg', t.fg);
@@ -343,9 +345,17 @@ function renderTierBoard(visibleNodes) {
       n.li.hidden = !ok; n.li.classList.remove('f', 'l');
     }
     const visibleNodes = [];
-    for (const li of root.children) { if (li.hidden) continue; shown++; if (!first) first = li; last = li; }
+    for (const li of root.children) {
+      if (li.hidden) continue;
+      shown++;
+      li.style.setProperty('--stagger', `${Math.min(shown - 1, 15) * 18}ms`);
+      if (!first) first = li;
+      last = li;
+    }
     for (const it of s.items) { const n = nodes.get(it.id); if (n && !n.li.hidden) visibleNodes.push(n); }
     if (first) { first.classList.add('f'); last.classList.add('l'); }
+    void root.offsetWidth;
+    root.classList.add('iris-recompose');
     const isTier = s.view === 'tier';
     const tierBoard = $('#tierBoard');
     if (tierBoard) {

@@ -6684,6 +6684,17 @@ body::after {
   }
 }
 
+@keyframes iris-flyout-drop {
+  from {
+    opacity: 0;
+    transform: translate3d(-50%, -8px, 0) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0) scale(1);
+  }
+}
+
 @keyframes iris-sheet-emerge {
   from {
     opacity: 0;
@@ -6718,7 +6729,7 @@ body::after {
 @media (prefers-reduced-motion: no-preference) {
   /* 17.2 Shell Arrival Choreography (IrisStyle.arrival) */
   .bar-in {
-    animation: iris-island-arrive 420ms var(--iris-curve-emerge) both;
+    animation: iris-island-arrive 420ms var(--iris-curve-emerge) backwards;
   }
 
   .iris-hero {
@@ -6874,7 +6885,7 @@ body::after {
   /* 17.5 Two-Stage IrisMorphSurface Popups (Flyout, Command Palette, Sheet) */
   .flyout-menu {
     transform-origin: top center;
-    animation: iris-morph-drop 300ms var(--iris-curve-spring) !important;
+    animation: iris-flyout-drop 300ms var(--iris-curve-spring) !important;
   }
 
   .flyout-menu .flyout-item {

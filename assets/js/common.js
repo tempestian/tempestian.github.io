@@ -1572,10 +1572,25 @@
     if (sum && sum.anime && sum.anime.nums && sum.anime.nums[0]) {
       const ca = document.getElementById('chipAnimeCount');
       if (ca) ca.textContent = sum.anime.nums[0][0];
+      const da = document.getElementById('deckAnimeCount');
+      if (da) da.textContent = sum.anime.nums[0][0];
+      const epPair = sum.anime.nums.find(x => x && /bölüm/i.test(x[1])) || sum.anime.nums[3];
+      const de = document.getElementById('deckEpCount');
+      if (de && epPair) de.textContent = epPair[0];
     }
     if (sum && sum.guide && sum.guide.nums && sum.guide.nums[0]) {
       const cg = document.getElementById('chipGuideCount');
       if (cg) cg.textContent = sum.guide.nums[0][0];
+      const dg = document.getElementById('deckGuideCount');
+      if (dg) dg.textContent = sum.guide.nums[0][0];
+    }
+    const deckCmdBtn = document.getElementById('deckCmdBtn');
+    if (deckCmdBtn && !deckCmdBtn._boundCmd) {
+      deckCmdBtn._boundCmd = true;
+      deckCmdBtn.onclick = (e) => {
+        e.preventDefault();
+        if (typeof window.openCommandPalette === 'function') window.openCommandPalette();
+      };
     }
 
     try {

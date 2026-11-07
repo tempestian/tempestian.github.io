@@ -124,22 +124,48 @@
 </header>
 <main class="wrap">
   <section class="hero glass sq iris-hero" id="heroSection">
-    <div class="iris-hero-profile">
-      <div class="iris-avatar-wrap">
-        <img class="mark" id="heroLogo" src="assets/img/logo.png" width="68" height="68" alt="" decoding="async">
-        <span class="iris-status-dot" title="Çevrimiçi"></span>
+    <div class="iris-hero-grid">
+      <div class="iris-hero-profile">
+        <div class="iris-avatar-wrap">
+          <img class="mark" id="heroLogo" src="assets/img/logo.png" width="74" height="74" alt="" decoding="async">
+          <span class="iris-status-dot" title="Sistem Aktif"></span>
+        </div>
+        <div class="iris-hero-meta">
+          <div class="iris-tag-row">
+            <span class="iris-pulse-dot"></span>
+            <span class="iris-greeting-tag" id="irisGreeting">İyi akşamlar</span>
+            <span class="iris-shell-pill">iRiS · SHELL</span>
+          </div>
+          <h1 id="heroTitle">Tempestian</h1>
+          <div class="iris-chips-row">
+            <a class="iris-chip" href="anime/"><b id="chipAnimeCount">79</b> Anime</a>
+            <a class="iris-chip" href="rehber/"><b id="chipGuideCount">54</b> Rehber</a>
+            <a class="iris-chip" href="zaman-tuneli/">Zaman Tüneli</a>
+          </div>
+          <p class="sub" id="heroSub" hidden></p>
+        </div>
       </div>
-      <div class="iris-hero-meta">
-        <h1 id="heroTitle">Tempestian</h1>
-        <div class="iris-tag-row">
-          <span class="iris-pulse-dot"></span>
-          <span class="iris-greeting-tag" id="irisGreeting">İyi akşamlar</span>
-        </div>
-        <div class="iris-chips-row">
-          <a class="iris-chip" href="anime/"><b id="chipAnimeCount">450+</b> Anime</a>
-          <a class="iris-chip" href="rehber/"><b id="chipGuideCount">24</b> Rehber</a>
-        </div>
-        <p class="sub" id="heroSub" hidden></p>
+      <div class="iris-hero-deck" aria-label="Sistem Telemetrisi ve Hızlı Erişim">
+        <a class="iris-deck-cell" href="anime/">
+          <span class="deck-lbl">ANİME ARŞİVİ</span>
+          <b class="deck-val" id="deckAnimeCount">79</b>
+          <span class="deck-sub">Kayıtlı Yapım</span>
+        </a>
+        <a class="iris-deck-cell" href="anime/istatistik/">
+          <span class="deck-lbl">TOPLAM İZLEME</span>
+          <b class="deck-val" id="deckEpCount">3376</b>
+          <span class="deck-sub">İzlenen Bölüm</span>
+        </a>
+        <a class="iris-deck-cell" href="rehber/">
+          <span class="deck-lbl">TECHNOPAT</span>
+          <b class="deck-val" id="deckGuideCount">54</b>
+          <span class="deck-sub">Teknik Rehber</span>
+        </a>
+        <button class="iris-deck-cell iris-deck-cmd" type="button" id="deckCmdBtn" aria-label="Komut Paletini Aç">
+          <span class="deck-lbl">BAŞLATICI</span>
+          <b class="deck-val deck-kbd">Ctrl+K</b>
+          <span class="deck-sub">Hızlı Arama (/)</span>
+        </button>
       </div>
     </div>
   </section>

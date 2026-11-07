@@ -3129,7 +3129,7 @@
     }
 
     const wrap = document.createElement('div');
-    wrap.className = 'criteria-studio glass';
+    wrap.className = 'criteria-studio';
 
     const titleText = customTitle || '5 Yıldızlı Ağırlıklı Puanlama Stüdyosu';
     const subText = customSub || 'Kriterlere 1–5 yıldız verin; sistem ağırlıklarına göre 10 üzerinden virgüllü puanı otomatik hesaplar.';
@@ -5711,7 +5711,6 @@
       const critMount = document.createElement('div');
       critMount.className = 'rq-part-criteria-mount';
       critMount.style.display = 'none';
-      critMount.style.margin = '4px 0 10px';
       critMount.style.width = '100%';
 
       const scWrap = row.querySelector('.rq-subitem-scores');

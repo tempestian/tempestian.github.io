@@ -132,7 +132,8 @@
         const o = box.classList.toggle('open');
         more.setAttribute('aria-expanded', o);
       };
-      box.append(row, ins, more);
+      row.append(more);
+      box.append(row, ins);
     } else {
       box.append(row);
     }
@@ -205,56 +206,42 @@
 
     const fr = document.createDocumentFragment();
     for (const it of filtered) {
-      const li = h('li', 'tile glass sq guide-card span-full');
+      const li = h('li', 'tile glass sq guide-card' + (it.favorite ? ' is-fav' : ''));
       const targetUrl = it.url || it.firstSeasonUrl || 'https://www.technopat.net/sosyal/';
-      const a = h('a');
+      const a = h('a', 'guide-card-link');
       a.href = targetUrl;
       a.target = '_blank';
       a.rel = 'noopener';
 
-      const top = h('div', 'tile-top');
-      const headLeft = h('div', 'box-head-left');
-      if (it.image) {
-        const img = h('img', 'box-thumb');
-        img.src = UI.resolveAsset(it.image);
-        img.alt = '';
-        img.width = 44;
-        img.height = 44;
-        headLeft.append(img);
-      } else {
-        const ic = h('span', 'box-ic');
-        ic.innerHTML = UI.icon('guide');
-        headLeft.append(ic);
+      const metaTop = h('div', 'guide-card-meta');
+      const cats = getCategories(it);
+      const catRow = h('div', 'guide-cat-row');
+      if (it.favorite) {
+        catRow.append(h('span', 'tag tag-active', '★ Öne Çıkan'));
       }
-      const titleBox = h('div');
-      const h2 = h('h2', '', it.title || 'İsimsiz Rehber');
-      h2.style.fontSize = '1.22rem';
-      titleBox.append(h2);
+      for (const c of cats.slice(0, 3)) {
+        catRow.append(h('span', 'tag', c));
+      }
+      metaTop.append(catRow);
+
       if (it.addedAt) {
         const fmtDate = (window.formatHybridDate ? window.formatHybridDate(it.addedAt) : it.addedAt) || '';
-        const dt = h('p', 'meta', fmtDate + (it.favorite ? ' · ★ Öne Çıkan Rehber' : ''));
-        titleBox.append(dt);
+        metaTop.append(h('span', 'guide-card-date', fmtDate));
       }
-      headLeft.append(titleBox);
-      top.append(headLeft);
+      a.append(metaTop);
 
-      const rightBadge = h('span', 'tag guide-out-badge');
-      rightBadge.innerHTML = `<span>${ UI.esc ? UI.esc(pageTexts.externalButtonText || 'Technopat Sosyal') : (pageTexts.externalButtonText || 'Technopat Sosyal') }</span> ${UI.icon('out')}`;
-      top.append(rightBadge);
-      a.append(top);
+      const h2 = h('h2', 'guide-card-title', it.title || 'İsimsiz Rehber');
+      a.append(h2);
 
       if (it.summary) {
-        a.append(h('p', 'box-txt', it.summary));
+        a.append(h('p', 'box-txt guide-card-excerpt', it.summary));
       }
 
-      const cats = getCategories(it);
-      if (cats.length) {
-        const catRow = h('div', 'guide-cat-row');
-        for (const c of cats) {
-          catRow.append(h('span', 'tag', c));
-        }
-        a.append(catRow);
-      }
+      const foot = h('div', 'guide-card-foot');
+      const rightBadge = h('span', 'guide-out-badge');
+      rightBadge.innerHTML = `<span>${ UI.esc ? UI.esc(pageTexts.externalButtonText || 'Technopat Sosyal') : (pageTexts.externalButtonText || 'Technopat Sosyal') }</span> ${UI.icon('out')}`;
+      foot.append(rightBadge);
+      a.append(foot);
 
       li.append(a);
       fr.append(li);

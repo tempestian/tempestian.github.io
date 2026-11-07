@@ -392,9 +392,9 @@ function stats(d){
   }
   const more = h('button','more', pageTexts.detailsText || 'Ayrıntılar'); more.type = 'button'; more.setAttribute('aria-expanded','false'); more.insertAdjacentHTML('beforeend', UI.icon('down'));
   const ins = h('div','ins'), inn = h('div','ins-in'); ins.append(inn);
-  const blk = (title, ...kids) => { const b = h('div','blk'); b.append(h('h4',null,title), ...kids); inn.append(b); };
+  const blk = (title, ...kids) => { const b = h('div','blk'); b.append(h('h4',null,title), ...kids); inn.append(b); return b; };
   const bars = (arr) => { const w = h('div','hbs'), mx = Math.max(1,...arr.map(a => a[1]));
-    for(const [l,n,k,v] of arr){ const b = h('button','hb'); b.type = 'button'; b.setAttribute('aria-label', l+': '+n); b.innerHTML = '<b></b><i></i><span></span>'; b.children[0].textContent = n || ''; b.children[1].style.setProperty('--h', (n/mx*100)+'%'); b.children[2].textContent = l; b.onclick = () => { setF(k,v); jump(); }; w.append(b); } return w; };
+    for(const [l,n,k,v] of arr){ const b = h('button','hb'); b.type = 'button'; b.setAttribute('aria-label', l+': '+n); b.innerHTML = '<b></b><span class="hb-slot"><i></i></span><span></span>'; b.children[0].textContent = n || ''; b.querySelector('i').style.setProperty('--h', (n/mx*100)+'%'); b.children[2].textContent = l; b.onclick = () => { setF(k,v); jump(); }; w.append(b); } return w; };
   const hist = Array.from({length:10},(_,i) => [String(i+1), 0, 'sc', 'b'+(i+1)]);
   for(const x of scs) hist[Math.min(10,Math.max(1,Math.floor(x)))-1][1]++;
   blk('Puan dağılımı', bars(hist.slice(Math.min(...hist.map((x,i) => x[1] ? i : 9)))));
@@ -486,16 +486,23 @@ function stats(d){
       btn.onclick = () => { setF('gn', g); jump(); };
       gBars.append(btn);
     }
-    blk('Özel kategori & tür dağılımı', gBars);
+    const catBlk = blk('Özel kategori & tür dağılımı', gBars);
+    catBlk.classList.add('blk-full');
   }
   // [AI-MIMARI-NOTU: ADIM 1 — KAPSAMLI İSTATİSTİK SAYFASINA BAĞLANTI]
   const fullStatsLink = h('a', 'btn full-stats-btn', '📊 Kapsamlı Anime İstatistikleri Sayfası →');
   fullStatsLink.href = 'istatistik/';
-  fullStatsLink.style.cssText = 'display:inline-flex;margin:12px 22px 14px;font-size:0.86rem;font-weight:650;text-decoration:none';
-  inn.append(fullStatsLink);
+  const footRow = h('div', 'ins-foot-row');
+  footRow.append(fullStatsLink);
+  inn.append(footRow);
 
   more.onclick = () => { const o = box.classList.toggle('open'); more.setAttribute('aria-expanded', o); };
-  box.append(row, ins, more); box.hidden = false;
+  if (new URLSearchParams(location.search).get('stats') === 'open') {
+    box.classList.add('open');
+    more.setAttribute('aria-expanded', 'true');
+  }
+  row.append(more);
+  box.append(row, ins); box.hidden = false;
 }
 
 (async () => {

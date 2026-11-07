@@ -127,22 +127,16 @@
     <div class="iris-hero-grid">
       <div class="iris-hero-profile">
         <div class="iris-avatar-wrap">
-          <img class="mark" id="heroLogo" src="assets/img/logo.png" width="74" height="74" alt="" decoding="async">
+          <img class="mark" id="heroLogo" src="assets/img/logo.png" width="76" height="76" alt="" decoding="async">
           <span class="iris-status-dot" title="Sistem Aktif"></span>
         </div>
         <div class="iris-hero-meta">
           <div class="iris-tag-row">
             <span class="iris-pulse-dot"></span>
             <span class="iris-greeting-tag" id="irisGreeting">İyi akşamlar</span>
-            <span class="iris-shell-pill">iRiS · SHELL</span>
           </div>
           <h1 id="heroTitle">Tempestian</h1>
-          <div class="iris-chips-row">
-            <a class="iris-chip" href="anime/"><b id="chipAnimeCount">79</b> Anime</a>
-            <a class="iris-chip" href="rehber/"><b id="chipGuideCount">54</b> Rehber</a>
-            <a class="iris-chip" href="zaman-tuneli/">Zaman Tüneli</a>
-          </div>
-          <p class="sub" id="heroSub" hidden></p>
+          <p class="sub" id="heroSub">Kişisel medya arşivi, puanlama karneleri ve GNU/Linux teknik rehber dizini.</p>
         </div>
       </div>
       <div class="iris-hero-deck" aria-label="Sistem Telemetrisi ve Hızlı Erişim">
@@ -169,47 +163,49 @@
       </div>
     </div>
   </section>
-  <section class="gift glass sq open" id="gift" aria-label="Sürpriz">
-    <span class="gift-bg" aria-hidden="true"></span>
-    <button class="gift-btn" id="giftBtn" type="button" aria-expanded="true" aria-controls="giftPanel" aria-label="Sürprizi kapat" title="Sürprizi okumak için tıkla ✨">
-      <span class="gift-glow" aria-hidden="true"></span>
-      <svg class="gift-box" viewBox="0 -16 120 136" aria-hidden="true">
-        <defs>
-          <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8fc0"/><stop offset="1" stop-color="#f23d8f"/></linearGradient>
-          <linearGradient id="gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa3cc"/><stop offset="1" stop-color="#f7529f"/></linearGradient>
-          <linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0f7"/><stop offset="1" stop-color="#ffc4de"/></linearGradient>
-        </defs>
-        <g class="gift-body">
-          <rect x="22" y="58" width="76" height="52" rx="10" fill="url(#gb)"/>
-          <rect x="54" y="58" width="12" height="52" fill="url(#gr)"/>
-          <rect x="22" y="58" width="76" height="8" fill="#000" opacity=".1"/>
-        </g>
-        <g class="gift-lid">
-          <rect x="15" y="40" width="90" height="23" rx="9" fill="url(#gl)"/>
-          <rect x="54" y="40" width="12" height="23" fill="url(#gr)"/>
-          <path d="M60 40C52 20 31 13 33 29C35 41 52 41 60 40Z" fill="url(#gr)"/>
-          <path d="M60 40C68 20 89 13 87 29C85 41 68 41 60 40Z" fill="url(#gr)"/>
-          <circle cx="60" cy="40" r="6.5" fill="#ffd9ea"/>
-        </g>
-      </svg>
-    </button>
-    <div class="gift-panel" id="giftPanel">
-      <div class="gift-in">
-        <div class="gift-body-txt">
-          <p class="gift-lead" id="giftLead">Hediyenin açılma zamanı geldi</p>
-          <div class="cd" id="giftCd" role="timer" aria-live="off" hidden>
-            <div><b data-u="d">0</b><span data-ul="d">Gün</span></div>
-            <div><b data-u="h">00</b><span data-ul="h">Saat</span></div>
-            <div><b data-u="m">00</b><span data-ul="m">Dakika</span></div>
-            <div><b data-u="s">00</b><span data-ul="s">Saniye</span></div>
+  <div class="home-spotlight-row">
+    <section class="gift glass sq open" id="gift" aria-label="Sürpriz">
+      <span class="gift-bg" aria-hidden="true"></span>
+      <button class="gift-btn" id="giftBtn" type="button" aria-expanded="true" aria-controls="giftPanel" aria-label="Sürprizi kapat" title="Sürprizi okumak için tıkla ✨">
+        <span class="gift-glow" aria-hidden="true"></span>
+        <svg class="gift-box" viewBox="0 -16 120 136" aria-hidden="true">
+          <defs>
+            <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8fc0"/><stop offset="1" stop-color="#f23d8f"/></linearGradient>
+            <linearGradient id="gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa3cc"/><stop offset="1" stop-color="#f7529f"/></linearGradient>
+            <linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0f7"/><stop offset="1" stop-color="#ffc4de"/></linearGradient>
+          </defs>
+          <g class="gift-body">
+            <rect x="22" y="58" width="76" height="52" rx="10" fill="url(#gb)"/>
+            <rect x="54" y="58" width="12" height="52" fill="url(#gr)"/>
+            <rect x="22" y="58" width="76" height="8" fill="#000" opacity=".1"/>
+          </g>
+          <g class="gift-lid">
+            <rect x="15" y="40" width="90" height="23" rx="9" fill="url(#gl)"/>
+            <rect x="54" y="40" width="12" height="23" fill="url(#gr)"/>
+            <path d="M60 40C52 20 31 13 33 29C35 41 52 41 60 40Z" fill="url(#gr)"/>
+            <path d="M60 40C68 20 89 13 87 29C85 41 68 41 60 40Z" fill="url(#gr)"/>
+            <circle cx="60" cy="40" r="6.5" fill="#ffd9ea"/>
+          </g>
+        </svg>
+      </button>
+      <div class="gift-panel" id="giftPanel">
+        <div class="gift-in">
+          <div class="gift-body-txt">
+            <p class="gift-lead" id="giftLead">Hediyenin açılma zamanı geldi</p>
+            <div class="cd" id="giftCd" role="timer" aria-live="off" hidden>
+              <div><b data-u="d">0</b><span data-ul="d">Gün</span></div>
+              <div><b data-u="h">00</b><span data-ul="h">Saat</span></div>
+              <div><b data-u="m">00</b><span data-ul="m">Dakika</span></div>
+              <div><b data-u="s">00</b><span data-ul="s">Saniye</span></div>
+            </div>
+            <p class="gift-date" id="giftDate"><a href="hediye/" style="color:var(--accent);font-weight:600">Sürprizi okumak için tıkla ✨</a></p>
           </div>
-          <p class="gift-date" id="giftDate"><a href="hediye/" style="color:var(--accent);font-weight:600">Sürprizi okumak için tıkla ✨</a></p>
         </div>
       </div>
-    </div>
-  </section>
-  <!-- [AI-MIMARI-NOTU]: Admin panelinden eklenen üst özel kutucuklar (#boxesTop), ana kategoriler (#sections), alt özel kutucuklar (#boxesBottom) ve dış bağlantılar (#links) common.js tarafından dinamik olarak doldurulur. -->
-  <ul class="tiles custom-boxes" id="boxesTop" hidden></ul>
+    </section>
+    <!-- [AI-MIMARI-NOTU]: Admin panelinden eklenen üst özel kutucuklar (#boxesTop), ana kategoriler (#sections), alt özel kutucuklar (#boxesBottom) ve dış bağlantılar (#links) common.js tarafından dinamik olarak doldurulur. -->
+    <ul class="tiles custom-boxes" id="boxesTop" hidden></ul>
+  </div>
   <ul class="tiles" id="sections"></ul>
   <ul class="tiles custom-boxes" id="boxesBottom" hidden></ul>
   <ul class="links" id="links" aria-label="Bağlantılar"></ul>

@@ -670,31 +670,15 @@
       const isLink = Boolean(b.url);
       const box = isLink ? Object.assign(el('a'), { href: resolveAsset(b.url) }) : el('div');
       if (isLink && /^https?:\/\//i.test(b.url)) box.rel = 'noopener';
-      const top = el('div', 'tile-top');
-      const titleWrap = el('div', 'box-head-left');
-      if (b.image) {
-        const img = el('img', 'box-thumb');
-        img.src = resolveAsset(b.image);
-        img.alt = '';
-        img.width = 40;
-        img.height = 40;
-        img.decoding = 'async';
-        titleWrap.append(img);
-      } else if (b.icon && P[b.icon]) {
-        const ic = el('span', 'box-ic');
-        ic.innerHTML = icon(b.icon);
-        titleWrap.append(ic);
+      const kickerRow = el('div', 'cbox-kicker-row');
+      kickerRow.append(el('span', 'cbox-kicker', b.badge || 'DURUM NOTU'));
+      if (isLink) {
+        const g = el('span', 'sec-open-lbl');
+        g.innerHTML = 'İncele ' + icon(/^https?:\/\//i.test(b.url) ? 'out' : 'next');
+        kickerRow.append(g);
       }
-      titleWrap.append(el('h2', '', b.title || ''));
-      top.append(titleWrap);
-      if (b.badge) {
-        top.append(el('span', 'tag', b.badge));
-      } else if (isLink) {
-        const g = el('span', 'go');
-        g.innerHTML = icon(/^https?:\/\//i.test(b.url) ? 'out' : 'next');
-        top.append(g);
-      }
-      box.append(top);
+      box.append(kickerRow);
+      box.append(el('h2', 'cbox-title', b.title || ''));
       if (b.text) {
         box.append(el('p', 'box-txt', b.text));
       }
@@ -745,8 +729,8 @@
       if (ht && site.title !== undefined) ht.textContent = site.title;
       const hs = document.getElementById('heroSub') || document.querySelector('.hero .sub');
       if (hs) {
-        hs.textContent = '';
-        hs.hidden = true;
+        hs.textContent = site.subtitle || 'Kişisel medya arşivi, puanlama karneleri ve GNU/Linux teknik rehber dizini.';
+        hs.hidden = false;
       }
       const hl = document.getElementById('heroLogo') || document.querySelector('.hero .mark');
       if (hl && site.logo) hl.src = resolveAsset(site.logo);
@@ -1486,52 +1470,66 @@
         const isFeatured = on && (s.id === 'anime' || s.id === 'guide');
         const li = el('li', 'tile glass sq' + (isFeatured ? ' tile-featured' : on ? ' tile-active' : ' tile-companion soon'));
         const box = on ? Object.assign(el('a'), { href: root + s.path }) : el('div');
-        const top = el('div', 'tile-top');
-        const headLeft = el('div', 'box-head-left');
-        if (s.customImage) {
-          const cimg = el('img', 'box-thumb');
-          cimg.src = resolveAsset(s.customImage);
-          cimg.alt = '';
-          cimg.width = 36;
-          cimg.height = 36;
-          headLeft.append(cimg);
-        } else if (s.icon && P[s.icon]) {
-          const ic = el('span', 'box-ic' + (isFeatured ? ' box-ic-gold' : ''));
-          ic.innerHTML = icon(s.icon);
-          headLeft.append(ic);
-        }
-        headLeft.append(el('h2', '', s.title));
-        top.append(headLeft);
-        if (on) {
-          const badge = el('span', 'tag tag-active', isFeatured && s.id === 'anime' ? 'Aktif Arşiv' : isFeatured && s.id === 'guide' ? 'Technopat Rehber' : 'Aktif');
-          top.append(badge);
-          const g = el('span', 'go'); g.innerHTML = icon('next'); top.append(g);
-        } else {
-          top.append(el('span', 'tag', s.badgeText || s.description || 'Yakında'));
-        }
-        box.append(top);
-        if (s.subtitle) {
-          box.append(el('p', 'box-txt', s.subtitle));
-        } else if (s.description && !on) {
-          box.append(el('p', 'box-txt', s.description));
-        }
-        if (isFeatured && s.id === 'guide') {
-          const tagsRow = el('div', 'guide-chips-row');
-          for (const t of ['GNU/Linux', 'Donanım', 'Optimizasyon']) {
-            tagsRow.append(el('span', 'chip-mini', t));
+
+        if (isFeatured) {
+          const kickerRow = el('div', 'sec-kicker-row');
+          kickerRow.append(
+            el('span', 'sec-kicker', s.id === 'anime' ? '01 · MEDYA ARŞİVİ' : '02 · TEKNİK BİLGİ BANKASI'),
+            Object.assign(el('span', 'sec-open-lbl'), { innerHTML: 'Bölümü Aç ' + icon('next') })
+          );
+          box.append(kickerRow);
+
+          const headMain = el('div', 'sec-head-main');
+          headMain.append(el('h2', '', s.title));
+          if (s.subtitle) {
+            headMain.append(el('p', 'box-txt', s.subtitle));
           }
-          box.append(tagsRow);
+          box.append(headMain);
+
+          if (on && m.nums) {
+            const n = el('p', 'nums');
+            for (const [v, u] of m.nums) { const sp = el('span'); sp.append(el('b', '', v), ' ' + u); n.append(sp); }
+            box.append(n);
+          }
+
+          if (s.id === 'anime' && m.imgs && m.imgs.length && s.showStrip !== false) {
+            const st = el('div', 'strip');
+            for (const u of m.imgs) { const im = el('img'); im.src = resolveAsset(u); im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.width = 110; im.height = 165; im.onload = () => im.classList.add('in'); st.append(im); }
+            box.append(st);
+          } else if (s.id === 'guide') {
+            const topicGrid = el('div', 'guide-topic-grid');
+            for (const [tTitle, tDesc] of [
+              ['GNU/Linux & Sistem', 'NixOS, çekirdek, servis ve dağıtım yapılandırmaları'],
+              ['Masaüstü & Kabuk', 'Wayland, Niri, Quickshell ve pencere yöneticileri'],
+              ['Donanım & Sürücü', 'OmenCtl, güç profilleri, sensör ve donanım optimizasyonu'],
+              ['El Konsolu & Retro', 'R36S, PortMaster, J2ME ve gömülü Linux sistemler']
+            ]) {
+              const cell = el('div', 'guide-topic-cell');
+              cell.append(el('b', 'gt-title', tTitle), el('span', 'gt-desc', tDesc));
+              topicGrid.append(cell);
+            }
+            box.append(topicGrid);
+          }
+        } else {
+          const top = el('div', 'tile-top');
+          const headLeft = el('div', 'box-head-left');
+          if (s.icon && P[s.icon]) {
+            const ic = el('span', 'box-ic');
+            ic.innerHTML = icon(s.icon);
+            headLeft.append(ic);
+          }
+          headLeft.append(el('h2', '', s.title));
+          top.append(headLeft);
+          if (on) {
+            const g = el('span', 'sec-open-lbl');
+            g.innerHTML = icon('next');
+            top.append(g);
+          } else {
+            top.append(el('span', 'tag', s.badgeText || 'Yakında'));
+          }
+          box.append(top);
         }
-        if (on && m.nums) {
-          const n = el('p', 'nums');
-          for (const [v, u] of m.nums) { const sp = el('span'); sp.append(el('b', '', v), ' ' + u); n.append(sp); }
-          box.append(n);
-        }
-        if (on && m.imgs && m.imgs.length && s.showStrip !== false) {
-          const st = el('div', 'strip');
-          for (const u of m.imgs) { const im = el('img'); im.src = resolveAsset(u); im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.width = 88; im.height = 132; im.onload = () => im.classList.add('in'); st.append(im); }
-          box.append(st);
-        }
+
         li.append(box); fr.append(li);
       }
       list.replaceChildren(fr);

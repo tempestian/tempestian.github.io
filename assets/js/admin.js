@@ -1026,15 +1026,15 @@
       </div>
 
       <nav class="admin-nav glass sq" role="tablist" aria-label="Yönetim Bölümleri">
-        <button type="button" class="nav-tab" role="tab" data-panel="anime" aria-selected="true">Medya &amp; İstatistik (Anime/Dizi/Film/Kitap)</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="rapid" aria-selected="false">⚡ Hızlı Sıralı Düzenleme</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="texts" aria-selected="false">Metinler &amp; Sayfalar</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="images" aria-selected="false">Görseller &amp; İkonlar</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="categories" aria-selected="false">Kategoriler (Bölümler)</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="boxes" aria-selected="false">Kutucuklar &amp; Bağlantılar</button>
+        <button type="button" class="nav-tab" role="tab" data-panel="anime" aria-selected="true">📺 Medya &amp; Arşiv</button>
+        <button type="button" class="nav-tab" role="tab" data-panel="rapid" aria-selected="false">⚡ Hızlı Sıralı</button>
+        <button type="button" class="nav-tab" role="tab" data-panel="texts" aria-selected="false">📝 Metinler &amp; Sayfalar</button>
+        <button type="button" class="nav-tab" role="tab" data-panel="images" aria-selected="false">🖼️ Görseller</button>
+        <button type="button" class="nav-tab" role="tab" data-panel="categories" aria-selected="false">🗂️ Kategoriler</button>
+        <button type="button" class="nav-tab" role="tab" data-panel="boxes" aria-selected="false">🧩 Kutucuk &amp; Link</button>
         <button type="button" class="nav-tab" role="tab" data-panel="health" aria-selected="false">🛡️ Veri Sağlığı &amp; Yedek</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="instagram" aria-selected="false">📸 Instagram Görsel Üretici</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="security" aria-selected="false">Profil &amp; Güvenlik</button>
+        <button type="button" class="nav-tab" role="tab" data-panel="instagram" aria-selected="false">📸 Görsel Stüdyo</button>
+        <button type="button" class="nav-tab" role="tab" data-panel="security" aria-selected="false">🔐 Güvenlik</button>
       </nav>
 
       <!-- ADIM 3, 4, 5, 6, 7 & 8: ANİME YÖNETİMİ, AĞIRLIKLI PUAN, ÖZEL KATEGORİ VE İSTATİSTİK MOTORU -->
@@ -1045,8 +1045,8 @@
               <h2 id="admPanelMainTitle">Medya Verileri, Ağırlıklı Puanlama ve Özel Kategori Yönetimi</h2>
               <p id="admPanelMainSub">Sezon (<b>×1.00</b>), Film (<b>×0.35</b>) ve Yan İçerik (<b>×0.15</b>) puanlarınız genel puanı otomatik belirler. İstatistiklerde yalnızca sizin seçtiğiniz özel kategoriler yer alır.</p>
             </div>
-            <div class="form-actions">
-              <select id="admMediaTypeSelect" class="inp glass" style="width:auto;min-width:155px;font-weight:650" title="Yönetilecek Medya Bölümünü Seçin">
+            <div class="form-actions adm-primary-actions">
+              <select id="admMediaTypeSelect" class="inp glass" style="width:auto;min-width:165px;font-weight:650" title="Yönetilecek Medya Bölümünü Seçin">
                 <option value="anime">📺 Bölüm: Anime</option>
                 <option value="series">🎬 Bölüm: Dizi</option>
                 <option value="movie">🍿 Bölüm: Film</option>
@@ -1054,19 +1054,25 @@
                 <option value="book">📚 Bölüm: Kitap</option>
                 <option value="guide">🧭 Bölüm: Rehber (Technopat Katalog)</option>
               </select>
-              <select id="admSectionStatusSelect" class="inp glass" style="width:auto;min-width:165px;font-weight:600" title="Seçili bölümün sitedeki yayın durumu (Yayında olmasa bile girdi ekleyebilir, istediğiniz zaman Yayında yapabilirsiniz)">
+              <select id="admSectionStatusSelect" class="inp glass" style="width:auto;min-width:170px;font-weight:600" title="Seçili bölümün sitedeki yayın durumu (Yayında olmasa bile girdi ekleyebilir, istediğiniz zaman Yayında yapabilirsiniz)">
                 <option value="active">🟢 Sitede: Yayında (Aktif)</option>
                 <option value="soon">🟡 Sitede: Yakında Kartı</option>
                 <option value="hidden">⚪ Sitede: Gizli (Taslak)</option>
               </select>
-              <button type="button" class="btn-secondary" id="openCommitRecoveryBtn" title="GitHub'daki önceki commit'lerinizden düzenlediğiniz kategori, puan ve başyapıt verilerini tek tıkla geri getirir">🕰️ Eski Commit'ten Verileri Kurtar</button>
-              <button type="button" class="btn-subtle" id="scanAllRelationsBtn" title="Listedeki animelerin İlk Sezon AniList Linklerini tarayarak eksik sezon, film ve yan içerikleri AniList'ten çeker">Yan İçerikleri Sorgula</button>
-              <button type="button" class="btn-subtle" id="triggerActionsBtn" title="GitHub Actions üzerindeki sync-anilist.yml iş akışını tetikler">GitHub Actions Çalıştır</button>
-              <button type="button" class="btn-subtle" id="toggleTagManagerBtn" title="Bu bölümdeki özel kategorileri yeniden adlandırın, birleştirin veya silin">🏷️ Kategori Yöneticisi</button>
-              <button type="button" class="btn-subtle" id="toggleOverridesBtn">Senkron Kuralları (overrides.json)</button>
-              <button type="button" class="btn-subtle" id="downloadAnimeJsonBtn">anime.json İndir</button>
               <button type="button" class="btn-secondary" id="openRapidQueueFromAnimeBtn" title="Tüm girdileri sırayla öne çıkararak hızlıca kategori, puan ve bölüm düzenlemenizi sağlar">⚡ Hızlı Sıralı Düzenleme</button>
               <button type="button" class="btn-primary" id="addNewAnimeBtn">+ Yeni Anime Ekle</button>
+            </div>
+          </div>
+
+          <div class="adm-studio-strip">
+            <span class="adm-strip-label">Stüdyo Araçları</span>
+            <div class="adm-strip-btns">
+              <button type="button" class="btn-subtle" id="toggleTagManagerBtn" title="Bu bölümdeki özel kategorileri yeniden adlandırın, birleştirin veya silin">🏷️ Kategori Yöneticisi</button>
+              <button type="button" class="btn-subtle" id="toggleOverridesBtn">🔧 Senkron Kuralları (overrides.json)</button>
+              <button type="button" class="btn-subtle" id="scanAllRelationsBtn" title="Listedeki animelerin İlk Sezon AniList Linklerini tarayarak eksik sezon, film ve yan içerikleri AniList'ten çeker">🔄 Yan İçerikleri Sorgula</button>
+              <button type="button" class="btn-subtle" id="triggerActionsBtn" title="GitHub Actions üzerindeki sync-anilist.yml iş akışını tetikler">⚡ GitHub Actions Çalıştır</button>
+              <button type="button" class="btn-subtle" id="openCommitRecoveryBtn" title="GitHub'daki önceki commit'lerinizden düzenlediğiniz kategori, puan ve başyapıt verilerini tek tıkla geri getirir">🕰️ Eski Commit'ten Kurtar</button>
+              <button type="button" class="btn-subtle" id="downloadAnimeJsonBtn">💾 anime.json İndir</button>
             </div>
           </div>
 

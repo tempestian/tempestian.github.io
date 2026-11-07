@@ -598,6 +598,13 @@ function stats(d){
   box.append(row, ins); box.hidden = false;
 }
 
+const sheet = document.createElement('div');
+sheet.className = 'sheet'; sheet.hidden = true; sheet.setAttribute('role','dialog'); sheet.setAttribute('aria-modal','true'); sheet.setAttribute('aria-labelledby','sh-title');
+sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-backdrop" hidden><img class="sheet-backdrop-img" alt="" decoding="async"><div class="sheet-backdrop-grad"></div></div><div class="sheet-head"><img class="sheet-cover" alt="" decoding="async"><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><div class="sh-rating-breakdown" id="shRatingBreakdown" hidden></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki yapım (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki yapım (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-share-btn" data-sh-share title="Bu yapımın doğrudan bağlantısını kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
+document.body.append(sheet);
+const closeBtn = sheet.querySelector('[data-close]'); closeBtn.innerHTML = UI.icon('close');
+let opener = null, pushed = false;
+
 (async () => {
   try {
     let remoteDoc = null;
@@ -605,6 +612,12 @@ function stats(d){
       const r = await fetch('../data/anime.json', { cache: 'no-store' });
       if (r.ok) remoteDoc = await r.json();
     } catch (e) {}
+    if (!remoteDoc) {
+      try {
+        const r2 = await fetch('../data/anime.json');
+        if (r2.ok) remoteDoc = await r2.json();
+      } catch (e) {}
+    }
     let prevDoc = null;
     try {
       const prev = ls('tp_anime_preview');
@@ -615,6 +628,7 @@ function stats(d){
     const d = (prevLen > 0 && prevLen >= remLen && (prevDoc.updated || '') >= ((remoteDoc && remoteDoc.updated) || ''))
       ? prevDoc
       : (remoteDoc || prevDoc);
+    if (!d || !Array.isArray(d.anime)) throw new Error('Data unavailable');
     state.data = d;
     state.items = d.anime;
     state.statsConfig = { animeCountRule: 'completed_season_or_movie', includeInProgressEpisodes: true, genreSourceRule: 'custom_only', ...(d.statsConfig || {}) };
@@ -639,13 +653,6 @@ function stats(d){
 $('#q').oninput = e => { state.q = e.target.value; go(); };
 $('#sort').onchange = e => { state.sort = e.target.value; go(); };
 document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => { state.view = b.dataset.view; ls('view', state.view); go(); });
-
-const sheet = document.createElement('div');
-sheet.className = 'sheet'; sheet.hidden = true; sheet.setAttribute('role','dialog'); sheet.setAttribute('aria-modal','true'); sheet.setAttribute('aria-labelledby','sh-title');
-sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-backdrop" hidden><img class="sheet-backdrop-img" alt="" decoding="async"><div class="sheet-backdrop-grad"></div></div><div class="sheet-head"><img class="sheet-cover" alt="" decoding="async"><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><div class="sh-rating-breakdown" id="shRatingBreakdown" hidden></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki yapım (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki yapım (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-share-btn" data-sh-share title="Bu yapımın doğrudan bağlantısını kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
-document.body.append(sheet);
-const closeBtn = sheet.querySelector('[data-close]'); closeBtn.innerHTML = UI.icon('close');
-let opener = null, pushed = false;
 
 function fillSheet(it){
   const ps = UI.parts(it), t = sheet.querySelector.bind(sheet);

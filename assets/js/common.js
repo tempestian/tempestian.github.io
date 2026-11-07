@@ -637,86 +637,8 @@
           avg: null
         };
     let nums;
-    let widgets = null;
     if (s.id === 'anime') {
       nums = [[st && st.anime != null ? st.anime : t.main, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']];
-      if (items.length) {
-        const watching = items.filter(x => x.status === 'watching').slice(0, 4).map(x => {
-          const ps = parts(x);
-          const curPart = ps.find(p => p.status === 'CURRENT') || ps.find(p => p.watched > 0 && p.status !== 'COMPLETED') || ps[ps.length - 1] || {};
-          const w = Number(curPart.watched) || 0;
-          const tot = Number(curPart.episodes) || 0;
-          const pct = tot > 0 ? Math.min(100, Math.round((w / tot) * 100)) : (w > 0 ? 100 : 0);
-          const partName = curPart.name && curPart.name !== x.title ? curPart.name : '';
-          return {
-            id: x.id,
-            title: x.title,
-            image: cover(x),
-            partName,
-            watched: w,
-            total: tot,
-            pct
-          };
-        });
-
-        const queueCandidates = items.filter(x =>
-          x.status === 'next' ||
-          x.status === 'planned' ||
-          x.next ||
-          (Array.isArray(x.parts) && x.parts.some(p => p.status === 'PLANNING'))
-        );
-        queueCandidates.sort((a, b) => {
-          const aPlan = Array.isArray(a.parts) && a.parts.some(p => p.status === 'PLANNING') ? 1 : 0;
-          const bPlan = Array.isArray(b.parts) && b.parts.some(p => p.status === 'PLANNING') ? 1 : 0;
-          return bPlan - aPlan;
-        });
-        const queue = queueCandidates.slice(0, 4).map(x => {
-          const ps = parts(x);
-          const planPart = ps.find(p => p.status === 'PLANNING');
-          const sub = planPart
-            ? [planPart.name !== x.title ? planPart.name : 'Yeni Sezon', planPart.episodes ? planPart.episodes + ' bölüm' : '', planPart.year || ''].filter(Boolean).join(' · ')
-            : [ps.length > 1 ? ps.length + ' parça' : '', (x.customGenres && x.customGenres[0]) || (x.genres && x.genres[0]) || 'Sırada'].filter(Boolean).join(' · ');
-          return {
-            id: x.id,
-            title: x.title,
-            image: cover(x),
-            sub,
-            badge: planPart ? 'Planlanan' : 'Sıradaki'
-          };
-        });
-
-        const completed = items
-          .filter(x => x.status === 'completed')
-          .sort((a, b) => (b.addedAt || '').localeCompare(a.addedAt || ''))
-          .slice(0, 4)
-          .map(x => {
-            const ps = parts(x).filter(p => p.status === 'COMPLETED' || p.watched > 0);
-            const totEp = ps.reduce((acc, p) => acc + (Number(p.watched || p.episodes) || 0), 0);
-            return {
-              id: x.id,
-              title: x.title,
-              image: cover(x),
-              score: x.score != null ? Number(x.score) : null,
-              addedAt: x.addedAt || '',
-              eps: totEp
-            };
-          });
-
-        const favorites = items
-          .filter(x => x.favorite || (Number(x.score) >= 9.5))
-          .sort((a, b) => (Number(Boolean(b.favorite)) - Number(Boolean(a.favorite))) || ((Number(b.score) || 0) - (Number(a.score) || 0)))
-          .slice(0, 12)
-          .map(x => ({
-            id: x.id,
-            title: x.title,
-            image: cover(x),
-            score: x.score != null ? Number(x.score) : null,
-            favorite: Boolean(x.favorite),
-            genre: ((x.customGenres && x.customGenres.length ? x.customGenres : x.genres) || [])[0] || 'Anime'
-          }));
-
-        widgets = { watching, queue, completed, favorites };
-      }
     } else if (s.id === 'series') {
       nums = [[t.main, 'dizi'], [t.season, 'sezon'], [t.ep, 'bölüm']];
     } else if (s.id === 'movie') {
@@ -731,7 +653,7 @@
     } else {
       nums = [[items.length, s.unit || 'içerik']];
     }
-    return { nums: j ? nums : null, imgs: s.showStrip === false ? [] : items.map(cover).filter(Boolean).slice(0, 4), widgets };
+    return { nums: j ? nums : null, imgs: s.showStrip === false ? [] : items.map(cover).filter(Boolean).slice(0, 4) };
   };
 
   function renderCustomBoxes(container, boxItems) {
@@ -1029,27 +951,6 @@
 
     const barActions = barIn.querySelector('.bar-actions');
     if (barActions) {
-      let wsTabs = document.getElementById('irisWsTabs');
-      if (!wsTabs) {
-        wsTabs = el('nav', 'iris-ws-tabs');
-        wsTabs.id = 'irisWsTabs';
-        wsTabs.setAttribute('aria-label', 'Hızlı Bölüm Geçişi');
-        const isStatsPage = cur === 'istatistik' || /\/istatistik\/?$/.test(location.pathname);
-        const tabs = [
-          { id: 'home', label: 'Ana Sayfa', href: root || './', active: cur === 'home' && !isStatsPage },
-          { id: 'anime', label: 'Anime', href: root + 'anime/', active: cur === 'anime' && !isStatsPage },
-          { id: 'guide', label: 'Rehber', href: root + 'rehber/', active: (cur === 'guide' || cur === 'rehber') && !isStatsPage },
-          { id: 'stats', label: 'İstatistik', href: root + 'istatistik/', active: isStatsPage }
-        ];
-        for (const tb of tabs) {
-          const a = el('a', 'iris-ws-tab' + (tb.active ? ' active' : ''), tb.label);
-          a.href = tb.href;
-          if (tb.active) a.setAttribute('aria-current', 'page');
-          wsTabs.append(a);
-        }
-        barIn.insertBefore(wsTabs, barActions);
-      }
-
       let islandClock = document.getElementById('irisIslandClock');
       if (!islandClock) {
         islandClock = el('a', 'iris-island-clock');
@@ -1560,184 +1461,6 @@
       const allBoxes = Array.isArray(d.boxes) ? d.boxes : [];
       renderCustomBoxes(boxesTop, allBoxes.filter(b => b.position !== 'below'));
       renderCustomBoxes(boxesBottom, allBoxes.filter(b => b.position === 'below'));
-    }
-
-    const hwBox = document.getElementById('irisHomeWidgets');
-    if (hwBox) {
-      const wData = sum && sum.anime && sum.anime.widgets;
-      if (wData && ((wData.watching && wData.watching.length) || (wData.queue && wData.queue.length) || (wData.completed && wData.completed.length) || (wData.favorites && wData.favorites.length))) {
-        const wFr = document.createDocumentFragment();
-        const bento = el('div', 'iris-widget-bento');
-
-        // 1. Şu An İzleniyor (Watching Live Feed)
-        if (wData.watching && wData.watching.length) {
-          const pWatch = el('div', 'tile glass sq iris-w-panel');
-          const head = el('div', 'iris-w-head');
-          const titleWrap = el('div', 'iris-w-title-wrap');
-          titleWrap.append(el('span', 'iris-live-dot'), el('h3', 'iris-w-title', 'Şu An İzleniyor'));
-          const moreLink = el('a', 'iris-w-more', 'Tümü →');
-          moreLink.href = root + 'anime/?durum=watching';
-          head.append(titleWrap, moreLink);
-          pWatch.append(head);
-
-          const wList = el('div', 'iris-w-list');
-          for (const it of wData.watching.slice(0, 3)) {
-            const row = el('a', 'iris-watch-card');
-            row.href = root + 'anime/#' + encodeURIComponent(it.id);
-            if (it.image) {
-              const im = el('img', 'iris-w-thumb');
-              im.src = resolveAsset(it.image);
-              im.alt = '';
-              im.loading = 'lazy';
-              im.decoding = 'async';
-              row.append(im);
-            }
-            const body = el('div', 'iris-watch-body');
-            const topRow = el('div', 'iris-watch-top');
-            topRow.append(el('span', 'iris-w-item-title', it.title));
-            const epBadge = it.total > 0 && it.watched < it.total
-              ? `${it.watched} / ${it.total} Bölüm`
-              : `${it.watched} Bölüm`;
-            topRow.append(el('span', 'iris-watch-ep', epBadge));
-            body.append(topRow);
-            if (it.partName) {
-              body.append(el('span', 'iris-w-item-sub', it.partName));
-            }
-            const track = el('div', 'iris-watch-track');
-            const fill = el('i');
-            fill.style.setProperty('--w', (it.pct || 100) + '%');
-            track.append(fill);
-            body.append(track);
-            row.append(body);
-            wList.append(row);
-          }
-          pWatch.append(wList);
-          bento.append(pWatch);
-        }
-
-        // 2. Sıradaki Hedef / İzleme Kuyruğu (Up-Next Queue)
-        if (wData.queue && wData.queue.length) {
-          const pQueue = el('div', 'tile glass sq iris-w-panel');
-          const head = el('div', 'iris-w-head');
-          const titleWrap = el('div', 'iris-w-title-wrap');
-          titleWrap.append(el('span', 'iris-queue-dot'), el('h3', 'iris-w-title', 'Sıradaki Hedef & Kuyruk'));
-          const moreLink = el('a', 'iris-w-more', 'Kuyruk →');
-          moreLink.href = root + 'anime/?durum=next';
-          head.append(titleWrap, moreLink);
-          pQueue.append(head);
-
-          const qList = el('div', 'iris-w-list');
-          for (const it of wData.queue.slice(0, 3)) {
-            const row = el('a', 'iris-log-row');
-            row.href = root + 'anime/#' + encodeURIComponent(it.id);
-            if (it.image) {
-              const im = el('img', 'iris-w-thumb');
-              im.src = resolveAsset(it.image);
-              im.alt = '';
-              im.loading = 'lazy';
-              im.decoding = 'async';
-              row.append(im);
-            }
-            const info = el('div', 'iris-log-info');
-            info.append(
-              el('span', 'iris-w-item-title', it.title),
-              el('span', 'iris-w-item-sub', it.sub || 'İzleme listesinde')
-            );
-            row.append(info, el('span', 'iris-w-badge is-queue', it.badge || 'Sıradaki'));
-            qList.append(row);
-          }
-          pQueue.append(qList);
-          bento.append(pQueue);
-        }
-
-        // 3. Son Tamamlananlar (Activity Log)
-        if (wData.completed && wData.completed.length) {
-          const pLog = el('div', 'tile glass sq iris-w-panel');
-          const head = el('div', 'iris-w-head');
-          const titleWrap = el('div', 'iris-w-title-wrap');
-          titleWrap.append(el('span', 'iris-done-dot'), el('h3', 'iris-w-title', 'Son Tamamlananlar'));
-          const moreLink = el('a', 'iris-w-more', 'Arşiv →');
-          moreLink.href = root + 'anime/?durum=completed';
-          head.append(titleWrap, moreLink);
-          pLog.append(head);
-
-          const cList = el('div', 'iris-w-list');
-          for (const it of wData.completed.slice(0, 3)) {
-            const row = el('a', 'iris-log-row');
-            row.href = root + 'anime/#' + encodeURIComponent(it.id);
-            if (it.image) {
-              const im = el('img', 'iris-w-thumb');
-              im.src = resolveAsset(it.image);
-              im.alt = '';
-              im.loading = 'lazy';
-              im.decoding = 'async';
-              row.append(im);
-            }
-            const info = el('div', 'iris-log-info');
-            const fmtDate = it.addedAt && window.formatHybridDate ? window.formatHybridDate(it.addedAt) : it.addedAt;
-            const subTxt = [fmtDate, it.eps ? `${it.eps} bölüm` : 'Tamamlandı'].filter(Boolean).join(' · ');
-            info.append(
-              el('span', 'iris-w-item-title', it.title),
-              el('span', 'iris-w-item-sub', subTxt)
-            );
-            row.append(info);
-            if (it.score != null && it.score > 0) {
-              row.append(el('span', 'iris-w-badge is-score', `★ ${it.score}`));
-            }
-            cList.append(row);
-          }
-          pLog.append(cList);
-          bento.append(pLog);
-        }
-
-        if (bento.children.length) wFr.append(bento);
-
-        // 4. Başyapıtlar & Favoriler Vitrin Rafı (Masterpieces Poster Dock)
-        if (wData.favorites && wData.favorites.length) {
-          const famePanel = el('div', 'tile glass sq iris-fame-dock-panel');
-          const head = el('div', 'iris-w-head');
-          const titleWrap = el('div', 'iris-w-title-wrap');
-          titleWrap.append(el('span', 'iris-fav-star', '★'), el('h3', 'iris-w-title', 'Başyapıtlar & Favoriler Vitrini'));
-          const moreLink = el('a', 'iris-w-more', 'Tüm Başyapıtlar →');
-          moreLink.href = root + 'anime/?durum=fav';
-          head.append(titleWrap, moreLink);
-          famePanel.append(head);
-
-          const dockTrack = el('div', 'iris-fame-dock');
-          for (const it of wData.favorites) {
-            const card = el('a', 'iris-fame-item');
-            card.href = root + 'anime/#' + encodeURIComponent(it.id);
-            const pWrap = el('div', 'iris-fame-poster');
-            if (it.image) {
-              const im = el('img');
-              im.src = resolveAsset(it.image);
-              im.alt = '';
-              im.loading = 'lazy';
-              im.decoding = 'async';
-              pWrap.append(im);
-            }
-            if (it.score != null && it.score > 0) {
-              pWrap.append(el('span', 'iris-fame-sc', `★ ${it.score}`));
-            }
-            if (it.favorite) {
-              pWrap.append(el('span', 'iris-fame-fav', '★'));
-            }
-            card.append(
-              pWrap,
-              el('span', 'iris-fame-name', it.title),
-              el('span', 'iris-fame-genre', it.genre || 'Anime')
-            );
-            dockTrack.append(card);
-          }
-          famePanel.append(dockTrack);
-          wFr.append(famePanel);
-        }
-
-        hwBox.replaceChildren(wFr);
-        hwBox.hidden = false;
-      } else {
-        hwBox.hidden = true;
-      }
     }
 
     if (list) {

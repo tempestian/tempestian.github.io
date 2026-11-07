@@ -202,6 +202,42 @@
       return (b.addedAt || '').localeCompare(a.addedAt || '') || (a.title || '').localeCompare(b.title || '', 'tr');
     });
 
+    let afBar = $('#activeFilters');
+    const tbPanel = document.querySelector('.toolbar-panel') || $('#chips');
+    if (!afBar && tbPanel && tbPanel.parentElement) {
+      afBar = h('div', 'iris-active-filters');
+      afBar.id = 'activeFilters';
+      afBar.hidden = true;
+      tbPanel.insertAdjacentElement('afterend', afBar);
+    }
+    if (afBar) {
+      const pills = [];
+      if (state.filter !== 'all') {
+        const lbl = state.filter === '__fav__' ? '★ Öne Çıkanlar' : state.filter;
+        pills.push({ label: `Kategori: ${lbl}`, clear: () => { state.filter = 'all'; renderList(); syncStateToUrl(); } });
+      }
+      if (state.q && state.q.trim()) {
+        pills.push({ label: `Arama: "${state.q.trim()}"`, clear: () => { state.q = ''; const qEl = $('#q'); if (qEl) qEl.value = ''; renderList(); syncStateToUrl(); } });
+      }
+      if (!pills.length) {
+        afBar.hidden = true;
+        afBar.replaceChildren();
+      } else {
+        afBar.replaceChildren();
+        afBar.append(h('span', 'af-count', `${state.items.length} rehberden ${filtered.length} eşleşme`));
+        const listWrap = h('div', 'af-pills');
+        for (const p of pills) {
+          const b = h('button', 'af-pill');
+          b.type = 'button';
+          b.append(h('span', '', p.label), h('i', 'af-x', '×'));
+          b.onclick = p.clear;
+          listWrap.append(b);
+        }
+        afBar.append(listWrap);
+        afBar.hidden = false;
+      }
+    }
+
     $('#empty').hidden = filtered.length > 0;
     if (!filtered.length) return;
 

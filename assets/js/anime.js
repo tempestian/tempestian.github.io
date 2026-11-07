@@ -175,7 +175,16 @@ function build(it){
     po.append(pg);
   }
 
-
+  // 2. Poster Quick-Peek HUD (Hover Önizleme Katmanı)
+  const peek = h('div', 'poster-peek');
+  const peekMeta = [sn ? sn + ' Sezon' : '', fl ? fl + ' Film' : '', w ? w + ' Bölüm' : '', y || ''].filter(Boolean).slice(0, 3).join(' · ');
+  if (peekMeta) peek.append(h('span', 'peek-meta', peekMeta));
+  if (effGenres && effGenres.length) {
+    const gRow = h('div', 'peek-tags');
+    for (const g of effGenres.slice(0, 2)) gRow.append(h('span', 'peek-tag', g));
+    peek.append(gRow);
+  }
+  if (peek.children.length) po.append(peek);
 
   if(effScore){
     const sc = h('span','score glass');
@@ -255,6 +264,79 @@ function renderTierBoard(visibleNodes) {
 }
 
 const active = () => ['sc','dc','kd','gn','ay'].filter(k => state[k]!=='all').length;
+
+function renderActiveFilterHUD(shown) {
+  let bar = $('#activeFilters');
+  const chipsEl = $('#chips');
+  if (!bar && chipsEl && chipsEl.parentElement) {
+    bar = h('div', 'iris-active-filters');
+    bar.id = 'activeFilters';
+    bar.hidden = true;
+    chipsEl.insertAdjacentElement('afterend', bar);
+  }
+  if (!bar) return;
+
+  const pills = [];
+  if (state.filter !== 'all') {
+    const lbl = state.filter === 'fav' ? '★ Favoriler' : state.filter === 'next' ? NEXT : (ST[state.filter] || state.filter);
+    pills.push({ label: `Durum: ${lbl}`, clear: () => setF('filter', 'all') });
+  }
+  if (state.gn !== 'all') {
+    pills.push({ label: `Tür: ${state.gn}`, clear: () => setF('gn', 'all') });
+  }
+  if (state.sc !== 'all') {
+    const scMap = Object.fromEntries(SCO);
+    const scLbl = scMap[state.sc] || (state.sc[0] === 'b' ? `${state.sc.slice(1)} Puan` : state.sc);
+    pills.push({ label: `Puan: ${scLbl}`, clear: () => setF('sc', 'all') });
+  }
+  if (state.dc !== 'all') {
+    pills.push({ label: `Dönem: ${DEC[state.dc] || state.dc}`, clear: () => setF('dc', 'all') });
+  }
+  if (state.ay !== 'all') {
+    pills.push({ label: `Yıl: ${state.ay}`, clear: () => setF('ay', 'all') });
+  }
+  if (state.kd !== 'all') {
+    const kdMap = Object.fromEntries(KIND);
+    pills.push({ label: `İçerik: ${kdMap[state.kd] || state.kd}`, clear: () => setF('kd', 'all') });
+  }
+  if (state.q && state.q.trim()) {
+    pills.push({
+      label: `Arama: "${state.q.trim()}"`,
+      clear: () => { state.q = ''; const qEl = $('#q'); if (qEl) qEl.value = ''; go(); }
+    });
+  }
+
+  if (!pills.length) {
+    bar.hidden = true;
+    bar.replaceChildren();
+    return;
+  }
+
+  bar.replaceChildren();
+  bar.append(h('span', 'af-count', `${state.items.length} yapımdan ${shown} eşleşme`));
+  const listWrap = h('div', 'af-pills');
+  for (const p of pills) {
+    const b = h('button', 'af-pill');
+    b.type = 'button';
+    b.append(h('span', '', p.label), h('i', 'af-x', '×'));
+    b.onclick = p.clear;
+    listWrap.append(b);
+  }
+  bar.append(listWrap);
+  if (pills.length > 1) {
+    const clrAll = h('button', 'af-clear-all', 'Tümünü Temizle');
+    clrAll.type = 'button';
+    clrAll.onclick = () => {
+      Object.assign(state, { sc: 'all', dc: 'all', kd: 'all', gn: 'all', ay: 'all', filter: 'all', q: '' });
+      const qEl = $('#q');
+      if (qEl) qEl.value = '';
+      go();
+    };
+    bar.append(clrAll);
+  }
+  bar.hidden = false;
+}
+
 function render(){
   const s = state, q = s.q.trim().toLocaleLowerCase('tr'), root = $('#list');
   root.className = s.view;
@@ -295,6 +377,7 @@ function render(){
   $('#empty').hidden = shown > 0;
   $('#empty').textContent = pageTexts.emptyText || 'Eşleşen anime yok.';
   const n = active(), dot = $('#fdot'); dot.hidden = !n; dot.textContent = n;
+  renderActiveFilterHUD(shown);
   document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view===s.view));
   document.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', b.dataset.filter===s.filter));
   document.querySelectorAll('[data-g]').forEach(b => b.setAttribute('aria-pressed', state[b.dataset.g]===b.dataset.v));

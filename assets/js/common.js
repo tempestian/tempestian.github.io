@@ -967,6 +967,32 @@
 
     const barActions = barIn.querySelector('.bar-actions');
     if (barActions) {
+      let islandClock = document.getElementById('irisIslandClock');
+      if (!islandClock) {
+        islandClock = el('a', 'iris-island-clock');
+        islandClock.id = 'irisIslandClock';
+        islandClock.href = root + 'zaman-tuneli/';
+        islandClock.setAttribute('aria-label', 'Zaman Tüneli ve Saat');
+        islandClock.innerHTML = '<span class="ic-h">--</span><span class="ic-sep">:</span><span class="ic-m">--</span>';
+        barIn.insertBefore(islandClock, barActions);
+
+        const updateIslandClock = () => {
+          const now = new Date();
+          const hh = String(now.getHours()).padStart(2, '0');
+          const mm = String(now.getMinutes()).padStart(2, '0');
+          const hEl = islandClock.querySelector('.ic-h');
+          const mEl = islandClock.querySelector('.ic-m');
+          if (hEl && hEl.textContent !== hh) hEl.textContent = hh;
+          if (mEl && mEl.textContent !== mm) mEl.textContent = mm;
+          try {
+            const dateStr = now.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' });
+            islandClock.title = `${dateStr} · Zaman Tüneline Git`;
+          } catch (_) {}
+        };
+        updateIslandClock();
+        setInterval(updateIslandClock, 15000);
+      }
+
       let searchBtn = document.getElementById('searchTrigger');
       if (!searchBtn) {
         searchBtn = el('button', 'btn glass');
@@ -1427,7 +1453,7 @@
     const urlParams = new URLSearchParams(location.search);
     if (urlParams.has('cmd') || urlParams.has('search')) {
       const qVal = urlParams.get('cmd') || urlParams.get('search') || '';
-      setTimeout(() => window.openCommandPalette(qVal), 100);
+      window.openCommandPalette(qVal);
     }
   }
 

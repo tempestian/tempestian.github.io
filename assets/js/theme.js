@@ -6,15 +6,22 @@
     try { return localStorage.getItem('theme'); } catch (e) { return null; }
   };
 
+  const urlTheme = () => {
+    try {
+      const p = new URLSearchParams(location.search).get('theme');
+      return (p === 'light' || p === 'dark') ? p : null;
+    } catch (e) { return null; }
+  };
+
   const apply = (mode) => {
-    const m = mode || root.dataset.theme || savedTheme() || 'dark';
+    const m = mode || urlTheme() || root.dataset.theme || savedTheme() || 'dark';
     root.dataset.theme = m;
     const c = document.querySelector('meta[name=theme-color]');
-    if (c) c.content = m === 'dark' ? '#080c14' : '#f8fafc';
+    if (c) c.content = m === 'dark' ? '#111113' : '#fbf6f0';
     document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: m } }));
   };
 
-  apply(savedTheme() || 'dark');
+  apply(urlTheme() || savedTheme() || 'dark');
 
   mq.addEventListener('change', e => {
     if (!savedTheme()) apply(e.matches ? 'dark' : 'light');

@@ -4367,3 +4367,179 @@ select.inp:focus,
   box-shadow: 0 0 0 3px rgba(0, 168, 255, 0.2);
 }
 
+/* ============================================================================
+ * [AI-MIMARI-NOTU: SLAYT ŞERİDİ & GEZİNME ÇUBUĞU (CAROUSEL FILMSTRIP & SWITCHER)]
+ * iRiS Deep Sapphire Mimarisinde Pürüzsüz Cam, Likit Safir ve Neon Cyan Vurgular
+ * ============================================================================ */
+.insta-slide-nav {
+  width: 100%;
+  margin-top: 18px;
+  background: linear-gradient(180deg, rgba(14, 23, 42, 0.78) 0%, rgba(8, 14, 27, 0.94) 100%);
+  border: 1px solid rgba(86, 182, 255, 0.22);
+  border-radius: var(--rm, 16px);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: all 0.25s ease;
+}
+
+.insta-slide-nav.is-single {
+  padding: 12px 18px;
+  background: rgba(10, 16, 30, 0.6);
+  border-color: rgba(86, 182, 255, 0.14);
+}
+
+.insta-slide-nav-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.insta-slide-nav-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #edf4ff;
+  letter-spacing: -0.01em;
+}
+
+.insta-nav-icon {
+  font-size: 1.15rem;
+}
+
+.insta-slide-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.insta-nav-btn {
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 7px 15px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.insta-slide-nav-strip-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.insta-nav-arrow {
+  flex-shrink: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.insta-nav-arrow:hover:not(:disabled) {
+  background: rgba(0, 168, 255, 0.18);
+  border-color: rgba(0, 168, 255, 0.45);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 168, 255, 0.3);
+}
+
+.insta-nav-arrow:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.insta-slide-pills {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 168, 255, 0.3) transparent;
+  flex: 1;
+}
+
+.insta-slide-pills::-webkit-scrollbar {
+  height: 6px;
+}
+
+.insta-slide-pills::-webkit-scrollbar-thumb {
+  background: rgba(0, 168, 255, 0.3);
+  border-radius: 999px;
+}
+
+.insta-slide-pill {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.insta-slide-pill .pill-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #cbd5e1;
+}
+
+.insta-slide-pill:hover:not(.is-active) {
+  background: rgba(0, 168, 255, 0.12);
+  border-color: rgba(0, 168, 255, 0.35);
+  color: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.insta-slide-pill.is-active {
+  background: linear-gradient(135deg, rgba(0, 168, 255, 0.28) 0%, rgba(0, 80, 200, 0.45) 100%);
+  border-color: #00a8ff;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 16px rgba(0, 168, 255, 0.55), inset 0 0 8px rgba(0, 168, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.insta-slide-pill.is-active .pill-index {
+  background: #00a8ff;
+  color: #050d1a;
+  box-shadow: 0 0 8px rgba(0, 168, 255, 0.8);
+}
+
+

@@ -431,6 +431,99 @@
     };
   }
 
+  function getItemArchiveMeta(item, catKey) {
+    const parts = Array.isArray(item?.parts) ? item.parts : [];
+    const firstPart = parts[0] || {};
+
+    let formatLabel = '';
+    if (catKey === 'movie') {
+      const dur = item?.duration || firstPart?.duration;
+      formatLabel = dur ? `Sinema Filmi · ${dur} Dk` : 'Sinema Filmi';
+    } else if (catKey === 'book') {
+      const pCount = item?.pages || firstPart?.episodes || 0;
+      formatLabel = pCount ? `Basılı Kitap · ${pCount} Sayfa` : 'Basılı Eser';
+    } else if (catKey === 'manga') {
+      const ch = item?.chapters || firstPart?.episodes || 0;
+      formatLabel = ch ? `Manga · ${ch} Bölüm` : 'Manga';
+    } else if (catKey === 'series') {
+      const ep = item?.episodes || firstPart?.episodes || 0;
+      formatLabel = ep ? `TV Dizisi · ${ep} Bölüm` : 'TV Dizisi';
+    } else if (catKey === 'guide') {
+      formatLabel = item?.forumSection || 'Teknik Rehber';
+    } else {
+      // anime
+      const fmt = item?.format || firstPart?.format;
+      const ep = item?.episodes || firstPart?.episodes || 0;
+      const fmtStr = fmt === 'MOVIE' ? 'Anime Filmi' : (fmt === 'OVA' ? 'OVA / Özel' : 'TV Anime');
+      formatLabel = ep ? `${fmtStr} · ${ep} Bölüm` : fmtStr;
+    }
+
+    const year = item?.year || firstPart?.year || '-';
+
+    const repeatCount = Math.max(
+      0,
+      ...(parts.map(p => Number(p.repeat) || 0)),
+      Number(item?.repeat) || 0,
+      Number(item?.rewatch) || 0,
+      Number(item?.reread) || 0
+    );
+    const isRead = (catKey === 'book' || catKey === 'manga');
+    const repeatLabel = repeatCount > 0
+      ? `↻ ${repeatCount} kez ${isRead ? 'okundu' : 'izlendi'}`
+      : (item?.status === 'completed' || firstPart?.status === 'COMPLETED' ? '✓ Arşivde Tamamlandı' : '✓ Arşivde Kayıtlı');
+
+    const rawGenres = Array.isArray(item?.customGenres) && item.customGenres.length
+      ? item.customGenres
+      : (Array.isArray(item?.genres) ? item.genres : []);
+    const genres = [...new Set(rawGenres.map(g => String(g).trim()).filter(Boolean))].slice(0, 5);
+
+    return {
+      formatLabel,
+      year: String(year),
+      repeatCount,
+      repeatLabel,
+      genres
+    };
+  }
+
+  function drawGenrePills(ctx, genres, startX, startY, maxW, theme, options = {}) {
+    const pillH = options.pillH || 52;
+    const fontSize = options.fontSize || 24;
+    const radius = options.radius || 14;
+    const gap = options.gap || 14;
+    const maxPills = options.maxPills || 5;
+
+    ctx.save();
+    ctx.font = `600 ${fontSize}px ${FONT_FAMILY}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    let curX = startX;
+    const list = (Array.isArray(genres) && genres.length ? genres : ['Arşiv']).slice(0, maxPills);
+
+    for (const g of list) {
+      const text = String(g).trim();
+      if (!text) continue;
+      const textW = ctx.measureText(text).width;
+      const pillW = Math.max(90, textW + 36);
+
+      if (curX + pillW > startX + maxW) break;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.055)';
+      ctx.strokeStyle = theme ? `${theme.accent}66` : 'rgba(86, 182, 255, 0.3)';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, curX, startY, pillW, pillH, radius);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#e2e8f0';
+      ctx.fillText(text, curX + pillW / 2, startY + pillH / 2);
+
+      curX += pillW + gap;
+    }
+    ctx.restore();
+  }
+
   // --------------------------------------------------------------------------
   // 4. ORTAK CANVAS KATMANLARI (ZEMİN, AMBİENT GLOW, RETINA TIPOGRAFI)
   // --------------------------------------------------------------------------
@@ -876,27 +969,181 @@
       // Alt Bölüm (Story Vitrin Kartı)
       const storyBottomY = critY + critListToDraw.length * rowH + 40;
       const storyBottomH = H - storyBottomY - 140;
+      const storyBottomW = W - 240;
       ctx.save();
       ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
       ctx.lineWidth = 2;
-      roundRect(ctx, 120, storyBottomY, W - 240, storyBottomH, 28);
+      roundRect(ctx, 120, storyBottomY, storyBottomW, storyBottomH, 28);
       ctx.fill();
       ctx.stroke();
 
-      ctx.fillStyle = theme.accent;
-      ctx.font = `700 32px ${FONT_FAMILY}`;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'alphabetic';
-      ctx.fillText('✦ TEMPESTIAN BAŞYAPIT NOTU ✦', 160, storyBottomY + 64);
+      const hasPartsStory = Array.isArray(item?.parts) && item.parts.length > 1;
 
-      let sNote = item?.note || item?.review || item?.description || '';
-      if (!sNote || sNote.length < 20) {
-        sNote = `${item?.title || 'Bu yapım'}, kütüphanemizde öne çıkan ve derin atmosferiyle mutlaka deneyimlenmesi gereken özel arşiv eserleri arasında yer almaktadır.`;
+      if (hasPartsStory) {
+        ctx.fillStyle = theme.accent;
+        ctx.font = `700 32px ${FONT_FAMILY}`;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText(`✦ SERİ VE SEZON DÖKÜMÜ (${item.parts.length} SEZON / PARÇA) ✦`, 160, storyBottomY + 64);
+
+        const maxPartsToShow = Math.min(3, item.parts.length);
+        const cardGap = 24;
+        const partCardW = (storyBottomW - 80 - (maxPartsToShow - 1) * cardGap) / maxPartsToShow;
+        const partCardH = storyBottomH - 110;
+        const partCardY = storyBottomY + 84;
+
+        for (let idx = 0; idx < maxPartsToShow; idx++) {
+          const p = item.parts[idx];
+          const px = 160 + idx * (partCardW + cardGap);
+          const isLastWithMore = (idx === maxPartsToShow - 1 && item.parts.length > maxPartsToShow);
+          const extraCount = item.parts.length - maxPartsToShow + 1;
+
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+          ctx.lineWidth = 2;
+          roundRect(ctx, px, partCardY, partCardW, partCardH, 20);
+          ctx.fill();
+          ctx.stroke();
+
+          if (isLastWithMore) {
+            ctx.fillStyle = theme.accent;
+            ctx.font = `800 32px ${FONT_FAMILY}`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`+${extraCount} DİĞER SEZON`, px + partCardW / 2, partCardY + partCardH / 2 - 30);
+
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = `600 24px ${FONT_FAMILY}`;
+            ctx.fillText('Arşivde Devamı Mevcut', px + partCardW / 2, partCardY + partCardH / 2 + 20);
+          } else {
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `700 30px ${FONT_FAMILY}`;
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'alphabetic';
+            let pName = p.name || `${idx + 1}. Sezon`;
+            while (ctx.measureText(pName).width > partCardW - 44 && pName.length > 5) {
+              pName = pName.slice(0, -4).trim() + '...';
+            }
+            ctx.fillText(pName, px + 22, partCardY + 48);
+
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = `500 24px ${FONT_FAMILY}`;
+            const kindLabel = p.kind === 'movie' ? 'Film' : (p.kind === 'other' ? 'Özel' : 'TV Sezonu');
+            const epLabel = p.episodes ? ` · ${p.episodes} Bölüm` : '';
+            const yrLabel = p.year ? ` · ${p.year}` : '';
+            ctx.fillText(`${kindLabel}${epLabel}${yrLabel}`, px + 22, partCardY + 92);
+
+            const pSc = Number(p.score) || effScore;
+            const scPillW = partCardW - 44;
+            const scPillH = 56;
+            const scPillX = px + 22;
+            const scPillY = partCardY + partCardH - 76;
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            ctx.strokeStyle = theme.accent;
+            ctx.lineWidth = 2;
+            roundRect(ctx, scPillX, scPillY, scPillW, scPillH, 28);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = theme.accent;
+            ctx.font = `800 30px ${FONT_FAMILY}`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`★ ${Number(pSc).toFixed(1)} / 10`, scPillX + scPillW / 2, scPillY + scPillH / 2);
+          }
+        }
+      } else {
+        const meta = getItemArchiveMeta(item, catKey);
+        ctx.fillStyle = theme.accent;
+        ctx.font = `700 32px ${FONT_FAMILY}`;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText('✦ ARŞİV KÜNYESİ VE FORMAT BİLGİLERİ ✦', 160, storyBottomY + 64);
+
+        const sealW = 360;
+        const sealH = storyBottomH - 50;
+        const sealX = 120 + storyBottomW - sealW - 24;
+        const sealY = storyBottomY + 25;
+        const leftW = (sealX - 120) - 40;
+
+        const cardGap = 20;
+        const cardW = (leftW - 40 - 2 * cardGap) / 3;
+        const cardH = 110;
+        const cardY = storyBottomY + 84;
+
+        const cards = [
+          { label: 'FORMAT & UZUNLUK', val: meta.formatLabel, color: '#ffffff' },
+          { label: 'ÇIKIŞ YILI', val: meta.year, color: '#ffffff' },
+          { label: 'ARŞİV STATÜSÜ', val: meta.repeatLabel, color: meta.repeatCount > 0 ? theme.accent : '#38bdf8' }
+        ];
+
+        for (let i = 0; i < cards.length; i++) {
+          const cx = 160 + i * (cardW + cardGap);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+          ctx.lineWidth = 1.5;
+          roundRect(ctx, cx, cardY, cardW, cardH, 18);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#9ca3af';
+          ctx.font = `600 22px ${FONT_FAMILY}`;
+          ctx.textAlign = 'left';
+          ctx.fillText(cards[i].label, cx + 22, cardY + 38);
+
+          ctx.fillStyle = cards[i].color;
+          ctx.font = `700 28px ${FONT_FAMILY}`;
+          let valStr = cards[i].val;
+          while (ctx.measureText(valStr).width > cardW - 44 && valStr.length > 5) {
+            valStr = valStr.slice(0, -4).trim() + '...';
+          }
+          ctx.fillText(valStr, cx + 22, cardY + 82);
+        }
+
+        // Tür Etiketleri Şeridi
+        const tagRowY = cardY + cardH + 20;
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = `700 22px ${FONT_FAMILY}`;
+        ctx.textAlign = 'left';
+        ctx.fillText('TÜRLER:', 160, tagRowY + 34);
+
+        const genreStartX = 160 + ctx.measureText('TÜRLER:').width + 18;
+        drawGenrePills(ctx, meta.genres, genreStartX, tagRowY, leftW - (genreStartX - 160), theme, {
+          pillH: 52,
+          fontSize: 24,
+          radius: 14
+        });
+
+        // Sağ Taraf Prestij Rozeti
+        const isMasterpiece = (effScore >= 9.0 || item?.favorite);
+        const isPick = (effScore >= 8.0);
+        ctx.save();
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+        ctx.strokeStyle = isMasterpiece ? '#f59e0b' : (isPick ? theme.accent : '#38bdf8');
+        ctx.lineWidth = 3;
+        roundRect(ctx, sealX, sealY, sealW, sealH, 24);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = '50px sans-serif';
+        ctx.fillText(isMasterpiece ? '🏆' : (isPick ? '★' : '✦'), sealX + sealW / 2, sealY + 54);
+
+        ctx.fillStyle = isMasterpiece ? '#fbbf24' : (isPick ? theme.accent : '#38bdf8');
+        ctx.font = `800 34px ${FONT_FAMILY}`;
+        ctx.fillText(isMasterpiece ? 'BAŞYAPIT' : (isPick ? 'KİŞİSEL SEÇKİ' : 'ONAYLI ARŞİV'), sealX + sealW / 2, sealY + 116);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `700 22px ${FONT_FAMILY}`;
+        ctx.fillText(isMasterpiece ? 'MUST-WATCH' : (isPick ? 'YÜKSEK TAVSİYE' : 'DEĞERLENDİRİLDİ'), sealX + sealW / 2, sealY + 158);
+
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = `600 18px ${FONT_FAMILY}`;
+        ctx.fillText('TEMPESTIAN ARCHIVE', sealX + sealW / 2, sealY + sealH - 34);
+        ctx.restore();
       }
-      ctx.fillStyle = '#d1d5db';
-      ctx.font = `500 34px ${FONT_FAMILY}`;
-      drawWrappedText(ctx, sNote, 160, storyBottomY + 124, W - 320, 52, 4);
       ctx.restore();
 
     } else {
@@ -1207,61 +1454,150 @@
           ctx.restore();
         }
       } else {
-        // Tekil Yapımlarda: Sol Taraf Özel İnceleme Notu, Sağ Taraf Prestijli Başyapıt / Tavsiye Mührü
-        const leftTextW = bottomW - 440;
+        // Tekil Yapımlarda: Sol Taraf Gerçek Arşiv Verileri, Sağ Taraf Prestijli Başyapıt / Tavsiye Rozeti
+        const meta = getItemArchiveMeta(item, catKey);
+        const sealW = 380;
+        const sealH = isPortrait ? 500 : 260;
+        const sealX = bottomX + bottomW - sealW - 32;
+        const sealY = bottomY + 35;
+        const leftW = (sealX - bottomX) - 32;
 
         ctx.save();
         ctx.fillStyle = theme.accent;
         ctx.font = `700 28px ${FONT_FAMILY}`;
         ctx.textAlign = 'left';
         ctx.textBaseline = 'alphabetic';
-        ctx.fillText('✦ BAYRAM TEMPESTIAN ÖZEL İNCELEME NOTU ✦', bottomX + 36, bottomY + 48);
+        ctx.fillText('✦ ARŞİV KÜNYESİ VE FORMAT BİLGİLERİ ✦', bottomX + 36, bottomY + 48);
 
-        // Dekoratif tırnak işareti
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
-        ctx.font = '800 110px "Georgia", serif';
-        ctx.fillText('“', bottomX + 32, bottomY + 155);
+        if (!isPortrait) {
+          // 1:1 Kare Düzeninde (Yatay 3 Mini Kart + Tür Etiketleri Şeridi)
+          const cardGap = 20;
+          const cardW = (leftW - 36 - 2 * cardGap) / 3;
+          const cardH = 110;
+          const cardY = bottomY + 70;
 
-        // Açıklama / Değerlendirme metni
-        let noteText = item?.note || item?.review || item?.description || '';
-        if (!noteText || noteText.length < 20) {
-          const gStr = Array.isArray(item?.genres) && item.genres.length ? item.genres.slice(0, 3).join(', ') : 'Arşiv';
-          noteText = `${item?.title || 'Bu yapım'}, ${gStr} türündeki güçlü kurgusal anlatımı ve derinliğiyle arşivin öne çıkan yapıtları arasında yer alıyor. ${effScore >= 9.0 ? 'Eksiksiz atmosferi, kusursuz tekniği ve duygusal etkisiyle mutlak bir başyapıt niteliğinde.' : 'Dengeli temposu ve özgün karakterleriyle mutlaka deneyimlenmesi gereken değerli bir eser.'}`;
+          const cards = [
+            { label: 'FORMAT & UZUNLUK', val: meta.formatLabel, color: '#ffffff' },
+            { label: 'ÇIKIŞ YILI', val: meta.year, color: '#ffffff' },
+            { label: 'ARŞİV STATÜSÜ', val: meta.repeatLabel, color: meta.repeatCount > 0 ? theme.accent : '#38bdf8' }
+          ];
+
+          for (let i = 0; i < cards.length; i++) {
+            const cx = bottomX + 36 + i * (cardW + cardGap);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.lineWidth = 1.5;
+            roundRect(ctx, cx, cardY, cardW, cardH, 18);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = `600 22px ${FONT_FAMILY}`;
+            ctx.textAlign = 'left';
+            ctx.fillText(cards[i].label, cx + 24, cardY + 38);
+
+            ctx.fillStyle = cards[i].color;
+            ctx.font = `700 28px ${FONT_FAMILY}`;
+            let valStr = cards[i].val;
+            while (ctx.measureText(valStr).width > cardW - 48 && valStr.length > 5) {
+              valStr = valStr.slice(0, -4).trim() + '...';
+            }
+            ctx.fillText(valStr, cx + 24, cardY + 82);
+          }
+
+          // Tür Etiketleri Şeridi
+          const tagRowY = cardY + cardH + 20;
+          ctx.fillStyle = '#9ca3af';
+          ctx.font = `700 22px ${FONT_FAMILY}`;
+          ctx.textAlign = 'left';
+          ctx.fillText('TÜRLER:', bottomX + 36, tagRowY + 34);
+
+          const genreStartX = bottomX + 36 + ctx.measureText('TÜRLER:').width + 18;
+          drawGenrePills(ctx, meta.genres, genreStartX, tagRowY, leftW - (genreStartX - bottomX), theme, {
+            pillH: 52,
+            fontSize: 24,
+            radius: 14
+          });
+        } else {
+          // 4:5 Portre Düzeninde (2x2 Geniş Kartlar + Tür Etiketleri)
+          const mCardW = (leftW - 36 - 20) / 2;
+          const mCardH = 140;
+          const cardY = bottomY + 70;
+
+          const cards = [
+            { label: 'FORMAT & UZUNLUK', val: meta.formatLabel, color: '#ffffff' },
+            { label: 'ÇIKIŞ YILI', val: meta.year, color: '#ffffff' },
+            { label: 'ARŞİV STATÜSÜ', val: meta.repeatLabel, color: meta.repeatCount > 0 ? theme.accent : '#38bdf8' },
+            { label: 'YAPIMCI / STÜDYO', val: item?.director || item?.studio || item?.author || item?.network || 'Tempestian Arşiv', color: '#ffffff' }
+          ];
+
+          for (let i = 0; i < 4; i++) {
+            const col = i % 2;
+            const row = Math.floor(i / 2);
+            const cx = bottomX + 36 + col * (mCardW + 20);
+            const cy = cardY + row * (mCardH + 16);
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.lineWidth = 1.5;
+            roundRect(ctx, cx, cy, mCardW, mCardH, 20);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = `600 24px ${FONT_FAMILY}`;
+            ctx.textAlign = 'left';
+            ctx.fillText(cards[i].label, cx + 24, cy + 44);
+
+            ctx.fillStyle = cards[i].color;
+            ctx.font = `700 32px ${FONT_FAMILY}`;
+            let valStr = cards[i].val;
+            while (ctx.measureText(valStr).width > mCardW - 48 && valStr.length > 5) {
+              valStr = valStr.slice(0, -4).trim() + '...';
+            }
+            ctx.fillText(valStr, cx + 24, cy + 100);
+          }
+
+          // Tür Etiketleri Şeridi
+          const tagRowY = cardY + 2 * (mCardH + 16) + 12;
+          ctx.fillStyle = '#9ca3af';
+          ctx.font = `700 24px ${FONT_FAMILY}`;
+          ctx.textAlign = 'left';
+          ctx.fillText('TÜR ETİKETLERİ:', bottomX + 36, tagRowY + 36);
+
+          const genreStartX = bottomX + 36 + ctx.measureText('TÜR ETİKETLERİ:').width + 20;
+          drawGenrePills(ctx, meta.genres, genreStartX, tagRowY, leftW - (genreStartX - bottomX), theme, {
+            pillH: 56,
+            fontSize: 26,
+            radius: 14
+          });
         }
-
-        ctx.fillStyle = '#d1d5db';
-        ctx.font = `500 32px ${FONT_FAMILY}`;
-        drawWrappedText(ctx, noteText, bottomX + 110, bottomY + 104, leftTextW - 130, 48, isPortrait ? 6 : 3);
         ctx.restore();
 
-        // Sağ Taraf: Prestijli Başyapıt / Tavsiye Mührü
-        const sealW = 360;
-        const sealH = isPortrait ? 400 : 260;
-        const sealX = bottomX + bottomW - sealW - 32;
-        const sealY = bottomY + 35;
-
+        // Sağ Taraf: Prestijli Başyapıt / Tavsiye Rozeti
+        const isMasterpiece = (effScore >= 9.0 || item?.favorite);
+        const isPick = (effScore >= 8.0);
         ctx.save();
         ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-        ctx.strokeStyle = (effScore >= 9.0 || item?.favorite) ? '#f59e0b' : theme.accent;
+        ctx.strokeStyle = isMasterpiece ? '#f59e0b' : (isPick ? theme.accent : '#38bdf8');
         ctx.lineWidth = 3;
         roundRect(ctx, sealX, sealY, sealW, sealH, 24);
         ctx.fill();
         ctx.stroke();
 
-        const isMasterpiece = (effScore >= 9.0 || item?.favorite);
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
         ctx.font = '54px sans-serif';
-        ctx.fillText(isMasterpiece ? '🏆' : (effScore >= 8.0 ? '★' : '✦'), sealX + sealW / 2, sealY + 60);
+        ctx.fillText(isMasterpiece ? '🏆' : (isPick ? '★' : '✦'), sealX + sealW / 2, sealY + 60);
 
-        ctx.fillStyle = isMasterpiece ? '#fbbf24' : theme.accent;
+        ctx.fillStyle = isMasterpiece ? '#fbbf24' : (isPick ? theme.accent : '#38bdf8');
         ctx.font = `800 36px ${FONT_FAMILY}`;
-        ctx.fillText(isMasterpiece ? 'BAŞYAPIT' : (effScore >= 8.0 ? 'KİŞİSEL SEÇKİ' : 'ONAYLI ARŞİV'), sealX + sealW / 2, sealY + 128);
+        ctx.fillText(isMasterpiece ? 'BAŞYAPIT' : (isPick ? 'KİŞİSEL SEÇKİ' : 'ONAYLI ARŞİV'), sealX + sealW / 2, sealY + 128);
 
         ctx.fillStyle = '#ffffff';
         ctx.font = `700 24px ${FONT_FAMILY}`;
-        ctx.fillText(isMasterpiece ? 'MUST-WATCH' : (effScore >= 8.0 ? 'YÜKSEK TAVSİYE' : 'DEĞERLENDİRİLDİ'), sealX + sealW / 2, sealY + 172);
+        ctx.fillText(isMasterpiece ? 'MUST-WATCH' : (isPick ? 'YÜKSEK TAVSİYE' : 'DEĞERLENDİRİLDİ'), sealX + sealW / 2, sealY + 172);
 
         ctx.fillStyle = '#9ca3af';
         ctx.font = `600 20px ${FONT_FAMILY}`;
@@ -1418,28 +1754,111 @@
       // Alt Vitrin
       const storyBottomY = critY + critListToDraw.length * rowH + 40;
       const storyBottomH = H - storyBottomY - 140;
+      const storyBottomW = W - 240;
       ctx.save();
       ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
       ctx.lineWidth = 2;
-      roundRect(ctx, 120, storyBottomY, W - 240, storyBottomH, 28);
+      roundRect(ctx, 120, storyBottomY, storyBottomW, storyBottomH, 28);
       ctx.fill();
       ctx.stroke();
 
       ctx.fillStyle = theme.accent;
       ctx.font = `700 32px ${FONT_FAMILY}`;
       ctx.textAlign = 'left';
-      ctx.fillText('✦ SEZON DEĞERLENDİRMESİ ✦', 160, storyBottomY + 64);
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText('✦ SEZON BİLGİLERİ VE ARŞİV VERİLERİ ✦', 160, storyBottomY + 64);
 
-      let pNote = part?.note || '';
-      if (!pNote) {
-        pNote = (partScore >= effScore)
-          ? `Bu sezon, serinin genel puan ortalamasının (★ ${effScore}) üzerinde üstün bir performans sergileyerek anlatının zirve noktalarından biri olmuştur.`
-          : `Bu sezon, genel evrenin (★ ${effScore}) zeminini hazırlayan ve karakter dinamiklerini pekiştiren kritik bir anlatı sürecini başarıyla temsil eder.`;
+      const sealW = 360;
+      const sealH = storyBottomH - 50;
+      const sealX = 120 + storyBottomW - sealW - 24;
+      const sealY = storyBottomY + 25;
+      const leftW = (sealX - 120) - 40;
+
+      const cardGap = 20;
+      const cardW = (leftW - 40 - 2 * cardGap) / 3;
+      const cardH = 110;
+      const cardY = storyBottomY + 84;
+
+      const isRead = (catKey === 'book' || catKey === 'manga');
+      const pFormat = part?.format || (part?.kind === 'movie' ? 'Sinema Filmi' : 'TV Sezonu');
+      const pEp = part?.episodes ? `${part.episodes} Bölüm` : (part?.duration ? `${part.duration} Dk` : 'Tek Parça');
+      const pRep = Number(part?.repeat) || 0;
+      const pRepLabel = pRep > 0 ? `↻ ${pRep} kez ${isRead ? 'okundu' : 'izlendi'}` : '✓ Arşivde Kayıtlı';
+
+      const cards = [
+        { label: 'FORMAT & BÖLÜM', val: `${pFormat} · ${pEp}`, color: '#ffffff' },
+        { label: 'YAYIN YILI', val: String(part?.year || item?.year || '-'), color: '#ffffff' },
+        { label: 'SEZON STATÜSÜ', val: pRepLabel, color: pRep > 0 ? theme.accent : '#38bdf8' }
+      ];
+
+      for (let i = 0; i < cards.length; i++) {
+        const cx = 160 + i * (cardW + cardGap);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        ctx.lineWidth = 1.5;
+        roundRect(ctx, cx, cardY, cardW, cardH, 18);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = `600 22px ${FONT_FAMILY}`;
+        ctx.textAlign = 'left';
+        ctx.fillText(cards[i].label, cx + 22, cardY + 38);
+
+        ctx.fillStyle = cards[i].color;
+        ctx.font = `700 28px ${FONT_FAMILY}`;
+        let valStr = cards[i].val;
+        while (ctx.measureText(valStr).width > cardW - 44 && valStr.length > 5) {
+          valStr = valStr.slice(0, -4).trim() + '...';
+        }
+        ctx.fillText(valStr, cx + 22, cardY + 82);
       }
-      ctx.fillStyle = '#d1d5db';
-      ctx.font = `500 34px ${FONT_FAMILY}`;
-      drawWrappedText(ctx, pNote, 160, storyBottomY + 124, W - 320, 52, 4);
+
+      // Tür Etiketleri Şeridi
+      const tagRowY = cardY + cardH + 20;
+      ctx.fillStyle = '#9ca3af';
+      ctx.font = `700 22px ${FONT_FAMILY}`;
+      ctx.textAlign = 'left';
+      ctx.fillText('TÜRLER:', 160, tagRowY + 34);
+
+      const rawGenres = Array.isArray(item?.customGenres) && item.customGenres.length ? item.customGenres : (item?.genres || []);
+      const genreStartX = 160 + ctx.measureText('TÜRLER:').width + 18;
+      drawGenrePills(ctx, rawGenres, genreStartX, tagRowY, leftW - (genreStartX - 160), theme, {
+        pillH: 52,
+        fontSize: 24,
+        radius: 14
+      });
+
+      // Sağ Taraf Sezon Rozeti
+      const isPeak = (partScore >= 9.0);
+      const isHigh = (partScore >= 8.0);
+      ctx.save();
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+      ctx.strokeStyle = isPeak ? '#f59e0b' : (isHigh ? theme.accent : '#38bdf8');
+      ctx.lineWidth = 3;
+      roundRect(ctx, sealX, sealY, sealW, sealH, 24);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '50px sans-serif';
+      ctx.fillText(isPeak ? '🏆' : (isHigh ? '★' : '✦'), sealX + sealW / 2, sealY + 54);
+
+      ctx.fillStyle = isPeak ? '#fbbf24' : (isHigh ? theme.accent : '#38bdf8');
+      ctx.font = `800 34px ${FONT_FAMILY}`;
+      ctx.fillText(isPeak ? 'ZİRVE SEZON' : (isHigh ? 'SEÇKİN SEZON' : 'ONAYLI SEZON'), sealX + sealW / 2, sealY + 116);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `700 22px ${FONT_FAMILY}`;
+      ctx.fillText(isPeak ? 'MUST-WATCH' : (isHigh ? 'YÜKSEK KALİTE' : 'ARŞİVDE KAYITLI'), sealX + sealW / 2, sealY + 158);
+
+      ctx.fillStyle = '#9ca3af';
+      ctx.font = `600 18px ${FONT_FAMILY}`;
+      ctx.fillText('TEMPESTIAN ARCHIVE', sealX + sealW / 2, sealY + sealH - 34);
+      ctx.restore();
+
       ctx.restore();
 
     } else {
@@ -1622,60 +2041,156 @@
       ctx.fill();
       ctx.stroke();
 
-      // Sol: Sezon Değerlendirme & Seri Konumu
-      const leftTextW = bottomW - 440;
+      // Sol: Sezon Bilgileri & Arşiv Verileri
+      const sealW = 380;
+      const sealH = isPortrait ? 500 : 260;
+      const sealX = bottomX + bottomW - sealW - 32;
+      const sealY = bottomY + 35;
+      const leftW = (sealX - bottomX) - 32;
+
+      ctx.save();
       ctx.fillStyle = theme.accent;
       ctx.font = `700 28px ${FONT_FAMILY}`;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'alphabetic';
-      ctx.fillText('✦ SEZON DEĞERLENDİRMESİ VE SERİ KONUMU ✦', bottomX + 36, bottomY + 48);
+      ctx.fillText('✦ SEZON BİLGİLERİ VE ARŞİV VERİLERİ ✦', bottomX + 36, bottomY + 48);
 
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
-      ctx.font = '800 110px "Georgia", serif';
-      ctx.fillText('“', bottomX + 32, bottomY + 155);
+      const isRead = (catKey === 'book' || catKey === 'manga');
+      const pFormat = part?.format || (part?.kind === 'movie' ? 'Sinema Filmi' : 'TV Sezonu');
+      const pEp = part?.episodes ? `${part.episodes} Bölüm` : (part?.duration ? `${part.duration} Dk` : 'Tek Parça');
+      const pRep = Number(part?.repeat) || 0;
+      const pRepLabel = pRep > 0 ? `↻ ${pRep} kez ${isRead ? 'okundu' : 'izlendi'}` : '✓ Arşivde Kayıtlı';
+      const rawGenres = Array.isArray(item?.customGenres) && item.customGenres.length ? item.customGenres : (item?.genres || []);
 
-      let pNote = part?.note || '';
-      if (!pNote) {
-        if (partScore >= effScore) {
-          pNote = `Bu sezon, serinin genel puan ortalamasının (★ ${effScore}) üzerinde üstün bir başarı sergileyerek kurgunun ve prodüksiyonun en vurucu dönemlerinden biri olmuştur. Hem görsel kalitesi hem de karakter gelişimiyle arşivde öne çıkar.`;
-        } else {
-          pNote = `Bu sezon, genel evrenin (★ ${effScore}) zeminini hazırlayan, karakter dinamiklerini pekiştiren ve olay örgüsünü derinleştiren kritik bir anlatı sürecini başarıyla temsil eder.`;
+      if (!isPortrait) {
+        // 1:1 Kare Düzeninde (Yatay 3 Mini Kart + Tür Etiketleri Şeridi)
+        const cardGap = 20;
+        const cardW = (leftW - 36 - 2 * cardGap) / 3;
+        const cardH = 110;
+        const cardY = bottomY + 70;
+
+        const cards = [
+          { label: 'FORMAT & BÖLÜM', val: `${pFormat} · ${pEp}`, color: '#ffffff' },
+          { label: 'YAYIN YILI', val: String(part?.year || item?.year || '-'), color: '#ffffff' },
+          { label: 'BÖLÜM PUANI', val: `★ ${Number(partScore).toFixed(1)} / 10`, color: theme.accent }
+        ];
+
+        for (let i = 0; i < cards.length; i++) {
+          const cx = bottomX + 36 + i * (cardW + cardGap);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+          ctx.lineWidth = 1.5;
+          roundRect(ctx, cx, cardY, cardW, cardH, 18);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#9ca3af';
+          ctx.font = `600 22px ${FONT_FAMILY}`;
+          ctx.textAlign = 'left';
+          ctx.fillText(cards[i].label, cx + 24, cardY + 38);
+
+          ctx.fillStyle = cards[i].color;
+          ctx.font = `700 28px ${FONT_FAMILY}`;
+          let valStr = cards[i].val;
+          while (ctx.measureText(valStr).width > cardW - 48 && valStr.length > 5) {
+            valStr = valStr.slice(0, -4).trim() + '...';
+          }
+          ctx.fillText(valStr, cx + 24, cardY + 82);
         }
-      }
 
-      ctx.fillStyle = '#d1d5db';
-      ctx.font = `500 32px ${FONT_FAMILY}`;
-      drawWrappedText(ctx, pNote, bottomX + 110, bottomY + 104, leftTextW - 130, 48, isPortrait ? 6 : 3);
+        // Tür Etiketleri Şeridi
+        const tagRowY = cardY + cardH + 20;
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = `700 22px ${FONT_FAMILY}`;
+        ctx.textAlign = 'left';
+        ctx.fillText('TÜRLER:', bottomX + 36, tagRowY + 34);
+
+        const genreStartX = bottomX + 36 + ctx.measureText('TÜRLER:').width + 18;
+        drawGenrePills(ctx, rawGenres, genreStartX, tagRowY, leftW - (genreStartX - bottomX), theme, {
+          pillH: 52,
+          fontSize: 24,
+          radius: 14
+        });
+      } else {
+        // 4:5 Portre Düzeninde (2x2 Geniş Kartlar + Tür Etiketleri)
+        const mCardW = (leftW - 36 - 20) / 2;
+        const mCardH = 140;
+        const cardY = bottomY + 70;
+
+        const cards = [
+          { label: 'FORMAT & BÖLÜM', val: `${pFormat} · ${pEp}`, color: '#ffffff' },
+          { label: 'YAYIN YILI', val: String(part?.year || item?.year || '-'), color: '#ffffff' },
+          { label: 'BÖLÜM PUANI', val: `★ ${Number(partScore).toFixed(1)} / 10`, color: theme.accent },
+          { label: 'ARŞİV STATÜSÜ', val: pRepLabel, color: pRep > 0 ? theme.accent : '#38bdf8' }
+        ];
+
+        for (let i = 0; i < 4; i++) {
+          const col = i % 2;
+          const row = Math.floor(i / 2);
+          const cx = bottomX + 36 + col * (mCardW + 20);
+          const cy = cardY + row * (mCardH + 16);
+
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+          ctx.lineWidth = 1.5;
+          roundRect(ctx, cx, cy, mCardW, mCardH, 20);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#9ca3af';
+          ctx.font = `600 24px ${FONT_FAMILY}`;
+          ctx.textAlign = 'left';
+          ctx.fillText(cards[i].label, cx + 24, cy + 44);
+
+          ctx.fillStyle = cards[i].color;
+          ctx.font = `700 32px ${FONT_FAMILY}`;
+          let valStr = cards[i].val;
+          while (ctx.measureText(valStr).width > mCardW - 48 && valStr.length > 5) {
+            valStr = valStr.slice(0, -4).trim() + '...';
+          }
+          ctx.fillText(valStr, cx + 24, cy + 100);
+        }
+
+        // Tür Etiketleri Şeridi
+        const tagRowY = cardY + 2 * (mCardH + 16) + 12;
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = `700 24px ${FONT_FAMILY}`;
+        ctx.textAlign = 'left';
+        ctx.fillText('TÜR ETİKETLERİ:', bottomX + 36, tagRowY + 36);
+
+        const genreStartX = bottomX + 36 + ctx.measureText('TÜR ETİKETLERİ:').width + 20;
+        drawGenrePills(ctx, rawGenres, genreStartX, tagRowY, leftW - (genreStartX - bottomX), theme, {
+          pillH: 56,
+          fontSize: 26,
+          radius: 14
+        });
+      }
       ctx.restore();
 
       // Sağ: Sezon Prestij Mührü
-      const sealW = 360;
-      const sealH = isPortrait ? 400 : 260;
-      const sealX = bottomX + bottomW - sealW - 32;
-      const sealY = bottomY + 35;
-
+      const isPeak = (partScore >= 9.0);
+      const isHigh = (partScore >= 8.0);
       ctx.save();
       ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-      ctx.strokeStyle = (partScore >= 9.0) ? '#f59e0b' : theme.accent;
+      ctx.strokeStyle = isPeak ? '#f59e0b' : (isHigh ? theme.accent : '#38bdf8');
       ctx.lineWidth = 3;
       roundRect(ctx, sealX, sealY, sealW, sealH, 24);
       ctx.fill();
       ctx.stroke();
 
-      const isPeak = (partScore >= 9.0);
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
       ctx.font = '54px sans-serif';
-      ctx.fillText(isPeak ? '🏆' : '★', sealX + sealW / 2, sealY + 60);
+      ctx.fillText(isPeak ? '🏆' : (isHigh ? '★' : '✦'), sealX + sealW / 2, sealY + 60);
 
-      ctx.fillStyle = isPeak ? '#fbbf24' : theme.accent;
+      ctx.fillStyle = isPeak ? '#fbbf24' : (isHigh ? theme.accent : '#38bdf8');
       ctx.font = `800 36px ${FONT_FAMILY}`;
-      ctx.fillText(isPeak ? 'ZİRVE SEZON' : 'ÖNERİLEN', sealX + sealW / 2, sealY + 128);
+      ctx.fillText(isPeak ? 'ZİRVE SEZON' : (isHigh ? 'SEÇKİN SEZON' : 'ONAYLI SEZON'), sealX + sealW / 2, sealY + 128);
 
       ctx.fillStyle = '#ffffff';
       ctx.font = `700 24px ${FONT_FAMILY}`;
-      ctx.fillText(isPeak ? 'MUST-WATCH' : 'BAŞARILI BÖLÜM', sealX + sealW / 2, sealY + 172);
+      ctx.fillText(isPeak ? 'MUST-WATCH' : (isHigh ? 'YÜKSEK KALİTE' : 'ARŞİVDE KAYITLI'), sealX + sealW / 2, sealY + 172);
 
       ctx.fillStyle = '#9ca3af';
       ctx.font = `600 20px ${FONT_FAMILY}`;
@@ -1862,54 +2377,163 @@
     ctx.stroke();
 
     // Sol: Genel Seri İstatistikleri
-    const leftTextW = bottomW - 440;
+    const sealW = 380;
+    const sealH = isPortrait ? 500 : 260;
+    const sealX = bottomX + bottomW - sealW - 32;
+    const sealY = bottomY + 35;
+    const leftW = (sealX - bottomX) - 32;
+
+    ctx.save();
     ctx.fillStyle = theme.accent;
     ctx.font = `700 28px ${FONT_FAMILY}`;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
     ctx.fillText('✦ GENEL SERİ İSTATİSTİKLERİ VE ARŞİV KARNESİ ✦', bottomX + 36, bottomY + 48);
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
-    ctx.font = '800 110px "Georgia", serif';
-    ctx.fillText('“', bottomX + 32, bottomY + 155);
-
     const totalPartsCount = parts.length;
     const totalEpisodes = parts.reduce((acc, p) => acc + (Number(p.episodes) || 0), 0) || item?.episodes || 0;
-    const summaryNote = `${item?.title || 'Bu yapım'}, arşivde ${totalPartsCount} parça / sezon halinde kayıtlı olup ${totalEpisodes ? 'toplam ' + totalEpisodes + ' bölümüyle' : 'tüm bölümleriyle'} arşivdeki yerini korumaktadır. Yapımın ağırlıklı değerlendirme puanı ★ ${effScore} olarak tescillenmiştir.`;
+    const isRead = (catKey === 'book' || catKey === 'manga');
+    const repeatCount = Math.max(
+      0,
+      ...(parts.map(p => Number(p.repeat) || 0)),
+      Number(item?.repeat) || 0,
+      Number(item?.rewatch) || 0,
+      Number(item?.reread) || 0
+    );
+    const repeatLabel = repeatCount > 0
+      ? `↻ ${repeatCount} kez ${isRead ? 'okundu' : 'izlendi'}`
+      : '✓ Arşivde Kayıtlı';
+    const rawGenres = Array.isArray(item?.customGenres) && item.customGenres.length ? item.customGenres : (item?.genres || []);
 
-    ctx.fillStyle = '#d1d5db';
-    ctx.font = `500 32px ${FONT_FAMILY}`;
-    drawWrappedText(ctx, summaryNote, bottomX + 110, bottomY + 104, leftTextW - 130, 48, isPortrait ? 6 : 3);
+    if (!isPortrait) {
+      // 1:1 Kare Düzeninde (Yatay 3 Mini Kart + Tür Etiketleri Şeridi)
+      const cardGap = 20;
+      const cardW = (leftW - 36 - 2 * cardGap) / 3;
+      const cardH = 110;
+      const cardY = bottomY + 70;
+
+      const cards = [
+        { label: 'TOPLAM PARÇA', val: `${totalPartsCount} Parça · ${totalEpisodes} Bölüm`, color: '#ffffff' },
+        { label: 'ÇIKIŞ YILI', val: String(item?.year || parts[0]?.year || '-'), color: '#ffffff' },
+        { label: 'AĞIRLIKLI PUAN', val: `★ ${Number(effScore).toFixed(1)} / 10`, color: theme.accent }
+      ];
+
+      for (let i = 0; i < cards.length; i++) {
+        const cx = bottomX + 36 + i * (cardW + cardGap);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        ctx.lineWidth = 1.5;
+        roundRect(ctx, cx, cardY, cardW, cardH, 18);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = `600 22px ${FONT_FAMILY}`;
+        ctx.textAlign = 'left';
+        ctx.fillText(cards[i].label, cx + 24, cardY + 38);
+
+        ctx.fillStyle = cards[i].color;
+        ctx.font = `700 28px ${FONT_FAMILY}`;
+        let valStr = cards[i].val;
+        while (ctx.measureText(valStr).width > cardW - 48 && valStr.length > 5) {
+          valStr = valStr.slice(0, -4).trim() + '...';
+        }
+        ctx.fillText(valStr, cx + 24, cardY + 82);
+      }
+
+      // Tür Etiketleri Şeridi
+      const tagRowY = cardY + cardH + 20;
+      ctx.fillStyle = '#9ca3af';
+      ctx.font = `700 22px ${FONT_FAMILY}`;
+      ctx.textAlign = 'left';
+      ctx.fillText('TÜRLER:', bottomX + 36, tagRowY + 34);
+
+      const genreStartX = bottomX + 36 + ctx.measureText('TÜRLER:').width + 18;
+      drawGenrePills(ctx, rawGenres, genreStartX, tagRowY, leftW - (genreStartX - bottomX), theme, {
+        pillH: 52,
+        fontSize: 24,
+        radius: 14
+      });
+    } else {
+      // 4:5 Portre Düzeninde (2x2 Geniş Kartlar + Tür Etiketleri)
+      const mCardW = (leftW - 36 - 20) / 2;
+      const mCardH = 140;
+      const cardY = bottomY + 70;
+
+      const cards = [
+        { label: 'TOPLAM PARÇA', val: `${totalPartsCount} Parça · ${totalEpisodes} Bölüm`, color: '#ffffff' },
+        { label: 'ÇIKIŞ YILI', val: String(item?.year || parts[0]?.year || '-'), color: '#ffffff' },
+        { label: 'AĞIRLIKLI PUAN', val: `★ ${Number(effScore).toFixed(1)} / 10`, color: theme.accent },
+        { label: 'ARŞİV STATÜSÜ', val: repeatLabel, color: repeatCount > 0 ? theme.accent : '#38bdf8' }
+      ];
+
+      for (let i = 0; i < 4; i++) {
+        const col = i % 2;
+        const row = Math.floor(i / 2);
+        const cx = bottomX + 36 + col * (mCardW + 20);
+        const cy = cardY + row * (mCardH + 16);
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        ctx.lineWidth = 1.5;
+        roundRect(ctx, cx, cy, mCardW, mCardH, 20);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = `600 24px ${FONT_FAMILY}`;
+        ctx.textAlign = 'left';
+        ctx.fillText(cards[i].label, cx + 24, cy + 44);
+
+        ctx.fillStyle = cards[i].color;
+        ctx.font = `700 32px ${FONT_FAMILY}`;
+        let valStr = cards[i].val;
+        while (ctx.measureText(valStr).width > mCardW - 48 && valStr.length > 5) {
+          valStr = valStr.slice(0, -4).trim() + '...';
+        }
+        ctx.fillText(valStr, cx + 24, cy + 100);
+      }
+
+      // Tür Etiketleri Şeridi
+      const tagRowY = cardY + 2 * (mCardH + 16) + 12;
+      ctx.fillStyle = '#9ca3af';
+      ctx.font = `700 24px ${FONT_FAMILY}`;
+      ctx.textAlign = 'left';
+      ctx.fillText('TÜR ETİKETLERİ:', bottomX + 36, tagRowY + 36);
+
+      const genreStartX = bottomX + 36 + ctx.measureText('TÜR ETİKETLERİ:').width + 20;
+      drawGenrePills(ctx, rawGenres, genreStartX, tagRowY, leftW - (genreStartX - bottomX), theme, {
+        pillH: 56,
+        fontSize: 26,
+        radius: 14
+      });
+    }
     ctx.restore();
 
     // Sağ: Prestij Mührü
-    const sealW = 360;
-    const sealH = isPortrait ? 400 : 260;
-    const sealX = bottomX + bottomW - sealW - 32;
-    const sealY = bottomY + 35;
-
+    const isMasterpiece = (effScore >= 9.0 || item?.favorite);
+    const isPick = (effScore >= 8.0);
     ctx.save();
     ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-    ctx.strokeStyle = (effScore >= 9.0 || item?.favorite) ? '#f59e0b' : theme.accent;
+    ctx.strokeStyle = (isMasterpiece) ? '#f59e0b' : theme.accent;
     ctx.lineWidth = 3;
     roundRect(ctx, sealX, sealY, sealW, sealH, 24);
     ctx.fill();
     ctx.stroke();
 
-    const isMasterpiece = (effScore >= 9.0 || item?.favorite);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
     ctx.font = '54px sans-serif';
-    ctx.fillText(isMasterpiece ? '🏆' : '★', sealX + sealW / 2, sealY + 60);
+    ctx.fillText(isMasterpiece ? '🏆' : (isPick ? '★' : '✦'), sealX + sealW / 2, sealY + 60);
 
-    ctx.fillStyle = isMasterpiece ? '#fbbf24' : theme.accent;
+    ctx.fillStyle = isMasterpiece ? '#fbbf24' : (isPick ? theme.accent : '#38bdf8');
     ctx.font = `800 36px ${FONT_FAMILY}`;
-    ctx.fillText(isMasterpiece ? 'BAŞYAPIT' : 'KİŞİSEL SEÇKİ', sealX + sealW / 2, sealY + 128);
+    ctx.fillText(isMasterpiece ? 'BAŞYAPIT' : (isPick ? 'KİŞİSEL SEÇKİ' : 'ONAYLI ARŞİV'), sealX + sealW / 2, sealY + 128);
 
     ctx.fillStyle = '#ffffff';
     ctx.font = `700 24px ${FONT_FAMILY}`;
-    ctx.fillText(isMasterpiece ? 'MUST-WATCH' : 'TAVSİYE EDİLEN', sealX + sealW / 2, sealY + 172);
+    ctx.fillText(isMasterpiece ? 'MUST-WATCH' : (isPick ? 'YÜKSEK TAVSİYE' : 'DEĞERLENDİRİLDİ'), sealX + sealW / 2, sealY + 172);
 
     ctx.fillStyle = '#9ca3af';
     ctx.font = `600 20px ${FONT_FAMILY}`;
@@ -2713,6 +3337,33 @@
       if (downloadZipBtn) downloadZipBtn.onclick = () => this.downloadAllZip();
       if (copyCaptionBtn) copyCaptionBtn.onclick = () => this.copyCaption();
 
+      // Canlı Slayt Şeridi & Gezinme Çubuğu Kontrolleri
+      const prevBtn = document.getElementById('instaPrevSlideBtn');
+      const nextBtn = document.getElementById('instaNextSlideBtn');
+      const dlSlideBtn = document.getElementById('instaDownloadSlideBtn');
+      const dlZipBtn = document.getElementById('instaDownloadZipBtn');
+
+      if (prevBtn) {
+        prevBtn.onclick = () => {
+          if (this.currentSlideIndex > 0) {
+            this.currentSlideIndex--;
+            this.updateSlideSelectorUI();
+            this.renderCurrentSlideOnly();
+          }
+        };
+      }
+      if (nextBtn) {
+        nextBtn.onclick = () => {
+          if (this.currentSlideIndex < this.slides.length - 1) {
+            this.currentSlideIndex++;
+            this.updateSlideSelectorUI();
+            this.renderCurrentSlideOnly();
+          }
+        };
+      }
+      if (dlSlideBtn) dlSlideBtn.onclick = () => this.downloadActiveSlide();
+      if (dlZipBtn) dlZipBtn.onclick = () => this.downloadAllZip();
+
       if (tplSelect) tplSelect.onchange = () => {
         this.updateControlVisibility();
         this.updateDefaultTitles();
@@ -2802,7 +3453,7 @@
         titleInp.value = 'TEMPESTIAN WRAPPED';
         if (subInp) subInp.value = 'Büyük Yıllık Medya ve Arşiv Özeti · tempestian.com';
       } else if (tpl === 'topPicks') {
-        titleInp.value = `BAYRAM TEMPESTIAN · ${catMeta.label.toUpperCase()} EN İYİLER`;
+        titleInp.value = `TEMPESTIAN · ${catMeta.label.toUpperCase()} EN İYİLER`;
         if (subInp) subInp.value = 'En Yüksek Puanlı Başyapıtlar ve Favorilerim';
       } else {
         titleInp.value = `TEMPESTIAN · ${catMeta.label.toUpperCase()} KATMAN LİSTESİ`;
@@ -2935,6 +3586,7 @@
           this.slides.push({
             id: 'slide-compact',
             name: '01-kompakt-karne.png',
+            shortLabel: '1. Kompakt Karne',
             title: 'Tek Kare - Kompakt Karne',
             render: async () => renderSingleReviewCompactSlide(ctx, W, H, item, catKey, theme, fmtKey)
           });
@@ -2943,6 +3595,7 @@
           this.slides.push({
             id: 'slide-cover',
             name: '01-ana-kapak.png',
+            shortLabel: '1. Kapak',
             title: '1. Slayt: Ana Kapak & Özet',
             render: async () => renderSingleReviewCoverSlide(ctx, W, H, item, catKey, theme, fmtKey, customTitle, customSub)
           });
@@ -2950,10 +3603,12 @@
           for (let pIdx = 0; pIdx < item.parts.length; pIdx++) {
             const p = item.parts[pIdx];
             const pNum = String(pIdx + 2).padStart(2, '0');
+            const pName = p.name || `Sezon ${pIdx + 1}`;
             this.slides.push({
               id: `slide-part-${pIdx}`,
               name: `${pNum}-sezon-${pIdx + 1}.png`,
-              title: `${pIdx + 2}. Slayt: ${p.name || `Sezon ${pIdx + 1}`}`,
+              shortLabel: `${pIdx + 2}. ${pName}`,
+              title: `${pIdx + 2}. Slayt: ${pName}`,
               render: async () => renderSingleReviewPartSlide(ctx, W, H, item, p, pIdx, item.parts.length, catKey, theme, fmtKey)
             });
           }
@@ -2962,6 +3617,7 @@
           this.slides.push({
             id: 'slide-single',
             name: '01-inceleme.png',
+            shortLabel: '1. Kapak',
             title: 'Tekil İnceleme Kartı',
             render: async () => renderSingleReviewCoverSlide(ctx, W, H, item, catKey, theme, fmtKey, customTitle, customSub)
           });
@@ -2972,24 +3628,28 @@
           {
             id: 'wrapped-1',
             name: '01-wrapped-champions.png',
+            shortLabel: '1. Zirvedekiler',
             title: '1. Slayt: The Champions (Zirvedekiler)',
             render: async () => renderWrappedChampionsSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           },
           {
             id: 'wrapped-2',
             name: '02-wrapped-numbers.png',
+            shortLabel: '2. Rakamlar',
             title: '2. Slayt: The Numbers (Büyük Rakamlar)',
             render: async () => renderWrappedNumbersSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           },
           {
             id: 'wrapped-3',
             name: '03-wrapped-taste.png',
+            shortLabel: '3. Tür Profili',
             title: '3. Slayt: The Taste (Tür Profili)',
             render: async () => renderWrappedTasteSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           },
           {
             id: 'wrapped-4',
             name: '04-wrapped-gems.png',
+            shortLabel: '4. Gizli Cevherler',
             title: '4. Slayt: Hidden Gems (Gizli Cevherler)',
             render: async () => renderWrappedHiddenGemsSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           }
@@ -2999,6 +3659,7 @@
         this.slides.push({
           id: 'slide-topPicks',
           name: '01-top-picks.png',
+          shortLabel: '1. En İyiler',
           title: 'Top Picks - En İyiler',
           render: async () => renderTopPicksTemplate(ctx, W, H, items, theme, fmtKey, catKey)
         });
@@ -3008,6 +3669,7 @@
         this.slides.push({
           id: 'slide-tierCollage',
           name: '01-tier-list.png',
+          shortLabel: '1. Katman Listesi',
           title: 'Katman (Tier List) Özeti',
           render: async () => renderTierCollageTemplate(ctx, W, H, items, theme, fmtKey, catKey)
         });
@@ -3030,18 +3692,21 @@
       const slideRow = document.getElementById('instaSlideSelectRow');
       const slideSelect = document.getElementById('instaSlideSelect');
       const indicator = document.getElementById('instaSlideIndicator');
-      const zipBtn = document.getElementById('downloadZipInstaBtn');
+      const zipBtnTop = document.getElementById('downloadZipInstaBtn');
 
-      if (!slideSelect) return;
+      const navEl = document.getElementById('instaSlideNav');
+      const navHeader = document.getElementById('instaSlideNavHeader');
+      const pillsContainer = document.getElementById('instaSlidePills');
+      const prevBtn = document.getElementById('instaPrevSlideBtn');
+      const nextBtn = document.getElementById('instaNextSlideBtn');
+      const navZipBtn = document.getElementById('instaDownloadZipBtn');
+      const navSlideBtn = document.getElementById('instaDownloadSlideBtn');
+      const stripWrap = navEl?.querySelector('.insta-slide-nav-strip-wrap');
 
-      if (this.slides.length > 1) {
-        if (slideRow) slideRow.hidden = false;
-        if (indicator) {
-          indicator.hidden = false;
-          indicator.textContent = `🎞️ Slayt ${this.currentSlideIndex + 1} / ${this.slides.length}`;
-        }
-        if (zipBtn) zipBtn.hidden = false;
+      const total = this.slides.length;
+      const isMulti = total > 1;
 
+      if (slideSelect) {
         slideSelect.innerHTML = '';
         this.slides.forEach((s, idx) => {
           const opt = document.createElement('option');
@@ -3050,10 +3715,80 @@
           if (idx === this.currentSlideIndex) opt.selected = true;
           slideSelect.appendChild(opt);
         });
-      } else {
-        if (slideRow) slideRow.hidden = true;
-        if (indicator) indicator.hidden = true;
-        if (zipBtn) zipBtn.hidden = true;
+      }
+
+      if (slideRow) slideRow.hidden = !isMulti;
+      if (indicator) {
+        indicator.hidden = !isMulti;
+        if (isMulti) {
+          indicator.textContent = `🎞️ Slayt ${this.currentSlideIndex + 1} / ${total}: ${this.slides[this.currentSlideIndex]?.title || ''}`;
+        }
+      }
+      if (zipBtnTop) zipBtnTop.hidden = !isMulti;
+
+      if (navEl) {
+        if (!isMulti) {
+          navEl.classList.add('is-single');
+          if (navHeader) navHeader.textContent = '🖼️ Tek Kare Gönderi (1 Slayt)';
+          if (stripWrap) stripWrap.hidden = true;
+          if (navZipBtn) navZipBtn.hidden = true;
+          if (navSlideBtn) navSlideBtn.textContent = '💾 PNG İndir';
+        } else {
+          navEl.classList.remove('is-single');
+          if (navHeader) {
+            navHeader.textContent = `🎞️ Çoklu Karusel Slaytları (Toplam ${total} Gönderi)`;
+          }
+          if (stripWrap) stripWrap.hidden = false;
+          if (navZipBtn) {
+            navZipBtn.hidden = false;
+            navZipBtn.textContent = `📦 Tüm ${total} Slaytı ZIP Olarak İndir`;
+          }
+          if (navSlideBtn) {
+            navSlideBtn.textContent = `💾 ${this.currentSlideIndex + 1}. Slaytı PNG İndir`;
+          }
+
+          if (prevBtn) prevBtn.disabled = (this.currentSlideIndex <= 0);
+          if (nextBtn) nextBtn.disabled = (this.currentSlideIndex >= total - 1);
+
+          if (pillsContainer) {
+            pillsContainer.innerHTML = '';
+            this.slides.forEach((s, idx) => {
+              const pill = document.createElement('button');
+              pill.type = 'button';
+              const isActive = (idx === this.currentSlideIndex);
+              pill.className = `insta-slide-pill ${isActive ? 'is-active' : ''}`;
+              pill.setAttribute('role', 'tab');
+              pill.setAttribute('aria-selected', isActive ? 'true' : 'false');
+              pill.title = s.title;
+
+              const numSpan = document.createElement('span');
+              numSpan.className = 'pill-index';
+              numSpan.textContent = `${idx + 1}`;
+
+              const labelSpan = document.createElement('span');
+              labelSpan.className = 'pill-label';
+              labelSpan.textContent = s.shortLabel || `Slayt ${idx + 1}`;
+
+              pill.appendChild(numSpan);
+              pill.appendChild(labelSpan);
+
+              pill.onclick = async () => {
+                if (this.currentSlideIndex === idx) return;
+                this.currentSlideIndex = idx;
+                this.updateSlideSelectorUI();
+                await this.renderCurrentSlideOnly();
+              };
+
+              pillsContainer.appendChild(pill);
+
+              if (isActive) {
+                setTimeout(() => {
+                  pill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }, 50);
+              }
+            });
+          }
+        }
       }
     }
 
@@ -3064,6 +3799,36 @@
       if (indicator && this.slides.length > 1) {
         indicator.textContent = `🎞️ Slayt ${this.currentSlideIndex + 1} / ${this.slides.length}: ${activeSlide.title}`;
       }
+
+      const slideSelect = document.getElementById('instaSlideSelect');
+      if (slideSelect && slideSelect.value !== String(this.currentSlideIndex)) {
+        slideSelect.value = String(this.currentSlideIndex);
+      }
+      const prevBtn = document.getElementById('instaPrevSlideBtn');
+      const nextBtn = document.getElementById('instaNextSlideBtn');
+      if (prevBtn) prevBtn.disabled = (this.currentSlideIndex <= 0);
+      if (nextBtn) nextBtn.disabled = (this.currentSlideIndex >= this.slides.length - 1);
+
+      const navSlideBtn = document.getElementById('instaDownloadSlideBtn');
+      if (navSlideBtn) {
+        navSlideBtn.textContent = this.slides.length > 1
+          ? `💾 ${this.currentSlideIndex + 1}. Slaytı PNG İndir`
+          : '💾 PNG İndir';
+      }
+
+      const pillsContainer = document.getElementById('instaSlidePills');
+      if (pillsContainer) {
+        const pills = pillsContainer.querySelectorAll('.insta-slide-pill');
+        pills.forEach((p, idx) => {
+          const isActive = (idx === this.currentSlideIndex);
+          p.classList.toggle('is-active', isActive);
+          p.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          if (isActive) {
+            p.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        });
+      }
+
       await activeSlide.render();
     }
 

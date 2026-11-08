@@ -2067,6 +2067,37 @@
               <div class="insta-canvas-wrapper">
                 <canvas id="instaCanvas" class="insta-canvas"></canvas>
               </div>
+
+              <!-- [AI-MIMARI-NOTU: SLAYT ŞERİDİ & GEZİNME ÇUBUĞU (CAROUSEL FILMSTRIP & SWITCHER)] -->
+              <div id="instaSlideNav" class="insta-slide-nav">
+                <div class="insta-slide-nav-head">
+                  <div class="insta-slide-nav-title">
+                    <span class="insta-nav-icon">🎞️</span>
+                    <span id="instaSlideNavHeader">Çoklu Karusel Slaytları (Toplam 1 Gönderi)</span>
+                  </div>
+                  <div class="insta-slide-nav-actions">
+                    <button type="button" class="btn-subtle insta-nav-btn" id="instaDownloadSlideBtn" title="Aktif slaytı PNG olarak indirin">
+                      💾 Aktif Slaytı PNG İndir
+                    </button>
+                    <button type="button" class="btn-primary insta-nav-btn" id="instaDownloadZipBtn" title="Tüm karusel slaytlarını tek bir ZIP paketi olarak indirin">
+                      📦 Tüm Slaytları ZIP İndir
+                    </button>
+                  </div>
+                </div>
+
+                <div class="insta-slide-nav-strip-wrap">
+                  <button type="button" class="btn-subtle insta-nav-arrow" id="instaPrevSlideBtn" title="Önceki Slayt">
+                    ◀ Önceki
+                  </button>
+                  <div id="instaSlidePills" class="insta-slide-pills" role="tablist" aria-label="Slayt Listesi">
+                    <!-- Dinamik Pill Butonları -->
+                  </div>
+                  <button type="button" class="btn-subtle insta-nav-arrow" id="instaNextSlideBtn" title="Sonraki Slayt">
+                    Sonraki ▶
+                  </button>
+                </div>
+              </div>
+
               <p style="margin-top: 14px; font-size: 0.8rem; color: var(--txt-sub); text-align: center">
                 Canlı önizleme ekrana sığdırılmıştır; indirdiğinizde 2160p Retina 2x ultra keskin kalitede PNG olarak kaydedilir.
               </p>

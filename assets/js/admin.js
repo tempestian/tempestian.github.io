@@ -1006,39 +1006,120 @@
     }
   }
 
-  function mountAdminDashboardDOM() {
+  function renderAdminApp() {
     const app = $('#adminApp');
     if (!app) return;
     app.innerHTML = `
-      <div class="admin-toolbar glass sq">
-        <div class="toolbar-info">
-          <strong id="activeUserLabel">tempestian</strong>
-          <span id="syncModeLabel" class="mode-pill">GitHub API Bağlı</span>
-          <span id="dirtyIndicator" class="dirty-pill" hidden>Kaydedilmemiş değişiklikler var</span>
-        </div>
-        <div class="toolbar-btns">
-          <button type="button" class="btn-subtle" id="openCmdPaletteBtn" title="Tüm kategorilerde hızlı içerik arama ve komut paletini açar (Ctrl+K)">🔍 Hızlı Arama &amp; Komut (Ctrl+K)</button>
-          <button type="button" class="btn-subtle" id="previewApplyBtn" title="Değişiklikleri tarayıcı önbelleğine uygular (Ctrl+S)">Canlı Önizlemeye Uygula</button>
-          <button type="button" class="btn-subtle" id="clearPreviewBtn" hidden title="Önizleme önbelleğini temizler">Önizlemeyi Sıfırla</button>
-          <button type="button" class="btn-subtle" id="downloadJsonBtn">sections.json İndir</button>
-          <button type="button" class="btn-primary" id="commitGithubBtn">GitHub'a Kaydet (Commit)</button>
-        </div>
-      </div>
+      <div class="admin-shell" id="adminShell">
+        <aside class="admin-sidebar glass sq" id="adminSidebar">
+          <div class="acp-sidebar-brand">
+            <div class="acp-brand-logo">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <div class="acp-brand-text">
+              <strong class="acp-brand-title">Tempestian ACP</strong>
+              <span class="acp-brand-sub">Yönetim Paneli</span>
+            </div>
+          </div>
 
-      <nav class="admin-nav glass sq" role="tablist" aria-label="Yönetim Bölümleri">
-        <button type="button" class="nav-tab" role="tab" data-panel="anime" aria-selected="true">📺 Medya &amp; Arşiv</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="rapid" aria-selected="false">⚡ Hızlı Sıralı</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="texts" aria-selected="false">📝 Metinler &amp; Sayfalar</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="images" aria-selected="false">🖼️ Görseller</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="categories" aria-selected="false">🗂️ Kategoriler</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="boxes" aria-selected="false">🧩 Kutucuk &amp; Link</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="health" aria-selected="false">🛡️ Veri Sağlığı &amp; Yedek</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="instagram" aria-selected="false">📸 Görsel Stüdyo</button>
-        <button type="button" class="nav-tab" role="tab" data-panel="security" aria-selected="false">🔐 Güvenlik</button>
-      </nav>
+          <nav class="acp-nav-tree" role="tablist" aria-label="XenForo ACP Menüsü">
+            <div class="acp-nav-group">
+              <div class="acp-nav-heading">Genel Bakış</div>
+              <button type="button" class="acp-nav-item nav-tab active" role="tab" data-panel="dashboard" aria-selected="true" title="Yönetim Özeti">
+                <span class="acp-nav-icon">📊</span>
+                <span class="acp-nav-label">Yönetim Özeti</span>
+              </button>
+            </div>
 
-      <!-- ADIM 3, 4, 5, 6, 7 & 8: ANİME YÖNETİMİ, AĞIRLIKLI PUAN, ÖZEL KATEGORİ VE İSTATİSTİK MOTORU -->
-      <div id="panelAnime" class="admin-panel">
+            <div class="acp-nav-group">
+              <div class="acp-nav-heading">İçerik Yönetimi</div>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="anime" aria-selected="false" title="Medya &amp; Arşiv">
+                <span class="acp-nav-icon">📺</span>
+                <span class="acp-nav-label">Medya &amp; Arşiv</span>
+              </button>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="rapid" aria-selected="false" title="Hızlı Sıralı İnceleme">
+                <span class="acp-nav-icon">⚡</span>
+                <span class="acp-nav-label">Hızlı Sıralı İnceleme</span>
+              </button>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="instagram" aria-selected="false" title="Görsel Stüdyosu">
+                <span class="acp-nav-icon">📸</span>
+                <span class="acp-nav-label">Görsel Stüdyosu</span>
+              </button>
+            </div>
+
+            <div class="acp-nav-group">
+              <div class="acp-nav-heading">Görünüm &amp; Sayfalar</div>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="texts" aria-selected="false" title="Sayfa Metinleri &amp; Başlıklar">
+                <span class="acp-nav-icon">📝</span>
+                <span class="acp-nav-label">Sayfa Metinleri &amp; Başlıklar</span>
+              </button>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="images" aria-selected="false" title="Görseller &amp; Medya">
+                <span class="acp-nav-icon">🖼️</span>
+                <span class="acp-nav-label">Görseller &amp; Medya</span>
+              </button>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="categories" aria-selected="false" title="Özel Kategoriler &amp; Türler">
+                <span class="acp-nav-icon">🗂️</span>
+                <span class="acp-nav-label">Özel Kategoriler &amp; Türler</span>
+              </button>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="boxes" aria-selected="false" title="Kutucuk &amp; Hızlı Linkler">
+                <span class="acp-nav-icon">🧩</span>
+                <span class="acp-nav-label">Kutucuk &amp; Hızlı Linkler</span>
+              </button>
+            </div>
+
+            <div class="acp-nav-group">
+              <div class="acp-nav-heading">Sistem &amp; Bakım</div>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="health" aria-selected="false" title="Veri Sağlığı &amp; Kurtarma">
+                <span class="acp-nav-icon">🛡️</span>
+                <span class="acp-nav-label">Veri Sağlığı &amp; Kurtarma</span>
+              </button>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="security" aria-selected="false" title="Güvenlik &amp; PAT">
+                <span class="acp-nav-icon">🔐</span>
+                <span class="acp-nav-label">Güvenlik &amp; PAT</span>
+              </button>
+            </div>
+          </nav>
+
+          <div class="acp-sidebar-footer">
+            <div class="acp-footer-info">
+              <span class="acp-branch-tag" id="acpBranchBadge">🌿 <span id="acpBranchLabel">main</span></span>
+              <span class="acp-count-tag" id="acpTotalItemsBadge">0 İçerik</span>
+            </div>
+          </div>
+        </aside>
+
+        <div class="admin-main-stage" id="adminMainStage">
+          <div class="admin-toolbar glass sq">
+            <div class="toolbar-info">
+              <button type="button" class="btn glass acp-sidebar-toggle" id="sidebarToggleBtn" aria-label="Menüyü Daralt/Genişlet" title="Sol Menüyü Daralt / Genişlet">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+              </button>
+              <nav class="acp-breadcrumb" id="acpBreadcrumb" aria-label="ACP Yol Haritası">
+                <span class="crumb-root">ACP</span>
+                <span class="crumb-sep">/</span>
+                <span class="crumb-user" id="activeUserLabel">tempestian</span>
+                <span class="crumb-sep">/</span>
+                <strong class="crumb-current" id="acpBreadcrumbPanel">Yönetim Özeti</strong>
+              </nav>
+              <span id="syncModeLabel" class="mode-pill">GitHub API Bağlı</span>
+              <span id="dirtyIndicator" class="dirty-pill" hidden>Kaydedilmemiş değişiklikler var</span>
+            </div>
+            <div class="toolbar-btns">
+              <button type="button" class="btn-subtle" id="openCmdPaletteBtn" title="Tüm kategorilerde hızlı içerik arama ve komut paletini açar (Ctrl+K)">🔍 Hızlı Arama &amp; Komut (Ctrl+K)</button>
+              <button type="button" class="btn-subtle" id="previewApplyBtn" title="Değişiklikleri tarayıcı önbelleğine uygular (Ctrl+S)">Canlı Önizlemeye Uygula</button>
+              <button type="button" class="btn-subtle" id="clearPreviewBtn" hidden title="Önizleme önbelleğini temizler">Önizlemeyi Sıfırla</button>
+              <button type="button" class="btn-subtle" id="downloadJsonBtn">sections.json İndir</button>
+              <button type="button" class="btn-primary" id="commitGithubBtn">GitHub'a Kaydet (Commit)</button>
+            </div>
+          </div>
+
+          <!-- XENFORO TARZI ACP DASHBOARD (YÖNETİM ANA SAYFASI / GENEL BAKIŞ) -->
+          <div id="panelDashboard" class="admin-panel">
+            <div id="acpDashboardContent"></div>
+          </div>
+
+          <!-- ADIM 3, 4, 5, 6, 7 & 8: ANİME YÖNETİMİ, AĞIRLIKLI PUAN, ÖZEL KATEGORİ VE İSTATİSTİK MOTORU -->
+          <div id="panelAnime" class="admin-panel" hidden>
         <div class="admin-card glass sq">
           <div class="card-head split-head">
             <div>
@@ -1811,6 +1892,8 @@
           </div>
         </div>
       </div>
+        </div>
+      </div>
 
       <!-- ADIM 5, 7 & 8: ANİME EKLEME / DÜZENLEME MODALI -->
       <div id="animeEditModal" class="adm-modal" role="dialog" aria-modal="true" aria-labelledby="animeModalTitle" hidden>
@@ -1980,6 +2063,7 @@
     `;
     bindDashboardEvents();
   }
+  const mountAdminDashboardDOM = renderAdminApp;
 
   const ACTIVE_SECTION_DESCRIPTIONS = {
     anime: 'İzlediğim animeler',
@@ -2191,6 +2275,7 @@
     state.dirtyAnime = false;
     state.dirtyOverrides = false;
     updateDirtyIndicator();
+    switchAdminPanel('dashboard');
   }
 
   function syncBatchActionBar() {
@@ -2777,8 +2862,8 @@
 
   function openAnimeEditor(animeId = '__new__') {
     const adapter = getActiveAdminAdapter();
-    state.editingAnimeId = animeId;
-    const isNew = animeId === '__new__';
+    const isNew = !animeId || animeId === '__new__';
+    state.editingAnimeId = isNew ? '__new__' : animeId;
     const existing = !isNew ? adapter.getItems().find(a => a.id === animeId) : null;
 
     const defaultPartName = adapter.id === 'movie'
@@ -5329,6 +5414,11 @@
     const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || anyMultiDirty || state.pendingUploads.size > 0;
     const ind = $('#dirtyIndicator');
     if (ind) ind.hidden = !anyDirty;
+    const acpDirtyVal = $('#acpSysDirtyVal');
+    if (acpDirtyVal) {
+      acpDirtyVal.textContent = anyDirty ? 'Kaydedilmemiş Değişiklikler Var' : 'Değişiklik Yok';
+      acpDirtyVal.className = anyDirty ? 'stat-v err' : 'stat-v ok';
+    }
   }
 
   function getActiveAdapter() {
@@ -6180,10 +6270,7 @@
       sel.value = 'health_custom';
     }
 
-    $$('[data-panel]').forEach(b => b.setAttribute('aria-selected', b.dataset.panel === 'rapid'));
-    $('#panelHealth').hidden = true;
-    $('#panelAnime').hidden = true;
-    $('#panelRapid').hidden = false;
+    switchAdminPanel('rapid', { skipQueueInit: true });
     initOrRefreshRapidQueue(false);
     toast(`${targetItems.length} kayıt Hızlı Sıralı Düzenleme kuyruğuna aktarıldı.`);
   }
@@ -6615,9 +6702,10 @@
       { title: '+ Yeni Manga Ekle', sub: 'Manga bölümünde yeni kayıt penceresini açar', badge: 'Komut', run: () => { switchToMediaSectionAndOpen('manga', '__new__'); } },
       { title: '+ Yeni Kitap Ekle', sub: 'Kitap bölümünde yeni kayıt penceresini açar', badge: 'Komut', run: () => { switchToMediaSectionAndOpen('book', '__new__'); } },
       { title: '+ Yeni Rehber Ekle', sub: 'Rehber kataloğuna yeni Technopat konusu ekler', badge: 'Komut', run: () => { switchToMediaSectionAndOpen('guide', '__new__'); } },
-      { title: '⚡ Hızlı Sıralı Düzenleme Ekranını Aç', sub: 'Kuyruk modunda hızlı kategori ve puan düzenleme', badge: 'Panel', run: () => { $('#openRapidQueueFromAnimeBtn')?.click(); } },
-      { title: '📝 Kategori Sayfası Metinlerini Düzenle', sub: 'Anime, Rehber, Dizi, Film, Manga ve Kitap sayfa metinleri', badge: 'Panel', run: () => { document.querySelector('[data-panel="texts"]')?.click(); } },
-      { title: '🛡️ Veri Sağlığı & Commit Kurtarma Merkezi', sub: 'Eksik kapak/puan denetimi ve tam yedekleme', badge: 'Panel', run: () => { document.querySelector('[data-panel="health"]')?.click(); } },
+      { title: '📊 XenForo Yönetim Özeti (Dashboard)', sub: 'İçerik metrikleri, moderasyon kuyruğu ve sistem genel bakışı', badge: 'Panel', run: () => { switchAdminPanel('dashboard'); } },
+      { title: '⚡ Hızlı Sıralı Düzenleme Ekranını Aç', sub: 'Kuyruk modunda hızlı kategori ve puan düzenleme', badge: 'Panel', run: () => { switchAdminPanel('rapid'); } },
+      { title: '📝 Kategori Sayfası Metinlerini Düzenle', sub: 'Anime, Rehber, Dizi, Film, Manga ve Kitap sayfa metinleri', badge: 'Panel', run: () => { switchAdminPanel('texts'); } },
+      { title: '🛡️ Veri Sağlığı & Commit Kurtarma Merkezi', sub: 'Eksik kapak/puan denetimi ve tam yedekleme', badge: 'Panel', run: () => { switchAdminPanel('health'); } },
       { title: '💾 Canlı Önizlemeye Uygula (Ctrl+S)', sub: 'Değişiklikleri tarayıcı önbelleğine yazar', badge: 'İşlem', run: () => { $('#previewApplyBtn')?.click(); } },
       { title: "🚀 GitHub'a Kaydet (Commit)", sub: 'Tüm değişiklikleri doğrudan GitHub deposuna gönderir', badge: 'İşlem', run: () => { $('#commitGithubBtn')?.click(); } }
     ];
@@ -6682,15 +6770,7 @@
   }
 
   function switchToMediaSectionAndOpen(secKey, itemId) {
-    $$('[data-panel]').forEach(b => b.setAttribute('aria-selected', b.dataset.panel === 'anime'));
-    $('#panelAnime').hidden = false;
-    $('#panelRapid').hidden = true;
-    $('#panelTexts').hidden = true;
-    $('#panelImages').hidden = true;
-    $('#panelCategories').hidden = true;
-    $('#panelBoxes').hidden = true;
-    $('#panelHealth').hidden = true;
-    $('#panelSecurity').hidden = true;
+    switchAdminPanel('anime');
     state.activeAdminMediaType = secKey;
     if ($('#admMediaTypeSelect')) $('#admMediaTypeSelect').value = secKey;
     renderAnimeAdminPanel();
@@ -7203,25 +7283,460 @@
     URL.revokeObjectURL(a.href);
   }
 
+  const ACP_PANEL_TITLES = {
+    dashboard: 'Yönetim Özeti',
+    anime: 'Medya & Arşiv',
+    rapid: 'Hızlı Sıralı İnceleme',
+    instagram: 'Görsel Stüdyosu',
+    texts: 'Sayfa Metinleri & Başlıklar',
+    images: 'Görseller & Medya',
+    categories: 'Özel Kategoriler & Türler',
+    boxes: 'Kutucuk & Hızlı Linkler',
+    health: 'Veri Sağlığı & Kurtarma',
+    security: 'Güvenlik & PAT'
+  };
+
+  const ACP_PANEL_IDS = {
+    dashboard: 'panelDashboard',
+    anime: 'panelAnime',
+    rapid: 'panelRapid',
+    instagram: 'panelInstagram',
+    texts: 'panelTexts',
+    images: 'panelImages',
+    categories: 'panelCategories',
+    boxes: 'panelBoxes',
+    health: 'panelHealth',
+    security: 'panelSecurity'
+  };
+
+  function switchAdminPanel(targetPanel, options = {}) {
+    const panelKey = ACP_PANEL_IDS[targetPanel] ? targetPanel : 'dashboard';
+
+    // 1. Sol menü [data-panel] aktiflik ve aria-selected güncellemesi
+    $$('[data-panel]').forEach(btn => {
+      const isTarget = btn.dataset.panel === panelKey;
+      btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+      btn.classList.toggle('active', isTarget);
+    });
+
+    // 2. Panellerin görünürlük ayarı
+    Object.keys(ACP_PANEL_IDS).forEach(k => {
+      const el = $('#' + ACP_PANEL_IDS[k]);
+      if (el) el.hidden = (k !== panelKey);
+    });
+
+    // 3. ACP Breadcrumb başlığı güncellemesi
+    const panelTitleEl = $('#acpBreadcrumbPanel');
+    if (panelTitleEl) {
+      panelTitleEl.textContent = ACP_PANEL_TITLES[panelKey] || panelKey;
+    }
+
+    // 4. Panel başlatıcılarının tetiklenmesi
+    if (panelKey === 'dashboard') {
+      renderAcpDashboard();
+    } else if (panelKey === 'anime') {
+      renderAnimeAdminPanel();
+    } else if (panelKey === 'rapid') {
+      if (!options.skipQueueInit) {
+        initOrRefreshRapidQueue(options.rebuildQueue !== false);
+      }
+    } else if (panelKey === 'health') {
+      renderHealthAuditor();
+    } else if (panelKey === 'instagram') {
+      if (window.AdminInstagram && typeof window.AdminInstagram.init === 'function') {
+        window.AdminInstagram.init();
+      }
+    }
+
+    const stage = $('#adminMainStage');
+    if (stage) stage.scrollTop = 0;
+  }
+
+  function renderAcpDashboard() {
+    const container = $('#panelDashboard');
+    if (!container) return;
+
+    const sess = (window.AdminSecurity && AdminSecurity.getSessionInfo && AdminSecurity.getSessionInfo()) || {};
+    const repoText = `${sess.repoOwner || 'tempestian'}/${sess.repoName || 'tempestian.github.io'}`;
+    const branchText = sess.branch || 'main';
+    const authStatus = sess.hasToken ? 'Contents: Read & Write (PAT Doğrulandı)' : 'Salt Okunur (PAT Tanımsız)';
+    const hasLocalPreview = Boolean(
+      localStorage.getItem('tp_site_preview') ||
+      localStorage.getItem('tp_anime_preview') ||
+      localStorage.getItem('tp_multimedia_preview')
+    );
+    const previewStatusText = hasLocalPreview
+      ? '🟡 Önizleme Aktif (Tarayıcı Depolama)'
+      : '🟢 Depoyla Eşitlenmiş (Canlı)';
+
+    const sectionKeys = ['anime', 'series', 'movie', 'manga', 'book', 'guide'];
+    const sectionMeta = {
+      anime: { title: 'Anime Arşivi', icon: '📺', unit: 'anime', scoreLabel: 'Ortalama Puan', desc: 'Sezon & Film Ağırlıklı' },
+      series: { title: 'Dizi Arşivi', icon: '🎬', unit: 'dizi', scoreLabel: 'Ortalama Puan', desc: 'Sezon & Bölüm Puanları' },
+      movie: { title: 'Film Arşivi', icon: '🍿', unit: 'film', scoreLabel: 'Ortalama Puan', desc: 'Ana & Yan Film Puanları' },
+      manga: { title: 'Manga Arşivi', icon: '📖', unit: 'manga', scoreLabel: 'Ortalama Puan', desc: 'Cilt & Bölüm Takibi' },
+      book: { title: 'Kitap Arşivi', icon: '📚', unit: 'kitap', scoreLabel: 'Ortalama Puan', desc: 'Sayfa & Cilt Puanları' },
+      guide: { title: 'Rehber Kataloğu', icon: '🧭', unit: 'rehber', scoreLabel: 'Katalog Yayını', desc: 'Technopat Sosyal Kataloğu' }
+    };
+
+    let totalAllItems = 0;
+    const sectionStats = {};
+    const attentionIssues = {
+      total: 0,
+      missingCover: [],
+      missingScore: [],
+      missingGenres: [],
+      bySection: {}
+    };
+
+    for (const secKey of sectionKeys) {
+      const adapter = CONTENT_ADAPTER_REGISTRY[secKey];
+      const items = (adapter && adapter.getItems && adapter.getItems()) || [];
+      totalAllItems += items.length;
+
+      let scoreText = '—';
+      if (secKey !== 'guide') {
+        const scored = items.filter(it => it && (it.score != null || (Array.isArray(it.parts) && it.parts.length > 0)) && Number(adapter.computeScore(it)) > 0);
+        if (scored.length) {
+          const avg = scored.reduce((sum, it) => sum + Number(adapter.computeScore(it)), 0) / scored.length;
+          scoreText = `${avg.toFixed(1)} / 10`;
+        } else {
+          scoreText = 'Puanlanmadı';
+        }
+      } else {
+        const published = items.filter(it => it && it.status === 'completed').length;
+        scoreText = `${published} Yayında`;
+      }
+
+      const secCfg = ensureSectionEntryInConfig(secKey);
+      const status = secCfg ? (secCfg.status || 'active') : 'active';
+      const statusBadge = status === 'active'
+        ? { text: '🟢 Yayında (Aktif)', cls: 'status-active' }
+        : status === 'soon'
+        ? { text: '🟡 Yakında Kartı', cls: 'status-soon' }
+        : { text: '⚪ Gizli (Taslak)', cls: 'status-hidden' };
+
+      sectionStats[secKey] = {
+        count: items.length,
+        scoreText,
+        statusBadge,
+        status
+      };
+
+      const secMissingCover = [];
+      const secMissingScore = [];
+      const secMissingGenres = [];
+
+      for (const it of items) {
+        if (!it) continue;
+        const hasGenres = Array.isArray(it.customGenres) && it.customGenres.length > 0;
+        if (!hasGenres) secMissingGenres.push({ secKey, item: it });
+
+        if (secKey !== 'guide') {
+          const effScore = adapter.computeScore(it);
+          if (effScore == null && (it.status === 'completed' || it.status === 'watching')) {
+            secMissingScore.push({ secKey, item: it });
+          }
+          if (!it.image) {
+            secMissingCover.push({ secKey, item: it });
+          }
+        }
+      }
+
+      attentionIssues.missingCover.push(...secMissingCover);
+      attentionIssues.missingScore.push(...secMissingScore);
+      attentionIssues.missingGenres.push(...secMissingGenres);
+      attentionIssues.bySection[secKey] = {
+        cover: secMissingCover.length,
+        score: secMissingScore.length,
+        genres: secMissingGenres.length,
+        total: secMissingCover.length + secMissingScore.length + secMissingGenres.length
+      };
+    }
+
+    attentionIssues.total = attentionIssues.missingCover.length + attentionIssues.missingScore.length + attentionIssues.missingGenres.length;
+
+    // Sidebar rozetlerini güncelle
+    const totalBadge = $('#acpTotalItemsBadge');
+    if (totalBadge) totalBadge.textContent = `${totalAllItems} İçerik`;
+    const branchBadge = $('#acpBranchLabel');
+    if (branchBadge) branchBadge.textContent = branchText;
+
+    // HTML İçeriği
+    container.innerHTML = `
+      <div class="acp-dashboard-container">
+        <!-- 1. Hero / Karşılama Kartı -->
+        <div class="acp-hero-card glass sq">
+          <div class="acp-hero-head">
+            <div class="acp-hero-title">
+              <h2>🛡️ Yönetim Kontrol Merkezi</h2>
+              <p id="acpHeroStatusText">Sistem hazır. <strong>${totalAllItems}</strong> arşiv kaydı ve 6 medya bölümü senkronize edildi.</p>
+            </div>
+            <div class="acp-hero-actions">
+              <button type="button" class="btn-primary" id="acpQuickAddBtn"><span>+ Yeni İçerik Ekle</span></button>
+              <button type="button" class="btn-secondary" id="acpQuickRapidBtn"><span>⚡ Hızlı Sıralı</span></button>
+              <button type="button" class="btn-subtle" id="acpQuickHealthBtn"><span>🛡️ Veri Sağlığı Denetimi</span></button>
+              <button type="button" class="btn-subtle" id="acpQuickPreviewBtn"><span>💾 Canlı Önizleme</span></button>
+              <button type="button" class="btn-primary" id="acpQuickCommitBtn" style="background:linear-gradient(135deg, #059669 0%, #047857 100%)"><span>🚀 GitHub'a Kaydet</span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. XenForo Moderasyon / İnceleme Bekleyenler Kuyruğu -->
+        <div id="acpAttentionBoxContainer">
+          ${attentionIssues.total > 0 ? `
+            <div class="acp-attention-card warn glass sq" id="acpAttentionBox">
+              <div class="acp-attention-head">
+                <div class="acp-attention-icon">⚠️</div>
+                <div>
+                  <h3 style="margin:0 0 4px 0;font-size:1.05rem">XenForo Moderasyon Kuyruğu · İnceleme Bekleyenler</h3>
+                  <p class="sub" style="margin:0;font-size:0.85rem">Tüm bölümlerde toplam <strong>${attentionIssues.total}</strong> kayıt eksik veri (kapak, puan veya özel kategori) nedeniyle dikkat gerektiriyor.</p>
+                </div>
+              </div>
+              <div class="acp-attention-chips">
+                <span class="acp-chip ${attentionIssues.missingCover.length ? 'warn' : 'ok'}">🖼️ ${attentionIssues.missingCover.length} Kapak Görseli Eksik</span>
+                <span class="acp-chip ${attentionIssues.missingScore.length ? 'warn' : 'ok'}">⭐ ${attentionIssues.missingScore.length} Puan Eksik</span>
+                <span class="acp-chip ${attentionIssues.missingGenres.length ? 'warn' : 'ok'}">🏷️ ${attentionIssues.missingGenres.length} Özel Türü Tanımlanmamış</span>
+              </div>
+              <div class="acp-attention-actions">
+                <button type="button" class="btn-primary" id="acpResolveInRapidBtn">⚡ Hızlı Sıralı Kuyruğunda Çöz</button>
+                <button type="button" class="btn-subtle" id="acpInspectInHealthBtn">🛡️ Veri Sağlığı Denetleyicisini Aç</button>
+              </div>
+            </div>
+          ` : `
+            <div class="acp-attention-card ok glass sq" id="acpAttentionBox">
+              <div class="acp-attention-head">
+                <div class="acp-attention-icon ok">✅</div>
+                <div>
+                  <h3 style="margin:0 0 4px 0;font-size:1.05rem">%100 Veri Bütünlüğü Tamamlandı</h3>
+                  <p class="sub" style="margin:0;font-size:0.85rem">Tüm anime, dizi, film, manga, kitap ve rehber kayıtlarınızda kapaklar, puanlar ve özel tür kategorileri eksiksiz tanımlanmış.</p>
+                </div>
+              </div>
+              <div class="acp-attention-chips">
+                <span class="acp-chip ok">✨ Tüm Kapaklar Tam</span>
+                <span class="acp-chip ok">⭐ Puanlar Eksiksiz</span>
+                <span class="acp-chip ok">🏷️ Özel Kategoriler Eşleşti</span>
+              </div>
+            </div>
+          `}
+        </div>
+
+        <!-- 3. XenForo Metrik Grid (İçerik Sayaçları) -->
+        <div class="acp-section-heading-row">
+          <div>
+            <h3 style="margin:0;font-size:1.08rem;font-weight:750">📊 Medya &amp; Arşiv Durum Matrisi</h3>
+            <span class="meta" style="font-size:0.8rem">Bölümlerin sitedeki yayın durumu, kayıt sayıları ve ağırlıklı puan ortalamaları</span>
+          </div>
+        </div>
+
+        <div class="acp-stats-grid">
+          ${sectionKeys.map(key => {
+            const meta = sectionMeta[key];
+            const stat = sectionStats[key];
+            return `
+              <div class="acp-stat-card glass sq">
+                <div class="acp-stat-top">
+                  <div class="acp-stat-title">
+                    <span style="font-size:1.35rem">${meta.icon}</span>
+                    <span>${meta.title}</span>
+                  </div>
+                  <span class="acp-status-pill ${stat.statusBadge.cls}">${stat.statusBadge.text}</span>
+                </div>
+                <div>
+                  <div class="acp-stat-count">${stat.count} <small style="font-size:0.82rem;font-weight:550;color:var(--iris-ink-secondary,#a8c5eb)">${meta.unit}</small></div>
+                  <div style="font-size:0.82rem;color:var(--iris-ink-secondary,#a8c5eb);margin-top:4px">${meta.scoreLabel}: <strong style="color:var(--iris-ink,#edf4ff)">${stat.scoreText}</strong></div>
+                </div>
+                <div class="acp-stat-meta">
+                  <span>${meta.desc}</span>
+                  <button type="button" class="btn-subtle acp-jump-btn" data-jump-section="${key}">Yönet →</button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        <!-- 4. Sistem ve Depo Bilgisi Kutusu -->
+        <div class="acp-section-heading-row" style="margin-top:12px">
+          <div>
+            <h3 style="margin:0;font-size:1.08rem;font-weight:750">⚙️ Depo, Senkronizasyon ve Veri Yönetimi</h3>
+            <span class="meta" style="font-size:0.8rem">GitHub API bağlantısı, dal durumu ve tam veri dışa aktarımı</span>
+          </div>
+        </div>
+
+        <div class="acp-system-grid">
+          <div class="acp-system-box glass sq">
+            <h4>📦 GitHub Depo &amp; Dal Bilgisi</h4>
+            <div class="acp-info-list">
+              <div class="acp-info-row">
+                <span class="acp-info-label">Depo:</span>
+                <span class="acp-info-value" id="acpSysRepoVal">${AdminSecurity.sanitizeText(repoText, 80)}</span>
+              </div>
+              <div class="acp-info-row">
+                <span class="acp-info-label">Aktif Dal:</span>
+                <span class="acp-info-value" id="acpSysBranchVal">${AdminSecurity.sanitizeText(branchText, 50)}</span>
+              </div>
+              <div class="acp-info-row">
+                <span class="acp-info-label">PAT Yetkisi:</span>
+                <span class="acp-info-value" id="acpSysAuthVal">${authStatus}</span>
+              </div>
+              <div class="acp-info-row">
+                <span class="acp-info-label">Toplam İçerik:</span>
+                <span class="acp-info-value" id="acpSysTotalCountVal">${totalAllItems} Kayıt</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="acp-system-box glass sq">
+            <h4>💾 Canlı Önizleme &amp; Bellek Durumu</h4>
+            <div class="acp-info-list">
+              <div class="acp-info-row">
+                <span class="acp-info-label">Önizleme Deposu:</span>
+                <span class="acp-info-value" id="acpSysPreviewVal">${previewStatusText}</span>
+              </div>
+              <div class="acp-info-row">
+                <span class="acp-info-label">Kayıt Bekleyen:</span>
+                <span class="acp-info-value" id="acpSysDirtyVal">Değişiklik Yok</span>
+              </div>
+              <div class="acp-info-row">
+                <span class="acp-info-label">Son Güncelleme:</span>
+                <span class="acp-info-value" id="acpSysUpdatedVal">${state.animeData?.updated || 'Bugün'}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="acp-system-box glass sq">
+            <h4>⚡ Hızlı Dışa Aktarım &amp; Yedek</h4>
+            <p class="meta" style="margin-top:0;margin-bottom:12px;font-size:0.8rem">Tüm verilerinizi tek tıkla cihazınıza indirebilir ve güvenle arşivleyebilirsiniz.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <button type="button" class="btn-subtle" id="acpDownloadSectionsBtn">sections.json İndir</button>
+              <button type="button" class="btn-secondary" id="acpDownloadAllJsonBtn">📦 Tüm JSON Paketini İndir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Olay Dinleyicileri
+    const addBtn = $('#acpQuickAddBtn');
+    if (addBtn) {
+      addBtn.onclick = () => {
+        state.activeAdminMediaType = 'anime';
+        if ($('#admMediaTypeSelect')) $('#admMediaTypeSelect').value = 'anime';
+        switchAdminPanel('anime');
+        openAnimeEditor('__new__');
+      };
+    }
+
+    const qRapidBtn = $('#acpQuickRapidBtn');
+    if (qRapidBtn) {
+      qRapidBtn.onclick = () => switchAdminPanel('rapid');
+    }
+
+    const qHealthBtn = $('#acpQuickHealthBtn');
+    if (qHealthBtn) {
+      qHealthBtn.onclick = () => switchAdminPanel('health');
+    }
+
+    const qPrevBtn = $('#acpQuickPreviewBtn');
+    if (qPrevBtn) {
+      qPrevBtn.onclick = () => $('#previewApplyBtn')?.click();
+    }
+
+    const qCommitBtn = $('#acpQuickCommitBtn');
+    if (qCommitBtn) {
+      qCommitBtn.onclick = () => $('#commitGithubBtn')?.click();
+    }
+
+    const dlSecBtn = $('#acpDownloadSectionsBtn');
+    if (dlSecBtn) {
+      dlSecBtn.onclick = () => $('#downloadJsonBtn')?.click();
+    }
+
+    const dlAllBtn = $('#acpDownloadAllJsonBtn');
+    if (dlAllBtn) {
+      dlAllBtn.onclick = () => {
+        const fullBackup = {
+          app: 'Tempestian ACP Backup',
+          exportDate: new Date().toISOString(),
+          sections: state.config,
+          anime: state.animeData,
+          overrides: state.overrides,
+          multimedia: state.multiMediaStore
+        };
+        const dateStr = new Date().toISOString().slice(0, 10);
+        downloadBlobJson(fullBackup, `tempestian-full-backup-${dateStr}.json`);
+        toast('Tüm JSON veri paketi indirildi.');
+      };
+    }
+
+    const resRapid = $('#acpResolveInRapidBtn');
+    if (resRapid) {
+      resRapid.onclick = () => {
+        let targetType = 'anime';
+        for (const k of ['anime', 'series', 'movie', 'manga', 'book', 'guide']) {
+          if (attentionIssues.bySection[k]?.total > 0) {
+            targetType = k;
+            break;
+          }
+        }
+        state.rapidQueue.activeType = targetType;
+        if ($('#rqContentTypeSelect')) $('#rqContentTypeSelect').value = targetType;
+        switchAdminPanel('rapid');
+        toast(`${sectionMeta[targetType]?.title || targetType} Hızlı Sıralı kuyruğunda açıldı.`);
+      };
+    }
+
+    const inspHealth = $('#acpInspectInHealthBtn');
+    if (inspHealth) {
+      inspHealth.onclick = () => switchAdminPanel('health');
+    }
+
+    $$('.acp-jump-btn').forEach(btn => {
+      btn.onclick = () => {
+        const targetSec = btn.dataset.jumpSection;
+        if (!targetSec) return;
+        state.activeAdminMediaType = targetSec;
+        const sel = $('#admMediaTypeSelect');
+        if (sel) sel.value = targetSec;
+        state.selectedAdminIds.clear();
+        switchAdminPanel('anime');
+        renderAnimeAdminPanel();
+        toast(`${sectionMeta[targetSec]?.title || targetSec} yönetim ekranına geçildi.`);
+      };
+    });
+
+    updateDirtyIndicator();
+  }
+
   function bindDashboardEvents() {
     $$('[data-panel]').forEach(btn => {
       btn.onclick = () => {
-        const target = btn.dataset.panel;
-        $$('[data-panel]').forEach(b => b.setAttribute('aria-selected', b.dataset.panel === target));
-        $('#panelAnime').hidden = target !== 'anime';
-        $('#panelRapid').hidden = target !== 'rapid';
-        if (target === 'rapid') initOrRefreshRapidQueue();
-        $('#panelTexts').hidden = target !== 'texts';
-        $('#panelImages').hidden = target !== 'images';
-        $('#panelCategories').hidden = target !== 'categories';
-        $('#panelBoxes').hidden = target !== 'boxes';
-        $('#panelHealth').hidden = target !== 'health';
-        if (target === 'health') renderHealthAuditor();
-        $('#panelSecurity').hidden = target !== 'security';
-        $('#panelInstagram').hidden = target !== 'instagram';
-        if (target === 'instagram' && window.AdminInstagram) window.AdminInstagram.init();
+        switchAdminPanel(btn.dataset.panel);
+        const shell = $('#adminShell');
+        if (shell && window.innerWidth <= 900) {
+          shell.classList.remove('mobile-nav-open');
+        }
       };
     });
+
+    const toggleBtn = $('#sidebarToggleBtn');
+    if (toggleBtn) {
+      toggleBtn.onclick = () => {
+        const shell = $('#adminShell');
+        if (!shell) return;
+        if (window.innerWidth <= 900) {
+          shell.classList.toggle('mobile-nav-open');
+        } else {
+          shell.classList.toggle('sidebar-collapsed');
+          const isCollapsed = shell.classList.contains('sidebar-collapsed');
+          localStorage.setItem('tp_acp_sidebar_collapsed', isCollapsed ? '1' : '0');
+        }
+      };
+    }
+
+    if (localStorage.getItem('tp_acp_sidebar_collapsed') === '1' && window.innerWidth > 900) {
+      $('#adminShell')?.classList.add('sidebar-collapsed');
+    }
 
     $$('#panelTexts input, #panelTexts textarea, #panelBoxes input').forEach(inp => {
       inp.addEventListener('input', () => markDirty('config'));
@@ -7565,12 +8080,9 @@
 
     $('#openRapidQueueFromAnimeBtn').onclick = () => {
       const targetType = state.activeAdminMediaType || 'anime';
-      $$('[data-panel]').forEach(b => b.setAttribute('aria-selected', b.dataset.panel === 'rapid'));
-      $('#panelAnime').hidden = true;
-      $('#panelRapid').hidden = false;
       if ($('#rqContentTypeSelect')) $('#rqContentTypeSelect').value = targetType;
       state.rapidQueue.activeType = targetType;
-      initOrRefreshRapidQueue();
+      switchAdminPanel('rapid');
     };
     $('#rqContentTypeSelect').onchange = e => {
       state.rapidQueue.activeType = e.target.value;
@@ -7924,10 +8436,7 @@
     };
     if ($('#openCommitRecoveryBtn')) {
       $('#openCommitRecoveryBtn').onclick = () => {
-        $$('[data-panel]').forEach(b => b.setAttribute('aria-selected', b.dataset.panel === 'health'));
-        $('#panelAnime').hidden = true;
-        $('#panelHealth').hidden = false;
-        renderHealthAuditor();
+        switchAdminPanel('health');
         fetchAndRenderCommitHistory();
       };
     }
@@ -8340,14 +8849,15 @@
   }
 
   function onSessionUnlocked(sessionInfo) {
-    mountAdminDashboardDOM();
+    renderAdminApp();
     $('#authGate').hidden = true;
     $('#adminApp').hidden = false;
     $('#lockBtn').hidden = false;
     const badge = $('#sessionBadge');
     badge.hidden = false;
     badge.textContent = `Açık · ${sessionInfo.username}`;
-    $('#activeUserLabel').textContent = sessionInfo.username;
+    if ($('#activeUserLabel')) $('#activeUserLabel').textContent = sessionInfo.username;
+    if ($('#acpBranchLabel')) $('#acpBranchLabel').textContent = sessionInfo.branch || 'main';
 
     const modeLbl = $('#syncModeLabel');
     if (sessionInfo.hasToken) {

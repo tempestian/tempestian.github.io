@@ -832,6 +832,9 @@
     if (kind === 'config') state.dirtyConfig = true;
     else if (kind === 'anime') state.dirtyAnime = true;
     else if (kind === 'overrides') state.dirtyOverrides = true;
+    else if (state.multiMediaStore && state.multiMediaStore[kind]) {
+      state.multiMediaStore[kind].dirty = true;
+    }
     updateDirtyIndicator();
   }
 
@@ -1069,9 +1072,9 @@
 
             <div class="acp-nav-group">
               <div class="acp-nav-heading">Sistem &amp; Bakım</div>
-              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="health" aria-selected="false" title="Veri Sağlığı &amp; Kurtarma">
-                <span class="acp-nav-icon">🛡️</span>
-                <span class="acp-nav-label">Veri Sağlığı &amp; Kurtarma</span>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="health" aria-selected="false" title="🛠️ Araçlar &amp; Veri Sağlığı">
+                <span class="acp-nav-icon">🛠️</span>
+                <span class="acp-nav-label">🛠️ Araçlar &amp; Veri Sağlığı</span>
               </button>
               <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="security" aria-selected="false" title="Güvenlik &amp; PAT">
                 <span class="acp-nav-icon">🔐</span>
@@ -1698,8 +1701,138 @@
         </div>
       </div>
 
-      <!-- ADIM 14: VERİ SAĞLIĞI DENETÇİSİ VE TEK TIKLA TAM YEDEKLEME / GERİ YÜKLEME MERKEZİ -->
+      <!-- ADIM 14 & 15: ARAÇLAR, VERİ SAĞLIĞI VE ÖNBELLEK MERKEZİ -->
       <div id="panelHealth" class="admin-panel" hidden>
+        <!-- A) ÖNBELLEK & DİZİN YENİDEN OLUŞTURMA -->
+        <div class="admin-card glass sq" id="rebuildCachesCard">
+          <div class="card-head split-head">
+            <div>
+              <h2>🔄 Önbellek &amp; Dizin Yeniden Oluşturma (Rebuild Caches)</h2>
+              <p>Tüm medya bölümlerindeki ağırlıklı puanları, özel kategori sayaçlarını ve arama dizinlerini tek tıkla baştan derleyin.</p>
+            </div>
+          </div>
+          <div class="tools-action-grid">
+            <div class="tool-action-box">
+              <div class="tool-action-info">
+                <strong>⚡ Tüm Puanları Yeniden Hesapla</strong>
+                <p>Tüm anime, dizi, film, manga ve kitap kayıtlarındaki alt parça (parts) ve kriter ağırlıklarını baştan hesaplar, istatistikleri ve özet metrikleri günceller.</p>
+              </div>
+              <button type="button" class="btn-secondary" id="recalcAllScoresBtn">⚡ Tüm Puanları Yeniden Hesapla</button>
+            </div>
+
+            <div class="tool-action-box">
+              <div class="tool-action-info">
+                <strong>🏷️ Kategori Sayaçlarını Yeniden Dizinle</strong>
+                <p>Tüm bölümlerdeki kullanılan özel türleri tarar, her türün kullanım sayısını günceller, özel kategori kataloğunu tazeler.</p>
+              </div>
+              <button type="button" class="btn-secondary" id="reindexCategoriesBtn">🏷️ Kategori Sayaçlarını Yeniden Dizinle</button>
+            </div>
+
+            <div class="tool-action-box highlight">
+              <div class="tool-action-info">
+                <strong>🚀 Tüm Site Önbelleğini Baştan Derle</strong>
+                <p>Hem ağırlıklı puanları, hem tür sayaçlarını, hem de Dashboard metriklerini tek tıkla baştan derleyip yeniler.</p>
+              </div>
+              <button type="button" class="btn-primary" id="rebuildAllCachesBtn">🚀 Tüm Site Önbelleğini Baştan Derle</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- B) KIRIK GÖRSEL VE BAĞLANTI TEŞHİSİ -->
+        <div class="admin-card glass sq" id="diagnosticsCard">
+          <div class="card-head split-head">
+            <div>
+              <h2>🔍 Kırık Görsel ve Bağlantı Teşhisi (Diagnostics)</h2>
+              <p>Kapak görsellerinin (poster) ve harici kaynak bağlantılarının (Anilist, IMDb, Technopat) 404 verip vermediğini tarayıcı içinde hızlıca test eder.</p>
+            </div>
+            <div class="form-actions" style="margin:0;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <select id="diagSectionSelect" class="inp glass" style="width:auto;min-width:170px;font-weight:650">
+                <option value="all">🌐 Tüm Medya Arşivi</option>
+                <option value="anime">📺 Anime Verileri</option>
+                <option value="series">🎬 Dizi Verileri</option>
+                <option value="movie">🍿 Film Verileri</option>
+                <option value="manga">📖 Manga Verileri</option>
+                <option value="book">📚 Kitap Verileri</option>
+                <option value="guide">🧭 Rehber Kataloğu</option>
+              </select>
+              <button type="button" class="btn-primary" id="startDiagBtn">🔍 Taramayı Başlat</button>
+            </div>
+          </div>
+          <div id="diagResultsArea" class="diag-results-stack">
+            <p class="help-txt" style="margin:0">Yukarıdaki <b>"Taramayı Başlat"</b> butonuna tıklayarak seçili bölümdeki tüm kapak görsellerinin erişilebilirliğini tarayıcınız üzerinden canlı test edebilirsiniz.</p>
+          </div>
+        </div>
+
+        <!-- C) GELİŞMİŞ TOPLU GÜNCELLEME SİHİRBAZI -->
+        <div class="admin-card glass sq" id="batchUpdateCard">
+          <div class="card-head split-head">
+            <div>
+              <h2>⚡ Toplu Güncelleme Sihirbazı (Batch Update)</h2>
+              <p>Belirli bir filtreye uyan kayıtlara tek seferde toplu durum, özel tür veya puan işlemi uygulayın.</p>
+            </div>
+          </div>
+          <div class="batch-wizard-form">
+            <div class="field-row">
+              <label class="field" style="flex:1">
+                <span>1. Medya Bölümü</span>
+                <select id="batchSectionSelect" class="inp glass">
+                  <option value="anime">📺 Anime</option>
+                  <option value="series">🎬 Dizi</option>
+                  <option value="movie">🍿 Film</option>
+                  <option value="manga">📖 Manga</option>
+                  <option value="book">📚 Kitap</option>
+                  <option value="guide">🧭 Rehber</option>
+                </select>
+              </label>
+              <label class="field" style="flex:1">
+                <span>2. Hedef Kriter Filtresi</span>
+                <select id="batchCriteriaSelect" class="inp glass">
+                  <option value="all">Tüm Kayıtlar</option>
+                  <option value="no_genre">Özel Türü Olmayanlar</option>
+                  <option value="no_score">Puanı Olmayanlar</option>
+                  <option value="completed">Tamamlanmış Olanlar</option>
+                </select>
+              </label>
+              <label class="field" style="flex:1">
+                <span>3. Uygulanacak Eylem</span>
+                <select id="batchActionSelect" class="inp glass">
+                  <option value="add_genre">Özel Tür Ekle</option>
+                  <option value="change_status">Sitedeki Yayın Durumunu Değiştir</option>
+                  <option value="recalc_score">Tüm Seçilenlerin Puanını Yeniden Hesapla</option>
+                </select>
+              </label>
+            </div>
+
+            <div id="batchActionParams" class="batch-action-params" style="margin-top:6px;">
+              <div id="batchParamGenreWrap" class="field-row">
+                <label class="field" style="flex:1">
+                  <span>Eklenecek Özel Tür Adı</span>
+                  <input type="text" id="batchGenreInput" class="inp glass" placeholder="Örn: Siberpunk, Kült Klasik, Distopya...">
+                </label>
+              </div>
+              <div id="batchParamStatusWrap" class="field-row" hidden>
+                <label class="field" style="flex:1">
+                  <span>Sitedeki Yayın Durumu</span>
+                  <select id="batchStatusSelect" class="inp glass"></select>
+                </label>
+              </div>
+              <div id="batchParamRecalcWrap" class="help-txt" hidden style="margin-bottom:0">
+                <span>ℹ️ Seçili kritere uyan tüm kayıtların parça puanları ve kriter katsayıları baştan hesaplanacak, istatistikler güncellenecektir.</span>
+              </div>
+            </div>
+
+            <div class="batch-wizard-footer" style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+              <div id="batchMatchSummary" class="batch-match-pill">
+                <span>Hedef: <b>0</b> kayıt eşleşti</span>
+              </div>
+              <button type="button" class="btn-primary" id="applyBatchBtn" style="min-width:260px">
+                ⚡ Seçili Kriterdeki Kayıtlara Uygula
+              </button>
+            </div>
+            <div id="batchResultBanner" class="status-banner ok" hidden style="margin-top:12px;margin-bottom:0;"></div>
+          </div>
+        </div>
+
         <div class="admin-card glass sq" id="commitRecoveryCard">
           <div class="card-head split-head">
             <div>
@@ -6376,6 +6509,464 @@
     }
   }
 
+  // ============================================================================
+  // [AI-MIMARI-NOTU: ADIM 15 — ARAÇLAR, BAKIM VE TEŞHİS MOTORU]
+  // ============================================================================
+
+  function rebuildAllScores() {
+    const scoredMediaKeys = ['anime', 'series', 'movie', 'manga', 'book'];
+    let totalUpdated = 0;
+    let totalScanned = 0;
+
+    for (const key of scoredMediaKeys) {
+      const adapter = CONTENT_ADAPTER_REGISTRY[key];
+      if (!adapter) continue;
+      const items = adapter.getItems() || [];
+      totalScanned += items.length;
+
+      let sectionModified = false;
+      for (const it of items) {
+        if (!it) continue;
+        const newScore = resolveEffectiveScore(it, key);
+        if (newScore !== it.score) {
+          it.score = newScore;
+          it.adminModified = true;
+          totalUpdated++;
+          sectionModified = true;
+        }
+      }
+
+      if (key === 'anime') {
+        state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
+        state.animeData.updated = new Date().toISOString().slice(0, 10);
+        markDirty('anime');
+      } else {
+        const store = ensureMultiMediaStore(key);
+        store.stats = computeMediaStatsClient(store.items, state.animeData.statsConfig, key);
+        store.dirty = true;
+        updateDirtyIndicator();
+      }
+    }
+
+    if (getActiveAdminAdapter()) {
+      renderAnimeAdminPanel();
+    }
+    toast(`⚡ ${totalScanned} kayıt tarandı, ${totalUpdated} puan güncellendi ve tüm istatistikler baştan hesaplandı.`);
+    return { totalScanned, totalUpdated };
+  }
+
+  function reindexAllCategories() {
+    const allMediaKeys = ['anime', 'series', 'movie', 'manga', 'book', 'guide'];
+    let totalUniqueGenres = 0;
+    let totalUsageCount = 0;
+
+    for (const key of allMediaKeys) {
+      const adapter = CONTENT_ADAPTER_REGISTRY[key];
+      if (!adapter) continue;
+      const items = adapter.getItems() || [];
+      const genreCounts = new Map();
+
+      // Mevcut katalogdaki türleri başlangıçta 0 ile ekle
+      const existingCatalog = adapter.getCustomCatalog() || [];
+      for (const g of existingCatalog) {
+        if (g && typeof g === 'string' && g.trim()) {
+          genreCounts.set(g.trim(), 0);
+        }
+      }
+
+      // Tüm kayıtlardaki customGenres'ı tara
+      for (const it of items) {
+        if (!it) continue;
+        const genres = Array.isArray(it.customGenres) ? it.customGenres : [];
+        for (const g of genres) {
+          if (g && typeof g === 'string' && g.trim()) {
+            const clean = g.trim();
+            genreCounts.set(clean, (genreCounts.get(clean) || 0) + 1);
+            totalUsageCount++;
+          }
+        }
+      }
+
+      // Dizinlenen katalog: kullanım sayısına ve alfabetik sıraya göre
+      const sortedCatalog = [...genreCounts.keys()].sort((a, b) => {
+        const diff = (genreCounts.get(b) || 0) - (genreCounts.get(a) || 0);
+        return diff !== 0 ? diff : a.localeCompare(b, 'tr');
+      });
+
+      totalUniqueGenres += sortedCatalog.length;
+
+      if (key === 'anime') {
+        state.animeData.customGenreCatalog = sortedCatalog;
+        state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
+        markDirty('anime');
+      } else {
+        const store = ensureMultiMediaStore(key);
+        store.customGenreCatalog = sortedCatalog;
+        store.stats = computeMediaStatsClient(store.items, state.animeData.statsConfig, key);
+        store.dirty = true;
+        updateDirtyIndicator();
+      }
+    }
+
+    if (typeof renderTagManager === 'function') {
+      renderTagManager();
+    }
+    toast(`🏷️ Tüm bölümlerdeki ${totalUniqueGenres} özel kategori dizinlendi ve sayaçlar güncellendi.`);
+    return { totalUniqueGenres, totalUsageCount };
+  }
+
+  function rebuildAllSiteCaches() {
+    rebuildAllScores();
+    reindexAllCategories();
+    renderAcpDashboard();
+    renderHealthAuditor();
+    toast('🚀 Tüm site önbelleği, ağırlıklı puanlar, kategori dizinleri ve pano metrikleri baştan derlendi!');
+  }
+
+  function testImageProbe(url, timeoutMs = 3000) {
+    return new Promise((resolve) => {
+      if (!url || typeof url !== 'string' || !url.trim()) {
+        resolve({ ok: false, reason: 'Kapak görseli belirtilmemiş (Boş URL)' });
+        return;
+      }
+      const trimmed = url.trim();
+      const img = new Image();
+      let timer = null;
+      let finished = false;
+
+      const finish = (ok, reason) => {
+        if (finished) return;
+        finished = true;
+        if (timer) clearTimeout(timer);
+        img.onload = null;
+        img.onerror = null;
+        img.src = '';
+        resolve({ ok, reason });
+      };
+
+      timer = setTimeout(() => {
+        finish(false, 'Zaman aşımı (3 sn)');
+      }, timeoutMs);
+
+      img.onload = () => finish(true, 'Yüklendi');
+      img.onerror = () => finish(false, 'Yüklenemedi (404 veya Bağlantı Hatası)');
+      img.referrerPolicy = 'no-referrer';
+      img.src = trimmed;
+    });
+  }
+
+  async function runImageDiagnostics() {
+    const startBtn = $('#startDiagBtn');
+    const secSelect = $('#diagSectionSelect');
+    const resultsArea = $('#diagResultsArea');
+    if (!startBtn || !resultsArea) return;
+
+    const chosenSec = secSelect ? secSelect.value : 'all';
+    const targetKeys = chosenSec === 'all' ? ['anime', 'series', 'movie', 'manga', 'book', 'guide'] : [chosenSec];
+
+    const candidates = [];
+    for (const key of targetKeys) {
+      const adapter = CONTENT_ADAPTER_REGISTRY[key];
+      if (!adapter) continue;
+      const items = adapter.getItems() || [];
+      for (const it of items) {
+        if (!it) continue;
+        candidates.push({
+          id: it.id,
+          title: it.title || it.id,
+          image: it.image || '',
+          sectionKey: key,
+          sectionLabel: adapter.label,
+          rawItem: it
+        });
+      }
+    }
+
+    if (candidates.length === 0) {
+      resultsArea.innerHTML = `<div class="status-banner ok" style="margin:0">Seçili bölümde taranacak kayıt bulunamadı.</div>`;
+      return;
+    }
+
+    startBtn.disabled = true;
+    if (secSelect) secSelect.disabled = true;
+
+    resultsArea.innerHTML = `
+      <div class="diag-progress-bar">
+        <div class="diag-progress-inner" id="diagProgressFill" style="width:0%"></div>
+      </div>
+      <p class="help-txt" id="diagProgressTxt" style="margin:8px 0 0">🔍 Kapak görselleri test ediliyor (0 / ${candidates.length})...</p>
+    `;
+
+    const brokenList = [];
+    let completed = 0;
+    let index = 0;
+    const concurrency = 6;
+
+    const worker = async () => {
+      while (index < candidates.length) {
+        const i = index++;
+        const cand = candidates[i];
+        const res = await testImageProbe(cand.image, 3000);
+        completed++;
+        const pct = Math.round((completed / candidates.length) * 100);
+        const fill = $('#diagProgressFill');
+        if (fill) fill.style.width = pct + '%';
+        const txt = $('#diagProgressTxt');
+        if (txt) txt.textContent = `🔍 Kapak görselleri test ediliyor (${completed} / ${candidates.length}) — %${pct}`;
+
+        if (!res.ok) {
+          brokenList.push({ ...cand, reason: res.reason });
+        }
+      }
+    };
+
+    const pool = Array.from({ length: Math.min(concurrency, candidates.length) }, () => worker());
+    await Promise.all(pool);
+
+    startBtn.disabled = false;
+    if (secSelect) secSelect.disabled = false;
+
+    if (brokenList.length === 0) {
+      resultsArea.innerHTML = `
+        <div class="status-banner ok" style="margin:0">
+          ✅ Taranan ${candidates.length} kaydın tamamında kapak görselleri başarıyla yüklendi.
+        </div>
+      `;
+      toast(`✅ Taranan ${candidates.length} kaydın tamamında kapak görselleri sorunsuz.`);
+    } else {
+      resultsArea.innerHTML = `
+        <div class="status-banner warn" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+          <div>
+            <strong>⚠️ Kırık veya Erişilemeyen Kapak Görselleri Bulundu</strong>
+            <p class="meta" style="margin:4px 0 0">Taranan ${candidates.length} kayıttan <b>${brokenList.length}</b> tanesinde görsel yükleme hatası tespit edildi.</p>
+          </div>
+          <button type="button" class="btn-secondary" id="sendAllBrokenToRapidBtn">⚡ Hepsini Hızlı Sıralı'ya Aktar (${brokenList.length})</button>
+        </div>
+        <div class="diag-broken-list" id="diagBrokenList"></div>
+      `;
+
+      const listEl = $('#diagBrokenList');
+      brokenList.forEach(b => {
+        const row = document.createElement('div');
+        row.className = 'diag-broken-item';
+        row.innerHTML = `
+          <div class="diag-broken-main">
+            <div class="diag-thumb-ph" aria-hidden="true">🖼️</div>
+            <div class="diag-broken-meta">
+              <div class="diag-broken-title-row">
+                <strong>${AdminSecurity.sanitizeText(b.title, 80)}</strong>
+                <span class="diag-badge-sec">${b.sectionLabel}</span>
+                <span class="diag-reason-badge">${AdminSecurity.sanitizeText(b.reason, 60)}</span>
+              </div>
+              <code class="diag-url" title="${AdminSecurity.sanitizeText(b.image, 250)}">${AdminSecurity.sanitizeText(b.image || 'Kapak Görseli Yok', 80)}</code>
+            </div>
+          </div>
+          <div class="diag-actions">
+            <button type="button" class="btn-subtle diag-edit-btn" style="padding:5px 12px;font-size:.78rem">Kapağı Düzenle</button>
+            <button type="button" class="btn-secondary diag-rapid-btn" style="padding:5px 12px;font-size:.78rem">⚡ Hızlı Sıralı'ya Aktar</button>
+          </div>
+        `;
+        row.querySelector('.diag-edit-btn').onclick = () => {
+          state.activeAdminMediaType = b.sectionKey;
+          if ($('#admMediaTypeSelect')) $('#admMediaTypeSelect').value = b.sectionKey;
+          renderAnimeAdminPanel();
+          openAnimeEditor(b.id);
+        };
+        row.querySelector('.diag-rapid-btn').onclick = () => {
+          sendHealthItemsToRapidQueue(b.sectionKey, [b.rawItem], 'Kırık Görsel Teşhisi');
+        };
+        listEl.appendChild(row);
+      });
+
+      const sendAllBtn = $('#sendAllBrokenToRapidBtn');
+      if (sendAllBtn) {
+        sendAllBtn.onclick = () => {
+          const bySection = {};
+          for (const b of brokenList) {
+            if (!bySection[b.sectionKey]) bySection[b.sectionKey] = [];
+            bySection[b.sectionKey].push(b.rawItem);
+          }
+          const keys = Object.keys(bySection);
+          if (keys.length === 1) {
+            sendHealthItemsToRapidQueue(keys[0], bySection[keys[0]], 'Kırık Görsel Teşhisi');
+          } else if (keys.length > 1) {
+            const targetKey = keys.includes(state.activeAdminMediaType) ? state.activeAdminMediaType : keys[0];
+            sendHealthItemsToRapidQueue(targetKey, bySection[targetKey], 'Kırık Görsel Teşhisi');
+            toast(`Öncelikli olarak "${CONTENT_ADAPTER_REGISTRY[targetKey].label}" bölümündeki ${bySection[targetKey].length} kırık kayıt Hızlı Düzenleme'ye aktarıldı.`);
+          }
+        };
+      }
+      toast(`⚠️ ${brokenList.length} kayıtta kırık görsel tespit edildi.`, 'warn');
+    }
+  }
+
+  function getBatchMatchingItems(secKey, criteria) {
+    const adapter = CONTENT_ADAPTER_REGISTRY[secKey];
+    if (!adapter) return [];
+    const items = adapter.getItems() || [];
+    return items.filter(it => {
+      if (!it) return false;
+      if (criteria === 'all') return true;
+      if (criteria === 'no_genre') {
+        return !Array.isArray(it.customGenres) || it.customGenres.length === 0;
+      }
+      if (criteria === 'no_score') {
+        if (secKey === 'guide') return false;
+        const sc = adapter.computeScore(it);
+        return sc == null || Number(sc) <= 0;
+      }
+      if (criteria === 'completed') {
+        return it.status === 'completed';
+      }
+      return false;
+    });
+  }
+
+  function updateBatchWizardUI() {
+    const secSelect = $('#batchSectionSelect');
+    const critSelect = $('#batchCriteriaSelect');
+    const actionSelect = $('#batchActionSelect');
+    if (!secSelect || !critSelect || !actionSelect) return;
+
+    const secKey = secSelect.value || 'anime';
+    const criteria = critSelect.value || 'all';
+    const action = actionSelect.value || 'add_genre';
+    const adapter = CONTENT_ADAPTER_REGISTRY[secKey] || CONTENT_ADAPTER_REGISTRY.anime;
+
+    const statusSelect = $('#batchStatusSelect');
+    if (statusSelect && statusSelect.dataset.lastSec !== secKey) {
+      statusSelect.dataset.lastSec = secKey;
+      statusSelect.replaceChildren();
+      const opts = adapter.statusOptions || [];
+      opts.forEach(([val, lbl]) => {
+        const opt = document.createElement('option');
+        opt.value = val;
+        opt.textContent = lbl;
+        statusSelect.appendChild(opt);
+      });
+    }
+
+    const genreWrap = $('#batchParamGenreWrap');
+    const statusWrap = $('#batchParamStatusWrap');
+    const recalcWrap = $('#batchParamRecalcWrap');
+    if (genreWrap) genreWrap.hidden = (action !== 'add_genre');
+    if (statusWrap) statusWrap.hidden = (action !== 'change_status');
+    if (recalcWrap) recalcWrap.hidden = (action !== 'recalc_score');
+
+    const matched = getBatchMatchingItems(secKey, criteria);
+    const summary = $('#batchMatchSummary');
+    if (summary) {
+      summary.innerHTML = `<span>Hedef: <b>${matched.length}</b> kayıt eşleşti</span>`;
+    }
+
+    const applyBtn = $('#applyBatchBtn');
+    if (applyBtn) {
+      applyBtn.textContent = `⚡ Seçili Kriterdeki ${matched.length} Kayda Uygula`;
+      applyBtn.disabled = (matched.length === 0);
+    }
+  }
+
+  function applyBatchWizardAction() {
+    const secSelect = $('#batchSectionSelect');
+    const critSelect = $('#batchCriteriaSelect');
+    const actionSelect = $('#batchActionSelect');
+    if (!secSelect || !critSelect || !actionSelect) return;
+
+    const secKey = secSelect.value || 'anime';
+    const criteria = critSelect.value || 'all';
+    const action = actionSelect.value || 'add_genre';
+    const matched = getBatchMatchingItems(secKey, criteria);
+    if (!matched.length) {
+      toast('Seçili kritere uyan kayıt bulunamadı.', 'warn');
+      return;
+    }
+
+    const adapter = CONTENT_ADAPTER_REGISTRY[secKey];
+    let updatedCount = 0;
+
+    if (action === 'add_genre') {
+      const rawTag = ($('#batchGenreInput')?.value || '').trim();
+      const tag = AdminSecurity.sanitizeText(rawTag, 40);
+      if (!tag) {
+        toast('Lütfen eklenecek özel tür adını girin.', 'warn');
+        $('#batchGenreInput')?.focus();
+        return;
+      }
+      for (const it of matched) {
+        if (!Array.isArray(it.customGenres)) it.customGenres = [];
+        if (!it.customGenres.includes(tag)) {
+          it.customGenres.push(tag);
+          if (secKey !== 'guide') {
+            if (!Array.isArray(it.genres)) it.genres = [];
+            if (!it.genres.includes(tag)) it.genres.push(tag);
+          }
+          it.adminModified = true;
+          updatedCount++;
+        }
+      }
+      adapter.addCustomCategory(tag);
+    } else if (action === 'change_status') {
+      const nextStatus = $('#batchStatusSelect')?.value || 'completed';
+      for (const it of matched) {
+        if (it.status !== nextStatus) {
+          it.status = nextStatus;
+          it.adminModified = true;
+          updatedCount++;
+        }
+      }
+    } else if (action === 'recalc_score') {
+      if (secKey === 'guide') {
+        toast('Rehber kataloğunda puanlama modeli bulunmamaktadır.', 'warn');
+        return;
+      }
+      for (const it of matched) {
+        const eff = resolveEffectiveScore(it, secKey);
+        if (eff != null) {
+          it.score = eff;
+          it.adminModified = true;
+          updatedCount++;
+        }
+      }
+    }
+
+    if (secKey === 'anime') {
+      state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
+      state.animeData.updated = new Date().toISOString().slice(0, 10);
+      markDirty('anime');
+    } else {
+      const store = ensureMultiMediaStore(secKey);
+      store.stats = computeMediaStatsClient(store.items, state.animeData.statsConfig, secKey);
+      store.dirty = true;
+      updateDirtyIndicator();
+    }
+
+    const banner = $('#batchResultBanner');
+    if (banner) {
+      banner.hidden = false;
+      banner.className = 'status-banner ok';
+      banner.textContent = `✅ Seçili ${matched.length} kayıttan ${updatedCount} tanesine işlem başarıyla uygulandı!`;
+    }
+
+    updateBatchWizardUI();
+    if (state.activeAdminMediaType === secKey) renderAnimeAdminPanel();
+    renderHealthAuditor();
+    toast(`${updatedCount} kayıt başarıyla güncellendi.`);
+  }
+
+  function initToolsAndMaintenanceModule() {
+    if ($('#recalcAllScoresBtn')) $('#recalcAllScoresBtn').onclick = rebuildAllScores;
+    if ($('#reindexCategoriesBtn')) $('#reindexCategoriesBtn').onclick = reindexAllCategories;
+    if ($('#rebuildAllCachesBtn')) $('#rebuildAllCachesBtn').onclick = rebuildAllSiteCaches;
+    if ($('#startDiagBtn')) $('#startDiagBtn').onclick = runImageDiagnostics;
+
+    if ($('#batchSectionSelect')) $('#batchSectionSelect').onchange = updateBatchWizardUI;
+    if ($('#batchCriteriaSelect')) $('#batchCriteriaSelect').onchange = updateBatchWizardUI;
+    if ($('#batchActionSelect')) $('#batchActionSelect').onchange = updateBatchWizardUI;
+    if ($('#applyBatchBtn')) $('#applyBatchBtn').onclick = applyBatchWizardAction;
+
+    updateBatchWizardUI();
+  }
+
   function exportFullBackupSnapshot() {
     collectFormFieldsIntoConfig();
     state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
@@ -7292,7 +7883,7 @@
     images: 'Görseller & Medya',
     categories: 'Özel Kategoriler & Türler',
     boxes: 'Kutucuk & Hızlı Linkler',
-    health: 'Veri Sağlığı & Kurtarma',
+    health: '🛠️ Araçlar & Veri Sağlığı',
     security: 'Güvenlik & PAT'
   };
 
@@ -7342,6 +7933,7 @@
       }
     } else if (panelKey === 'health') {
       renderHealthAuditor();
+      if (typeof updateBatchWizardUI === 'function') updateBatchWizardUI();
     } else if (panelKey === 'instagram') {
       if (window.AdminInstagram && typeof window.AdminInstagram.init === 'function') {
         window.AdminInstagram.init();
@@ -8451,6 +9043,7 @@
     $('#exportFullSnapshotBtn').onclick = exportFullBackupSnapshot;
     if ($('#copyActiveSectionJsonBtn')) $('#copyActiveSectionJsonBtn').onclick = copyActiveSectionJsonToClipboard;
     $('#restoreSnapshotBtn').onclick = restoreFullBackupSnapshot;
+    initToolsAndMaintenanceModule();
 
     $('#downloadOverridesBtn').onclick = () => {
       downloadBlobJson(state.overrides, 'overrides.json');

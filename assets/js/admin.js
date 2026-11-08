@@ -349,6 +349,9 @@
     dirtyConfig: false,
     dirtyAnime: false,
     dirtyOverrides: false,
+    sessionChangesLog: [],
+    initialSnapshots: null,
+    dismissedNotices: new Set(),
     setupSecret: '',
     verifiedSetupContext: null,
     remoteVault: null,
@@ -1115,6 +1118,9 @@
               <button type="button" class="btn-primary" id="commitGithubBtn">GitHub'a Kaydet (Commit)</button>
             </div>
           </div>
+
+          <!-- ADIM 5: AKILLI YÖNETİCİ BİLDİRİMLERİ (NOTICES & AKILLI HATIRLATICILAR) -->
+          <div id="acpNoticesContainer" class="acp-notices-container" aria-live="polite"></div>
 
           <!-- YÖNETİM ÖZETİ DASHBOARD (GENEL BAKIŞ) -->
           <div id="panelDashboard" class="admin-panel">
@@ -2193,6 +2199,55 @@
           </div>
         </div>
       </div>
+
+      <!-- ADIM 4: COMMIT ÖNCESİ DEĞİŞİKLİK İNCELEME (DIFF PREVIEW & LOG) MODALI -->
+      <div id="commitDiffModal" class="adm-modal" role="dialog" aria-modal="true" aria-labelledby="commitDiffTitle" hidden>
+        <div class="adm-modal-bg" id="commitDiffModalBg"></div>
+        <div class="adm-modal-card sq commit-diff-card">
+          <div class="adm-modal-head">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="commit-diff-icon">🚀</span>
+              <div>
+                <h3 id="commitDiffTitle" style="margin:0;font-size:1.12rem">GitHub'a Kaydet · Değişiklik İnceleme (Diff Preview)</h3>
+                <p class="meta" style="margin:2px 0 0;font-size:0.8rem">Depoya gönderilecek tüm değişiklikleri inceleyin ve commit mesajını belirleyin.</p>
+              </div>
+            </div>
+            <button type="button" class="btn glass" id="closeCommitDiffModalBtn" aria-label="Kapat">✕</button>
+          </div>
+
+          <div class="commit-diff-body">
+            <div class="field" style="margin-bottom:0.75rem">
+              <label for="commitMsgInput" style="display:flex;justify-content:space-between;margin-bottom:6px">
+                <span style="font-weight:600;font-size:0.86rem">Commit Mesajı</span>
+                <small class="meta" style="font-size:0.76rem">GitHub commit geçmişinde görünecektir</small>
+              </label>
+              <input type="text" id="commitMsgInput" class="inp glass" placeholder="feat(content): anime, dizi ve site ayarları güncellendi">
+            </div>
+
+            <div class="commit-diff-tree-wrap">
+              <div class="commit-diff-tree-head">
+                <span style="font-weight:650;font-size:0.86rem">Değişiklik Özeti Ağacı</span>
+                <span id="commitDiffTotalBadge" class="commit-diff-count-badge">0 Değişiklik</span>
+              </div>
+              <div id="commitDiffList" class="commit-diff-list"></div>
+            </div>
+
+            <div id="commitProgressWrap" class="commit-progress-wrap" hidden>
+              <div class="commit-progress-bar-bg">
+                <div id="commitProgressBar" class="commit-progress-bar" style="width:0%"></div>
+              </div>
+              <div id="commitProgressStatus" class="commit-progress-status">GitHub'a yükleniyor...</div>
+            </div>
+          </div>
+
+          <div class="form-actions" style="justify-content:flex-end;gap:10px;margin-top:1rem">
+            <button type="button" class="btn-subtle" id="cancelCommitDiffBtn">İptal</button>
+            <button type="button" class="btn-primary" id="confirmCommitDiffBtn" style="background:linear-gradient(135deg, #059669 0%, #047857 100%)">
+              <span>🚀 Onayla ve GitHub'a Kaydet (Commit)</span>
+            </button>
+          </div>
+        </div>
+      </div>
     `;
     bindDashboardEvents();
   }
@@ -2407,6 +2462,8 @@
     state.dirtyConfig = false;
     state.dirtyAnime = false;
     state.dirtyOverrides = false;
+    captureInitialSnapshots();
+    state.sessionChangesLog = [];
     updateDirtyIndicator();
     switchAdminPanel('dashboard');
   }
@@ -2923,6 +2980,13 @@
       ensureMultiMediaStore(adapter.id).dirty = true;
       updateDirtyIndicator();
     }
+    logSessionChange({
+      file: adapter.dataFile || 'data/anime.json',
+      mediaType: adapter.id,
+      action: 'delete',
+      title: target.title,
+      detail: 'Listeden silindi'
+    });
     renderAnimeAdminPanel();
     toast(`"${target.title}" listeden kaldırıldı.`);
   }
@@ -4508,6 +4572,13 @@
     else list.unshift(d);
     list.sort((a, b) => (b.addedAt || '').localeCompare(a.addedAt || '') || (a.title || '').localeCompare(b.title || '', 'tr'));
     adapter.saveItem(d);
+    logSessionChange({
+      file: adapter.dataFile || 'data/anime.json',
+      mediaType: adapter.id,
+      action: isNew ? 'add' : 'update',
+      title: d.title,
+      detail: `Puan: ${d.score != null ? d.score : 'Puansız'}`
+    });
 
     $('#animeEditModal').hidden = true;
     renderAnimeAdminPanel();
@@ -5552,6 +5623,605 @@
       acpDirtyVal.textContent = anyDirty ? 'Kaydedilmemiş Değişiklikler Var' : 'Değişiklik Yok';
       acpDirtyVal.className = anyDirty ? 'stat-v err' : 'stat-v ok';
     }
+    renderAcpNotices();
+  }
+
+  // ============================================================================
+  // [ADIM 4 & 5: COMMIT ÖNCESİ DEĞİŞİKLİK İNCELEME (DIFF) & AKILLI YÖNETİCİ BİLDİRİMLERİ]
+  // ============================================================================
+
+  function captureInitialSnapshots() {
+    state.initialSnapshots = {
+      config: JSON.parse(JSON.stringify(state.config || {})),
+      anime: (state.animeData?.anime || []).map(a => ({
+        id: a.id,
+        title: a.title,
+        score: a.score,
+        status: a.status,
+        image: a.image,
+        customGenres: Array.isArray(a.customGenres) ? [...a.customGenres] : []
+      })),
+      overrides: JSON.parse(JSON.stringify(state.overrides || {})),
+      multi: {}
+    };
+    for (const mKey of ['series', 'movie', 'manga', 'book', 'guide']) {
+      const items = state.multiMediaStore[mKey]?.items || [];
+      state.initialSnapshots.multi[mKey] = items.map(it => ({
+        id: it.id,
+        title: it.title,
+        score: it.score,
+        status: it.status,
+        image: it.image,
+        customGenres: Array.isArray(it.customGenres) ? [...it.customGenres] : []
+      }));
+    }
+  }
+
+  function logSessionChange(entry) {
+    if (!entry) return;
+    state.sessionChangesLog.push({
+      timestamp: Date.now(),
+      ...entry
+    });
+  }
+
+  function computeDetailedDiff() {
+    const groups = [];
+
+    // 1. data/sections.json
+    if (state.dirtyConfig) {
+      const configChanges = [];
+      const initCfg = state.initialSnapshots?.config || {};
+      const currCfg = state.config || {};
+
+      if (JSON.stringify(initCfg.hero) !== JSON.stringify(currCfg.hero)) {
+        configChanges.push({ type: 'update', title: 'Ana Başlık & Karşılama (Hero)', detail: 'Giriş metinleri ve butonlar güncellendi', badge: '~ Güncellenen', badgeClass: 'diff-mod' });
+      }
+      if (JSON.stringify(initCfg.about) !== JSON.stringify(currCfg.about)) {
+        configChanges.push({ type: 'update', title: 'Hakkında & Profil Biyografisi', detail: 'Profil metni veya rozetler güncellendi', badge: '~ Güncellenen', badgeClass: 'diff-mod' });
+      }
+      if (JSON.stringify(initCfg.countdown) !== JSON.stringify(currCfg.countdown) || JSON.stringify(initCfg.gift) !== JSON.stringify(currCfg.gift)) {
+        configChanges.push({ type: 'update', title: 'Geri Sayım & Hediye Ayarları', detail: 'Etkinlik ve sayaç yapılandırması güncellendi', badge: '~ Güncellenen', badgeClass: 'diff-mod' });
+      }
+
+      const initSecs = initCfg.sections || [];
+      const currSecs = currCfg.sections || [];
+      for (const cs of currSecs) {
+        const is = initSecs.find(s => s.id === cs.id);
+        if (is && (is.status !== cs.status || is.title !== cs.title)) {
+          configChanges.push({
+            type: 'update',
+            title: `Kategori: ${cs.title || cs.id}`,
+            detail: `Yayın Durumu: ${is.status} ➔ ${cs.status}`,
+            badge: '~ Güncellenen',
+            badgeClass: 'diff-mod'
+          });
+        }
+      }
+
+      if (currCfg.pages && initCfg.pages) {
+        for (const [pKey, pVal] of Object.entries(currCfg.pages)) {
+          if (JSON.stringify(pVal) !== JSON.stringify(initCfg.pages[pKey])) {
+            configChanges.push({
+              type: 'update',
+              title: `Kategori Sayfa Metni: ${pKey.toUpperCase()}`,
+              detail: 'Başlık, açıklama veya alt metinler güncellendi',
+              badge: '~ Güncellenen',
+              badgeClass: 'diff-mod'
+            });
+          }
+        }
+      }
+
+      if (configChanges.length === 0) {
+        configChanges.push({ type: 'update', title: 'Site Yapılandırması', detail: 'Genel site ayarları güncellendi', badge: '~ Güncellenen', badgeClass: 'diff-mod' });
+      }
+
+      groups.push({
+        file: 'data/sections.json',
+        label: 'Site Yapılandırması & Metinleri',
+        changes: configChanges
+      });
+    }
+
+    // 2. data/anime.json
+    if (state.dirtyAnime) {
+      const animeChanges = [];
+      const initAnimeMap = new Map((state.initialSnapshots?.anime || []).map(a => [a.id, a]));
+      const currAnimeMap = new Map((state.animeData?.anime || []).map(a => [a.id, a]));
+
+      for (const [id, curr] of currAnimeMap.entries()) {
+        const init = initAnimeMap.get(id);
+        if (!init) {
+          animeChanges.push({
+            type: 'add',
+            title: curr.title || 'Yeni Anime',
+            detail: `Yeni içerik · Puan: ${curr.score != null ? curr.score : 'Puansız'} · ${curr.status || 'Durum belirtilmedi'}`,
+            badge: '+ Yeni Eklenen',
+            badgeClass: 'diff-add'
+          });
+        } else {
+          const scoreChanged = init.score !== curr.score;
+          const statusChanged = init.status !== curr.status;
+          const imageChanged = init.image !== curr.image;
+          const titleChanged = init.title !== curr.title;
+          if (scoreChanged || statusChanged || imageChanged || titleChanged || curr.adminModified) {
+            const detailParts = [];
+            if (scoreChanged) detailParts.push(`Puan: ${init.score ?? 'Yok'} ➔ ${curr.score ?? 'Yok'}`);
+            if (statusChanged) detailParts.push(`Durum: ${init.status ?? 'Yok'} ➔ ${curr.status ?? 'Yok'}`);
+            if (imageChanged) detailParts.push('Kapak görseli güncellendi');
+            if (titleChanged) detailParts.push(`Başlık: ${init.title} ➔ ${curr.title}`);
+            if (!detailParts.length) detailParts.push('İçerik/parça verileri güncellendi');
+            animeChanges.push({
+              type: 'update',
+              title: curr.title || 'Anime',
+              detail: detailParts.join(' · '),
+              badge: '~ Güncellenen',
+              badgeClass: 'diff-mod'
+            });
+          }
+        }
+      }
+
+      for (const [id, init] of initAnimeMap.entries()) {
+        if (!currAnimeMap.has(id)) {
+          animeChanges.push({
+            type: 'delete',
+            title: init.title || 'Anime',
+            detail: 'Listeden silindi',
+            badge: '🗑️ Silinen',
+            badgeClass: 'diff-del'
+          });
+        }
+      }
+
+      if (animeChanges.length === 0) {
+        animeChanges.push({
+          type: 'update',
+          title: 'Anime Kataloğu',
+          detail: 'İstatistikler veya puanlar güncellendi',
+          badge: '~ Güncellenen',
+          badgeClass: 'diff-mod'
+        });
+      }
+
+      groups.push({
+        file: 'data/anime.json',
+        label: `Anime Kataloğu (${animeChanges.length} işlem)`,
+        changes: animeChanges
+      });
+    }
+
+    // 3. Çoklu Medya Verileri (series, movie, manga, book, guide)
+    for (const [mKey, store] of Object.entries(state.multiMediaStore || {})) {
+      if (store && store.dirty) {
+        const adapter = CONTENT_ADAPTER_REGISTRY[mKey];
+        if (!adapter) continue;
+        const mediaChanges = [];
+        const initItemsMap = new Map((state.initialSnapshots?.multi?.[mKey] || []).map(it => [it.id, it]));
+        const currItemsMap = new Map((store.items || []).map(it => [it.id, it]));
+
+        for (const [id, curr] of currItemsMap.entries()) {
+          const init = initItemsMap.get(id);
+          if (!init) {
+            mediaChanges.push({
+              type: 'add',
+              title: curr.title || `Yeni ${adapter.label}`,
+              detail: `Yeni kayıt · Puan: ${curr.score != null ? curr.score : 'Puansız'}`,
+              badge: '+ Yeni Eklenen',
+              badgeClass: 'diff-add'
+            });
+          } else {
+            const scoreChanged = init.score !== curr.score;
+            const statusChanged = init.status !== curr.status;
+            const imageChanged = init.image !== curr.image;
+            const titleChanged = init.title !== curr.title;
+            if (scoreChanged || statusChanged || imageChanged || titleChanged || curr.adminModified) {
+              const detailParts = [];
+              if (scoreChanged) detailParts.push(`Puan: ${init.score ?? 'Yok'} ➔ ${curr.score ?? 'Yok'}`);
+              if (statusChanged) detailParts.push(`Durum: ${init.status ?? 'Yok'} ➔ ${curr.status ?? 'Yok'}`);
+              if (imageChanged) detailParts.push('Kapak görseli güncellendi');
+              if (titleChanged) detailParts.push(`Başlık: ${init.title} ➔ ${curr.title}`);
+              if (!detailParts.length) detailParts.push('Detaylar güncellendi');
+              mediaChanges.push({
+                type: 'update',
+                title: curr.title || adapter.label,
+                detail: detailParts.join(' · '),
+                badge: '~ Güncellenen',
+                badgeClass: 'diff-mod'
+              });
+            }
+          }
+        }
+
+        for (const [id, init] of initItemsMap.entries()) {
+          if (!currItemsMap.has(id)) {
+            mediaChanges.push({
+              type: 'delete',
+              title: init.title || adapter.label,
+              detail: 'Listeden silindi',
+              badge: '🗑️ Silinen',
+              badgeClass: 'diff-del'
+            });
+          }
+        }
+
+        if (mediaChanges.length === 0) {
+          mediaChanges.push({
+            type: 'update',
+            title: `${adapter.label} Kataloğu`,
+            detail: 'Veriler güncellendi',
+            badge: '~ Güncellenen',
+            badgeClass: 'diff-mod'
+          });
+        }
+
+        groups.push({
+          file: adapter.dataFile,
+          label: `${adapter.label} Kataloğu (${mediaChanges.length} işlem)`,
+          changes: mediaChanges
+        });
+      }
+    }
+
+    // 4. overrides.json
+    if (state.dirtyOverrides) {
+      groups.push({
+        file: 'data/overrides.json',
+        label: 'Senkronizasyon Kuralları',
+        changes: [
+          { type: 'update', title: 'overrides.json', detail: 'Hariç tutulanlar, başlık eşleşmeleri veya birleştirmeler güncellendi', badge: '~ Güncellenen', badgeClass: 'diff-mod' }
+        ]
+      });
+    }
+
+    // 5. Yüklenen Görseller (pendingUploads)
+    if (state.pendingUploads.size > 0) {
+      const uploadChanges = [];
+      for (const [targetPath, info] of state.pendingUploads.entries()) {
+        uploadChanges.push({
+          type: 'add',
+          title: targetPath,
+          detail: `Yeni görsel dosyası (${Math.round((info.bytes?.length || 0) / 1024)} KB)`,
+          badge: '+ Yeni Görsel',
+          badgeClass: 'diff-add'
+        });
+      }
+      groups.push({
+        file: 'assets/img/...',
+        label: `Yüklenen Yeni Görseller (${state.pendingUploads.size})`,
+        changes: uploadChanges
+      });
+    }
+
+    return groups;
+  }
+
+  function generateCommitMessage(diffGroups) {
+    const fileNames = diffGroups.map(g => g.file);
+    const hasConfig = fileNames.includes('data/sections.json');
+    const hasAnime = fileNames.includes('data/anime.json');
+    const hasUploads = diffGroups.some(g => g.file.startsWith('assets/'));
+
+    const parts = [];
+    if (hasAnime) parts.push('anime');
+    if (fileNames.includes('data/series.json')) parts.push('dizi');
+    if (fileNames.includes('data/movies.json')) parts.push('film');
+    if (fileNames.includes('data/manga.json')) parts.push('manga');
+    if (fileNames.includes('data/books.json')) parts.push('kitap');
+    if (fileNames.includes('data/guides.json')) parts.push('rehber');
+    if (hasConfig) parts.push('site ayarları');
+    if (hasUploads) parts.push('yeni görseller');
+
+    if (parts.length === 0) return 'feat(content): içerik ve site verileri güncellendi';
+    if (parts.length === 1) return `feat(${parts[0]}): ${parts[0]} verileri güncellendi`;
+    return `feat(content): ${parts.join(', ')} güncellendi`;
+  }
+
+  function getGlobalMissingDataStats() {
+    let missingCoverCount = 0;
+    let missingScoreCount = 0;
+    const missingItems = [];
+    const types = ['anime', 'series', 'movie', 'manga', 'book'];
+    for (const t of types) {
+      const adapter = CONTENT_ADAPTER_REGISTRY[t];
+      if (!adapter) continue;
+      const items = adapter.getItems() || [];
+      for (const it of items) {
+        let isMissing = false;
+        if (!it.image) {
+          missingCoverCount++;
+          isMissing = true;
+        }
+        const effScore = adapter.computeScore(it);
+        if (effScore == null && (it.status === 'completed' || it.status === 'watching')) {
+          missingScoreCount++;
+          isMissing = true;
+        }
+        if (isMissing) {
+          missingItems.push({ ...it, mediaType: t });
+        }
+      }
+    }
+    return {
+      missingCoverCount,
+      missingScoreCount,
+      totalMissing: missingItems.length,
+      uniqueMissingItems: missingItems
+    };
+  }
+
+  function renderAcpNotices() {
+    const container = $('#acpNoticesContainer');
+    if (!container) return;
+    container.replaceChildren();
+
+    const anyMultiDirty = Object.values(state.multiMediaStore || {}).some(s => s && s.dirty);
+    const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || anyMultiDirty || state.pendingUploads.size > 0;
+    const hasPreview = Boolean(
+      localStorage.getItem('tp_site_preview') ||
+      localStorage.getItem('tp_anime_preview') ||
+      localStorage.getItem('tp_multimedia_preview')
+    );
+    const missingStats = getGlobalMissingDataStats();
+
+    // A) Kaydedilmemiş Değişiklik Bildirimi (Amber)
+    if (anyDirty && !state.dismissedNotices.has('uncommitted_changes')) {
+      const noticeA = document.createElement('div');
+      noticeA.className = 'acp-notice acp-notice-amber';
+      noticeA.innerHTML = `
+        <div class="acp-notice-left">
+          <span class="acp-notice-icon">💾</span>
+          <span class="acp-notice-text"><b>Dikkat:</b> Oturumda kaydedilmemiş değişiklikler var. Değişiklikler tarayıcı önbelleğinde duruyor.</span>
+        </div>
+        <div class="acp-notice-actions">
+          <button type="button" class="btn-subtle acp-notice-btn" id="noticePreviewBtn">Canlı Önizlemeye Uygula</button>
+          <button type="button" class="btn-primary acp-notice-btn" id="noticeCommitBtn">🚀 Değişiklikleri İncele &amp; Kaydet</button>
+          <button type="button" class="acp-notice-dismiss" aria-label="Bildirimi Gizle" title="Bu bildirimi bu oturum için gizle">✕</button>
+        </div>
+      `;
+      noticeA.querySelector('#noticePreviewBtn').onclick = () => $('#previewApplyBtn')?.click();
+      noticeA.querySelector('#noticeCommitBtn').onclick = () => $('#commitGithubBtn')?.click();
+      noticeA.querySelector('.acp-notice-dismiss').onclick = () => {
+        state.dismissedNotices.add('uncommitted_changes');
+        renderAcpNotices();
+      };
+      container.appendChild(noticeA);
+    }
+
+    // B) Canlı Önizleme Aktif Bildirimi (Sapphire)
+    if (hasPreview && !state.dismissedNotices.has('preview_active')) {
+      const noticeB = document.createElement('div');
+      noticeB.className = 'acp-notice acp-notice-sapphire';
+      noticeB.innerHTML = `
+        <div class="acp-notice-left">
+          <span class="acp-notice-icon">👁️</span>
+          <span class="acp-notice-text"><b>Canlı Önizleme Aktif:</b> Ziyaretçiler henüz bu değişiklikleri görmüyor. Canlı sitede yayınlamak için GitHub'a commit gönderebilirsiniz.</span>
+        </div>
+        <div class="acp-notice-actions">
+          <button type="button" class="btn-subtle acp-notice-btn" id="noticeClearPreviewBtn">Önizlemeyi Sıfırla</button>
+          <button type="button" class="acp-notice-dismiss" aria-label="Bildirimi Gizle" title="Bu bildirimi bu oturum için gizle">✕</button>
+        </div>
+      `;
+      noticeB.querySelector('#noticeClearPreviewBtn').onclick = () => $('#clearPreviewBtn')?.click();
+      noticeB.querySelector('.acp-notice-dismiss').onclick = () => {
+        state.dismissedNotices.add('preview_active');
+        renderAcpNotices();
+      };
+      container.appendChild(noticeB);
+    }
+
+    // C) Kritik Veri Eksikliği Bildirimi (Rose)
+    if (missingStats.totalMissing > 0 && !state.dismissedNotices.has('missing_data')) {
+      const noticeC = document.createElement('div');
+      noticeC.className = 'acp-notice acp-notice-rose';
+      noticeC.innerHTML = `
+        <div class="acp-notice-left">
+          <span class="acp-notice-icon">⚠️</span>
+          <span class="acp-notice-text"><b>Veri Eksikliği:</b> <b>${missingStats.totalMissing}</b> içerikte kapak görseli veya puan eksik.</span>
+        </div>
+        <div class="acp-notice-actions">
+          <button type="button" class="btn-danger-soft acp-notice-btn" id="noticeFixMissingBtn">⚡ Hızlı Sıralı'da Düzelt</button>
+          <button type="button" class="acp-notice-dismiss" aria-label="Bildirimi Gizle" title="Bu bildirimi bu oturum için gizle">✕</button>
+        </div>
+      `;
+      noticeC.querySelector('#noticeFixMissingBtn').onclick = () => {
+        const first = missingStats.uniqueMissingItems[0];
+        const targetType = (first && first.mediaType) || 'anime';
+        state.rapidQueue.activeType = targetType;
+        const matchingIds = missingStats.uniqueMissingItems.filter(it => it.mediaType === targetType).map(it => it.id);
+        state.rapidQueue.customTargetIds = matchingIds;
+        state.rapidQueue.filterMode = 'health_custom';
+        switchAdminPanel('rapid', { rebuildQueue: true });
+      };
+      noticeC.querySelector('.acp-notice-dismiss').onclick = () => {
+        state.dismissedNotices.add('missing_data');
+        renderAcpNotices();
+      };
+      container.appendChild(noticeC);
+    }
+  }
+
+  function openCommitDiffModal() {
+    const diffGroups = computeDetailedDiff();
+    const modal = $('#commitDiffModal');
+    if (!modal) return;
+
+    const totalChanges = diffGroups.reduce((acc, g) => acc + g.changes.length, 0);
+    const countBadge = $('#commitDiffTotalBadge');
+    if (countBadge) countBadge.textContent = `${totalChanges} Değişiklik`;
+
+    const msgInput = $('#commitMsgInput');
+    if (msgInput) {
+      msgInput.value = generateCommitMessage(diffGroups);
+    }
+
+    const list = $('#commitDiffList');
+    if (list) {
+      list.replaceChildren();
+      for (const grp of diffGroups) {
+        const groupEl = document.createElement('div');
+        groupEl.className = 'commit-diff-group';
+        groupEl.innerHTML = `
+          <div class="commit-diff-group-head">
+            <span class="commit-diff-file-tag">${grp.file}</span>
+            <span class="commit-diff-group-title">${grp.label}</span>
+            <span class="commit-diff-group-count">${grp.changes.length} değişiklik</span>
+          </div>
+          <div class="commit-diff-group-items"></div>
+        `;
+        const itemsBox = groupEl.querySelector('.commit-diff-group-items');
+        for (const ch of grp.changes) {
+          const row = document.createElement('div');
+          row.className = 'commit-diff-row';
+          row.innerHTML = `
+            <span class="commit-diff-badge ${ch.badgeClass}">${ch.badge}</span>
+            <span class="commit-diff-item-title">${AdminSecurity.sanitizeText(ch.title, 120)}</span>
+            <span class="commit-diff-item-detail">${AdminSecurity.sanitizeText(ch.detail, 160)}</span>
+          `;
+          itemsBox.appendChild(row);
+        }
+        list.appendChild(groupEl);
+      }
+    }
+
+    const progWrap = $('#commitProgressWrap');
+    if (progWrap) progWrap.hidden = true;
+    const confirmBtn = $('#confirmCommitDiffBtn');
+    if (confirmBtn) confirmBtn.disabled = false;
+    const cancelBtn = $('#cancelCommitDiffBtn');
+    if (cancelBtn) cancelBtn.disabled = false;
+
+    modal.hidden = false;
+    if (msgInput) msgInput.focus();
+  }
+
+  async function executeCommitProcess() {
+    const sess = AdminSecurity.getSessionInfo();
+    if (!sess || !sess.hasToken) {
+      toast('GitHub\'a kaydetmek için GitHub Fine-Grained Token (PAT) gereklidir.', 'warn');
+      return;
+    }
+
+    const confirmBtn = $('#confirmCommitDiffBtn');
+    const cancelBtn = $('#cancelCommitDiffBtn');
+    const progWrap = $('#commitProgressWrap');
+    const progBar = $('#commitProgressBar');
+    const progStatus = $('#commitProgressStatus');
+
+    if (confirmBtn) confirmBtn.disabled = true;
+    if (cancelBtn) cancelBtn.disabled = true;
+    if (progWrap) progWrap.hidden = false;
+
+    const customCommitMsg = ($('#commitMsgInput')?.value || '').trim() || 'feat(content): içerik ve site verileri güncellendi';
+
+    try {
+      // 1. Görseller
+      if (state.pendingUploads.size > 0) {
+        if (progStatus) progStatus.textContent = `Görseller yükleniyor (0/${state.pendingUploads.size})...`;
+        if (progBar) progBar.style.width = '15%';
+        let upIdx = 0;
+        for (const [targetPath, info] of state.pendingUploads.entries()) {
+          upIdx++;
+          if (progStatus) progStatus.textContent = `Görsel yükleniyor (${upIdx}/${state.pendingUploads.size}): ${targetPath}...`;
+          await AdminSecurity.githubPutFile(targetPath, info.bytes, `Görsel yüklendi: ${targetPath}`, true);
+        }
+        state.pendingUploads.clear();
+        renderPendingUploadsList();
+      }
+
+      // 2. data/sections.json
+      const anyMultiDirty = Object.values(state.multiMediaStore || {}).some(s => s && s.dirty);
+      if (state.dirtyConfig || (!state.dirtyAnime && !state.dirtyOverrides && !anyMultiDirty)) {
+        if (progStatus) progStatus.textContent = 'Site ayarları (data/sections.json) kaydediliyor...';
+        if (progBar) progBar.style.width = '35%';
+        await AdminSecurity.githubPutFile('data/sections.json', JSON.stringify(state.config, null, 2) + '\n', `${customCommitMsg} [sections.json]`, false);
+        state.dirtyConfig = false;
+      }
+
+      // 3. data/overrides.json
+      if (state.dirtyOverrides) {
+        if (progStatus) progStatus.textContent = 'Senkron kuralları (data/overrides.json) kaydediliyor...';
+        if (progBar) progBar.style.width = '55%';
+        await AdminSecurity.githubPutFile('data/overrides.json', JSON.stringify(state.overrides, null, 2) + '\n', `${customCommitMsg} [overrides.json]`, false);
+        state.dirtyOverrides = false;
+      }
+
+      // 4. data/anime.json
+      if (state.dirtyAnime) {
+        if (progStatus) progStatus.textContent = 'Anime kataloğu (data/anime.json) kaydediliyor...';
+        if (progBar) progBar.style.width = '75%';
+        state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
+        state.animeData.updated = new Date().toISOString().slice(0, 10);
+        await AdminSecurity.githubPutFile('data/anime.json', JSON.stringify(state.animeData, null, 2) + '\n', `${customCommitMsg} [anime.json]`, false);
+        state.dirtyAnime = false;
+      }
+
+      // 5. Çoklu Medya Verileri
+      for (const [mKey, store] of Object.entries(state.multiMediaStore || {})) {
+        if (store && store.dirty) {
+          const adapter = CONTENT_ADAPTER_REGISTRY[mKey];
+          if (adapter && adapter.dataFile) {
+            if (progStatus) progStatus.textContent = `${adapter.label} kataloğu (${adapter.dataFile}) kaydediliyor...`;
+            if (progBar) progBar.style.width = '88%';
+            const payload = {
+              schemaVersion: 3,
+              updated: new Date().toISOString().slice(0, 10),
+              source: 'site-first:' + mKey,
+              customGenreCatalog: store.customGenreCatalog || [],
+              stats: computeMediaStatsClient(store.items || [], state.animeData.statsConfig, mKey),
+              items: cleanMediaItemsForSave(store.items || [], mKey)
+            };
+            await AdminSecurity.githubPutFile(adapter.dataFile, JSON.stringify(payload, null, 2) + '\n', `${customCommitMsg} [${adapter.dataFile}]`, false);
+            store.dirty = false;
+          }
+        }
+      }
+
+      if (progBar) progBar.style.width = '100%';
+      if (progStatus) progStatus.textContent = 'Değişiklikler başarıyla kaydedildi!';
+
+      localStorage.removeItem('tp_site_preview');
+      localStorage.removeItem('tp_anime_preview');
+      localStorage.removeItem('tp_multimedia_preview');
+      localStorage.removeItem('ui2');
+      const clrBtn = $('#clearPreviewBtn');
+      if (clrBtn) clrBtn.hidden = true;
+
+      captureInitialSnapshots();
+      state.sessionChangesLog = [];
+      updateDirtyIndicator();
+
+      setTimeout(() => {
+        const modal = $('#commitDiffModal');
+        if (modal) modal.hidden = true;
+        toast('Değişiklikler GitHub deposuna başarıyla kaydedildi!');
+      }, 450);
+    } catch (err) {
+      toast(err.message, 'err');
+      if (progStatus) progStatus.textContent = 'Hata: ' + err.message;
+      if (confirmBtn) confirmBtn.disabled = false;
+      if (cancelBtn) cancelBtn.disabled = false;
+    }
+  }
+
+  function handleCommitClick() {
+    collectFormFieldsIntoConfig();
+    const anyMultiDirty = Object.values(state.multiMediaStore || {}).some(s => s && s.dirty);
+    const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || anyMultiDirty || state.pendingUploads.size > 0;
+
+    if (!anyDirty) {
+      toast('Kaydedilecek herhangi bir değişiklik bulunmuyor.');
+      return;
+    }
+
+    const sess = AdminSecurity.getSessionInfo();
+    if (!sess || !sess.hasToken) {
+      toast('GitHub\'a doğrudan kaydetmek için "Profil & Güvenlik" sekmesinden GitHub Fine-Grained Token (PAT) ekleyin.', 'warn');
+      return;
+    }
+
+    openCommitDiffModal();
   }
 
   function getActiveAdapter() {
@@ -6089,6 +6759,13 @@
     d.score = adapter.computeScore(d);
     state.rapidQueue.editedInSession.add(d.id);
     adapter.saveItem(structuredClone(d));
+    logSessionChange({
+      file: adapter.dataFile || 'data/anime.json',
+      mediaType: adapter.id,
+      action: 'update',
+      title: d.title,
+      detail: `Hızlı Sıralı'da güncellendi (Puan: ${d.score != null ? d.score : 'Puansız'})`
+    });
 
     if (advanceNext) {
       const qIds = state.rapidQueue.queueIds || [];
@@ -7500,6 +8177,12 @@
       fileName: file.name,
       size: file.size
     });
+    logSessionChange({
+      file: cleanTarget,
+      action: 'add',
+      title: cleanTarget,
+      detail: `Yeni görsel dosyası (${Math.round(file.size / 1024)} KB)`
+    });
     renderPendingUploadsList();
     updateDirtyIndicator();
     toast(`${cleanTarget} yükleme kuyruğuna eklendi.`);
@@ -7939,6 +8622,8 @@
         window.AdminInstagram.init();
       }
     }
+
+    renderAcpNotices();
 
     const stage = $('#adminMainStage');
     if (stage) stage.scrollTop = 0;
@@ -9344,71 +10029,17 @@
       toast('sections.json indirildi.');
     };
 
-    $('#commitGithubBtn').onclick = async () => {
-      collectFormFieldsIntoConfig();
-      const sess = AdminSecurity.getSessionInfo();
-      if (!sess || !sess.hasToken) {
-        toast('GitHub\'a doğrudan kaydetmek için "Profil & Güvenlik" sekmesinden GitHub Fine-Grained Token (PAT) ekleyin.', 'warn');
-        return;
-      }
-      const btn = $('#commitGithubBtn');
-      const origText = btn.textContent;
-      btn.disabled = true;
-      btn.textContent = 'Kaydediliyor...';
-      try {
-        for (const [targetPath, info] of state.pendingUploads.entries()) {
-          await AdminSecurity.githubPutFile(targetPath, info.bytes, `Görsel güncellendi: ${targetPath}`, true);
-        }
-        state.pendingUploads.clear();
-        renderPendingUploadsList();
-
-        const anyMultiDirty = Object.values(state.multiMediaStore || {}).some(s => s && s.dirty);
-        if (state.dirtyConfig || (!state.dirtyAnime && !state.dirtyOverrides && !anyMultiDirty)) {
-          await AdminSecurity.githubPutFile('data/sections.json', JSON.stringify(state.config, null, 2) + '\n', 'Site içeriği admin panelinden güncellendi', false);
-          state.dirtyConfig = false;
-        }
-        if (state.dirtyOverrides) {
-          await AdminSecurity.githubPutFile('data/overrides.json', JSON.stringify(state.overrides, null, 2) + '\n', 'Senkron kuralları (overrides.json) güncellendi', false);
-          state.dirtyOverrides = false;
-        }
-        if (state.dirtyAnime) {
-          state.animeData.stats = computeStatsClient(state.animeData.anime, state.animeData.statsConfig);
-          state.animeData.updated = new Date().toISOString().slice(0, 10);
-          await AdminSecurity.githubPutFile('data/anime.json', JSON.stringify(state.animeData, null, 2) + '\n', 'Anime verileri ve istatistikler admin panelinden güncellendi', false);
-          state.dirtyAnime = false;
-        }
-        for (const [mKey, store] of Object.entries(state.multiMediaStore || {})) {
-          if (store && store.dirty) {
-            const adapter = CONTENT_ADAPTER_REGISTRY[mKey];
-            if (adapter && adapter.dataFile) {
-              const payload = {
-                schemaVersion: 3,
-                updated: new Date().toISOString().slice(0, 10),
-                source: 'site-first:' + mKey,
-                customGenreCatalog: store.customGenreCatalog || [],
-                stats: computeMediaStatsClient(store.items || [], state.animeData.statsConfig, mKey),
-                items: cleanMediaItemsForSave(store.items || [], mKey)
-              };
-              await AdminSecurity.githubPutFile(adapter.dataFile, JSON.stringify(payload, null, 2) + '\n', `${adapter.label} verileri admin panelinden güncellendi`, false);
-              store.dirty = false;
-            }
-          }
-        }
-
-        localStorage.removeItem('tp_site_preview');
-        localStorage.removeItem('tp_anime_preview');
-        localStorage.removeItem('tp_multimedia_preview');
-        localStorage.removeItem('ui2');
-        $('#clearPreviewBtn').hidden = true;
-        updateDirtyIndicator();
-        toast('Değişiklikler GitHub deposuna başarıyla kaydedildi!');
-      } catch (err) {
-        toast(err.message, 'err');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = origText;
-      }
+    $('#commitGithubBtn').onclick = handleCommitClick;
+    const commitDiffModal = $('#commitDiffModal');
+    const closeCommitModal = () => {
+      const confirmBtn = $('#confirmCommitDiffBtn');
+      if (confirmBtn && confirmBtn.disabled) return;
+      if (commitDiffModal) commitDiffModal.hidden = true;
     };
+    if ($('#closeCommitDiffModalBtn')) $('#closeCommitDiffModalBtn').onclick = closeCommitModal;
+    if ($('#cancelCommitDiffBtn')) $('#cancelCommitDiffBtn').onclick = closeCommitModal;
+    if ($('#commitDiffModalBg')) $('#commitDiffModalBg').onclick = closeCommitModal;
+    if ($('#confirmCommitDiffBtn')) $('#confirmCommitDiffBtn').onclick = executeCommitProcess;
 
     $('#saveSecTokenBtn').onclick = async () => {
       const pat = $('#secPatInput').value.trim();

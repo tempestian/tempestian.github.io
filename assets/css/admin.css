@@ -2768,7 +2768,7 @@ select.inp:focus,
 }
 
 /* ============================================================================
-   XENFORO TARZI ACP SİSTEMİ — GRUPLANDIRILMIŞ SOL MENÜ VE GENEL BAKIŞ
+   YÖNETİM PANELİ SİSTEMİ — GRUPLANDIRILMIŞ SOL MENÜ VE GENEL BAKIŞ
    ============================================================================ */
 .admin-shell {
   display: grid;
@@ -2877,7 +2877,7 @@ select.inp:focus,
   color: #557299;
 }
 
-/* XenForo Ağaç Menü (.acp-nav-tree) */
+/* Hiyerarşik Ağaç Menü (.acp-nav-tree) */
 .acp-nav-tree {
   display: flex;
   flex-direction: column;
@@ -3147,7 +3147,7 @@ select.inp:focus,
 }
 
 /* ============================================================================
-   XENFORO ACP DASHBOARD BİLEŞENLERİ
+   YÖNETİM PANELİ DASHBOARD BİLEŞENLERİ
    ============================================================================ */
 .acp-dashboard-container {
   display: flex;
@@ -3211,7 +3211,7 @@ select.inp:focus,
   gap: 8px;
 }
 
-/* 2. Moderasyon Kuyruğu / İnceleme Bekleyenler Kartı (.acp-attention-card) */
+/* 2. Veri Denetimi / İnceleme Bekleyenler Kartı (.acp-attention-card) */
 .acp-attention-card {
   padding: 20px 22px;
   border-radius: 16px;
@@ -3313,7 +3313,7 @@ select.inp:focus,
   margin-top: 4px;
 }
 
-/* 3. XenForo Metrik Grid (.acp-stats-grid & .acp-stat-card) */
+/* 3. Metrik Durum Grid (.acp-stats-grid & .acp-stat-card) */
 .acp-section-heading-row {
   display: flex;
   justify-content: space-between;

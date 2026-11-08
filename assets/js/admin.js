@@ -1017,12 +1017,12 @@
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
             <div class="acp-brand-text">
-              <strong class="acp-brand-title">Tempestian ACP</strong>
+              <strong class="acp-brand-title">Tempestian Panel</strong>
               <span class="acp-brand-sub">Yönetim Paneli</span>
             </div>
           </div>
 
-          <nav class="acp-nav-tree" role="tablist" aria-label="XenForo ACP Menüsü">
+          <nav class="acp-nav-tree" role="tablist" aria-label="Yönetim Menüsü">
             <div class="acp-nav-group">
               <div class="acp-nav-heading">Genel Bakış</div>
               <button type="button" class="acp-nav-item nav-tab active" role="tab" data-panel="dashboard" aria-selected="true" title="Yönetim Özeti">
@@ -1094,8 +1094,8 @@
               <button type="button" class="btn glass acp-sidebar-toggle" id="sidebarToggleBtn" aria-label="Menüyü Daralt/Genişlet" title="Sol Menüyü Daralt / Genişlet">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
               </button>
-              <nav class="acp-breadcrumb" id="acpBreadcrumb" aria-label="ACP Yol Haritası">
-                <span class="crumb-root">ACP</span>
+              <nav class="acp-breadcrumb" id="acpBreadcrumb" aria-label="Yol Haritası">
+                <span class="crumb-root">Panel</span>
                 <span class="crumb-sep">/</span>
                 <span class="crumb-user" id="activeUserLabel">tempestian</span>
                 <span class="crumb-sep">/</span>
@@ -1113,7 +1113,7 @@
             </div>
           </div>
 
-          <!-- XENFORO TARZI ACP DASHBOARD (YÖNETİM ANA SAYFASI / GENEL BAKIŞ) -->
+          <!-- YÖNETİM ÖZETİ DASHBOARD (GENEL BAKIŞ) -->
           <div id="panelDashboard" class="admin-panel">
             <div id="acpDashboardContent"></div>
           </div>
@@ -6702,7 +6702,7 @@
       { title: '+ Yeni Manga Ekle', sub: 'Manga bölümünde yeni kayıt penceresini açar', badge: 'Komut', run: () => { switchToMediaSectionAndOpen('manga', '__new__'); } },
       { title: '+ Yeni Kitap Ekle', sub: 'Kitap bölümünde yeni kayıt penceresini açar', badge: 'Komut', run: () => { switchToMediaSectionAndOpen('book', '__new__'); } },
       { title: '+ Yeni Rehber Ekle', sub: 'Rehber kataloğuna yeni Technopat konusu ekler', badge: 'Komut', run: () => { switchToMediaSectionAndOpen('guide', '__new__'); } },
-      { title: '📊 XenForo Yönetim Özeti (Dashboard)', sub: 'İçerik metrikleri, moderasyon kuyruğu ve sistem genel bakışı', badge: 'Panel', run: () => { switchAdminPanel('dashboard'); } },
+      { title: '📊 Yönetim Özeti (Genel Bakış)', sub: 'İçerik metrikleri, veri denetimi ve sistem genel bakışı', badge: 'Panel', run: () => { switchAdminPanel('dashboard'); } },
       { title: '⚡ Hızlı Sıralı Düzenleme Ekranını Aç', sub: 'Kuyruk modunda hızlı kategori ve puan düzenleme', badge: 'Panel', run: () => { switchAdminPanel('rapid'); } },
       { title: '📝 Kategori Sayfası Metinlerini Düzenle', sub: 'Anime, Rehber, Dizi, Film, Manga ve Kitap sayfa metinleri', badge: 'Panel', run: () => { switchAdminPanel('texts'); } },
       { title: '🛡️ Veri Sağlığı & Commit Kurtarma Merkezi', sub: 'Eksik kapak/puan denetimi ve tam yedekleme', badge: 'Panel', run: () => { switchAdminPanel('health'); } },
@@ -7482,14 +7482,14 @@
           </div>
         </div>
 
-        <!-- 2. XenForo Moderasyon / İnceleme Bekleyenler Kuyruğu -->
+        <!-- 2. Veri Denetimi / İnceleme Bekleyenler Kuyruğu -->
         <div id="acpAttentionBoxContainer">
           ${attentionIssues.total > 0 ? `
             <div class="acp-attention-card warn glass sq" id="acpAttentionBox">
               <div class="acp-attention-head">
                 <div class="acp-attention-icon">⚠️</div>
                 <div>
-                  <h3 style="margin:0 0 4px 0;font-size:1.05rem">XenForo Moderasyon Kuyruğu · İnceleme Bekleyenler</h3>
+                  <h3 style="margin:0 0 4px 0;font-size:1.05rem">İnceleme Bekleyenler · Veri Denetimi</h3>
                   <p class="sub" style="margin:0;font-size:0.85rem">Tüm bölümlerde toplam <strong>${attentionIssues.total}</strong> kayıt eksik veri (kapak, puan veya özel kategori) nedeniyle dikkat gerektiriyor.</p>
                 </div>
               </div>
@@ -7521,7 +7521,7 @@
           `}
         </div>
 
-        <!-- 3. XenForo Metrik Grid (İçerik Sayaçları) -->
+        <!-- 3. İçerik Sayaçları ve Durum Matrisi -->
         <div class="acp-section-heading-row">
           <div>
             <h3 style="margin:0;font-size:1.08rem;font-weight:750">📊 Medya &amp; Arşiv Durum Matrisi</h3>

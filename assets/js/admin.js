@@ -2041,7 +2041,7 @@
 
               <label class="field">
                 <span>📝 Alt Başlık Metni</span>
-                <input type="text" id="instaSubInput" class="inp glass" value="Kişisel Medya Arşivim ve Değerlendirmelerim · tempestian.github.io">
+                <input type="text" id="instaSubInput" class="inp glass" value="Kişisel Medya Arşivim ve Değerlendirmelerim · tempestian.com">
               </label>
 
               <label class="field">
@@ -7716,7 +7716,7 @@
     }
     const snapshot = {
       snapshotVersion: 1,
-      site: 'tempestian.github.io',
+      site: 'tempestian.com',
       exportedAt: new Date().toISOString(),
       counts: {
         anime: (state.animeData.anime || []).length,

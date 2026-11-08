@@ -5,7 +5,7 @@
 // 1. AniList Profil Listesinden Tamamen Kopuş (`SYNC_MODE = 'relations_only'` varsayılan):
 //    - Kullanıcı artık AniList hesabına (`MediaListCollection`) yeni girdi eklememektedir.
 //    - Tüm yeni anime ekleme, puanlama, kategori seçimi, favori/başyapıt işaretleme ve bölüm
-//      takibi doğrudan `tempestian.github.io/admin/` panelinden yapılır.
+//      takibi doğrudan `tempestian.com/admin/` panelinden yapılır.
 // 2. Sıfır-Depolama Uzaktan Kapak & Yan İçerik Çekimi:
 //    - GitHub Pages depolama sınırını doldurmamak için kapak görselleri repoya İNDİRİLMEZ;
 //      AniList'in resmi CDN bağlantıları (`coverImage.large`) doğrudan URL olarak kullanılır.

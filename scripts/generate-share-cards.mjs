@@ -22,7 +22,7 @@ import { resolveEffectiveScore, resolveEffectiveGenres, normalizePartsForStats }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const BASE_ORIGIN = 'https://tempestian.github.io';
+const BASE_ORIGIN = 'https://tempestian.com';
 
 const STATUS_LABELS = {
   completed: 'İzlendi / Okundu',

@@ -680,7 +680,7 @@
     ctx.textBaseline = 'middle';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
     ctx.font = `600 34px ${FONT_FAMILY}`;
-    ctx.fillText('tempestian.github.io · Bayram Tempestian', W / 2, H - 74);
+    ctx.fillText('tempestian.com · Bayram Tempestian', W / 2, H - 74);
     ctx.restore();
   }
 
@@ -2646,7 +2646,7 @@
         `📊 ${meta.subUnitLabel}: ${meta.subUnitVal}\n` +
         `🏛️ ${meta.extraLabel}: ${meta.extraVal}\n\n` +
         `📋 KRİTER DEĞERLENDİRMELERİ:\n${criteriaLines}\n` +
-        `🔗 Detaylı inceleme dökümü ve tüm arşiv verileri için: tempestian.github.io\n\n` +
+        `🔗 Detaylı inceleme dökümü ve tüm arşiv verileri için: tempestian.com\n\n` +
         `${cfg.defaultHashtags} #tempestian #inceleme #arsiv`;
     }
 
@@ -2656,20 +2656,20 @@
         `Kişisel medya tüketim ve arşiv yolculuğumun büyük yıllık karnesi!\n\n` +
         `🏆 Zirvedeki başyapıtlar, izlenen yüzlerce bölüm, bitirilen sezonlar ve okunan binlerce sayfa tek bir özette bir araya geldi.\n\n` +
         `📊 Tüm arşiv istatistikleri ve kategorik puanlamalar web sitemde yayında:\n` +
-        `🔗 tempestian.github.io/stats\n\n` +
+        `🔗 tempestian.com/istatistik/\n\n` +
         `#tempestian #wrapped #spotifywrapped #anime #dizi #film #manga #kitap #arsiv`;
     }
 
     if (templateKey === 'topPicks') {
       return `✦ TEMPESTIAN ${cfg.label.toUpperCase()} SEÇKİLERİ · EN İYİLER ✦\n\n` +
         `Arşivimde en yüksek puanı alan ve başyapıt rozetiyle taçlandırılan seçkin eserler.\n\n` +
-        `🔗 Tüm değerlendirmeler ve puan karneleri: tempestian.github.io\n\n` +
+        `🔗 Tüm değerlendirmeler ve puan karneleri: tempestian.com\n\n` +
         `${cfg.defaultHashtags} #toppicks #eniyiler #tempestian`;
     }
 
     return `✦ TEMPESTIAN ${cfg.label.toUpperCase()} KATMAN SIRALAMASI ✦\n\n` +
       `S, A+ ve A ligindeki en kaliteli yapımlar bir arada.\n\n` +
-      `🔗 Detaylar: tempestian.github.io\n\n` +
+      `🔗 Detaylar: tempestian.com\n\n` +
       `${cfg.defaultHashtags} #tierlist #katman #tempestian`;
   }
 
@@ -2797,10 +2797,10 @@
 
       if (tpl === 'singleReview') {
         titleInp.value = `${catMeta.label.toUpperCase()} İNCELEMESİ`;
-        if (subInp) subInp.value = 'Kişisel Medya Arşivim ve Değerlendirmelerim · tempestian.github.io';
+        if (subInp) subInp.value = 'Kişisel Medya Arşivim ve Değerlendirmelerim · tempestian.com';
       } else if (tpl === 'wrapped') {
         titleInp.value = 'TEMPESTIAN WRAPPED';
-        if (subInp) subInp.value = 'Büyük Yıllık Medya ve Arşiv Özeti · tempestian.github.io';
+        if (subInp) subInp.value = 'Büyük Yıllık Medya ve Arşiv Özeti · tempestian.com';
       } else if (tpl === 'topPicks') {
         titleInp.value = `BAYRAM TEMPESTIAN · ${catMeta.label.toUpperCase()} EN İYİLER`;
         if (subInp) subInp.value = 'En Yüksek Puanlı Başyapıtlar ve Favorilerim';

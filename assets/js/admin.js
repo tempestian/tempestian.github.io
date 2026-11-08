@@ -1954,31 +1954,34 @@
       </div>
 
       <!-- [AI-MIMARI-NOTU: ADIM 3 — ADMİN İÇİ INSTAGRAM POST VE STORY GÖRSEL ÜRETİCİSİ] -->
+      <!-- [AI-MIMARI-NOTU: ADIM 3 — ADMİN İÇİ INSTAGRAM POST VE STORY GÖRSEL ÜRETİCİSİ (RETINA 2X STUDIO)] -->
       <div id="panelInstagram" class="admin-panel" hidden>
-        <div class="admin-card glass sq">
+        <div class="admin-card glass sq insta-studio-container">
           <div class="card-head split-head">
             <div>
-              <h2>📸 Instagram Görsel ve Paylaşım Üreticisi (Canvas Studio)</h2>
-              <p>Ziyaretçilerden gizli, yalnızca sizin kullanımınıza özel görsel motoru. Favori yapımlarınızı veya kategori istatistiklerinizi tek tıkla Instagram Story (9:16) veya Kare/Dikey Post (1:1 / 4:5) formatında yüksek çözünürlüklü PNG olarak indirin.</p>
+              <h2>📸 Instagram Görsel ve Paylaşım Stüdyosu (Retina 2x Studio)</h2>
+              <p>Anime, Dizi, Film, Manga, Kitap ve Rehber arşiviniz için 2160p Retina kalitesinde Tekil İnceleme Kartları, Sezon Karuselleri, Spotify Wrapped tarzı Yıllık Özetler ve Katman kolajları üretin.</p>
             </div>
-            <div class="form-actions">
-              <button type="button" class="btn-subtle" id="renderInstaBtn">🎨 Görseli Yenile / Oluştur</button>
-              <button type="button" class="btn-primary" id="downloadInstaBtn">💾 Yüksek Çözünürlüklü PNG İndir</button>
+            <div class="form-actions" style="display:flex; gap:10px; flex-wrap:wrap">
+              <button type="button" class="btn-subtle" id="renderInstaBtn">🎨 Görseli Yenile</button>
+              <button type="button" class="btn-subtle" id="downloadZipInstaBtn" title="Karusel ve Wrapped slaytlarını tek bir ZIP paketi olarak indirin">📦 Tüm Slaytları ZIP İndir</button>
+              <button type="button" class="btn-primary" id="downloadInstaBtn">💾 Aktif Slaytı PNG İndir</button>
             </div>
           </div>
 
-          <div class="setup-grid" style="grid-template-columns: 340px 1fr; gap: 24px; align-items: start; margin-top: 16px">
+          <div class="insta-setup-grid">
             <div class="field-stack glass" style="padding: 20px; border-radius: var(--rm)">
               <label class="field">
-                <span>📱 Paylaşım Formatı &amp; Boyut</span>
-                <select id="instaFormatSelect" class="inp glass">
-                  <option value="story">📱 Instagram Story (9:16 — 1080 × 1920)</option>
-                  <option value="square">🖼️ Instagram Kare Gönderi (1:1 — 1080 × 1080)</option>
-                  <option value="portrait">📐 Instagram Dikey Gönderi (4:5 — 1080 × 1350)</option>
+                <span>🎨 Şablon / Düzen Türü</span>
+                <select id="instaTemplateSelect" class="inp glass">
+                  <option value="singleReview">🎯 Tekil İçerik Kartı &amp; İnceleme (Review Post)</option>
+                  <option value="wrapped">✨ Tempestian Wrapped (Yıllık Özet Karuseli)</option>
+                  <option value="topPicks">🏆 En Yüksek Puanlılar &amp; Favorilerim (Top Picks)</option>
+                  <option value="tierCollage">🥇 Katman (Tier List) Özeti</option>
                 </select>
               </label>
 
-              <label class="field">
+              <label class="field" id="instaCategoryRow">
                 <span>📺 Medya Kategorisi</span>
                 <select id="instaCategorySelect" class="inp glass">
                   <option value="anime">📺 Anime</option>
@@ -1986,47 +1989,95 @@
                   <option value="movie">🍿 Film</option>
                   <option value="manga">📖 Manga</option>
                   <option value="book">📚 Kitap</option>
+                  <option value="guide">🧭 Rehber</option>
+                </select>
+              </label>
+
+              <label class="field" id="instaItemSelectRow">
+                <span>🎬 Paylaşılacak Yapım / Eser</span>
+                <select id="instaItemSelect" class="inp glass">
+                  <option value="">Yükleniyor...</option>
+                </select>
+              </label>
+
+              <label class="field" id="instaPartModeRow" hidden>
+                <span>📑 Parçalı Yapım Düzeni</span>
+                <select id="instaPartModeSelect" class="inp glass">
+                  <option value="carousel">📑 Kaydırmalı Karusel Seti (Çoklu Slayt)</option>
+                  <option value="compact">🔲 Tek Kare Özet (Kompakt Karne)</option>
+                </select>
+              </label>
+
+              <label class="field" id="instaWrappedYearRow" hidden>
+                <span>📅 Wrapped Özeti Yılı</span>
+                <select id="instaWrappedYear" class="inp glass">
+                  <option value="2026">🌟 2026 Yılı Özeti</option>
+                  <option value="2025">✨ 2025 Yılı Özeti</option>
+                  <option value="2024">💫 2024 Yılı Özeti</option>
+                  <option value="all">🌌 Tüm Zamanlar (Genel Arşiv)</option>
+                </select>
+              </label>
+
+              <label class="field" id="instaSlideSelectRow" hidden>
+                <span>🎞️ Canlı Önizlenen Slayt</span>
+                <select id="instaSlideSelect" class="inp glass">
+                  <option value="0">1. Slayt</option>
                 </select>
               </label>
 
               <label class="field">
-                <span>🎨 Şablon / Düzen Türü</span>
-                <select id="instaTemplateSelect" class="inp glass">
-                  <option value="topPicks">🏆 En Yüksek Puanlılar &amp; Favorilerim (Top Picks)</option>
-                  <option value="statsSummary">📊 Kategori &amp; İstatistik Özeti (Wrapped)</option>
-                  <option value="tierCollage">🎯 Katman (Tier List) Özeti</option>
+                <span>📱 Paylaşım Formatı &amp; Çözünürlük (Retina 2x)</span>
+                <select id="instaFormatSelect" class="inp glass">
+                  <option value="square">🖼️ Instagram Kare Gönderi (1:1 — 2160 × 2160)</option>
+                  <option value="story">📱 Instagram Story (9:16 — 2160 × 3840)</option>
+                  <option value="portrait">📐 Instagram Dikey Gönderi (4:5 — 2160 × 2700)</option>
                 </select>
               </label>
 
               <label class="field">
                 <span>✍️ Başlık Metni</span>
-                <input type="text" id="instaTitleInput" class="inp glass" value="BAYRAM TEMPESTIAN · EN İYİLER">
+                <input type="text" id="instaTitleInput" class="inp glass" value="TEMPESTIAN İNCELEME">
               </label>
 
               <label class="field">
                 <span>📝 Alt Başlık Metni</span>
-                <input type="text" id="instaSubInput" class="inp glass" value="Kişisel Arşiv ve Seçkilerim · tempestian.github.io">
+                <input type="text" id="instaSubInput" class="inp glass" value="Kişisel Medya Arşivim ve Değerlendirmelerim · tempestian.github.io">
               </label>
 
               <label class="field">
                 <span>✨ Vurgu Rengi Teması</span>
                 <select id="instaThemeSelect" class="inp glass">
                   <option value="gold">🌟 Altın &amp; Amber (#f5a623)</option>
-                  <option value="neonBlue">⚡ Neon Mavi (#00a8ff)</option>
+                  <option value="neonBlue" selected>⚡ Neon Mavi (#00a8ff)</option>
                   <option value="emerald">🍀 Zümrüt Yeşili (#52e3a4)</option>
                   <option value="violet">🔮 Büyülü Mor (#a855f7)</option>
                   <option value="rose">💖 Canlı Pembe (#f23d8f)</option>
                 </select>
               </label>
 
-              <div class="form-actions" style="margin-top: 10px">
-                <button type="button" class="btn-primary" id="renderInstaBtnSide" style="width:100%">Görseli Güncelle</button>
+              <div class="form-actions" style="margin-top: 10px; display:flex; gap:8px">
+                <button type="button" class="btn-primary" id="renderInstaBtnSide" style="flex:1">Görseli Güncelle</button>
               </div>
             </div>
 
-            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background: rgba(0,0,0,0.3); padding: 24px; border-radius: var(--rl); min-height: 480px">
-              <canvas id="instaCanvas" style="max-width: 100%; max-height: 580px; width: auto; height: auto; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.12)"></canvas>
-              <p style="margin-top: 14px; font-size: 0.8rem; color: var(--txt-sub); text-align: center">Yukarıdaki önizleme küçültülmüş ekrandır; indirdiğinizde tam 1080p yüksek çözünürlüklü ve keskin kalitede kaydedilir.</p>
+            <div class="insta-preview-panel">
+              <div id="instaSlideIndicator" class="insta-slide-indicator" hidden>
+                <span>🎞️ Slayt 1 / 1</span>
+              </div>
+              <div class="insta-canvas-wrapper">
+                <canvas id="instaCanvas" class="insta-canvas"></canvas>
+              </div>
+              <p style="margin-top: 14px; font-size: 0.8rem; color: var(--txt-sub); text-align: center">
+                Canlı önizleme ekrana sığdırılmıştır; indirdiğinizde 2160p Retina 2x ultra keskin kalitede PNG olarak kaydedilir.
+              </p>
+
+              <div class="insta-caption-box">
+                <div class="insta-caption-header">
+                  <h4>📝 Hazır Instagram Açıklaması (Caption)</h4>
+                  <button type="button" class="btn-subtle" id="copyInstaCaptionBtn" style="font-size:0.8rem; padding:4px 12px">📋 Açıklamayı Kopyala</button>
+                </div>
+                <textarea id="instaCaptionText" class="insta-caption-textarea" readonly placeholder="Görsel oluşturulduğunda hazır açıklama metni burada belirecektir..."></textarea>
+              </div>
             </div>
           </div>
         </div>

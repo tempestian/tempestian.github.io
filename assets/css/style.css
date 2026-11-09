@@ -7193,6 +7193,271 @@ a.tile:active,
   border-color: rgba(100, 210, 255, 0.42);
 }
 
+/* ============================================================================
+   WINZORT EASTER EGG MODAL (Rehber Sayfası)
+   Windows işletim sisteminden erişildiğinde gösterilen Liquid Glass uyarı modali
+   ============================================================================ */
+.winzort-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.24s ease;
+}
+
+.winzort-modal.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.winzort-modal.is-closing {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+}
+
+.winzort-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: opacity 0.24s ease;
+}
+
+:root[data-theme="light"] .winzort-backdrop {
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.winzort-dialog {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 460px);
+  padding: 36px 28px 28px;
+  border-radius: 26px;
+  background: linear-gradient(165deg, rgba(14, 25, 48, 0.94) 0%, rgba(7, 13, 26, 0.97) 100%);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(86, 182, 255, 0.28);
+  box-shadow: 0 24px 64px -8px rgba(0, 0, 0, 0.75), 0 0 36px -4px rgba(56, 189, 248, 0.22);
+  color: var(--iris-ink, #f0f6ff);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0.92) translateY(14px);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s ease;
+}
+
+.winzort-modal.is-visible .winzort-dialog {
+  transform: scale(1) translateY(0);
+}
+
+.winzort-modal.is-closing .winzort-dialog {
+  transform: scale(0.94) translateY(10px);
+}
+
+:root[data-theme="light"] .winzort-dialog {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.96) 0%, rgba(240, 246, 255, 0.94) 100%);
+  border-color: rgba(2, 132, 199, 0.32);
+  box-shadow: 0 20px 50px -6px rgba(10, 45, 100, 0.22), 0 0 24px rgba(2, 132, 199, 0.16);
+  color: #0b1528;
+}
+
+.winzort-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--iris-ink-secondary, #a8c5eb);
+  background: rgba(8, 16, 32, 0.68);
+  border: 1px solid rgba(86, 182, 255, 0.20);
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.winzort-close-btn:hover {
+  transform: scale(1.08);
+  color: #ffffff !important;
+  background: rgba(225, 29, 72, 0.32) !important;
+  border-color: rgba(251, 113, 133, 0.55) !important;
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
+}
+
+:root[data-theme="light"] .winzort-close-btn {
+  background: rgba(235, 244, 255, 0.9);
+  border-color: rgba(10, 108, 255, 0.2);
+  color: #334e73;
+}
+
+:root[data-theme="light"] .winzort-close-btn:hover {
+  background: rgba(225, 29, 72, 0.16) !important;
+  border-color: rgba(225, 29, 72, 0.4) !important;
+  color: #be123c !important;
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.2);
+}
+
+.winzort-icon-wrap {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 18px;
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(225, 29, 72, 0.18) 0%, rgba(244, 63, 94, 0.08) 100%);
+  border: 1.5px solid rgba(251, 113, 133, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fb7185;
+  box-shadow: 0 8px 24px -4px rgba(225, 29, 72, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+:root[data-theme="light"] .winzort-icon-wrap {
+  background: linear-gradient(145deg, rgba(225, 29, 72, 0.14) 0%, rgba(244, 63, 94, 0.05) 100%);
+  border-color: rgba(225, 29, 72, 0.28);
+  color: #e11d48;
+  box-shadow: 0 8px 20px -4px rgba(225, 29, 72, 0.18);
+}
+
+.winzort-logo-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.winzort-ban-badge {
+  position: absolute;
+  right: -5px;
+  bottom: -5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #e11d48;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--iris-surface-solid, #09101f);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="light"] .winzort-ban-badge {
+  border-color: #ffffff;
+}
+
+.winzort-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border-radius: 9999px;
+  background: rgba(225, 29, 72, 0.16);
+  border: 1px solid rgba(251, 113, 133, 0.32);
+  color: #fb7185;
+  margin-bottom: 12px;
+}
+
+:root[data-theme="light"] .winzort-tag {
+  background: rgba(225, 29, 72, 0.1);
+  border-color: rgba(225, 29, 72, 0.25);
+  color: #be123c;
+}
+
+.winzort-title {
+  font-size: 1.45rem;
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  margin: 0 0 10px;
+  color: var(--iris-ink, #f0f6ff);
+}
+
+:root[data-theme="light"] .winzort-title {
+  color: #0b1528;
+}
+
+.winzort-desc {
+  font-size: 1.05rem;
+  font-weight: 550;
+  line-height: 1.45;
+  margin: 0 0 14px;
+  color: var(--iris-ink-secondary, #a8c5eb);
+}
+
+:root[data-theme="light"] .winzort-desc {
+  color: #334e73;
+}
+
+.winzort-sub {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  margin: 0 0 22px;
+  color: var(--iris-ink-muted, #6e8fb8);
+  max-width: 360px;
+}
+
+:root[data-theme="light"] .winzort-sub {
+  color: #5a7499;
+}
+
+.winzort-action-btn {
+  width: 100%;
+  max-width: 260px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  font-weight: 650;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.32) 0%, rgba(10, 108, 255, 0.42) 100%) !important;
+  border: 1px solid rgba(86, 182, 255, 0.45) !important;
+  box-shadow: 0 4px 16px rgba(10, 108, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.winzort-action-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 8px 24px rgba(10, 108, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+}
+
+.winzort-action-btn:active {
+  transform: translateY(0);
+}
+
+:root[data-theme="light"] .winzort-action-btn {
+  background: linear-gradient(135deg, #0284c7 0%, #0a6cff 100%) !important;
+  border-color: rgba(10, 108, 255, 0.5) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(10, 108, 255, 0.28) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .winzort-modal,
+  .winzort-dialog,
+  .winzort-close-btn,
+  .winzort-action-btn {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+
 
 
 

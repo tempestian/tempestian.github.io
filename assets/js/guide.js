@@ -339,4 +339,125 @@
       pick.scrollIntoView({ behavior: 'smooth', block: 'center' });
     };
   }
+
+  // ============================================================================
+  // [EASTER EGG]: Windows (Winzort) Tespit ve Uyarı Modali
+  // Windows tabanlı tarayıcılardan Rehber sayfasına gelindiğinde espri amaçlı
+  // Liquid Glass uyarı modali gösterir; çarpıya basıldığında kapatılarak
+  // sayfa normal biçimde gezilebilir.
+  // Test için URL'ye ?winzort veya ?test_winzort eklenebilir.
+  // ============================================================================
+  function isWindowsUser() {
+    try {
+      const search = window.location.search || '';
+      if (search.includes('winzort') || search.includes('test_winzort')) {
+        return true;
+      }
+    } catch (_) {}
+
+    try {
+      if (navigator.userAgentData && typeof navigator.userAgentData.platform === 'string') {
+        if (/windows/i.test(navigator.userAgentData.platform)) {
+          return true;
+        }
+      }
+    } catch (_) {}
+
+    try {
+      const ua = `${navigator.userAgent || ''} ${navigator.platform || ''}`;
+      if (/windows|win32|win64/i.test(ua)) {
+        return true;
+      }
+    } catch (_) {}
+
+    return false;
+  }
+
+  function initWinzortEasterEgg() {
+    if (!isWindowsUser()) return;
+    if (document.getElementById('winzortModal')) return;
+
+    const modal = document.createElement('div');
+    modal.id = 'winzortModal';
+    modal.className = 'winzort-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'winzortTitle');
+
+    const closeIconSvg = (window.UI && typeof window.UI.icon === 'function')
+      ? window.UI.icon('close')
+      : '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+
+    modal.innerHTML = `
+      <div class="winzort-backdrop"></div>
+      <div class="winzort-dialog glass sq">
+        <button type="button" class="btn glass winzort-close-btn" aria-label="Kapat" title="Kapat">
+          ${closeIconSvg}
+        </button>
+        <div class="winzort-icon-wrap" aria-hidden="true">
+          <svg class="winzort-logo-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M1 4.5l8.5-1.2v7.7H1V4.5zm9.5-1.3L23 1.5v9.5h-12.5V3.2zm-9.5 8.8h8.5v7.7L1 18.5V12zm9.5 0H23v9.5l-12.5-1.7V12z"/>
+          </svg>
+          <span class="winzort-ban-badge">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/>
+            </svg>
+          </span>
+        </div>
+        <span class="winzort-tag">Easter Egg 🐧</span>
+        <h2 id="winzortTitle" class="winzort-title">Winzort tespit edildi!</h2>
+        <p class="winzort-desc">Burada size yer bulunmamaktadır.</p>
+        <p class="winzort-sub">GNU/Linux ve açık kaynak rehberleri Technopat Sosyal üzerinde yayınlanmaktadır. Yine de kataloğu inceleyebilirsiniz.</p>
+        <button type="button" class="btn glass winzort-action-btn">Rehberleri İncele</button>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+
+    // Modal açılış animasyonunu tetikle
+    requestAnimationFrame(() => {
+      modal.classList.add('is-visible');
+      const closeBtn = modal.querySelector('.winzort-close-btn');
+      if (closeBtn) closeBtn.focus();
+    });
+
+    let closed = false;
+    const closeModal = () => {
+      if (closed) return;
+      closed = true;
+      document.body.style.overflow = '';
+      modal.classList.remove('is-visible');
+      modal.classList.add('is-closing');
+      window.removeEventListener('keydown', onKeyDown);
+      setTimeout(() => {
+        if (modal.parentNode) modal.parentNode.removeChild(modal);
+      }, 260);
+    };
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape' || e.key === 'Esc') {
+        e.preventDefault();
+        closeModal();
+      }
+    };
+
+    const closeBtn = modal.querySelector('.winzort-close-btn');
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    const actionBtn = modal.querySelector('.winzort-action-btn');
+    if (actionBtn) actionBtn.addEventListener('click', closeModal);
+
+    const backdrop = modal.querySelector('.winzort-backdrop');
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+
+    window.addEventListener('keydown', onKeyDown);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initWinzortEasterEgg);
+  } else {
+    initWinzortEasterEgg();
+  }
 })();

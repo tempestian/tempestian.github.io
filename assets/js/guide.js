@@ -395,7 +395,7 @@
           ${closeIconSvg}
         </button>
         <div class="iris-modal-island">
-          <span class="iris-status-dot" aria-hidden="true"></span>
+          <span class="winzort-status-dot" aria-hidden="true"></span>
           <span class="iris-telemetry-text">OS_SENTINEL · ACCESS_DENIED</span>
         </div>
         <div class="iris-winzort-hologram" aria-hidden="true">

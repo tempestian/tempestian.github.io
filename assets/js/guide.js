@@ -396,7 +396,7 @@
         </button>
         <div class="iris-modal-island">
           <span class="iris-status-dot" aria-hidden="true"></span>
-          <span class="iris-telemetry-text">iRiS // OS_SENTINEL · ACCESS_DENIED</span>
+          <span class="iris-telemetry-text">OS_SENTINEL · ACCESS_DENIED</span>
         </div>
         <div class="iris-winzort-hologram" aria-hidden="true">
           <svg class="winzort-logo-icon" viewBox="0 0 24 24" fill="currentColor">

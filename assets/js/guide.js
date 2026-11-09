@@ -394,21 +394,24 @@
         <button type="button" class="btn glass winzort-close-btn" aria-label="Kapat" title="Kapat">
           ${closeIconSvg}
         </button>
-        <div class="winzort-icon-wrap" aria-hidden="true">
+        <div class="iris-modal-island">
+          <span class="iris-status-dot" aria-hidden="true"></span>
+          <span class="iris-telemetry-text">iRiS // OS_SENTINEL · ACCESS_DENIED</span>
+        </div>
+        <div class="iris-winzort-hologram" aria-hidden="true">
           <svg class="winzort-logo-icon" viewBox="0 0 24 24" fill="currentColor">
             <path d="M1 4.5l8.5-1.2v7.7H1V4.5zm9.5-1.3L23 1.5v9.5h-12.5V3.2zm-9.5 8.8h8.5v7.7L1 18.5V12zm9.5 0H23v9.5l-12.5-1.7V12z"/>
           </svg>
           <span class="winzort-ban-badge">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="9"/>
               <line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/>
             </svg>
           </span>
         </div>
-        <span class="winzort-tag">Easter Egg 🐧</span>
         <h2 id="winzortTitle" class="winzort-title">Winzort tespit edildi!</h2>
         <p class="winzort-desc">Burada size yer bulunmamaktadır.</p>
-        <p class="winzort-sub">GNU/Linux ve açık kaynak rehberleri Technopat Sosyal üzerinde yayınlanmaktadır. Yine de kataloğu inceleyebilirsiniz.</p>
+        <p class="winzort-sub">GNU/Linux, Wayland ve açık kaynak ekosistemi için hazırlanan rehberler Technopat Sosyal üzerinde yayınlanmaktadır. Yine de kataloğu inceleyebilirsiniz.</p>
         <button type="button" class="btn glass winzort-action-btn">Rehberleri İncele</button>
       </div>
     `;

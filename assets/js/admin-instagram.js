@@ -369,6 +369,24 @@
     return CRITERIA_FALLBACK[catKey] || CRITERIA_FALLBACK.anime;
   }
 
+  function formatPartShortLabel(itemTitle, partName, partIndex) {
+    if (!partName) return `${partIndex + 1}. Sezon`;
+    let label = String(partName).trim();
+    if (itemTitle) {
+      const baseLower = String(itemTitle).trim().toLowerCase();
+      if (label.toLowerCase() === baseLower) {
+        return `${partIndex + 1}. Sezon`;
+      }
+      if (label.toLowerCase().startsWith(baseLower)) {
+        const remainder = label.slice(String(itemTitle).trim().length).replace(/^[:\s\-–—/]+/, '').trim();
+        if (remainder.length >= 2) {
+          label = remainder;
+        }
+      }
+    }
+    return label;
+  }
+
   function getCategoryTerminology(catKey, item) {
     const cfg = CATEGORY_CONFIG[catKey] || CATEGORY_CONFIG.anime;
     let creatorVal = '-';
@@ -3316,6 +3334,11 @@
       if (!this.canvas) return;
       this.ctx = this.canvas.getContext('2d');
 
+      // Yatay kayma koruması (Layout reset)
+      if (window.scrollX > 0) window.scrollTo({ left: 0 });
+      const stage = document.getElementById('adminMainStage');
+      if (stage && stage.scrollLeft > 0) stage.scrollLeft = 0;
+
       const renderBtn = document.getElementById('renderInstaBtn');
       const renderBtnSide = document.getElementById('renderInstaBtnSide');
       const downloadBtn = document.getElementById('downloadInstaBtn');
@@ -3347,7 +3370,7 @@
         prevBtn.onclick = () => {
           if (this.currentSlideIndex > 0) {
             this.currentSlideIndex--;
-            this.updateSlideSelectorUI();
+            this.syncSlideState();
             this.renderCurrentSlideOnly();
           }
         };
@@ -3356,7 +3379,7 @@
         nextBtn.onclick = () => {
           if (this.currentSlideIndex < this.slides.length - 1) {
             this.currentSlideIndex++;
-            this.updateSlideSelectorUI();
+            this.syncSlideState();
             this.renderCurrentSlideOnly();
           }
         };
@@ -3387,6 +3410,7 @@
 
       if (slideSelect) slideSelect.onchange = () => {
         this.currentSlideIndex = Number(slideSelect.value) || 0;
+        this.syncSlideState();
         this.renderCurrentSlideOnly();
       };
 
@@ -3557,6 +3581,11 @@
       if (this.isRendering) return;
       this.isRendering = true;
 
+      // Yatay kayma koruması (Layout reset)
+      if (window.scrollX > 0) window.scrollTo({ left: 0 });
+      const stage = document.getElementById('adminMainStage');
+      if (stage && stage.scrollLeft > 0) stage.scrollLeft = 0;
+
       const fmtKey = document.getElementById('instaFormatSelect')?.value || 'square';
       const catKey = document.getElementById('instaCategorySelect')?.value || 'anime';
       const tplKey = document.getElementById('instaTemplateSelect')?.value || 'singleReview';
@@ -3586,7 +3615,7 @@
           this.slides.push({
             id: 'slide-compact',
             name: '01-kompakt-karne.png',
-            shortLabel: '1. Kompakt Karne',
+            shortLabel: 'Kompakt Karne',
             title: 'Tek Kare - Kompakt Karne',
             render: async () => renderSingleReviewCompactSlide(ctx, W, H, item, catKey, theme, fmtKey)
           });
@@ -3595,7 +3624,7 @@
           this.slides.push({
             id: 'slide-cover',
             name: '01-ana-kapak.png',
-            shortLabel: '1. Kapak',
+            shortLabel: 'Kapak',
             title: '1. Slayt: Ana Kapak & Özet',
             render: async () => renderSingleReviewCoverSlide(ctx, W, H, item, catKey, theme, fmtKey, customTitle, customSub)
           });
@@ -3604,10 +3633,11 @@
             const p = item.parts[pIdx];
             const pNum = String(pIdx + 2).padStart(2, '0');
             const pName = p.name || `Sezon ${pIdx + 1}`;
+            const pShort = formatPartShortLabel(item?.title, pName, pIdx);
             this.slides.push({
               id: `slide-part-${pIdx}`,
               name: `${pNum}-sezon-${pIdx + 1}.png`,
-              shortLabel: `${pIdx + 2}. ${pName}`,
+              shortLabel: pShort,
               title: `${pIdx + 2}. Slayt: ${pName}`,
               render: async () => renderSingleReviewPartSlide(ctx, W, H, item, p, pIdx, item.parts.length, catKey, theme, fmtKey)
             });
@@ -3617,7 +3647,7 @@
           this.slides.push({
             id: 'slide-single',
             name: '01-inceleme.png',
-            shortLabel: '1. Kapak',
+            shortLabel: 'Kapak',
             title: 'Tekil İnceleme Kartı',
             render: async () => renderSingleReviewCoverSlide(ctx, W, H, item, catKey, theme, fmtKey, customTitle, customSub)
           });
@@ -3628,28 +3658,28 @@
           {
             id: 'wrapped-1',
             name: '01-wrapped-champions.png',
-            shortLabel: '1. Zirvedekiler',
+            shortLabel: 'Zirvedekiler',
             title: '1. Slayt: The Champions (Zirvedekiler)',
             render: async () => renderWrappedChampionsSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           },
           {
             id: 'wrapped-2',
             name: '02-wrapped-numbers.png',
-            shortLabel: '2. Rakamlar',
+            shortLabel: 'Rakamlar',
             title: '2. Slayt: The Numbers (Büyük Rakamlar)',
             render: async () => renderWrappedNumbersSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           },
           {
             id: 'wrapped-3',
             name: '03-wrapped-taste.png',
-            shortLabel: '3. Tür Profili',
+            shortLabel: 'Tür Profili',
             title: '3. Slayt: The Taste (Tür Profili)',
             render: async () => renderWrappedTasteSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           },
           {
             id: 'wrapped-4',
             name: '04-wrapped-gems.png',
-            shortLabel: '4. Gizli Cevherler',
+            shortLabel: 'Gizli Cevherler',
             title: '4. Slayt: Hidden Gems (Gizli Cevherler)',
             render: async () => renderWrappedHiddenGemsSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           }
@@ -3659,7 +3689,7 @@
         this.slides.push({
           id: 'slide-topPicks',
           name: '01-top-picks.png',
-          shortLabel: '1. En İyiler',
+          shortLabel: 'En İyiler',
           title: 'Top Picks - En İyiler',
           render: async () => renderTopPicksTemplate(ctx, W, H, items, theme, fmtKey, catKey)
         });
@@ -3669,7 +3699,7 @@
         this.slides.push({
           id: 'slide-tierCollage',
           name: '01-tier-list.png',
-          shortLabel: '1. Katman Listesi',
+          shortLabel: 'Katman Listesi',
           title: 'Katman (Tier List) Özeti',
           render: async () => renderTierCollageTemplate(ctx, W, H, items, theme, fmtKey, catKey)
         });
@@ -3688,17 +3718,73 @@
       this.isRendering = false;
     }
 
+    scrollPillIntoView(pill, smooth = true) {
+      const container = document.getElementById('instaSlidePills');
+      if (!container || !pill) return;
+      const pillLeft = pill.offsetLeft;
+      const pillWidth = pill.offsetWidth;
+      const containerWidth = container.clientWidth;
+      const targetScrollLeft = pillLeft - (containerWidth / 2) + (pillWidth / 2);
+      container.scrollTo({
+        left: Math.max(0, targetScrollLeft),
+        behavior: smooth ? 'smooth' : 'auto'
+      });
+    }
+
+    syncSlideState() {
+      const total = this.slides.length;
+      const isMulti = total > 1;
+      const activeSlide = this.slides[this.currentSlideIndex] || this.slides[0];
+
+      const slideSelect = document.getElementById('instaSlideSelect');
+      if (slideSelect && slideSelect.value !== String(this.currentSlideIndex)) {
+        slideSelect.value = String(this.currentSlideIndex);
+      }
+
+      const indicator = document.getElementById('instaSlideIndicator');
+      if (indicator) {
+        indicator.hidden = !isMulti;
+        if (isMulti && activeSlide) {
+          indicator.textContent = `🎞️ Slayt ${this.currentSlideIndex + 1} / ${total}: ${activeSlide.title}`;
+        }
+      }
+
+      const prevBtn = document.getElementById('instaPrevSlideBtn');
+      const nextBtn = document.getElementById('instaNextSlideBtn');
+      if (prevBtn) prevBtn.disabled = (this.currentSlideIndex <= 0);
+      if (nextBtn) nextBtn.disabled = (this.currentSlideIndex >= total - 1);
+
+      const navSlideBtn = document.getElementById('instaDownloadSlideBtn');
+      if (navSlideBtn) {
+        navSlideBtn.textContent = isMulti
+          ? `💾 ${this.currentSlideIndex + 1}. Slaytı PNG İndir`
+          : '💾 PNG İndir';
+      }
+
+      const pillsContainer = document.getElementById('instaSlidePills');
+      if (pillsContainer) {
+        const pills = pillsContainer.querySelectorAll('.insta-slide-pill');
+        let activePill = null;
+        pills.forEach((p, idx) => {
+          const isActive = (idx === this.currentSlideIndex);
+          p.classList.toggle('is-active', isActive);
+          p.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          if (isActive) activePill = p;
+        });
+        if (activePill) {
+          this.scrollPillIntoView(activePill, true);
+        }
+      }
+    }
+
     updateSlideSelectorUI() {
       const slideRow = document.getElementById('instaSlideSelectRow');
       const slideSelect = document.getElementById('instaSlideSelect');
-      const indicator = document.getElementById('instaSlideIndicator');
       const zipBtnTop = document.getElementById('downloadZipInstaBtn');
 
       const navEl = document.getElementById('instaSlideNav');
       const navHeader = document.getElementById('instaSlideNavHeader');
       const pillsContainer = document.getElementById('instaSlidePills');
-      const prevBtn = document.getElementById('instaPrevSlideBtn');
-      const nextBtn = document.getElementById('instaNextSlideBtn');
       const navZipBtn = document.getElementById('instaDownloadZipBtn');
       const navSlideBtn = document.getElementById('instaDownloadSlideBtn');
       const stripWrap = navEl?.querySelector('.insta-slide-nav-strip-wrap');
@@ -3718,12 +3804,6 @@
       }
 
       if (slideRow) slideRow.hidden = !isMulti;
-      if (indicator) {
-        indicator.hidden = !isMulti;
-        if (isMulti) {
-          indicator.textContent = `🎞️ Slayt ${this.currentSlideIndex + 1} / ${total}: ${this.slides[this.currentSlideIndex]?.title || ''}`;
-        }
-      }
       if (zipBtnTop) zipBtnTop.hidden = !isMulti;
 
       if (navEl) {
@@ -3733,6 +3813,7 @@
           if (stripWrap) stripWrap.hidden = true;
           if (navZipBtn) navZipBtn.hidden = true;
           if (navSlideBtn) navSlideBtn.textContent = '💾 PNG İndir';
+          if (pillsContainer) pillsContainer.innerHTML = '';
         } else {
           navEl.classList.remove('is-single');
           if (navHeader) {
@@ -3743,14 +3824,18 @@
             navZipBtn.hidden = false;
             navZipBtn.textContent = `📦 Tüm ${total} Slaytı ZIP Olarak İndir`;
           }
-          if (navSlideBtn) {
-            navSlideBtn.textContent = `💾 ${this.currentSlideIndex + 1}. Slaytı PNG İndir`;
-          }
-
-          if (prevBtn) prevBtn.disabled = (this.currentSlideIndex <= 0);
-          if (nextBtn) nextBtn.disabled = (this.currentSlideIndex >= total - 1);
 
           if (pillsContainer) {
+            if (!pillsContainer._hasWheelHandler) {
+              pillsContainer._hasWheelHandler = true;
+              pillsContainer.addEventListener('wheel', (e) => {
+                if (e.deltaY !== 0 && pillsContainer.scrollWidth > pillsContainer.clientWidth) {
+                  e.preventDefault();
+                  pillsContainer.scrollLeft += e.deltaY;
+                }
+              }, { passive: false });
+            }
+
             pillsContainer.innerHTML = '';
             this.slides.forEach((s, idx) => {
               const pill = document.createElement('button');
@@ -3775,60 +3860,23 @@
               pill.onclick = async () => {
                 if (this.currentSlideIndex === idx) return;
                 this.currentSlideIndex = idx;
-                this.updateSlideSelectorUI();
+                this.syncSlideState();
                 await this.renderCurrentSlideOnly();
               };
 
               pillsContainer.appendChild(pill);
-
-              if (isActive) {
-                setTimeout(() => {
-                  pill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                }, 50);
-              }
             });
           }
         }
       }
+
+      this.syncSlideState();
     }
 
     async renderCurrentSlideOnly() {
       if (!this.slides.length) return;
       const activeSlide = this.slides[this.currentSlideIndex] || this.slides[0];
-      const indicator = document.getElementById('instaSlideIndicator');
-      if (indicator && this.slides.length > 1) {
-        indicator.textContent = `🎞️ Slayt ${this.currentSlideIndex + 1} / ${this.slides.length}: ${activeSlide.title}`;
-      }
-
-      const slideSelect = document.getElementById('instaSlideSelect');
-      if (slideSelect && slideSelect.value !== String(this.currentSlideIndex)) {
-        slideSelect.value = String(this.currentSlideIndex);
-      }
-      const prevBtn = document.getElementById('instaPrevSlideBtn');
-      const nextBtn = document.getElementById('instaNextSlideBtn');
-      if (prevBtn) prevBtn.disabled = (this.currentSlideIndex <= 0);
-      if (nextBtn) nextBtn.disabled = (this.currentSlideIndex >= this.slides.length - 1);
-
-      const navSlideBtn = document.getElementById('instaDownloadSlideBtn');
-      if (navSlideBtn) {
-        navSlideBtn.textContent = this.slides.length > 1
-          ? `💾 ${this.currentSlideIndex + 1}. Slaytı PNG İndir`
-          : '💾 PNG İndir';
-      }
-
-      const pillsContainer = document.getElementById('instaSlidePills');
-      if (pillsContainer) {
-        const pills = pillsContainer.querySelectorAll('.insta-slide-pill');
-        pills.forEach((p, idx) => {
-          const isActive = (idx === this.currentSlideIndex);
-          p.classList.toggle('is-active', isActive);
-          p.setAttribute('aria-selected', isActive ? 'true' : 'false');
-          if (isActive) {
-            p.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-          }
-        });
-      }
-
+      this.syncSlideState();
       await activeSlide.render();
     }
 

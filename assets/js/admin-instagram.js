@@ -320,9 +320,12 @@
     ctx.closePath();
   }
 
+  const IMAGE_CACHE = new Map();
+
   function loadImageWithTimeout(url, timeoutMs = 3000) {
     return new Promise(resolve => {
       if (!url) return resolve(null);
+      if (IMAGE_CACHE.has(url)) return resolve(IMAGE_CACHE.get(url));
       const img = new Image();
       img.crossOrigin = 'anonymous';
       let done = false;
@@ -332,13 +335,53 @@
       }, timeoutMs);
 
       img.onload = () => {
-        if (!done) { done = true; clearTimeout(timer); resolve(img); }
+        if (!done) {
+          done = true;
+          clearTimeout(timer);
+          IMAGE_CACHE.set(url, img);
+          resolve(img);
+        }
       };
       img.onerror = () => {
         if (!done) { done = true; clearTimeout(timer); resolve(null); }
       };
       img.src = url;
     });
+  }
+
+  async function preloadImagesWithConcurrency(urls, concurrency = 8, onProgress = null) {
+    const uniqueUrls = [...new Set(urls.filter(Boolean))];
+    let loaded = 0;
+    const total = uniqueUrls.length;
+    let cursor = 0;
+
+    async function worker() {
+      while (cursor < uniqueUrls.length) {
+        const u = uniqueUrls[cursor++];
+        await loadImageWithTimeout(u, 4000);
+        loaded++;
+        if (typeof onProgress === 'function') {
+          onProgress(loaded, total);
+        }
+      }
+    }
+
+    const workers = [];
+    const numWorkers = Math.min(concurrency, total);
+    for (let i = 0; i < numWorkers; i++) {
+      workers.push(worker());
+    }
+    await Promise.all(workers);
+  }
+
+  function sanitizeFilename(name) {
+    if (!name) return 'yapim';
+    return String(name)
+      .replace(/[/\\?%*:|"<>]/g, ' - ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/^\.+|\.+$/g, '')
+      .slice(0, 80);
   }
 
   function resolveItemEffectiveScore(item, catKey = 'anime') {
@@ -3323,6 +3366,8 @@
       this.canvas = null;
       this.ctx = null;
       this.isRendering = false;
+      this.isBatchExporting = false;
+      this.isBatchCancelled = false;
       this.cachedData = {};
       this.slides = [];
       this.currentSlideIndex = 0;
@@ -3344,6 +3389,8 @@
       const downloadBtn = document.getElementById('downloadInstaBtn');
       const downloadZipBtn = document.getElementById('downloadZipInstaBtn');
       const copyCaptionBtn = document.getElementById('copyInstaCaptionBtn');
+      const downloadAllWatchedAnimeZipBtn = document.getElementById('downloadAllWatchedAnimeZipBtn');
+      const instaDownloadAllAnimeBtn = document.getElementById('instaDownloadAllAnimeBtn');
 
       const catSelect = document.getElementById('instaCategorySelect');
       const fmtSelect = document.getElementById('instaFormatSelect');
@@ -3359,6 +3406,8 @@
       if (downloadBtn) downloadBtn.onclick = () => this.downloadActiveSlide();
       if (downloadZipBtn) downloadZipBtn.onclick = () => this.downloadAllZip();
       if (copyCaptionBtn) copyCaptionBtn.onclick = () => this.copyCaption();
+      if (downloadAllWatchedAnimeZipBtn) downloadAllWatchedAnimeZipBtn.onclick = () => this.openBatchExportModal();
+      if (instaDownloadAllAnimeBtn) instaDownloadAllAnimeBtn.onclick = () => this.openBatchExportModal();
 
       // Canlı Slayt Şeridi & Gezinme Çubuğu Kontrolleri
       const prevBtn = document.getElementById('instaPrevSlideBtn');
@@ -3482,6 +3531,12 @@
       } else {
         titleInp.value = `TEMPESTIAN · ${catMeta.label.toUpperCase()} KATMAN LİSTESİ`;
         if (subInp) subInp.value = 'S, A+ ve A Katmanı Yapımlar';
+      }
+
+      const allWatchedBtn = document.getElementById('downloadAllWatchedAnimeZipBtn');
+      if (allWatchedBtn) {
+        const verb = (catKey === 'book' || catKey === 'manga') ? 'Okunan' : (catKey === 'guide' ? 'Yayınlanan' : 'İzlenen');
+        allWatchedBtn.textContent = `📦 Bütün ${verb} ${catMeta.label}leri ZIP İndir`;
       }
     }
 
@@ -3947,6 +4002,457 @@
       if (window.toast) {
         window.toast(`✓ ${files.length} slaytlık ZIP paketi başarıyla indirildi!`, 'ok');
       }
+    }
+
+    openBatchExportModal(targetCatKey = null) {
+      const catKey = targetCatKey || document.getElementById('instaCategorySelect')?.value || 'anime';
+      const catMeta = CATEGORY_CONFIG[catKey] || CATEGORY_CONFIG.anime;
+      const curFmt = document.getElementById('instaFormatSelect')?.value || 'square';
+      const curThm = document.getElementById('instaThemeSelect')?.value || 'neonBlue';
+      const curPartMode = document.getElementById('instaPartModeSelect')?.value || 'compact';
+
+      let overlay = document.getElementById('batchExportModalOverlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'batchExportModalOverlay';
+        overlay.className = 'batch-export-overlay';
+        document.body.appendChild(overlay);
+      }
+
+      this.isBatchCancelled = false;
+      this.isBatchExporting = false;
+
+      const verb = (catKey === 'book' || catKey === 'manga') ? 'Okunan' : (catKey === 'guide' ? 'Yayınlanan' : 'İzlenen');
+
+      overlay.innerHTML = `
+        <div class="batch-export-modal glass sq" role="dialog" aria-modal="true" aria-labelledby="batchModalTitle">
+          <!-- 1. Yapılandırma Ekranı -->
+          <div id="batchExportConfigView">
+            <div class="batch-export-head">
+              <div class="batch-head-icon">📦</div>
+              <div class="batch-head-info">
+                <h3 id="batchModalTitle">Tüm ${verb} ${catMeta.label}ler · Toplu Sosyal Medya Arşivi</h3>
+                <p>Arşivinizdeki ${verb.toLowerCase()} ${catMeta.label.toLowerCase()}ler için 2160p Retina kalitesinde sosyal medya postları üretilip tek bir ZIP arşivinde toplanır.</p>
+              </div>
+              <button type="button" class="batch-close-btn" id="batchCloseXBtn" aria-label="Kapat" title="Kapat">✕</button>
+            </div>
+
+            <div class="batch-options-grid">
+              <label class="field">
+                <span>🎯 İçerik Kapsamı</span>
+                <select id="batchScopeSelect" class="inp glass">
+                  <option value="completed" selected>✅ Yalnızca ${verb} / Tamamlanan Yapımlar</option>
+                  <option value="all">🌟 Tüm Arşiv (${catMeta.label} Kataloğunun Tamamı)</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>📱 Paylaşım Formatı (2160p Retina)</span>
+                <select id="batchFormatSelect" class="inp glass">
+                  <option value="square" ${curFmt === 'square' ? 'selected' : ''}>🖼️ Instagram Kare (1:1 — 2160 × 2160)</option>
+                  <option value="portrait" ${curFmt === 'portrait' ? 'selected' : ''}>📐 Instagram Dikey (4:5 — 2160 × 2700)</option>
+                  <option value="story" ${curFmt === 'story' ? 'selected' : ''}>📱 Instagram Story (9:16 — 2160 × 3840)</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>✨ Vurgu Rengi Teması</span>
+                <select id="batchThemeSelect" class="inp glass">
+                  <option value="neonBlue" ${curThm === 'neonBlue' ? 'selected' : ''}>⚡ Neon Mavi</option>
+                  <option value="gold" ${curThm === 'gold' ? 'selected' : ''}>🌟 Altın &amp; Amber</option>
+                  <option value="emerald" ${curThm === 'emerald' ? 'selected' : ''}>🍀 Zümrüt Yeşili</option>
+                  <option value="violet" ${curThm === 'violet' ? 'selected' : ''}>🔮 Büyülü Mor</option>
+                  <option value="rose" ${curThm === 'rose' ? 'selected' : ''}>💖 Canlı Pembe</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>📑 Çok Sezonlu / Parçalı Yapım Düzeni</span>
+                <select id="batchPartModeSelect" class="inp glass">
+                  <option value="compact" ${curPartMode === 'compact' ? 'selected' : ''}>🔲 Tek Kare Özet (Kompakt Karne — Önerilen)</option>
+                  <option value="cover">🖼️ Yalnızca Ana Kapak Kartı</option>
+                  <option value="carousel" ${curPartMode === 'carousel' ? 'selected' : ''}>📑 Tam Karusel Seti (Sezon Slaytları Dahil, Klasörlü)</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="batch-extra-options">
+              <label class="batch-checkbox">
+                <input type="checkbox" id="batchIncludeCaptions" checked>
+                <span>📝 Hazır Instagram Açıklamalarını ZIP'e ekle (<code>Instagram-Aciklamalari.txt</code>)</span>
+              </label>
+              <label class="batch-checkbox">
+                <input type="checkbox" id="batchIncludeReadme" checked>
+                <span>ℹ️ Arşiv Bilgi Dosyası ekle (<code>README.txt</code>)</span>
+              </label>
+            </div>
+
+            <div class="batch-actions">
+              <button type="button" class="btn-subtle" id="batchCancelBtn">Vazgeç</button>
+              <button type="button" class="btn-primary batch-start-btn" id="batchStartBtn">🚀 Tek Tıkla ZIP Olarak İndir</button>
+            </div>
+          </div>
+
+          <!-- 2. Canlı İlerleme Ekranı -->
+          <div id="batchExportProgressView" hidden>
+            <div class="batch-export-head">
+              <div class="batch-head-icon rotating-icon">⚙️</div>
+              <div class="batch-head-info">
+                <h3 id="batchProgressHeading">Postlar Üretiliyor ve Paketleniyor...</h3>
+                <p id="batchProgressSub">Lütfen bekleyin, afişler taranıyor ve 2160p Retina görseller çiziliyor.</p>
+              </div>
+            </div>
+
+            <div class="batch-progress-box">
+              <div class="batch-progress-header">
+                <span id="batchProgressCount">Hazırlanıyor: 0 / 0</span>
+                <span id="batchProgressPct" class="batch-pct-badge">0%</span>
+              </div>
+              <div class="batch-progress-track">
+                <div id="batchProgressBar" class="batch-progress-fill" style="width: 0%"></div>
+              </div>
+              <div class="batch-current-item">
+                <div class="batch-item-dot"></div>
+                <span id="batchCurrentTitle">İşlem başlatılıyor...</span>
+              </div>
+            </div>
+
+            <div class="batch-actions">
+              <button type="button" class="btn-danger" id="batchAbortBtn">🛑 İptal Et</button>
+            </div>
+          </div>
+
+          <!-- 3. Başarı Ekranı -->
+          <div id="batchExportSuccessView" hidden>
+            <div class="batch-success-box">
+              <div class="batch-success-icon">🎉</div>
+              <h3>ZIP Arşivi Başarıyla İndirildi!</h3>
+              <p id="batchSuccessSummary">Tüm sosyal medya postları tek bir ZIP paketi olarak indirildi.</p>
+              <div class="batch-actions" style="justify-content: center; margin-top: 20px;">
+                <button type="button" class="btn-primary" id="batchSuccessCloseBtn">Tamam</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      overlay.hidden = false;
+      document.body.classList.add('batch-modal-open');
+
+      const close = () => {
+        if (this.isBatchExporting) {
+          if (!confirm('Devam eden indirme işlemini iptal etmek istiyor musunuz?')) return;
+          this.isBatchCancelled = true;
+        }
+        overlay.hidden = true;
+        document.body.classList.remove('batch-modal-open');
+      };
+
+      document.getElementById('batchCloseXBtn').onclick = close;
+      document.getElementById('batchCancelBtn').onclick = close;
+      document.getElementById('batchSuccessCloseBtn').onclick = close;
+
+      document.getElementById('batchAbortBtn').onclick = () => {
+        this.isBatchCancelled = true;
+        const curEl = document.getElementById('batchCurrentTitle');
+        if (curEl) curEl.textContent = 'İptal ediliyor...';
+      };
+
+      document.getElementById('batchStartBtn').onclick = () => {
+        const scope = document.getElementById('batchScopeSelect')?.value || 'completed';
+        const format = document.getElementById('batchFormatSelect')?.value || 'square';
+        const theme = document.getElementById('batchThemeSelect')?.value || 'neonBlue';
+        const partMode = document.getElementById('batchPartModeSelect')?.value || 'compact';
+        const includeCaptions = document.getElementById('batchIncludeCaptions')?.checked ?? true;
+        const includeReadme = document.getElementById('batchIncludeReadme')?.checked ?? true;
+
+        this.startBatchExport({
+          catKey,
+          scope,
+          format,
+          theme,
+          partMode,
+          includeCaptions,
+          includeReadme
+        });
+      };
+    }
+
+    async startBatchExport(options = {}) {
+      if (this.isBatchExporting) return;
+      this.isBatchExporting = true;
+      this.isBatchCancelled = false;
+
+      const catKey = options.catKey || 'anime';
+      const catMeta = CATEGORY_CONFIG[catKey] || CATEGORY_CONFIG.anime;
+      const fmtKey = options.format || 'square';
+      const thmKey = options.theme || 'neonBlue';
+      const partMode = options.partMode || 'compact';
+      const scope = options.scope || 'completed';
+      const includeCaptions = options.includeCaptions !== false;
+      const includeReadme = options.includeReadme !== false;
+
+      const fmt = FORMATS[fmtKey] || FORMATS.square;
+      const theme = THEMES[thmKey] || THEMES.neonBlue;
+
+      const configView = document.getElementById('batchExportConfigView');
+      const progressView = document.getElementById('batchExportProgressView');
+      const successView = document.getElementById('batchExportSuccessView');
+      const countEl = document.getElementById('batchProgressCount');
+      const pctEl = document.getElementById('batchProgressPct');
+      const barEl = document.getElementById('batchProgressBar');
+      const titleEl = document.getElementById('batchCurrentTitle');
+      const headingEl = document.getElementById('batchProgressHeading');
+      const subEl = document.getElementById('batchProgressSub');
+
+      if (configView) configView.hidden = true;
+      if (progressView) progressView.hidden = false;
+      if (successView) successView.hidden = true;
+
+      // 1. Veriyi çek
+      if (titleEl) titleEl.textContent = `${catMeta.label} verileri taranıyor...`;
+      const { items } = await this.loadCategoryData(catKey);
+
+      let targetItems = items || [];
+      if (scope === 'completed') {
+        targetItems = targetItems.filter(it => (it.status || '').toLowerCase() === 'completed');
+      }
+
+      // Sıralama: En yüksek puandan en düşüğe, sonra alfabetik
+      targetItems.sort((a, b) => {
+        const sa = resolveItemEffectiveScore(a, catKey) || 0;
+        const sb = resolveItemEffectiveScore(b, catKey) || 0;
+        return sb - sa || (a.title || '').localeCompare(b.title || '');
+      });
+
+      const totalItems = targetItems.length;
+      if (!totalItems) {
+        alert('Dışa aktarılacak yapım bulunamadı.');
+        this.isBatchExporting = false;
+        if (configView) configView.hidden = false;
+        if (progressView) progressView.hidden = true;
+        return;
+      }
+
+      if (countEl) countEl.textContent = `Toplam: ${totalItems} ${catMeta.label}`;
+
+      // 2. Afiş görsellerini eşzamanlı (concurrency: 8) önbelleğe al
+      if (headingEl) headingEl.textContent = 'Afişler Önbelleğe Alınıyor...';
+      if (subEl) subEl.textContent = `2160p Retina çizimi öncesi ${totalItems} afiş görseli hızla indiriliyor.`;
+
+      const posterUrls = targetItems.map(it => it.image ? it.image.replace('/cover/medium/', '/cover/large/') : (it.banner || null)).filter(Boolean);
+      await preloadImagesWithConcurrency(posterUrls, 8, (loaded, total) => {
+        if (this.isBatchCancelled) return;
+        const pct = Math.round((loaded / Math.max(1, total)) * 30);
+        if (barEl) barEl.style.width = `${pct}%`;
+        if (pctEl) pctEl.textContent = `${pct}%`;
+        if (titleEl) titleEl.textContent = `Afiş görseli indiriliyor: ${loaded} / ${total}`;
+      });
+
+      if (this.isBatchCancelled) {
+        this.cleanupBatch();
+        return;
+      }
+
+      // 3. Çizim hazırlığı
+      if (headingEl) headingEl.textContent = 'Postlar Retina Kalitesinde Çiziliyor...';
+      if (subEl) subEl.textContent = 'Her yapım için 2160p Retina kartı oluşturulup PNG olarak paketleniyor.';
+
+      const W = fmt.width;
+      const H = fmt.height;
+      this.canvas.width = W;
+      this.canvas.height = H;
+      const ctx = this.ctx;
+
+      const files = [];
+      const captions = [];
+
+      // 4. Çizim döngüsü
+      for (let i = 0; i < totalItems; i++) {
+        if (this.isBatchCancelled) {
+          this.cleanupBatch();
+          return;
+        }
+
+        const it = targetItems[i];
+        const padIdx = String(i + 1).padStart(2, '0');
+        const cleanTitle = sanitizeFilename(it.title || 'yapim');
+        const effScore = resolveItemEffectiveScore(it, catKey);
+        const scoreStr = effScore !== null ? `[★${(effScore % 1 === 0) ? effScore.toFixed(1) : effScore}]` : '';
+        const hasParts = it && Array.isArray(it.parts) && it.parts.length > 1;
+
+        const currentPct = 30 + Math.round(((i + 1) / totalItems) * 60);
+        if (barEl) barEl.style.width = `${currentPct}%`;
+        if (pctEl) pctEl.textContent = `${currentPct}%`;
+        if (countEl) countEl.textContent = `İşleniyor: ${i + 1} / ${totalItems}`;
+        if (titleEl) titleEl.textContent = `[${i + 1}/${totalItems}] ${it.title || 'İsimsiz'}`;
+
+        if (partMode === 'compact') {
+          if (hasParts) {
+            await renderSingleReviewCompactSlide(ctx, W, H, it, catKey, theme, fmtKey);
+          } else {
+            await renderSingleReviewCoverSlide(ctx, W, H, it, catKey, theme, fmtKey, null, null);
+          }
+          const blob = await new Promise(res => this.canvas.toBlob(res, 'image/png'));
+          if (blob) {
+            files.push({
+              name: `${padIdx}. ${cleanTitle} ${scoreStr}.png`.replace(/\s+/g, ' ').trim(),
+              blob
+            });
+          }
+        } else if (partMode === 'cover') {
+          await renderSingleReviewCoverSlide(ctx, W, H, it, catKey, theme, fmtKey, null, null);
+          const blob = await new Promise(res => this.canvas.toBlob(res, 'image/png'));
+          if (blob) {
+            files.push({
+              name: `${padIdx}. ${cleanTitle} ${scoreStr}.png`.replace(/\s+/g, ' ').trim(),
+              blob
+            });
+          }
+        } else {
+          // carousel
+          if (hasParts) {
+            const folder = `${padIdx}. ${cleanTitle} ${scoreStr}`.replace(/\s+/g, ' ').trim();
+            // Kapak
+            await renderSingleReviewCoverSlide(ctx, W, H, it, catKey, theme, fmtKey, null, null);
+            const coverBlob = await new Promise(res => this.canvas.toBlob(res, 'image/png'));
+            if (coverBlob) files.push({ name: `${folder}/01-ana-kapak.png`, blob: coverBlob });
+
+            // Sezonlar
+            for (let pIdx = 0; pIdx < it.parts.length; pIdx++) {
+              if (this.isBatchCancelled) { this.cleanupBatch(); return; }
+              const part = it.parts[pIdx];
+              const pNum = String(pIdx + 2).padStart(2, '0');
+              const pName = sanitizeFilename(part.name || `sezon-${pIdx + 1}`);
+              await renderSingleReviewPartSlide(ctx, W, H, it, part, pIdx, it.parts.length, catKey, theme, fmtKey);
+              const pBlob = await new Promise(res => this.canvas.toBlob(res, 'image/png'));
+              if (pBlob) files.push({ name: `${folder}/${pNum}-${pName}.png`, blob: pBlob });
+            }
+          } else {
+            await renderSingleReviewCoverSlide(ctx, W, H, it, catKey, theme, fmtKey, null, null);
+            const blob = await new Promise(res => this.canvas.toBlob(res, 'image/png'));
+            if (blob) {
+              files.push({
+                name: `${padIdx}. ${cleanTitle} ${scoreStr}.png`.replace(/\s+/g, ' ').trim(),
+                blob
+              });
+            }
+          }
+        }
+
+        if (includeCaptions) {
+          const caption = generateInstagramCaption('singleReview', catKey, it, null);
+          captions.push(`[${i + 1} / ${totalItems}] ${it.title || ''}\n${'-'.repeat(70)}\n${caption}\n\n${'='.repeat(70)}\n\n`);
+        }
+
+        // Event loop'a nefes aldır
+        await new Promise(r => setTimeout(r, 12));
+      }
+
+      if (this.isBatchCancelled) {
+        this.cleanupBatch();
+        return;
+      }
+
+      // 5. Ek metin dosyaları
+      if (barEl) barEl.style.width = '92%';
+      if (pctEl) pctEl.textContent = '92%';
+      if (titleEl) titleEl.textContent = 'Açıklamalar ve metadata hazırlanıyor...';
+
+      const dateStr = new Date().toISOString().slice(0, 10);
+
+      if (includeCaptions && captions.length) {
+        const fullCaption = `======================================================================\n` +
+          `TEMPESTIAN · ${catMeta.label.toUpperCase()} SOSYAL MEDYA PAYLAŞIM AÇIKLAMALARI\n` +
+          `Paket Tarihi: ${dateStr}\n` +
+          `Toplam İçerik: ${totalItems} ${catMeta.label}\n` +
+          `Site: https://tempestian.com/\n` +
+          `======================================================================\n\n` +
+          captions.join('');
+        files.push({
+          name: 'Instagram-Aciklamalari.txt',
+          blob: new Blob([fullCaption], { type: 'text/plain;charset=utf-8' })
+        });
+      }
+
+      if (includeReadme) {
+        const verbName = (catKey === 'book' || catKey === 'manga') ? 'Okunan' : (catKey === 'guide' ? 'Yayınlanan' : 'İzlenen');
+        const readme = `======================================================================\n` +
+          `TEMPESTIAN · ${catMeta.label.toUpperCase()} ARŞİVİ SOSYAL MEDYA POSTLARI\n` +
+          `======================================================================\n\n` +
+          `Yazar: Bayram Tempestian\n` +
+          `Tarih: ${dateStr}\n` +
+          `Toplam Yapım: ${totalItems} ${catMeta.label} (${verbName})\n` +
+          `Çözünürlük: ${fmt.label}\n` +
+          `Tema: ${theme.name}\n` +
+          `Düzen: ${partMode === 'compact' ? 'Tek Kare Özet (Kompakt Karne)' : (partMode === 'cover' ? 'Yalnızca Ana Kapak' : 'Tam Karusel Seti')}\n` +
+          `Arşiv Web Sitesi: https://tempestian.com/\n\n` +
+          `Tüm görseller Retina 2x kalitesinde Instagram, Twitter, Threads ve Discord paylaşımları için optimize edilmiştir.\n`;
+        files.push({
+          name: 'README.txt',
+          blob: new Blob([readme], { type: 'text/plain;charset=utf-8' })
+        });
+      }
+
+      // 6. ZIP Derleme
+      if (headingEl) headingEl.textContent = 'ZIP Paketi Oluşturuluyor...';
+      if (subEl) subEl.textContent = `${files.length} dosya tek bir ZIP arşivinde birleştiriliyor...`;
+      if (barEl) barEl.style.width = '96%';
+      if (pctEl) pctEl.textContent = '96%';
+      if (titleEl) titleEl.textContent = 'PKZIP sıkıştırmasız arşiv yazılıyor...';
+
+      await new Promise(r => setTimeout(r, 20));
+      const zipBlob = await createZipBlob(files);
+
+      // 7. İndirmeyi Başlat
+      if (barEl) barEl.style.width = '100%';
+      if (pctEl) pctEl.textContent = '100%';
+      if (titleEl) titleEl.textContent = 'İndirme tetikleniyor...';
+
+      const scopeTag = scope === 'completed' ? 'izlenen' : 'tum';
+      const zipName = `tempestian-${catKey}-${scopeTag}-${fmtKey}-${dateStr}.zip`;
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = zipName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 15000);
+
+      // 8. Başarı ekranı
+      if (progressView) progressView.hidden = true;
+      if (successView) {
+        successView.hidden = false;
+        const sumEl = document.getElementById('batchSuccessSummary');
+        if (sumEl) {
+          sumEl.textContent = `Toplam ${totalItems} ${catMeta.label.toLowerCase()} için üretilen ${files.length} dosya "${zipName}" olarak başarıyla indirildi.`;
+        }
+      }
+
+      if (window.toast) {
+        window.toast(`✓ ${totalItems} yapımın sosyal medya postu ZIP olarak indirildi!`, 'ok');
+      }
+
+      this.isBatchExporting = false;
+      await this.renderCurrentSlideOnly();
+    }
+
+    cleanupBatch() {
+      this.isBatchExporting = false;
+      this.isBatchCancelled = false;
+      const overlay = document.getElementById('batchExportModalOverlay');
+      if (overlay) overlay.hidden = true;
+      document.body.classList.remove('batch-modal-open');
+      if (window.toast) window.toast('İndirme işlemi iptal edildi.', 'warn');
+      this.renderCurrentSlideOnly();
+    }
+
+    downloadAllWatchedAnimeZip(options = {}) {
+      if (options && options.direct === true) {
+        return this.startBatchExport({ catKey: 'anime', scope: 'completed', ...options });
+      }
+      return this.openBatchExportModal('anime');
     }
 
     copyCaption() {

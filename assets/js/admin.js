@@ -1163,6 +1163,7 @@
               <button type="button" class="btn-subtle" id="triggerActionsBtn" title="GitHub Actions üzerindeki sync-anilist.yml iş akışını tetikler">⚡ GitHub Actions Çalıştır</button>
               <button type="button" class="btn-subtle" id="openCommitRecoveryBtn" title="GitHub'daki önceki commit'lerinizden düzenlediğiniz kategori, puan ve başyapıt verilerini tek tıkla geri getirir">🕰️ Eski Commit'ten Kurtar</button>
               <button type="button" class="btn-subtle" id="downloadAnimeJsonBtn">💾 anime.json İndir</button>
+              <button type="button" class="btn-subtle" id="exportAllAnimePostsBtn" style="color:var(--accent);font-weight:600" title="İzlenen bütün 73 animenin sosyal medya postlarını tek tıkla ZIP arşivi olarak indirin">📸 İzlenen Anime Postlarını İndir (ZIP)</button>
             </div>
           </div>
 
@@ -1965,7 +1966,8 @@
             <div class="form-actions" style="display:flex; gap:10px; flex-wrap:wrap">
               <button type="button" class="btn-subtle" id="renderInstaBtn">🎨 Görseli Yenile</button>
               <button type="button" class="btn-subtle" id="downloadZipInstaBtn" title="Karusel ve Wrapped slaytlarını tek bir ZIP paketi olarak indirin">📦 Tüm Slaytları ZIP İndir</button>
-              <button type="button" class="btn-primary" id="downloadInstaBtn">💾 Aktif Slaytı PNG İndir</button>
+              <button type="button" class="btn-subtle" id="downloadInstaBtn">💾 Aktif Slaytı PNG İndir</button>
+              <button type="button" class="btn-primary" id="downloadAllWatchedAnimeZipBtn" style="background: linear-gradient(135deg, #00a8ff 0%, #7c3aed 100%); border-color: transparent; font-weight: 650; box-shadow: 0 4px 14px rgba(0, 168, 255, 0.35);" title="İzlenen bütün animelerin sosyal medya postlarını tek tıkla ZIP arşivi olarak indirin">📦 Bütün İzlenen Animeleri ZIP İndir</button>
             </div>
           </div>
 
@@ -2076,6 +2078,9 @@
                     <span id="instaSlideNavHeader">Çoklu Karusel Slaytları (Toplam 1 Gönderi)</span>
                   </div>
                   <div class="insta-slide-nav-actions">
+                    <button type="button" class="btn-subtle insta-nav-btn" id="instaDownloadAllAnimeBtn" title="İzlenen bütün animelerin sosyal medya postlarını tek bir ZIP paketi olarak indirin">
+                      📦 Tüm İzlenenler (ZIP)
+                    </button>
                     <button type="button" class="btn-subtle insta-nav-btn" id="instaDownloadSlideBtn" title="Aktif slaytı PNG olarak indirin">
                       💾 Aktif Slaytı PNG İndir
                     </button>
@@ -9793,6 +9798,14 @@
         toast(`${adapter.countKey}.json indirildi.`);
       }
     };
+    if ($('#exportAllAnimePostsBtn')) {
+      $('#exportAllAnimePostsBtn').onclick = () => {
+        switchAdminPanel('instagram');
+        if (window.AdminInstagram && typeof window.AdminInstagram.openBatchExportModal === 'function') {
+          window.AdminInstagram.openBatchExportModal('anime');
+        }
+      };
+    }
     if ($('#openCommitRecoveryBtn')) {
       $('#openCommitRecoveryBtn').onclick = () => {
         switchAdminPanel('health');

@@ -1549,7 +1549,7 @@
       for (const s of visibleSections) {
         const on = s.status === 'active', m = sum[s.id] || {};
         const isFeatured = on && (s.id === 'anime' || s.id === 'guide' || s.id === 'project');
-        const li = el('li', 'tile glass sq' + (isFeatured ? ' tile-featured' : on ? ' tile-active' : ' tile-companion soon'));
+        const li = el('li', 'tile glass sq' + (isFeatured ? (' tile-featured' + (s.id === 'project' ? ' tile-project' : '')) : on ? ' tile-active' : ' tile-companion soon'));
         const box = on ? Object.assign(el('a'), { href: root + s.path }) : el('div');
 
         if (isFeatured) {
@@ -1592,13 +1592,32 @@
             }
             box.append(topicGrid);
           } else if (s.id === 'project') {
-            const projectGrid = el('div', 'guide-topic-grid');
-            for (const [pTitle, pDesc] of [
-              ['tempestian/nixos-config', 'Nix Flake, Home Manager, Niri & iNiR Quickshell kabuğu'],
-              ['tempestian/iNiR (Fork)', 'Quickshell Wayland masaüstü kabuk çatalı (fix-nix-support)']
-            ]) {
-              const cell = el('div', 'guide-topic-cell');
-              cell.append(el('b', 'gt-title', pTitle), el('span', 'gt-desc', pDesc));
+            const projectGrid = el('div', 'project-bento-grid');
+            const pProjects = [
+              {
+                title: 'tempestian/nixos-config',
+                badge: 'Nix Flake',
+                desc: 'NixOS sistem ve Home Manager yapılandırması. Niri Wayland WM & Quickshell iNiR masaüstü kabuk entegrasyonu.',
+                tags: ['Nix', 'Niri', 'Quickshell']
+              },
+              {
+                title: 'tempestian/iNiR (Fork)',
+                badge: 'Kabuk Fork',
+                desc: 'snowarch/iNiR Quickshell Wayland masaüstü kabuk forkumuz. NixOS / Nixpkgs tam bağımlılık ve sistem desteği.',
+                tags: ['QML', 'Nix Flake', 'fix-nix-support']
+              }
+            ];
+            for (const p of pProjects) {
+              const cell = el('div', 'project-bento-cell');
+              const tRow = el('div', 'pb-title-row');
+              tRow.append(el('span', 'pb-title', p.title), el('span', 'pb-badge', p.badge));
+              cell.append(tRow);
+              cell.append(el('p', 'pb-desc', p.desc));
+              const bRow = el('div', 'pb-badges');
+              for (const tag of p.tags) {
+                bRow.append(el('span', 'pb-badge', tag));
+              }
+              cell.append(bRow);
               projectGrid.append(cell);
             }
             box.append(projectGrid);
@@ -1696,7 +1715,10 @@
   if (previewCfg) {
     render(previewCfg, (cached && cached.s) || {});
   } else if (cached && cached.d) {
-    render(cached.d, cached.s || {});
+    const hasProject = (cached.d.sections || []).some(s => s.id === 'project');
+    if (hasProject) {
+      render(cached.d, cached.s || {});
+    }
   }
 
   (async () => {

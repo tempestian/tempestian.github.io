@@ -254,106 +254,125 @@
       const li = h('li', 'tile glass sq project-card' + (it.favorite ? ' is-fav' : '') + (it.isFork ? ' is-fork' : ''));
       li.style.setProperty('--stagger', `${Math.min(idx++, 15) * 30}ms`);
       const targetUrl = it.url || `https://github.com/tempestian/${it.name || ''}`;
-      const a = h('a', 'project-card-link');
-      a.href = targetUrl;
-      a.target = '_blank';
-      a.rel = 'noopener';
 
-      // Meta Top Row
-      const metaTop = h('div', 'project-card-meta');
-      const catRow = h('div', 'project-cat-row');
+      li.addEventListener('click', (e) => {
+        if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.project-terminal-bar')) return;
+        window.open(targetUrl, '_blank', 'noopener');
+      });
 
+      const cardInner = h('div', 'project-card-inner');
+
+      // Top row: Badges + Tech Meta (Language, Branch)
+      const headRow = h('div', 'project-header-row');
+      const badgeGrp = h('div', 'project-badge-group');
       if (it.favorite) {
-        catRow.append(h('span', 'tag tag-active', '★ Öne Çıkan'));
+        badgeGrp.append(h('span', 'tag tag-active', '★ Öne Çıkan'));
       }
       if (it.isFork) {
-        catRow.append(h('span', 'tag tag-fork', 'Fork'));
+        badgeGrp.append(h('span', 'tag tag-fork', 'Fork'));
       }
       for (const c of getCategories(it).slice(0, 3)) {
-        catRow.append(h('span', 'tag', c));
+        badgeGrp.append(h('span', 'tag', c));
       }
-      metaTop.append(catRow);
+      headRow.append(badgeGrp);
 
-      const rightMeta = h('div', 'project-right-meta');
+      const techMeta = h('div', 'project-tech-meta');
       if (it.language) {
-        const langBadge = h('span', 'project-lang-badge');
+        const langPill = h('span', 'project-lang-pill');
         if (it.languageColor) {
-          const dot = h('span', 'project-lang-dot');
+          const dot = h('span', 'lang-dot');
           dot.style.backgroundColor = it.languageColor;
-          langBadge.append(dot);
+          langPill.append(dot);
         }
-        langBadge.append(h('span', '', it.language));
-        rightMeta.append(langBadge);
+        langPill.append(h('span', '', it.language));
+        techMeta.append(langPill);
       }
       if (it.branch) {
-        const brBadge = h('span', 'project-branch-badge', it.branch);
-        rightMeta.append(brBadge);
+        techMeta.append(h('span', 'project-branch-pill', it.branch));
       }
-      metaTop.append(rightMeta);
-      a.append(metaTop);
+      headRow.append(techMeta);
+      cardInner.append(headRow);
 
-      // Main Header: Project Title + Repo Name
-      const headWrap = h('div', 'project-card-head');
-      const h2 = h('h2', 'project-card-title', it.fullName || it.title || it.name || 'İsimsiz Proje');
-      headWrap.append(h2);
+      // Title & upstream info
+      const titleBlock = h('div', 'project-title-block');
+      const h2 = h('h2', 'project-name');
+      const titleLink = h('a', '', it.fullName || it.title || it.name || 'İsimsiz Proje');
+      titleLink.href = targetUrl;
+      titleLink.target = '_blank';
+      titleLink.rel = 'noopener';
+      h2.append(titleLink);
+      titleBlock.append(h2);
 
       if (it.isFork && it.upstreamName) {
-        const upEl = h('div', 'project-upstream-info');
-        upEl.innerHTML = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg> <span>Kaynak: <b>${it.upstreamName}</b></span>`;
-        headWrap.append(upEl);
+        const upEl = h('div', 'project-upstream-line');
+        const upUrl = it.upstreamUrl || `https://github.com/${it.upstreamName}`;
+        upEl.innerHTML = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg><span>Kaynak: <a href="${upUrl}" target="_blank" rel="noopener">${it.upstreamName}</a></span>`;
+        titleBlock.append(upEl);
       }
-      a.append(headWrap);
+      cardInner.append(titleBlock);
 
       // Description
       if (it.description || it.summary) {
-        a.append(h('p', 'box-txt project-card-desc', it.description || it.summary));
+        cardInner.append(h('p', 'box-txt project-desc', it.description || it.summary));
       }
 
-      // Highlights / Key Features
-      if (Array.isArray(it.highlights) && it.highlights.length) {
-        const hlList = h('ul', 'project-highlights');
-        for (const hl of it.highlights.slice(0, 4)) {
-          const hlItem = h('li', 'project-highlight-item');
-          hlItem.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> <span>${hl}</span>`;
-          hlList.append(hlItem);
+      // Tech Pills (tags / highlights summary)
+      const pills = (Array.isArray(it.tags) && it.tags.length) ? it.tags : getCategories(it);
+      if (pills.length) {
+        const pillsRow = h('div', 'project-pills-row');
+        for (const tag of pills.slice(0, 6)) {
+          pillsRow.append(h('span', 'pill-chip', tag));
         }
-        a.append(hlList);
+        cardInner.append(pillsRow);
       }
 
-      // Quick Install/Clone snippet if available
+      // Terminal Quick Command
       if (it.installCommand) {
-        const cmdBox = h('div', 'project-cmd-box');
-        cmdBox.innerHTML = `<code>${it.installCommand}</code>`;
-        cmdBox.onclick = (e) => {
+        const termBar = h('div', 'project-terminal-bar');
+        const promptSpan = h('span', 'term-prompt', '$');
+        const codeSpan = h('span', 'term-code', it.installCommand);
+        const copyBtn = h('button', 'term-copy-btn');
+        copyBtn.type = 'button';
+        copyBtn.title = 'Komutu panoya kopyala';
+        copyBtn.setAttribute('aria-label', 'Komutu panoya kopyala');
+        copyBtn.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
+
+        const doCopy = (e) => {
           e.preventDefault();
           e.stopPropagation();
           if (navigator.clipboard) {
             navigator.clipboard.writeText(it.installCommand);
+            copyBtn.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#41cd52" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+            setTimeout(() => {
+              copyBtn.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
+            }, 1800);
             if (window.UI && window.UI.showToast) {
               window.UI.showToast('Komut panoya kopyalandı! 📋');
             }
           }
         };
-        cmdBox.title = 'Tıkla ve komutu panoya kopyala';
-        a.append(cmdBox);
+
+        termBar.onclick = doCopy;
+        copyBtn.onclick = doCopy;
+        termBar.append(promptSpan, codeSpan, copyBtn);
+        cardInner.append(termBar);
       }
 
-      // Card Footer
-      const foot = h('div', 'project-card-foot');
-      const footMeta = h('div', 'project-foot-meta');
-      if (it.addedAt) {
-        const fmtDate = (window.formatHybridDate ? window.formatHybridDate(it.addedAt) : it.addedAt) || '';
-        footMeta.append(h('span', 'project-card-date', fmtDate));
-      }
-      foot.append(footMeta);
+      // Footer Row: Added date + GitHub Repo button
+      const footerRow = h('div', 'project-footer-row');
+      const fmtDate = (it.addedAt && window.formatHybridDate ? window.formatHybridDate(it.addedAt) : it.addedAt) || '';
+      footerRow.append(h('span', 'project-date', fmtDate));
 
-      const rightBadge = h('span', 'project-out-badge');
+      const ghBtn = h('a', 'btn-github-out');
+      ghBtn.href = targetUrl;
+      ghBtn.target = '_blank';
+      ghBtn.rel = 'noopener';
       const extLabel = pageTexts.externalButtonText || 'GitHub Deposu';
-      rightBadge.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg> <span>${extLabel}</span> ${window.UI ? window.UI.icon('out') : ''}`;
-      foot.append(rightBadge);
-      a.append(foot);
+      ghBtn.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg><span>${extLabel}</span><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+      footerRow.append(ghBtn);
 
-      li.append(a);
+      cardInner.append(footerRow);
+      li.append(cardInner);
       fr.append(li);
     }
     ul.replaceChildren(fr);

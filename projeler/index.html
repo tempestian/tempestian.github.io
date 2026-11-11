@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#eceef3">
+<meta name="description" content="Bayram Tempestian'ın açık kaynak projeleri, GNU/Linux NixOS sistem yapılandırmaları ve masaüstü kabuk forkları kataloğu.">
+<!-- [AI-MIMARI-NOTU: PROJELER BÖLÜMÜ — SOSYAL MEDYA PAYLAŞIM KARTLARI (OPEN GRAPH & TWITTER)] -->
+<meta property="og:site_name" content="Tempestian">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tempestian.com/projeler/">
+<meta property="og:title" content="Projeler · Tempestian">
+<meta property="og:description" content="Bayram Tempestian'ın açık kaynak projeleri, GNU/Linux NixOS sistem yapılandırmaları ve masaüstü kabuk forkları kataloğu.">
+<meta property="og:image" content="https://tempestian.com/assets/img/icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Projeler · Tempestian">
+<meta name="twitter:description" content="Bayram Tempestian'ın açık kaynak projeleri, GNU/Linux NixOS sistem yapılandırmaları ve masaüstü kabuk forkları kataloğu.">
+<meta name="twitter:image" content="https://tempestian.com/assets/img/icon-512.png">
+<title>Projeler · Tempestian</title>
+<link rel="icon" href="../assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<script src="../assets/js/theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-root="../" data-section="project" data-data="../data/projects.json">
+<header class="bar">
+  <div class="bar-in">
+    <a class="btn glass" href="../" data-icon="back" aria-label="Ana sayfa"></a>
+    <span class="bar-title">Projeler</span>
+    <div class="bar-actions">
+      <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <h1>Projeler</h1>
+    <p class="sub" id="projectPageSub" style="margin-top:4px;font-size:.98rem">Açık kaynak sistem yapılandırmaları, kabuk forkları ve yazılım projeleri kataloğu.</p>
+  </div>
+
+  <div id="stats" class="stats glass sq" hidden></div>
+
+  <div class="tools">
+    <label class="search glass">
+      <span data-icon="search"></span>
+      <input id="q" type="search" placeholder="Proje adı, teknoloji veya anahtar kelime ara..." autocomplete="off">
+    </label>
+    <div class="pick glass">
+      <select id="sort" aria-label="Sıralama">
+        <option value="added">En yeni</option>
+        <option value="title">İsim (A–Z)</option>
+        <option value="fav">Öne çıkanlar</option>
+      </select>
+      <span data-icon="chev"></span>
+    </div>
+    <button class="btn glass" id="randomPickBtn" type="button" data-icon="dice" aria-label="Rastgele Proje Seç" title="Rastgele bir proje seç (🎲)"></button>
+  </div>
+
+  <div id="chips" class="chips" role="group" aria-label="Kategori ve Teknoloji Filtresi"></div>
+
+  <ul id="projectList" class="tiles project-catalog-grid"></ul>
+  <p id="empty" class="note" hidden>Henüz proje eklenmemiş veya aramayla eşleşen proje yok.</p>
+
+  <p class="foot">Tüm projeler açık kaynaklıdır. Proje kartlarına tıklayarak doğrudan ilgili GitHub deposuna gidebilirsiniz.</p>
+</main>
+
+<nav id="dock" class="dock glass" aria-label="Bölümler" hidden></nav>
+
+<script src="../assets/js/common.js"></script>
+<script src="../assets/js/project.js"></script>
+</body>
+</html>

@@ -70,6 +70,19 @@
       "showStrip": false
     },
     {
+      "id": "project",
+      "title": "Projeler",
+      "path": "projeler/",
+      "description": "Açık kaynak projelerim ve forklarım",
+      "subtitle": "Kişisel GNU/Linux yapılandırmalarım, masaüstü shell forkları ve açık kaynak katkılarım.",
+      "data": "data/projects.json",
+      "countKey": "projects",
+      "unit": "proje",
+      "status": "active",
+      "icon": "code",
+      "showStrip": false
+    },
+    {
       "id": "series",
       "title": "Dizi",
       "path": "dizi/",
@@ -163,6 +176,18 @@
       "resetFilterText": "Filtreleri sıfırla",
       "externalButtonText": "Technopat Sosyal",
       "footerText": "Rehber kartlarına tıkladığınızda Technopat Sosyal üzerindeki ilgili konuya yönlendirilirsiniz."
+    },
+    "project": {
+      "title": "Projeler",
+      "subtitle": "Açık kaynak sistem yapılandırmaları, kabuk forkları ve yazılım projeleri kataloğu.",
+      "metaTitle": "Projeler · Tempestian",
+      "description": "Bayram Tempestian'ın açık kaynak projeleri: NixOS yapılandırması, iNiR Quickshell kabuğu ve yazılım depoları.",
+      "searchPlaceholder": "Proje, teknoloji veya anahtar kelime ara...",
+      "emptyText": "Henüz proje eklenmemiş veya aramayla eşleşen proje yok.",
+      "detailsText": "Ayrıntılar",
+      "resetFilterText": "Filtreleri sıfırla",
+      "externalButtonText": "GitHub Deposu",
+      "footerText": "Tüm projeler açık kaynaklıdır. Proje kartlarına tıklayarak doğrudan ilgili GitHub deposuna gidebilirsiniz."
     },
     "series": {
       "title": "Dizi",

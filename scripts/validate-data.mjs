@@ -172,7 +172,8 @@ function validateMultiMediaFiles() {
     'movies.json',
     'books.json',
     'manga.json',
-    'guides.json'
+    'guides.json',
+    'projects.json'
   ];
 
   for (const fileName of files) {
@@ -285,6 +286,7 @@ function validateCoreHtmlFiles() {
     'kitap/index.html',
     'manga/index.html',
     'rehber/index.html',
+    'projeler/index.html',
     'istatistik/index.html',
     'zaman-tuneli/index.html'
   ];

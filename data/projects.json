@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-11-11",
+  "source": "site-first:project",
+  "customGenreCatalog": [
+    "NixOS",
+    "Quickshell",
+    "Wayland",
+    "Niri",
+    "Dotfiles",
+    "Fork",
+    "Sistem",
+    "Masaüstü & Kabuk"
+  ],
+  "stats": {
+    "total": 2,
+    "published": 2,
+    "draft": 0,
+    "favorites": 2,
+    "forks": 1,
+    "categories": [
+      {
+        "name": "NixOS",
+        "count": 2
+      },
+      {
+        "name": "Quickshell",
+        "count": 2
+      },
+      {
+        "name": "Wayland",
+        "count": 2
+      },
+      {
+        "name": "Niri",
+        "count": 2
+      },
+      {
+        "name": "Dotfiles",
+        "count": 1
+      },
+      {
+        "name": "Fork",
+        "count": 1
+      }
+    ]
+  },
+  "items": [
+    {
+      "id": "prj-nixos-config",
+      "name": "nixos-config",
+      "title": "nixos-config",
+      "fullName": "tempestian/nixos-config",
+      "url": "https://github.com/tempestian/nixos-config",
+      "description": "Kişisel dizüstü bilgisayarım için nixos-unstable, Nix Flake ve Home Manager tabanlı sistem yapılandırması. Niri pencere yöneticisi, iNiR Quickshell kabuğu ve Matugen dinamik tema entegrasyonu.",
+      "summary": "Nix Flake + Home Manager + Niri + iNiR Quickshell masaüstü ortamı, Matugen dinamik renklendirme ve optimize modüller.",
+      "language": "Nix",
+      "languageColor": "#5277C3",
+      "isFork": false,
+      "branch": "main",
+      "stars": 0,
+      "forks": 0,
+      "favorite": true,
+      "addedAt": "2026-11",
+      "status": "completed",
+      "categories": [
+        "NixOS",
+        "Wayland",
+        "Niri",
+        "Quickshell",
+        "Dotfiles"
+      ],
+      "tags": [
+        "Nix Flake",
+        "Home Manager",
+        "Niri",
+        "iNiR",
+        "Matugen",
+        "Kitty",
+        "Fish"
+      ],
+      "highlights": [
+        "Nix Flake & Home Manager modüler mimarisi",
+        "Niri kaydırılabilir (scrollable) Wayland kompozitör yapılandırması",
+        "iNiR Quickshell dinamik masaüstü kabuğu entegrasyonu",
+        "Matugen ile duvar kâğıdından dinamik renk ve GTK/Qt/Kitty/btop senkronizasyonu",
+        "NVIDIA & AMD hibrit grafik, Zapret DPI aşımı ve CPU boost optimizasyonları"
+      ],
+      "installCommand": "sudo nixos-rebuild switch --flake github:tempestian/nixos-config#nixos --refresh"
+    },
+    {
+      "id": "prj-inir-fork",
+      "name": "iNiR",
+      "title": "iNiR (Fork)",
+      "fullName": "tempestian/iNiR",
+      "url": "https://github.com/tempestian/iNiR",
+      "upstreamUrl": "https://github.com/snowarch/iNiR",
+      "upstreamName": "snowarch/iNiR",
+      "description": "snowarch/iNiR Niri masaüstü kabuğunun Quickshell ve NixOS entegrasyonunu kusursuzlaştıran, SDDM ve servis çakışmalarını gideren fix-nix-support dalı içeren kişisel çatalı (fork).",
+      "summary": "Niri için Quickshell tabanlı modern masaüstü kabuğu (bar, bildirimler, kilit ekranı, OSD, başlatıcı). NixOS uyumluluk yamalarıyla zenginleştirilmiş fork.",
+      "language": "QML / Nix",
+      "languageColor": "#41CD52",
+      "isFork": true,
+      "branch": "fix-nix-support",
+      "stars": 0,
+      "forks": 0,
+      "favorite": true,
+      "addedAt": "2026-11",
+      "status": "completed",
+      "categories": [
+        "Quickshell",
+        "Wayland",
+        "Niri",
+        "NixOS",
+        "Fork"
+      ],
+      "tags": [
+        "Quickshell 0.3+",
+        "Desktop Shell",
+        "fix-nix-support",
+        "QML",
+        "Niri",
+        "Wayland"
+      ],
+      "highlights": [
+        "NixOS modülü SDDM çakışma düzeltmesi (fix-nix-support dalı)",
+        "Quickshell 0.3+ yüksek performanslı Wayland kabuk mimarisi",
+        "Dinamik Island, Bar, Bildirim, Denetim Merkezi & Kilit Ekranı",
+        "snowarch/iNiR upstream ile tam uyumlu güncel fork"
+      ],
+      "installCommand": "git clone -b fix-nix-support https://github.com/tempestian/iNiR.git"
+    }
+  ]
+}

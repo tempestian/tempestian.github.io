@@ -111,6 +111,19 @@
         showStrip: false
       },
       {
+        id: 'project',
+        title: 'Projeler',
+        path: 'projeler/',
+        description: 'Açık kaynak projelerim ve forklarım',
+        subtitle: 'Kişisel GNU/Linux yapılandırmalarım, masaüstü shell forkları ve açık kaynak katkılarım.',
+        data: 'data/projects.json',
+        countKey: 'projects',
+        unit: 'proje',
+        status: 'active',
+        icon: 'code',
+        showStrip: false
+      },
+      {
         id: 'series',
         title: 'Dizi',
         path: 'dizi/',
@@ -246,7 +259,8 @@
     book: { id: 'book', title: 'Kitap', path: 'kitap/', description: 'Yakında', data: 'data/books.json', countKey: 'books', unit: 'kitap', status: 'soon', icon: 'book', showStrip: true },
     series: { id: 'series', title: 'Dizi', path: 'dizi/', description: 'Yakında', data: 'data/series.json', countKey: 'series', unit: 'dizi', status: 'soon', icon: 'series', showStrip: true },
     movie: { id: 'movie', title: 'Film', path: 'film/', description: 'Yakında', data: 'data/movies.json', countKey: 'movies', unit: 'film', status: 'soon', icon: 'movie', showStrip: true },
-    guide: { id: 'guide', title: 'Rehber', path: 'rehber/', description: 'Yakında', data: 'data/guides.json', countKey: 'guides', unit: 'rehber', status: 'soon', icon: 'guide', showStrip: false }
+    guide: { id: 'guide', title: 'Rehber', path: 'rehber/', description: 'Yakında', data: 'data/guides.json', countKey: 'guides', unit: 'rehber', status: 'soon', icon: 'guide', showStrip: false },
+    project: { id: 'project', title: 'Projeler', path: 'projeler/', description: 'Açık kaynak projelerim ve forklarım', data: 'data/projects.json', countKey: 'projects', unit: 'proje', status: 'active', icon: 'code', showStrip: false }
   };
 
   const IMAGE_SLOTS = [

@@ -154,6 +154,20 @@
         "watching",
         "planned"
       ]
+    },
+    "project": {
+      "id": "project",
+      "title": "Projeler",
+      "dataFile": "data/projects.json",
+      "itemsKey": "items",
+      "extraMetaField": "summary",
+      "unitLabel": "proje",
+      "supportsScoring": false,
+      "statuses": [
+        "completed",
+        "active",
+        "planned"
+      ]
     }
   }
 }

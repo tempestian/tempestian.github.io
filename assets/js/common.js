@@ -593,6 +593,7 @@
   const CANONICAL_SECTION_META = {
     anime: { path: 'anime/', data: 'data/anime.json', countKey: 'anime', unit: 'anime', icon: 'anime', showStrip: true },
     guide: { path: 'rehber/', data: 'data/guides.json', countKey: 'guides', unit: 'rehber', icon: 'guide', showStrip: false },
+    project: { path: 'projeler/', data: 'data/projects.json', countKey: 'projects', unit: 'proje', icon: 'code', showStrip: false },
     series: { path: 'dizi/', data: 'data/series.json', countKey: 'series', unit: 'dizi', icon: 'series', showStrip: true },
     movie: { path: 'film/', data: 'data/movies.json', countKey: 'movies', unit: 'film', icon: 'movie', showStrip: true },
     manga: { path: 'manga/', data: 'data/manga.json', countKey: 'manga', unit: 'manga', icon: 'manga', showStrip: true },
@@ -650,6 +651,9 @@
     } else if (s.id === 'guide') {
       const catCount = st && Array.isArray(st.genres) ? st.genres.length : 0;
       nums = [[items.length, 'rehber'], ...(catCount ? [[catCount, 'kategori']] : [])];
+    } else if (s.id === 'project') {
+      const catCount = st && Array.isArray(st.categories) ? st.categories.length : (st && Array.isArray(st.genres) ? st.genres.length : 0);
+      nums = [[items.length, 'proje'], ...(catCount ? [[catCount, 'kategori']] : [])];
     } else {
       nums = [[items.length, s.unit || 'içerik']];
     }
@@ -851,6 +855,14 @@
               </div>
               <span class="flyout-badge">Technopat</span>
             </a>
+            <a class="flyout-item${isAct('project') || isAct('projeler')}" href="${root}projeler/">
+              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5.5l-3 13"/></svg></span>
+              <div class="flyout-info">
+                <span class="flyout-name">Projeler</span>
+                <span class="flyout-desc" id="flyProjectDesc">Açık Kaynak & Forklar</span>
+              </div>
+              <span class="flyout-badge">Aktif</span>
+            </a>
             <a class="flyout-item${isAct('series') || isAct('dizi')}" href="${root}dizi/">
               <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
               <div class="flyout-info">
@@ -1006,6 +1018,10 @@
       const guideDescEl = document.getElementById('flyGuideDesc');
       if (guideDescEl) guideDescEl.textContent = `${sum.guide.nums[0][0]} Rehber · Donanım & Linux`;
     }
+    if (sum && sum.project && sum.project.nums && sum.project.nums[0]) {
+      const projectDescEl = document.getElementById('flyProjectDesc');
+      if (projectDescEl) projectDescEl.textContent = `${sum.project.nums[0][0]} Proje · GitHub & Fork`;
+    }
 
     initCommandPalette();
   }
@@ -1016,6 +1032,7 @@
   let cmdPaletteMounted = false;
   let cachedAnimeData = null;
   let cachedGuidesData = null;
+  let cachedProjectsData = null;
   let cmdActiveIndex = -1;
 
   function initCommandPalette() {
@@ -1102,6 +1119,17 @@
           cachedGuidesData = [];
         }
       }
+      if (!cachedProjectsData) {
+        try {
+          const res = await fetch(root + 'data/projects.json');
+          if (res.ok) {
+            const json = await res.json();
+            cachedProjectsData = Array.isArray(json.items) ? json.items : (Array.isArray(json) ? json : []);
+          }
+        } catch (_) {
+          cachedProjectsData = [];
+        }
+      }
     }
 
     function matchesText(str, query) {
@@ -1165,6 +1193,7 @@
       let matchedSections = [];
       let matchedAnime = [];
       let matchedGuides = [];
+      let matchedProjects = [];
 
       if (!trimmed) {
         matchedActions = quickActions.slice(0, 2);
@@ -1175,6 +1204,10 @@
         if (cachedGuidesData && cachedGuidesData.length) {
           matchedGuides = cachedGuidesData.filter(g => g.favorite).slice(0, 3);
           if (!matchedGuides.length) matchedGuides = cachedGuidesData.slice(0, 3);
+        }
+        if (cachedProjectsData && cachedProjectsData.length) {
+          matchedProjects = cachedProjectsData.filter(p => p.favorite).slice(0, 2);
+          if (!matchedProjects.length) matchedProjects = cachedProjectsData.slice(0, 2);
         }
       } else {
         matchedActions = quickActions.filter(act => matchesText(act.title, trimmed) || matchesText(act.desc, trimmed));
@@ -1195,9 +1228,21 @@
             (Array.isArray(g.customGenres) && g.customGenres.some(cgen => matchesText(cgen, trimmed)))
           ).slice(0, 6);
         }
+        if (cachedProjectsData) {
+          matchedProjects = cachedProjectsData.filter(p =>
+            matchesText(p.title, trimmed) ||
+            matchesText(p.name, trimmed) ||
+            matchesText(p.fullName, trimmed) ||
+            matchesText(p.description, trimmed) ||
+            matchesText(p.summary, trimmed) ||
+            matchesText(p.language, trimmed) ||
+            (Array.isArray(p.categories) && p.categories.some(c => matchesText(c, trimmed))) ||
+            (Array.isArray(p.tags) && p.tags.some(t => matchesText(t, trimmed)))
+          ).slice(0, 4);
+        }
       }
 
-      if (!matchedActions.length && !matchedSections.length && !matchedAnime.length && !matchedGuides.length) {
+      if (!matchedActions.length && !matchedSections.length && !matchedAnime.length && !matchedGuides.length && !matchedProjects.length) {
         const empty = el('div', 'cmd-empty');
         empty.textContent = `"${trimmed}" için sonuç bulunamadı.`;
         resultsContainer.appendChild(empty);
@@ -1339,6 +1384,42 @@
         });
       }
 
+      // 4. Projects Group
+      if (matchedProjects.length) {
+        const title = el('div', 'cmd-group-title');
+        title.textContent = 'Açık Kaynak Projeler & Forklar';
+        resultsContainer.appendChild(title);
+
+        matchedProjects.forEach(p => {
+          const item = el('a', 'cmd-item');
+          item.href = p.url || (root + 'projeler/');
+          if (p.url && p.url.startsWith('http')) {
+            item.target = '_blank';
+            item.rel = 'noopener';
+          }
+
+          const cat = (p.categories && p.categories[0]) || (p.isFork ? 'Fork' : 'Proje');
+
+          item.innerHTML = `
+            <div class="cmd-item-left">
+              <span class="cmd-item-ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5.5l-3 13"/></svg>
+              </span>
+              <div class="cmd-item-info">
+                <span class="cmd-item-title">${esc(p.fullName || p.title || p.name)}</span>
+                <span class="cmd-item-desc">${esc(p.summary || p.description || cat)}</span>
+              </div>
+            </div>
+            <span class="cmd-item-badge">${esc(p.isFork ? 'Fork' : (p.language || 'Proje'))}</span>
+          `;
+
+          item.onclick = () => {
+            window.closeCommandPalette();
+          };
+          resultsContainer.appendChild(item);
+        });
+      }
+
       updateSelection(0);
     }
 
@@ -1467,14 +1548,15 @@
       const fr = document.createDocumentFragment();
       for (const s of visibleSections) {
         const on = s.status === 'active', m = sum[s.id] || {};
-        const isFeatured = on && (s.id === 'anime' || s.id === 'guide');
+        const isFeatured = on && (s.id === 'anime' || s.id === 'guide' || s.id === 'project');
         const li = el('li', 'tile glass sq' + (isFeatured ? ' tile-featured' : on ? ' tile-active' : ' tile-companion soon'));
         const box = on ? Object.assign(el('a'), { href: root + s.path }) : el('div');
 
         if (isFeatured) {
           const kickerRow = el('div', 'sec-kicker-row');
+          const kickerText = s.id === 'anime' ? '01 · MEDYA ARŞİVİ' : s.id === 'guide' ? '02 · TEKNİK BİLGİ BANKASI' : '03 · AÇIK KAYNAK & YAZILIM';
           kickerRow.append(
-            el('span', 'sec-kicker', s.id === 'anime' ? '01 · MEDYA ARŞİVİ' : '02 · TEKNİK BİLGİ BANKASI'),
+            el('span', 'sec-kicker', kickerText),
             Object.assign(el('span', 'sec-open-lbl'), { innerHTML: 'Bölümü Aç ' + icon('next') })
           );
           box.append(kickerRow);
@@ -1509,6 +1591,17 @@
               topicGrid.append(cell);
             }
             box.append(topicGrid);
+          } else if (s.id === 'project') {
+            const projectGrid = el('div', 'guide-topic-grid');
+            for (const [pTitle, pDesc] of [
+              ['tempestian/nixos-config', 'Nix Flake, Home Manager, Niri & iNiR Quickshell kabuğu'],
+              ['tempestian/iNiR (Fork)', 'Quickshell Wayland masaüstü kabuk çatalı (fix-nix-support)']
+            ]) {
+              const cell = el('div', 'guide-topic-cell');
+              cell.append(el('b', 'gt-title', pTitle), el('span', 'gt-desc', pDesc));
+              projectGrid.append(cell);
+            }
+            box.append(projectGrid);
           }
         } else {
           const top = el('div', 'tile-top');

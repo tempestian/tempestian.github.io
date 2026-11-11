@@ -1546,15 +1546,30 @@
 
     if (list) {
       const fr = document.createDocumentFragment();
+      let featuredIndex = 0;
+      const defaultKickers = {
+        anime: 'MEDYA ARŞİVİ',
+        guide: 'TEKNİK BİLGİ BANKASI',
+        project: 'AÇIK KAYNAK & YAZILIM',
+        series: 'DİZİ ARŞİVİ',
+        movie: 'SİNEMA & FİLM',
+        manga: 'MANGA & ÇİZGİ',
+        book: 'KİTAP & OKUMA'
+      };
+
       for (const s of visibleSections) {
         const on = s.status === 'active', m = sum[s.id] || {};
-        const isFeatured = on && (s.id === 'anime' || s.id === 'guide' || s.id === 'project');
+        const isFeatured = on && (s.id === 'anime' || s.id === 'guide' || s.id === 'project' || s.isFeatured);
         const li = el('li', 'tile glass sq' + (isFeatured ? (' tile-featured' + (s.id === 'project' ? ' tile-project' : '')) : on ? ' tile-active' : ' tile-companion soon'));
         const box = on ? Object.assign(el('a'), { href: root + s.path }) : el('div');
 
         if (isFeatured) {
+          featuredIndex++;
+          const numStr = String(featuredIndex).padStart(2, '0');
+          const kickerLabel = s.kicker || defaultKickers[s.id] || (s.title || '').toUpperCase();
+          const kickerText = `${numStr} · ${kickerLabel}`;
+
           const kickerRow = el('div', 'sec-kicker-row');
-          const kickerText = s.id === 'anime' ? '01 · MEDYA ARŞİVİ' : s.id === 'guide' ? '02 · TEKNİK BİLGİ BANKASI' : '03 · AÇIK KAYNAK & YAZILIM';
           kickerRow.append(
             el('span', 'sec-kicker', kickerText),
             Object.assign(el('span', 'sec-open-lbl'), { innerHTML: 'Bölümü Aç ' + icon('next') })

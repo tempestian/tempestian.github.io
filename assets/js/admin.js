@@ -2416,7 +2416,12 @@
                     <option value="hidden">⚪ Gizli (Ziyaretçilere Kapalı / Taslak)</option>
                   </select>
                 </label>
-                <label class="field" style="flex:2">
+                <label class="field" style="flex:1">
+                  <span>Üst Kicker Etiketi (kicker)</span>
+                  <input type="text" id="nmKicker" class="inp glass" placeholder="Örn: TEKNİK BİLGİ BANKASI / MEDYA ARŞİVİ">
+                  <small>Kartta numaranın yanındaki büyük harfli etiket (boşsa otomatik).</small>
+                </label>
+                <label class="field" style="flex:1">
                   <span>Kutucuk Rozet Açıklaması (description)</span>
                   <input type="text" id="nmDescription" class="inp glass" placeholder="Örn: Açık kaynak projelerim ve forklarım / Yakında">
                   <small>Ana sayfa kutucuğundaki kısa durum metni.</small>
@@ -8996,6 +9001,7 @@
     $('#nmSubtitle').value = sec.subtitle || pg.subtitle || '';
     $('#nmIcon').value = sec.icon || sec.id || 'code';
     $('#nmStatus').value = sec.status || 'soon';
+    if ($('#nmKicker')) $('#nmKicker').value = sec.kicker || '';
     $('#nmDescription').value = sec.description || '';
     $('#nmShowStrip').checked = sec.showStrip !== false;
 
@@ -9045,6 +9051,11 @@
     sec.subtitle = S($('#nmSubtitle').value, 240);
     sec.icon = $('#nmIcon').value || sec.icon;
     sec.status = $('#nmStatus').value || 'soon';
+    if ($('#nmKicker')) {
+      const kickerVal = S($('#nmKicker').value, 80);
+      if (kickerVal) sec.kicker = kickerVal;
+      else delete sec.kicker;
+    }
     sec.description = S($('#nmDescription').value, 200) || sec.description;
     sec.showStrip = Boolean($('#nmShowStrip').checked);
     sec.data = S($('#nmDataFile').value, 120) || sec.data;

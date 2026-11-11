@@ -203,6 +203,18 @@
         resetFilterText: 'Filtreleri sıfırla',
         externalButtonText: 'Technopat Sosyal'
       },
+      project: {
+        title: 'Projeler',
+        subtitle: 'Açık kaynak sistem yapılandırmaları, kabuk forkları ve yazılım projeleri kataloğu.',
+        metaTitle: 'Projeler · Tempestian',
+        description: "Bayram Tempestian'ın açık kaynak projeleri: NixOS yapılandırması, iNiR Quickshell kabuğu ve yazılım depoları.",
+        searchPlaceholder: 'Proje, teknoloji veya anahtar kelime ara...',
+        emptyText: 'Henüz proje eklenmemiş veya aramayla eşleşen proje yok.',
+        footerText: 'Tüm projeler açık kaynaklıdır. Proje kartlarına tıklayarak doğrudan ilgili GitHub deposuna gidebilirsiniz.',
+        detailsText: 'Ayrıntılar',
+        resetFilterText: 'Filtreleri sıfırla',
+        externalButtonText: 'GitHub Deposu'
+      },
       series: {
         title: 'Dizi',
         subtitle: '',
@@ -439,6 +451,9 @@
     if (Array.isArray(a.customGenres) && a.customGenres.length > 0) {
       return [...new Set(a.customGenres.map(g => String(g).trim()).filter(Boolean))];
     }
+    if (Array.isArray(a.categories) && a.categories.length > 0) {
+      return [...new Set(a.categories.map(g => String(g).trim()).filter(Boolean))];
+    }
     if (genreSourceRule === 'custom_only') {
       return [];
     }
@@ -630,6 +645,38 @@
       };
     }
 
+    if (mediaType === 'project') {
+      const byStatus = {};
+      const catCounts = new Map();
+      let favorites = 0;
+      let published = 0;
+      let forks = 0;
+      for (const it of list) {
+        if (!it) continue;
+        if (it.favorite) favorites++;
+        if (it.isFork) forks++;
+        const st = it.status || 'completed';
+        byStatus[st] = (byStatus[st] || 0) + 1;
+        if (st === 'completed') published++;
+        for (const g of resolveEffectiveGenres(it, 'custom_only')) {
+          catCounts.set(g, (catCounts.get(g) || 0) + 1);
+        }
+      }
+      const categories = [...catCounts.entries()]
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'tr'))
+        .map(([name, count]) => ({ name, count }));
+      return {
+        total: list.length,
+        published,
+        draft: list.length - published,
+        favorites,
+        forks,
+        byStatus,
+        categories,
+        genres: categories
+      };
+    }
+
     const base = computeStatsClient(list, rawConfig);
     if (mediaType === 'book') {
       return {
@@ -698,16 +745,18 @@
 
   function cleanMediaItemsForSave(items, mediaType = 'anime') {
     const list = Array.isArray(items) ? items : [];
-    if (mediaType !== 'guide') return list;
-    return list.map(it => {
-      const copy = { ...it };
-      delete copy.parts;
-      delete copy.anilistId;
-      delete copy.firstSeasonUrl;
-      delete copy.lockedFields;
-      delete copy.score;
-      return copy;
-    });
+    if (mediaType === 'guide' || mediaType === 'project') {
+      return list.map(it => {
+        const copy = { ...it };
+        delete copy.parts;
+        delete copy.anilistId;
+        delete copy.firstSeasonUrl;
+        delete copy.lockedFields;
+        delete copy.score;
+        return copy;
+      });
+    }
+    return list;
   }
 
   function deriveFranchiseStatusFromParts(parts) {
@@ -1057,6 +1106,10 @@
                 <span class="acp-nav-icon">📺</span>
                 <span class="acp-nav-label">Medya &amp; Arşiv</span>
               </button>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="projects" aria-selected="false" title="Projeler &amp; Forklar">
+                <span class="acp-nav-icon">💻</span>
+                <span class="acp-nav-label">Projeler &amp; Forklar</span>
+              </button>
               <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="rapid" aria-selected="false" title="Hızlı Sıralı İnceleme">
                 <span class="acp-nav-icon">⚡</span>
                 <span class="acp-nav-label">Hızlı Sıralı İnceleme</span>
@@ -1157,6 +1210,7 @@
                 <option value="manga">📖 Bölüm: Manga</option>
                 <option value="book">📚 Bölüm: Kitap</option>
                 <option value="guide">🧭 Bölüm: Rehber (Technopat Katalog)</option>
+                <option value="project">💻 Bölüm: Projeler &amp; Forklar</option>
               </select>
               <select id="admSectionStatusSelect" class="inp glass" style="width:auto;min-width:170px;font-weight:600" title="Seçili bölümün sitedeki yayın durumu (Yayında olmasa bile girdi ekleyebilir, istediğiniz zaman Yayında yapabilirsiniz)">
                 <option value="active">🟢 Sitede: Yayında (Aktif)</option>
@@ -1516,7 +1570,7 @@
             <div class="card-head split-head">
               <div>
                 <h2 id="cfgPageCardHeading">Kategori Sayfası Metinleri (Tüm Bölümler)</h2>
-                <p id="cfgPageCardSub">Anime, Rehber, Dizi, Film, Manga ve Kitap sayfalarının başlıklarını, arama kutusu ipuçlarını, butonlarını ve alt bilgi notlarını ayrı ayrı özelleştirin.</p>
+                <p id="cfgPageCardSub">Anime, Rehber, Projeler, Dizi, Film, Manga ve Kitap sayfalarının başlıklarını, arama kutusu ipuçlarını, butonlarını ve alt bilgi notlarını ayrı ayrı özelleştirin.</p>
               </div>
               <button type="button" class="btn-subtle" id="cfgResetPageTextsBtn" title="Seçili sayfanın metinlerini varsayılan değerlere döndürür">🔄 Varsayılana Sıfırla</button>
             </div>
@@ -1524,6 +1578,7 @@
             <div class="page-text-tabs" id="cfgPageSectionTabs" role="tablist" aria-label="Sayfa Metni Bölümü Seçin">
               <button type="button" class="page-text-tab active" data-pg-tab="anime">📺 Anime (/anime/)</button>
               <button type="button" class="page-text-tab" data-pg-tab="guide">🧭 Rehber (/rehber/)</button>
+              <button type="button" class="page-text-tab" data-pg-tab="project">💻 Projeler (/projeler/)</button>
               <button type="button" class="page-text-tab" data-pg-tab="series">🎬 Dizi (/dizi/)</button>
               <button type="button" class="page-text-tab" data-pg-tab="movie">🍿 Film (/film/)</button>
               <button type="button" class="page-text-tab" data-pg-tab="manga">📖 Manga (/manga/)</button>
@@ -1864,6 +1919,7 @@
               <select id="commitHistoryFileSelect" class="inp glass" style="width:auto;min-width:165px;font-weight:650">
                 <option value="data/anime.json">📺 data/anime.json</option>
                 <option value="data/guides.json">🧭 data/guides.json</option>
+                <option value="data/projects.json">💻 data/projects.json</option>
                 <option value="data/series.json">🎬 data/series.json</option>
                 <option value="data/movies.json">🍿 data/movies.json</option>
                 <option value="data/manga.json">📖 data/manga.json</option>
@@ -2183,6 +2239,52 @@
                 </label>
               </div>
               <div id="aeCoverPickerWrap" class="cover-picker-drawer" hidden></div>
+              <!-- PROJEYE ÖZEL ALANLAR (DİL, DAL, FORK, UPSTREAM, TERMİNAL KOMUTU) -->
+              <div id="aeProjectFieldsWrap" class="field-stack" style="margin-top:6px;padding:12px;border-radius:12px;background:rgba(59,158,255,0.06);border:1px solid rgba(86,182,255,0.18)" hidden>
+                <div class="field-row">
+                  <label class="field">
+                    <span>Programlama Dili / Ana Teknoloji</span>
+                    <input type="text" id="aeProjectLang" class="inp glass" placeholder="Örn: Nix, QML / Nix, Rust, Shell...">
+                  </label>
+                  <label class="field">
+                    <span>İzlenen Dal (Branch)</span>
+                    <input type="text" id="aeProjectBranch" class="inp glass" placeholder="Örn: main, fix-nix-support...">
+                  </label>
+                  <label class="field" style="display:flex;flex-direction:row;align-items:center;gap:8px;margin-top:22px;cursor:pointer">
+                    <input type="checkbox" id="aeProjectIsFork">
+                    <span>Bu bir çatal (fork) depo</span>
+                  </label>
+                </div>
+                <div class="field-row" id="aeProjectUpstreamRow" hidden>
+                  <label class="field">
+                    <span>Orijinal Depo Adı (Upstream)</span>
+                    <input type="text" id="aeProjectUpstreamName" class="inp glass" placeholder="Örn: snowarch/iNiR">
+                  </label>
+                  <label class="field" style="flex:2">
+                    <span>Orijinal Depo Linki (Upstream URL)</span>
+                    <input type="text" id="aeProjectUpstreamUrl" class="inp glass" placeholder="https://github.com/snowarch/iNiR">
+                  </label>
+                </div>
+                <div class="field-row">
+                  <label class="field" style="flex:2">
+                    <span>Terminal Kurulum / Klonlama Komutu</span>
+                    <input type="text" id="aeProjectInstallCmd" class="inp glass" placeholder="Örn: sudo nixos-rebuild switch --flake github:tempestian/nixos-config#nixos">
+                    <small>Katalog kartında tek tıkla kopyalanabilir terminal bloğu olarak gösterilir.</small>
+                  </label>
+                </div>
+                <div class="field-row">
+                  <label class="field" style="flex:2">
+                    <span>Öne Çıkan Özellikler / Vurgular (Her satıra bir özellik)</span>
+                    <textarea id="aeProjectHighlights" class="inp glass" rows="3" placeholder="Nix Flake & Home Manager modüler mimarisi&#10;Niri scrollable Wayland kompozitör yapılandırması&#10;Quickshell 0.3+ dinamik masaüstü kabuk entegrasyonu"></textarea>
+                  </label>
+                </div>
+                <div class="field-row">
+                  <label class="field" style="flex:2">
+                    <span>Proje Detaylı Açıklaması</span>
+                    <textarea id="aeProjectDesc" class="inp glass" rows="2" placeholder="Projenin amacı, mimarisi ve detaylı açıklaması..."></textarea>
+                  </label>
+                </div>
+              </div>
               <div class="field-row">
                 <label class="field">
                   <span>Genel Durum</span>
@@ -2523,7 +2625,7 @@
     // güncel JSON dosyası (`cache: 'no-store'`) okunur.
     let prevMulti = {};
     try { prevMulti = JSON.parse(localStorage.getItem('tp_multimedia_preview') || '{}') || {}; } catch (e) {}
-    for (const mType of ['series', 'movie', 'manga', 'book', 'guide']) {
+    for (const mType of ['series', 'movie', 'manga', 'book', 'guide', 'project']) {
       const adapter = CONTENT_ADAPTER_REGISTRY[mType];
       if (!adapter) continue;
       let remoteM = null;
@@ -2728,6 +2830,20 @@
         unitStatLabel: 'Toplam Rehber',
         rowUnitText: 'bölüm/konu',
         plusBtnText: '+1'
+      },
+      project: {
+        panelTitle: 'Açık Kaynak Projeler, Forklar ve Sistem Yapılandırmaları Yönetimi',
+        panelSub: 'Sitenizde listelenen GitHub projelerinizi, NixOS dotfile yapılandırmalarınızı, Quickshell/kabuk forklarınızı ve terminal kurulum komutlarınızı yönetin.',
+        searchLabel: 'Proje Ara (Proje Adı, Kategori, Teknoloji, Dal veya GitHub URL)',
+        searchPlaceholder: 'Örn: nixos-config, iNiR, Nix, Quickshell, Wayland, Niri...',
+        emptyText: 'Filtreye uygun proje bulunamadı.',
+        totalLabel: 'Listedeki Proje',
+        consumedLabel: 'Aktif / Tamamlanan',
+        seasonLabel: 'Özgün Proje',
+        filmLabel: 'Özel Fork',
+        unitStatLabel: 'Toplam Proje',
+        rowUnitText: 'proje',
+        plusBtnText: '+1'
       }
     };
     const uiMeta = SECTION_UI_META[adapter.id] || SECTION_UI_META.anime;
@@ -2793,6 +2909,9 @@
         if (adapter.id === 'guide') {
           trigBtn.textContent = "🔄 Technopat'tan Rehberleri Çek (GitHub Actions)";
           trigBtn.title = "Sadece siz tıkladığınızda çalışır: Technopat Sosyal'de Bayram Tempestian (#657641) tarafından açılan 'Rehber' ön ekli tüm konuları GitHub Actions ile çekip listeler";
+        } else if (adapter.id === 'project') {
+          trigBtn.textContent = "💻 GitHub Proje Bilgilerini Güncelle";
+          trigBtn.title = "Açık kaynak depoları ve fork bilgileri";
         } else if (adapter.id === 'anime') {
           trigBtn.textContent = '⚡ Anime & Yan İçerik Senkronu (sync-anilist.yml)';
           trigBtn.title = 'GitHub Actions üzerindeki sync-anilist.yml iş akışını tetikler';
@@ -2815,6 +2934,17 @@
         <div class="adm-stat-pill"><b>${publishedCount}</b><span>${uiMeta.consumedLabel}</span></div>
         <div class="adm-stat-pill"><b>★ ${S.favorites || 0}</b><span>Öne Çıkan Rehber</span></div>
         <div class="adm-stat-pill"><b>${topGenreLabel}</b><span>Lider Kategori</span></div>
+        <div class="adm-stat-pill"><b>${categorizedCount} / ${list.length}</b><span>Kategorisi Seçilen</span></div>
+      `;
+    } else if (adapter.id === 'project') {
+      const activeCount = list.filter(a => (a.status || 'completed') === 'completed').length;
+      const forkCount = list.filter(a => Boolean(a.isFork)).length;
+      statsBar.innerHTML = `
+        <div class="adm-stat-pill"><b>${list.length}</b><span>${uiMeta.totalLabel}</span></div>
+        <div class="adm-stat-pill"><b>${activeCount}</b><span>Aktif Proje</span></div>
+        <div class="adm-stat-pill"><b>${forkCount}</b><span>Özel Fork</span></div>
+        <div class="adm-stat-pill"><b>★ ${S.favorites || 0}</b><span>Öne Çıkan</span></div>
+        <div class="adm-stat-pill"><b>${topGenreLabel}</b><span>Lider Teknoloji</span></div>
         <div class="adm-stat-pill"><b>${categorizedCount} / ${list.length}</b><span>Kategorisi Seçilen</span></div>
       `;
     } else if (adapter.id === 'movie') {
@@ -2952,7 +3082,7 @@
           <div class="anime-adm-title">
             <span class="adm-row-t"></span>
             <span class="src-badge ${isManual ? 'manual' : it.adminModified ? 'modified' : ''}">${sourceBadgeText}</span>
-            ${it.favorite ? `<span class="src-badge fav">★ ${adapter.id === 'guide' ? 'Öne Çıkan' : 'Başyapıt'}</span>` : ''}
+            ${it.favorite ? `<span class="src-badge fav">★ ${(adapter.id === 'guide' || adapter.id === 'project') ? 'Öne Çıkan' : 'Başyapıt'}</span>` : ''}
             ${it.next ? '<span class="src-badge next">Devam edilecek</span>' : ''}
             <span class="adm-genre-pills"></span>
           </div>
@@ -2960,16 +3090,19 @@
             <span style="display:inline-flex;align-items:center;gap:4px">Durum: <select class="inp glass adm-quick-status-sel" title="Durumu doğrudan değiştir">${(adapter.statusOptions || []).map(([v, l]) => `<option value="${v}" ${it.status === v ? 'selected' : ''}>${l}</option>`).join('')}</select></span>
             ${adapter.id === 'guide' && it.forumSection ? `<span>Bölüm: <b>${AdminSecurity.sanitizeText(it.forumSection, 50)}</b></span>` : ''}
             ${it.addedAt ? `<span>Tarih: <b>${AdminSecurity.sanitizeText(window.formatHybridDate ? window.formatHybridDate(it.addedAt) : it.addedAt, 20)}</b></span>` : ''}
-            ${adapter.id === 'guide' ? '' : `<span>Puan: <b>${effScore ? '★ ' + effScore : 'Puansız'}</b></span>`}
-            ${adapter.id === 'guide' ? '' : `<span>Parça: <b>${(it.parts || []).length}</b> (${doneEps} ${uiMeta.rowUnitText})</span>`}
-            ${activePartLabel && adapter.id !== 'guide' ? `<span class="adm-active-part">Aktif: <b></b></span>` : ''}
+            ${(adapter.id === 'guide' || adapter.id === 'project') ? '' : `<span>Puan: <b>${effScore ? '★ ' + effScore : 'Puansız'}</b></span>`}
+            ${(adapter.id === 'guide' || adapter.id === 'project') ? '' : `<span>Parça: <b>${(it.parts || []).length}</b> (${doneEps} ${uiMeta.rowUnitText})</span>`}
+            ${adapter.id === 'project' && it.language ? `<span>Dil: <b>${AdminSecurity.sanitizeText(it.language, 40)}</b></span>` : ''}
+            ${adapter.id === 'project' && it.isFork ? `<span style="color:#ce93d8">Fork: <b>${AdminSecurity.sanitizeText(it.upstreamName || 'Kaynak', 60)}</b></span>` : ''}
+            ${adapter.id === 'project' && it.branch ? `<span>Dal: <code>${AdminSecurity.sanitizeText(it.branch, 40)}</code></span>` : ''}
+            ${activePartLabel && (adapter.id !== 'guide' && adapter.id !== 'project') ? `<span class="adm-active-part">Aktif: <b></b></span>` : ''}
             <span class="adm-url-slot"></span>
           </div>
         </div>
         <div class="editor-item-actions">
-          <button type="button" class="fav-toggle-btn adm-fav-btn ${it.favorite ? 'on' : ''}" title="Favori / Başyapıt olarak işaretle">${it.favorite ? (adapter.id === 'guide' ? '★ Öne Çıkan' : '★ Başyapıt') : '☆'}</button>
-          <button type="button" class="quick-ep-btn adm-plus-ep-btn" ${adapter.id === 'guide' ? 'hidden' : ''} title="Aktif parçaya +1 ilerleme ekler">${uiMeta.plusBtnText}</button>
-          <button type="button" class="quick-ep-btn done adm-done-part-btn" ${adapter.id === 'guide' ? 'hidden' : ''} title="Aktif parçayı tamamlandı olarak işaretler">Tamamla</button>
+          <button type="button" class="fav-toggle-btn adm-fav-btn ${it.favorite ? 'on' : ''}" title="Favori / Başyapıt olarak işaretle">${it.favorite ? ((adapter.id === 'guide' || adapter.id === 'project') ? '★ Öne Çıkan' : '★ Başyapıt') : '☆'}</button>
+          <button type="button" class="quick-ep-btn adm-plus-ep-btn" ${(adapter.id === 'guide' || adapter.id === 'project') ? 'hidden' : ''} title="Aktif parçaya +1 ilerleme ekler">${uiMeta.plusBtnText}</button>
+          <button type="button" class="quick-ep-btn done adm-done-part-btn" ${(adapter.id === 'guide' || adapter.id === 'project') ? 'hidden' : ''} title="Aktif parçayı tamamlandı olarak işaretler">Tamamla</button>
           <button type="button" class="btn-subtle adm-edit-btn">Düzenle</button>
           <button type="button" class="icon-btn del adm-del-btn" title="Sil / Hariç Tut">✕</button>
         </div>
@@ -2977,16 +3110,17 @@
       const img = row.querySelector('.anime-adm-poster');
       if (it.image) {
         img.src = resolvePreviewSrc(it.image);
-      } else if (adapter.id === 'guide') {
+      } else if (adapter.id === 'guide' || adapter.id === 'project') {
         img.hidden = true;
       }
-      row.querySelector('.adm-row-t').textContent = it.title;
+      row.querySelector('.adm-row-t').textContent = it.fullName || it.title || it.name;
       const actPartEl = row.querySelector('.adm-active-part b');
       if (actPartEl) actPartEl.textContent = activePartLabel;
 
       const pillsWrap = row.querySelector('.adm-genre-pills');
-      if (effGenres.length) {
-        effGenres.slice(0, 4).forEach(g => {
+      const rowCategories = Array.isArray(it.categories) && it.categories.length ? it.categories : effGenres;
+      if (rowCategories.length) {
+        rowCategories.slice(0, 4).forEach(g => {
           const sp = document.createElement('span');
           sp.className = 'genre-mini-pill';
           sp.textContent = g;
@@ -3002,6 +3136,8 @@
         a.rel = 'noopener';
         if (adapter.id === 'guide') {
           a.textContent = `Technopat Konusu (${it.threadId ? '#' + it.threadId : 'Link'}) ↗`;
+        } else if (adapter.id === 'project') {
+          a.textContent = `GitHub Deposu (${it.fullName || it.name || 'Repo'}) ↗`;
         } else if (adapter.id === 'series') {
           a.textContent = 'IMDb / Dizi Linki ↗';
         } else if (adapter.id === 'movie') {
@@ -3208,7 +3344,7 @@
       ]
     };
 
-    if (isNew && adapter.id === 'guide') {
+    if (isNew && (adapter.id === 'guide' || adapter.id === 'project')) {
       state.editingDraft.parts = [];
       delete state.editingDraft.anilistId;
       delete state.editingDraft.firstSeasonUrl;
@@ -3229,7 +3365,8 @@
         movie: 'Örn: Interstellar',
         manga: 'Örn: Berserk',
         book: 'Örn: Dune',
-        guide: 'Örn: Arch Linux Kurulum Rehberi'
+        guide: 'Örn: Arch Linux Kurulum Rehberi',
+        project: 'Örn: nixos-config veya iNiR'
       };
       $('#aeTitle').placeholder = titlePlaceholders[adapter.id] || 'Başlık girin...';
     }
@@ -3247,7 +3384,8 @@
         movie: 'https://www.imdb.com/title/tt0816692/ veya tt0816692',
         manga: 'https://anilist.co/manga/30002/...',
         book: 'ISBN (Örn: 9789753638029) veya OpenLibrary URL',
-        guide: 'https://www.technopat.net/sosyal/konu/...'
+        guide: 'https://www.technopat.net/sosyal/konu/...',
+        project: 'https://github.com/tempestian/nixos-config'
       };
       $('#aeFirstSeasonUrl').placeholder = urlPlaceholders[adapter.id] || 'https://...';
     }
@@ -3258,13 +3396,14 @@
         movie: "Filmin IMDb linkini veya tt... ID'sini girin; yüksek çözünürlüklü afiş ve yıl bilgisi otomatik çekilir.",
         manga: "Manganın AniList URL'sini girin; kapak ve bölüm bilgileri otomatik çekilir.",
         book: "Kitabın ISBN numarasını veya adını girin; OpenLibrary üzerinden kapak ve yazar bilgisi çekilir.",
-        guide: "Technopat Sosyal'deki rehber konunuzun tam bağlantısını girin."
+        guide: "Technopat Sosyal'deki rehber konunuzun tam bağlantısını girin.",
+        project: "Projenin veya forku olduğunuz deponun GitHub URL adresini girin."
       };
       $('#aeUrlFieldHint').textContent = urlHints[adapter.id] || '';
     }
     const fetchBtn = $('#fetchAnilistMetaBtn');
     if (fetchBtn) {
-      fetchBtn.hidden = adapter.id === 'guide';
+      fetchBtn.hidden = adapter.id === 'guide' || adapter.id === 'project';
       fetchBtn.textContent = (adapter.id === 'series' || adapter.id === 'movie')
         ? "IMDb'den Kapak & Bilgi Çek"
         : adapter.id === 'book'
@@ -3283,7 +3422,7 @@
 
     const aeStatusEl = $('#aeStatus');
     if (aeStatusEl && Array.isArray(adapter.statusOptions)) {
-      const opts = adapter.id === 'guide'
+      const opts = (adapter.id === 'guide' || adapter.id === 'project')
         ? [...adapter.statusOptions]
         : [['auto', 'Otomatik (Parçalardan Hesapla)'], ...adapter.statusOptions];
       aeStatusEl.innerHTML = opts.map(([val, lbl]) => `<option value="${val}">${lbl}</option>`).join('');
@@ -3291,7 +3430,7 @@
     const nextFieldWrap = $('#aeNext')?.closest('.field');
     if (nextFieldWrap) nextFieldWrap.hidden = !adapter.supportsNextBadge;
 
-    if ($('#aeScoreStudioWrap')) $('#aeScoreStudioWrap').hidden = adapter.id === 'guide';
+    if ($('#aeScoreStudioWrap')) $('#aeScoreStudioWrap').hidden = adapter.id === 'guide' || adapter.id === 'project';
     if ($('#aeScoreStudioHeading')) $('#aeScoreStudioHeading').textContent = adapter.subItemHeading || 'Ağırlıklı Otomatik Puanlama';
     if ($('#aeScoreStudioSub')) {
       const scoreStudioSubs = {
@@ -3320,7 +3459,8 @@
         movie: 'Filmin kendi kategorilerini (Bilim Kurgu, Aksiyon, Dram, Suç & Noir vb.) seçin veya yeni kategori tanımlayın.',
         manga: 'Manganın kendi kategorilerini (Seinen, Shounen, Karanlık Fantezi vb.) seçin veya yeni kategori tanımlayın.',
         book: 'Kitabın kendi kategorilerini (Bilim Kurgu, Felsefe, Klasik, Tarih vb.) seçin veya yeni kategori tanımlayın.',
-        guide: 'Rehberin hangi konulara ait olduğunu (Linux & Sistem, Paket Yönetimi, Masaüstü & Özelleştirme, Donanım & Sürücü vb.) seçin veya yeni kategori tanımlayın.'
+        guide: 'Rehberin hangi konulara ait olduğunu (Linux & Sistem, Paket Yönetimi, Masaüstü & Özelleştirme, Donanım & Sürücü vb.) seçin veya yeni kategori tanımlayın.',
+        project: 'Projenin ait olduğu teknolojileri ve kategorileri (NixOS, Quickshell, Wayland, Niri, Dotfiles vb.) seçin veya yeni kategori tanımlayın.'
       };
       $('#aeGenreStudioSub').textContent = genreStudioSubs[adapter.id] || '';
     }
@@ -3332,11 +3472,12 @@
         movie: 'Örn: Bilim Kurgu, Aksiyon, Dram',
         manga: 'Örn: Seinen, Karanlık Fantezi, Aksiyon',
         book: 'Örn: Bilim Kurgu, Felsefe, Klasik',
-        guide: 'Örn: Linux & Sistem, Paket Yönetimi, Masaüstü & Özelleştirme'
+        guide: 'Örn: Linux & Sistem, Paket Yönetimi, Masaüstü & Özelleştirme',
+        project: 'Örn: NixOS, Quickshell, Wayland, Niri, Dotfiles'
       };
       $('#aeGenresInput').placeholder = genrePlaceholders[adapter.id] || 'Kategorileri virgülle ayırın...';
     }
-    if ($('#aePartsSectionWrap')) $('#aePartsSectionWrap').hidden = adapter.id === 'guide';
+    if ($('#aePartsSectionWrap')) $('#aePartsSectionWrap').hidden = adapter.id === 'guide' || adapter.id === 'project';
     if ($('#aePartsSectionHeading')) {
       const partHeadings = {
         anime: 'Bağlantılı İçerikler / Parçalar (Sezon, Film, Yan İçerik / OVA)',
@@ -3382,16 +3523,40 @@
     $('#aeCoverPreview').src = d.image ? resolvePreviewSrc(d.image) : '';
     if ($('#aeBanner')) $('#aeBanner').value = d.banner || '';
     const coverBoxEl = $('#aeCoverPreview')?.closest('.anime-edit-cover');
-    if (coverBoxEl) coverBoxEl.hidden = adapter.id === 'guide';
+    if (coverBoxEl) coverBoxEl.hidden = adapter.id === 'guide' || adapter.id === 'project';
     const topGridEl = $('#aeCoverPreview')?.closest('.anime-edit-top');
-    if (topGridEl) topGridEl.style.gridTemplateColumns = adapter.id === 'guide' ? '1fr' : '';
-    if ($('#aeImageFieldWrap')) $('#aeImageFieldWrap').hidden = adapter.id === 'guide';
-    if ($('#aeBannerFieldWrap')) $('#aeBannerFieldWrap').hidden = adapter.id === 'guide';
+    if (topGridEl) topGridEl.style.gridTemplateColumns = (adapter.id === 'guide' || adapter.id === 'project') ? '1fr' : '';
+    if ($('#aeImageFieldWrap')) $('#aeImageFieldWrap').hidden = adapter.id === 'guide' || adapter.id === 'project';
+    if ($('#aeBannerFieldWrap')) $('#aeBannerFieldWrap').hidden = adapter.id === 'guide' || adapter.id === 'project';
     if ($('#aeCoverPickerWrap')) {
       $('#aeCoverPickerWrap').hidden = true;
       $('#aeCoverPickerWrap').replaceChildren();
     }
     state.modalCoverCandidates = [];
+
+    const prjWrap = $('#aeProjectFieldsWrap');
+    if (prjWrap) {
+      if (adapter.id === 'project') {
+        prjWrap.hidden = false;
+        if ($('#aeProjectLang')) $('#aeProjectLang').value = d.language || '';
+        if ($('#aeProjectBranch')) $('#aeProjectBranch').value = d.branch || 'main';
+        if ($('#aeProjectIsFork')) {
+          $('#aeProjectIsFork').checked = Boolean(d.isFork);
+          if ($('#aeProjectUpstreamRow')) $('#aeProjectUpstreamRow').hidden = !d.isFork;
+          $('#aeProjectIsFork').onchange = (e) => {
+            if ($('#aeProjectUpstreamRow')) $('#aeProjectUpstreamRow').hidden = !e.target.checked;
+          };
+        }
+        if ($('#aeProjectUpstreamName')) $('#aeProjectUpstreamName').value = d.upstreamName || '';
+        if ($('#aeProjectUpstreamUrl')) $('#aeProjectUpstreamUrl').value = d.upstreamUrl || '';
+        if ($('#aeProjectInstallCmd')) $('#aeProjectInstallCmd').value = d.installCommand || '';
+        if ($('#aeProjectHighlights')) $('#aeProjectHighlights').value = Array.isArray(d.highlights) ? d.highlights.join('\n') : (d.highlights || '');
+        if ($('#aeProjectDesc')) $('#aeProjectDesc').value = d.description || '';
+      } else {
+        prjWrap.hidden = true;
+      }
+    }
+
     $('#aeStatus').value = d.status || 'completed';
     $('#aeNext').value = d.next === true ? 'yes' : d.next === false ? 'no' : 'auto';
     const rawAdded = d.addedAt || new Date().toISOString().slice(0, 7);
@@ -3405,8 +3570,8 @@
     $('#aeAddedAt').oninput = syncAddedAtPreview;
     syncAddedAtPreview();
 
-    // Yalnızca admin tarafından seçilen özel kategorileri (`customGenres`) göster
-    const activeGenres = Array.isArray(d.customGenres) ? d.customGenres : [];
+    // Yalnızca admin tarafından seçilen özel kategorileri (`customGenres` / `categories`) göster
+    const activeGenres = Array.isArray(d.customGenres) ? d.customGenres : (Array.isArray(d.categories) ? d.categories : []);
     $('#aeGenresInput').value = activeGenres.join(', ');
 
     syncModalFavoriteBtn();
@@ -3452,6 +3617,8 @@
     btn.classList.toggle('on', isFav);
     if (adapter.id === 'guide') {
       btn.textContent = isFav ? '★ Öne Çıkan Rehber (Seçili)' : '☆ Öne Çıkan İşaretle';
+    } else if (adapter.id === 'project') {
+      btn.textContent = isFav ? '★ Öne Çıkan Proje (Seçili)' : '☆ Öne Çıkan Proje';
     } else {
       btn.textContent = isFav ? '★ Başyapıt (Seçili)' : '☆ Başyapıt İşaretle';
     }
@@ -3784,7 +3951,7 @@
     if (!wrap || !state.editingDraft) return;
     wrap.replaceChildren();
     const adapter = getActiveAdminAdapter();
-    if (adapter.id === 'guide') return;
+    if (adapter.id === 'guide' || adapter.id === 'project') return;
     const parts = state.editingDraft.parts || [];
 
     const isRead = adapter.id === 'book' || adapter.id === 'manga';
@@ -4560,6 +4727,15 @@
         }
         d.url = cleanExt;
         delete d.firstSeasonUrl;
+      } else if (adapter.id === 'project') {
+        d.url = cleanExt || ('https://github.com/tempestian/' + title.toLowerCase().replace(/[^a-z0-9_-]/g, '-'));
+        const repoName = title.trim().split('/').pop().replace(/\s+/g, '-').toLowerCase();
+        d.name = title.trim();
+        d.fullName = d.url.includes('github.com/') ? d.url.split('github.com/')[1].replace(/\/+$/, '') : ('tempestian/' + repoName);
+        if (isNew || !d.id || String(d.id).startsWith('custom-')) {
+          d.id = 'prj-' + (repoName || Date.now());
+        }
+        delete d.firstSeasonUrl;
       } else {
         const imdbId = parseImdbId(cleanExt || rawUrlInput);
         if (imdbId) {
@@ -4575,14 +4751,14 @@
 
     const cleanImg = U($('#aeImage').value, true);
     if (cleanImg) d.image = cleanImg;
-    else if (adapter.id === 'guide') delete d.image;
+    else if (adapter.id === 'guide' || adapter.id === 'project') delete d.image;
     else d.image = null;
 
     const cleanBanner = $('#aeBanner') ? U($('#aeBanner').value, true) : '';
-    if (cleanBanner) d.banner = cleanBanner;
+    if (cleanBanner && adapter.id !== 'project') d.banner = cleanBanner;
     else delete d.banner;
 
-    if (adapter.id === 'guide') {
+    if (adapter.id === 'guide' || adapter.id === 'project') {
       delete d.parts;
       delete d.score;
       delete d.lockedFields;
@@ -4638,10 +4814,54 @@
     ];
     if (customGenres.length) {
       d.customGenres = customGenres;
-      if (adapter.id !== 'guide') d.genres = customGenres;
+      if (adapter.id === 'project') {
+        d.categories = customGenres;
+        d.tags = customGenres;
+      } else if (adapter.id !== 'guide') {
+        d.genres = customGenres;
+      }
     } else {
       delete d.customGenres;
-      if (adapter.id !== 'guide') delete d.genres;
+      if (adapter.id === 'project') {
+        d.categories = [];
+        d.tags = [];
+      } else if (adapter.id !== 'guide') {
+        delete d.genres;
+      }
+    }
+
+    if (adapter.id === 'project') {
+      const lang = S($('#aeProjectLang')?.value || '', 60);
+      d.language = lang || 'Nix';
+      const langColors = {
+        'Nix': '#5277C3',
+        'QML / Nix': '#41CD52',
+        'Rust': '#dea584',
+        'JavaScript': '#f1e05a',
+        'TypeScript': '#3178c6',
+        'Python': '#3572A5',
+        'Shell': '#89e051',
+        'C++': '#f34b7d',
+        'Go': '#00ADD8'
+      };
+      d.languageColor = langColors[d.language] || '#5277C3';
+      d.branch = S($('#aeProjectBranch')?.value || '', 60) || 'main';
+      const isForkChecked = Boolean($('#aeProjectIsFork')?.checked);
+      d.isFork = isForkChecked;
+      if (isForkChecked) {
+        d.upstreamName = S($('#aeProjectUpstreamName')?.value || '', 100);
+        d.upstreamUrl = U($('#aeProjectUpstreamUrl')?.value || '', true);
+      } else {
+        delete d.upstreamName;
+        delete d.upstreamUrl;
+      }
+      d.installCommand = S($('#aeProjectInstallCmd')?.value || '', 300);
+      const hlText = $('#aeProjectHighlights')?.value || '';
+      d.highlights = hlText.split('\n').map(l => S(l, 200).trim()).filter(Boolean);
+      const descVal = S($('#aeProjectDesc')?.value || '', 1000);
+      if (descVal) d.description = descVal;
+      if (d.stars == null) d.stars = 0;
+      if (d.forks == null) d.forks = 0;
     }
 
     d.adminModified = true;
@@ -4654,8 +4874,16 @@
     }
 
     if (adapter.extraMetaField) {
-      const maxExtraLen = adapter.id === 'guide' ? 500 : 160;
+      const maxExtraLen = (adapter.id === 'guide' || adapter.id === 'project') ? 500 : 160;
       d[adapter.extraMetaField.key] = S($('#aeExtraMetaInput').value, maxExtraLen);
+    }
+
+    if (adapter.id === 'project') {
+      if (!d.summary && d.description) {
+        d.summary = d.description.length > 180 ? (d.description.slice(0, 177) + '...') : d.description;
+      } else if (!d.description && d.summary) {
+        d.description = d.summary;
+      }
     }
 
     if (adapter.id === 'anime') {
@@ -4678,7 +4906,7 @@
       mediaType: adapter.id,
       action: isNew ? 'add' : 'update',
       title: d.title,
-      detail: `Puan: ${d.score != null ? d.score : 'Puansız'}`
+      detail: adapter.id === 'project' ? `Teknoloji: ${d.language}` : `Puan: ${d.score != null ? d.score : 'Puansız'}`
     });
 
     $('#animeEditModal').hidden = true;
@@ -4687,6 +4915,8 @@
     if ($('#panelHealth') && !$('#panelHealth').hidden) renderHealthAuditor();
     if (adapter.id === 'guide') {
       toast(`"${d.title}" (Rehber) kaydedildi.`);
+    } else if (adapter.id === 'project') {
+      toast(`"${d.title}" (Proje) kaydedildi.`);
     } else {
       toast(`"${d.title}" (${adapter.label}) kaydedildi (Puan: ${d.score ?? 'Puansız'}).`);
     }
@@ -5667,6 +5897,34 @@
       addCustomCategory: (cat) => addMultiMediaCategory('guide', cat),
       computeScore: () => null,
       saveItem: (updatedItem) => saveMultiMediaItem('guide', updatedItem)
+    },
+    project: {
+      id: 'project',
+      label: 'Proje',
+      dataFile: 'data/projects.json',
+      countKey: 'projects',
+      titleLabel: 'Proje / Depo Başlığı',
+      externalUrlLabel: 'GitHub Depo Bağlantısı (URL)',
+      externalUrlField: 'url',
+      extraMetaField: { key: 'summary', label: 'Proje Kısa Özeti (Katalog Kartında Görünür)', placeholder: 'Projenin kısa tek cümlelik özeti...' },
+      supportsNextBadge: false,
+      supportsAnilistGraph: false,
+      statusOptions: [
+        ['completed', 'Aktif & Güncel'],
+        ['watching', 'Geliştiriliyor'],
+        ['planned', 'Planlandı / Taslak']
+      ],
+      subItemHeading: 'Öne Çıkan Özellikler & Modüller',
+      subItemWeights: { season: 1.0, movie: 0.5, other: 0.2 },
+      subItemUnitLabel: 'özellik',
+      categoryGroups: [
+        { label: 'Proje Teknolojileri & Kategoriler', items: ['NixOS', 'Quickshell', 'Wayland', 'Niri', 'Dotfiles', 'Fork', 'Sistem', 'Masaüstü & Kabuk', 'Rust', 'Linux'] }
+      ],
+      getItems: () => ensureMultiMediaStore('project').items,
+      getCustomCatalog: () => ensureMultiMediaStore('project').customGenreCatalog,
+      addCustomCategory: (cat) => addMultiMediaCategory('project', cat),
+      computeScore: () => null,
+      saveItem: (updatedItem) => saveMultiMediaItem('project', updatedItem)
     }
   };
 
@@ -5687,7 +5945,7 @@
   function saveMultiMediaItem(typeId, updatedItem) {
     const store = ensureMultiMediaStore(typeId);
     const idx = store.items.findIndex(x => x.id === updatedItem.id);
-    if (typeId === 'guide') {
+    if (typeId === 'guide' || typeId === 'project') {
       delete updatedItem.score;
       delete updatedItem.parts;
       delete updatedItem.anilistId;
@@ -5745,7 +6003,7 @@
       overrides: JSON.parse(JSON.stringify(state.overrides || {})),
       multi: {}
     };
-    for (const mKey of ['series', 'movie', 'manga', 'book', 'guide']) {
+    for (const mKey of ['series', 'movie', 'manga', 'book', 'guide', 'project']) {
       const items = state.multiMediaStore[mKey]?.items || [];
       state.initialSnapshots.multi[mKey] = items.map(it => ({
         id: it.id,
@@ -6011,6 +6269,7 @@
     if (fileNames.includes('data/manga.json')) parts.push('manga');
     if (fileNames.includes('data/books.json')) parts.push('kitap');
     if (fileNames.includes('data/guides.json')) parts.push('rehber');
+    if (fileNames.includes('data/projects.json')) parts.push('proje');
     if (hasConfig) parts.push('site ayarları');
     if (hasUploads) parts.push('yeni görseller');
 
@@ -7019,6 +7278,7 @@
             const rawJsonStr = await AdminSecurity.githubGetFileAtRef(filePath, sha);
             const parsed = JSON.parse(rawJsonStr);
             const mediaFileMap = {
+              'data/projects.json': 'project',
               'data/guides.json': 'guide',
               'data/series.json': 'series',
               'data/movies.json': 'movie',
@@ -7334,7 +7594,7 @@
   }
 
   function reindexAllCategories() {
-    const allMediaKeys = ['anime', 'series', 'movie', 'manga', 'book', 'guide'];
+    const allMediaKeys = ['anime', 'series', 'movie', 'manga', 'book', 'guide', 'project'];
     let totalUniqueGenres = 0;
     let totalUsageCount = 0;
 
@@ -7352,10 +7612,10 @@
         }
       }
 
-      // Tüm kayıtlardaki customGenres'ı tara
+      // Tüm kayıtlardaki customGenres ve categories alanlarını tara
       for (const it of items) {
         if (!it) continue;
-        const genres = Array.isArray(it.customGenres) ? it.customGenres : [];
+        const genres = Array.isArray(it.customGenres) ? it.customGenres : (Array.isArray(it.categories) ? it.categories : []);
         for (const g of genres) {
           if (g && typeof g === 'string' && g.trim()) {
             const clean = g.trim();
@@ -7440,7 +7700,7 @@
     if (!startBtn || !resultsArea) return;
 
     const chosenSec = secSelect ? secSelect.value : 'all';
-    const targetKeys = chosenSec === 'all' ? ['anime', 'series', 'movie', 'manga', 'book', 'guide'] : [chosenSec];
+    const targetKeys = chosenSec === 'all' ? ['anime', 'series', 'movie', 'manga', 'book', 'guide', 'project'] : [chosenSec];
 
     const candidates = [];
     for (const key of targetKeys) {
@@ -7753,7 +8013,7 @@
       anime: state.animeData,
       overrides: state.overrides
     };
-    for (const mKey of ['series', 'movie', 'manga', 'book', 'guide']) {
+    for (const mKey of ['series', 'movie', 'manga', 'book', 'guide', 'project']) {
       const store = ensureMultiMediaStore(mKey);
       bundles[mKey] = {
         schemaVersion: 3,
@@ -7774,7 +8034,8 @@
         movie: (bundles.movie.items || []).length,
         manga: (bundles.manga.items || []).length,
         book: (bundles.book.items || []).length,
-        guide: (bundles.guide.items || []).length
+        guide: (bundles.guide.items || []).length,
+        project: (bundles.project.items || []).length
       },
       bundles
     };
@@ -7856,7 +8117,7 @@
         state.overrides = b.overrides;
         state.dirtyOverrides = true;
       }
-      for (const mKey of ['series', 'movie', 'manga', 'book', 'guide']) {
+      for (const mKey of ['series', 'movie', 'manga', 'book', 'guide', 'project']) {
         if (b[mKey] && Array.isArray(b[mKey].items)) {
           state.multiMediaStore[mKey] = {
             items: cleanMediaItemsForSave(b[mKey].items, mKey),
@@ -7885,6 +8146,7 @@
   const PAGE_TEXT_META = {
     anime: { label: 'Anime (/anime/)', extLabel: 'AniList Bağlantı Butonu Metni' },
     guide: { label: 'Rehber (/rehber/)', extLabel: 'Kart Sağ Üst Kaynak Rozeti Metni' },
+    project: { label: 'Projeler (/projeler/)', extLabel: 'Depo Bağlantı Butonu Metni' },
     series: { label: 'Dizi (/dizi/)', extLabel: "Detay Kartı Kaynak Butonu (Örn: IMDb'de aç)" },
     movie: { label: 'Film (/film/)', extLabel: "Detay Kartı Kaynak Butonu (Örn: IMDb'de aç)" },
     manga: { label: 'Manga (/manga/)', extLabel: 'Detay Kartı Kaynak Butonu (Örn: Kaynakta aç)' },
@@ -8101,11 +8363,11 @@
     }
 
     const mediaMatches = [];
-    for (const secKey of ['anime', 'series', 'movie', 'manga', 'book', 'guide']) {
+    for (const secKey of ['anime', 'series', 'movie', 'manga', 'book', 'guide', 'project']) {
       const ad = CONTENT_ADAPTER_REGISTRY[secKey];
       if (!ad) continue;
       for (const it of (ad.getItems() || [])) {
-        const hay = `${it.title || ''} ${(it.customGenres || []).join(' ')} ${it.author || ''} ${it.director || ''} ${it.network || ''}`.toLocaleLowerCase('tr');
+        const hay = `${it.title || ''} ${(it.customGenres || it.categories || []).join(' ')} ${it.author || ''} ${it.director || ''} ${it.network || ''} ${it.language || ''} ${it.branch || ''}`.toLocaleLowerCase('tr');
         if (!q || hay.includes(q)) {
           mediaMatches.push({ secKey, label: ad.label, item: it });
           if (mediaMatches.length >= (q ? 24 : 12)) break;
@@ -8118,8 +8380,8 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'cmd-palette-item';
-      const sc = m.secKey !== 'guide' ? resolveEffectiveScore(m.item) : null;
-      const cats = (m.item.customGenres || []).slice(0, 3).join(', ');
+      const sc = (m.secKey !== 'guide' && m.secKey !== 'project') ? resolveEffectiveScore(m.item) : null;
+      const cats = (m.item.customGenres || m.item.categories || []).slice(0, 3).join(', ');
       btn.innerHTML = `
         <div class="cmd-palette-left">
           ${m.item.image ? `<img src="${resolvePreviewSrc(m.item.image)}" alt="" loading="lazy">` : ''}
@@ -8685,6 +8947,11 @@
   };
 
   function switchAdminPanel(targetPanel, options = {}) {
+    if (targetPanel === 'projects') {
+      state.activeAdminMediaType = 'project';
+      targetPanel = 'anime';
+      if ($('#admMediaTypeSelect')) $('#admMediaTypeSelect').value = 'project';
+    }
     const panelKey = ACP_PANEL_IDS[targetPanel] ? targetPanel : 'dashboard';
 
     // 1. Sol menü [data-panel] aktiflik ve aria-selected güncellemesi
@@ -8747,14 +9014,15 @@
       ? '🟡 Önizleme Aktif (Tarayıcı Depolama)'
       : '🟢 Depoyla Eşitlenmiş (Canlı)';
 
-    const sectionKeys = ['anime', 'series', 'movie', 'manga', 'book', 'guide'];
+    const sectionKeys = ['anime', 'series', 'movie', 'manga', 'book', 'guide', 'project'];
     const sectionMeta = {
       anime: { title: 'Anime Arşivi', icon: '📺', unit: 'anime', scoreLabel: 'Ortalama Puan', desc: 'Sezon & Film Ağırlıklı' },
       series: { title: 'Dizi Arşivi', icon: '🎬', unit: 'dizi', scoreLabel: 'Ortalama Puan', desc: 'Sezon & Bölüm Puanları' },
       movie: { title: 'Film Arşivi', icon: '🍿', unit: 'film', scoreLabel: 'Ortalama Puan', desc: 'Ana & Yan Film Puanları' },
       manga: { title: 'Manga Arşivi', icon: '📖', unit: 'manga', scoreLabel: 'Ortalama Puan', desc: 'Cilt & Bölüm Takibi' },
       book: { title: 'Kitap Arşivi', icon: '📚', unit: 'kitap', scoreLabel: 'Ortalama Puan', desc: 'Sayfa & Cilt Puanları' },
-      guide: { title: 'Rehber Kataloğu', icon: '🧭', unit: 'rehber', scoreLabel: 'Katalog Yayını', desc: 'Technopat Sosyal Kataloğu' }
+      guide: { title: 'Rehber Kataloğu', icon: '🧭', unit: 'rehber', scoreLabel: 'Katalog Yayını', desc: 'Technopat Sosyal Kataloğu' },
+      project: { title: 'Projeler & Forklar', icon: '💻', unit: 'proje', scoreLabel: 'Açık Kaynak', desc: 'NixOS & Masaüstü Depoları' }
     };
 
     let totalAllItems = 0;
@@ -8773,7 +9041,13 @@
       totalAllItems += items.length;
 
       let scoreText = '—';
-      if (secKey !== 'guide') {
+      if (secKey === 'guide') {
+        const published = items.filter(it => it && it.status === 'completed').length;
+        scoreText = `${published} Yayında`;
+      } else if (secKey === 'project') {
+        const active = items.filter(it => it && (it.status || 'completed') === 'completed').length;
+        scoreText = `${active} Aktif`;
+      } else {
         const scored = items.filter(it => it && (it.score != null || (Array.isArray(it.parts) && it.parts.length > 0)) && Number(adapter.computeScore(it)) > 0);
         if (scored.length) {
           const avg = scored.reduce((sum, it) => sum + Number(adapter.computeScore(it)), 0) / scored.length;
@@ -8781,9 +9055,6 @@
         } else {
           scoreText = 'Puanlanmadı';
         }
-      } else {
-        const published = items.filter(it => it && it.status === 'completed').length;
-        scoreText = `${published} Yayında`;
       }
 
       const secCfg = ensureSectionEntryInConfig(secKey);
@@ -8807,10 +9078,10 @@
 
       for (const it of items) {
         if (!it) continue;
-        const hasGenres = Array.isArray(it.customGenres) && it.customGenres.length > 0;
+        const hasGenres = (Array.isArray(it.customGenres) && it.customGenres.length > 0) || (Array.isArray(it.categories) && it.categories.length > 0);
         if (!hasGenres) secMissingGenres.push({ secKey, item: it });
 
-        if (secKey !== 'guide') {
+        if (secKey !== 'guide' && secKey !== 'project') {
           const effScore = adapter.computeScore(it);
           if (effScore == null && (it.status === 'completed' || it.status === 'watching')) {
             secMissingScore.push({ secKey, item: it });
@@ -10085,13 +10356,18 @@
             imgs: (state.animeData.anime || []).map(x => x.image).filter(Boolean).slice(0, 4)
           }
         };
-        for (const mKey of ['guide', 'series', 'movie', 'manga', 'book']) {
+        for (const mKey of ['guide', 'series', 'movie', 'manga', 'book', 'project']) {
           const stStore = ensureMultiMediaStore(mKey);
           const mItems = stStore.items || [];
           const mStats = computeMediaStatsClient(mItems, state.animeData.statsConfig, mKey);
           if (mKey === 'guide') {
             summaries.guide = {
               nums: [[mItems.length, 'rehber'], ...((mStats.genres && mStats.genres.length) ? [[mStats.genres.length, 'kategori']] : [])],
+              imgs: []
+            };
+          } else if (mKey === 'project') {
+            summaries.project = {
+              nums: [[mItems.length, 'proje'], [mItems.filter(p => p.isFork).length, 'çatal']],
               imgs: []
             };
           } else if (mKey === 'series') {

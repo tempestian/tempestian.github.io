@@ -6186,16 +6186,56 @@
       const initSecs = initCfg.sections || [];
       const currSecs = currCfg.sections || [];
       for (const cs of currSecs) {
-        const is = initSecs.find(s => s.id === cs.id);
-        if (is && (is.status !== cs.status || is.title !== cs.title)) {
+        if (!cs) continue;
+        const is = initSecs.find(s => s && s.id === cs.id);
+        if (!is) {
+          configChanges.push({
+            type: 'add',
+            title: `Yeni Düğüm: ${cs.title || cs.id}`,
+            detail: `Yol: /${cs.path || ''} · Durum: ${cs.status || 'soon'}`,
+            badge: '+ Yeni Eklenen',
+            badgeClass: 'diff-add'
+          });
+        } else if (JSON.stringify(is) !== JSON.stringify(cs)) {
           configChanges.push({
             type: 'update',
-            title: `Kategori: ${cs.title || cs.id}`,
-            detail: `Yayın Durumu: ${is.status} ➔ ${cs.status}`,
+            title: `Düğüm: ${cs.title || cs.id}`,
+            detail: `Durum: ${is.status} ➔ ${cs.status}${is.title !== cs.title ? ` · Başlık: ${is.title} ➔ ${cs.title}` : ''}`,
             badge: '~ Güncellenen',
             badgeClass: 'diff-mod'
           });
         }
+      }
+      for (const is of initSecs) {
+        if (!is) continue;
+        if (!currSecs.some(cs => cs && cs.id === is.id)) {
+          configChanges.push({
+            type: 'remove',
+            title: `Silinen Düğüm: ${is.title || is.id}`,
+            detail: `Kaldırılan bölüm: /${is.path || ''}`,
+            badge: '- Silinen',
+            badgeClass: 'diff-del'
+          });
+        }
+      }
+      if (initSecs.length === currSecs.length && initSecs.some((s, idx) => s && currSecs[idx] && s.id !== currSecs[idx].id)) {
+        configChanges.push({
+          type: 'update',
+          title: 'Bölüm / Düğüm Sıralaması',
+          detail: 'Düğümlerin ana sayfa ve menüdeki sıralaması güncellendi',
+          badge: '~ Güncellenen',
+          badgeClass: 'diff-mod'
+        });
+      }
+
+      if (JSON.stringify(initCfg.site) !== JSON.stringify(currCfg.site)) {
+        configChanges.push({
+          type: 'update',
+          title: 'Site Kimliği & Başlıkları',
+          detail: `Site Başlığı: ${currCfg.site?.title || 'Tempestian'} · Alt Başlık: ${currCfg.site?.subtitle || ''}`,
+          badge: '~ Güncellenen',
+          badgeClass: 'diff-mod'
+        });
       }
 
       if (currCfg.pages && initCfg.pages) {
@@ -6543,57 +6583,65 @@
   }
 
   function openCommitDiffModal() {
-    const diffGroups = computeDetailedDiff();
-    const modal = $('#commitDiffModal');
-    if (!modal) return;
-
-    const totalChanges = diffGroups.reduce((acc, g) => acc + g.changes.length, 0);
-    const countBadge = $('#commitDiffTotalBadge');
-    if (countBadge) countBadge.textContent = `${totalChanges} Değişiklik`;
-
-    const msgInput = $('#commitMsgInput');
-    if (msgInput) {
-      msgInput.value = generateCommitMessage(diffGroups);
-    }
-
-    const list = $('#commitDiffList');
-    if (list) {
-      list.replaceChildren();
-      for (const grp of diffGroups) {
-        const groupEl = document.createElement('div');
-        groupEl.className = 'commit-diff-group';
-        groupEl.innerHTML = `
-          <div class="commit-diff-group-head">
-            <span class="commit-diff-file-tag">${grp.file}</span>
-            <span class="commit-diff-group-title">${grp.label}</span>
-            <span class="commit-diff-group-count">${grp.changes.length} değişiklik</span>
-          </div>
-          <div class="commit-diff-group-items"></div>
-        `;
-        const itemsBox = groupEl.querySelector('.commit-diff-group-items');
-        for (const ch of grp.changes) {
-          const row = document.createElement('div');
-          row.className = 'commit-diff-row';
-          row.innerHTML = `
-            <span class="commit-diff-badge ${ch.badgeClass}">${ch.badge}</span>
-            <span class="commit-diff-item-title">${AdminSecurity.sanitizeText(ch.title, 120)}</span>
-            <span class="commit-diff-item-detail">${AdminSecurity.sanitizeText(ch.detail, 160)}</span>
-          `;
-          itemsBox.appendChild(row);
-        }
-        list.appendChild(groupEl);
+    try {
+      const diffGroups = computeDetailedDiff();
+      const modal = $('#commitDiffModal');
+      if (!modal) {
+        toast('Commit diff modal penceresi bulunamadı.', 'err');
+        return;
       }
+
+      const totalChanges = diffGroups.reduce((acc, g) => acc + g.changes.length, 0);
+      const countBadge = $('#commitDiffTotalBadge');
+      if (countBadge) countBadge.textContent = `${totalChanges} Değişiklik`;
+
+      const msgInput = $('#commitMsgInput');
+      if (msgInput) {
+        msgInput.value = generateCommitMessage(diffGroups);
+      }
+
+      const list = $('#commitDiffList');
+      if (list) {
+        list.replaceChildren();
+        for (const grp of diffGroups) {
+          const groupEl = document.createElement('div');
+          groupEl.className = 'commit-diff-group';
+          groupEl.innerHTML = `
+            <div class="commit-diff-group-head">
+              <span class="commit-diff-file-tag">${grp.file}</span>
+              <span class="commit-diff-group-title">${grp.label}</span>
+              <span class="commit-diff-group-count">${grp.changes.length} değişiklik</span>
+            </div>
+            <div class="commit-diff-group-items"></div>
+          `;
+          const itemsBox = groupEl.querySelector('.commit-diff-group-items');
+          for (const ch of grp.changes) {
+            const row = document.createElement('div');
+            row.className = 'commit-diff-row';
+            row.innerHTML = `
+              <span class="commit-diff-badge ${ch.badgeClass}">${ch.badge}</span>
+              <span class="commit-diff-item-title">${AdminSecurity.sanitizeText(ch.title, 120)}</span>
+              <span class="commit-diff-item-detail">${AdminSecurity.sanitizeText(ch.detail, 160)}</span>
+            `;
+            itemsBox.appendChild(row);
+          }
+          list.appendChild(groupEl);
+        }
+      }
+
+      const progWrap = $('#commitProgressWrap');
+      if (progWrap) progWrap.hidden = true;
+      const confirmBtn = $('#confirmCommitDiffBtn');
+      if (confirmBtn) confirmBtn.disabled = false;
+      const cancelBtn = $('#cancelCommitDiffBtn');
+      if (cancelBtn) cancelBtn.disabled = false;
+
+      modal.hidden = false;
+      if (msgInput) msgInput.focus();
+    } catch (err) {
+      console.error('openCommitDiffModal error:', err);
+      toast('Değişiklik diff penceresi açılırken hata: ' + err.message, 'err');
     }
-
-    const progWrap = $('#commitProgressWrap');
-    if (progWrap) progWrap.hidden = true;
-    const confirmBtn = $('#confirmCommitDiffBtn');
-    if (confirmBtn) confirmBtn.disabled = false;
-    const cancelBtn = $('#cancelCommitDiffBtn');
-    if (cancelBtn) cancelBtn.disabled = false;
-
-    modal.hidden = false;
-    if (msgInput) msgInput.focus();
   }
 
   async function executeCommitProcess() {
@@ -6706,7 +6754,11 @@
   }
 
   function handleCommitClick() {
-    collectFormFieldsIntoConfig();
+    try {
+      collectFormFieldsIntoConfig();
+    } catch (e) {
+      console.warn('collectFormFieldsIntoConfig hatası yutuldu:', e);
+    }
     const anyMultiDirty = Object.values(state.multiMediaStore || {}).some(s => s && s.dirty);
     const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || anyMultiDirty || state.pendingUploads.size > 0;
 
@@ -8294,6 +8346,7 @@
   };
 
   function populatePageTextInputsForSection(secId) {
+    if (!$('#cfgAnimeTitle')) return;
     const activeSec = secId || state.activeTextPageId || 'anime';
     state.activeTextPageId = activeSec;
     if (!state.config.pages) state.config.pages = structuredClone(DEFAULT_CONFIG.pages);
@@ -8308,36 +8361,37 @@
     if ($('#cfgAnimeExtBtnLabel')) $('#cfgAnimeExtBtnLabel').textContent = meta.extLabel;
     if ($('#cfgAnimeResetWrap')) $('#cfgAnimeResetWrap').hidden = activeSec === 'guide';
 
-    $('#cfgAnimeTitle').value = pg.title ?? defPg.title ?? '';
-    $('#cfgAnimeSubtitle').value = pg.subtitle ?? defPg.subtitle ?? '';
-    $('#cfgAnimeMetaTitle').value = pg.metaTitle ?? defPg.metaTitle ?? '';
-    $('#cfgAnimeDesc').value = pg.description ?? defPg.description ?? '';
-    $('#cfgAnimeSearch').value = pg.searchPlaceholder ?? defPg.searchPlaceholder ?? '';
-    $('#cfgAnimeEmpty').value = pg.emptyText ?? defPg.emptyText ?? '';
-    $('#cfgAnimeDetails').value = pg.detailsText ?? defPg.detailsText ?? '';
-    $('#cfgAnimeReset').value = pg.resetFilterText ?? defPg.resetFilterText ?? '';
-    $('#cfgAnimeAlBtn').value = pg.externalButtonText || pg.anilistButtonText || defPg.externalButtonText || '';
-    $('#cfgAnimeFooter').value = pg.footerText ?? defPg.footerText ?? '';
+    if ($('#cfgAnimeTitle')) $('#cfgAnimeTitle').value = pg.title ?? defPg.title ?? '';
+    if ($('#cfgAnimeSubtitle')) $('#cfgAnimeSubtitle').value = pg.subtitle ?? defPg.subtitle ?? '';
+    if ($('#cfgAnimeMetaTitle')) $('#cfgAnimeMetaTitle').value = pg.metaTitle ?? defPg.metaTitle ?? '';
+    if ($('#cfgAnimeDesc')) $('#cfgAnimeDesc').value = pg.description ?? defPg.description ?? '';
+    if ($('#cfgAnimeSearch')) $('#cfgAnimeSearch').value = pg.searchPlaceholder ?? defPg.searchPlaceholder ?? '';
+    if ($('#cfgAnimeEmpty')) $('#cfgAnimeEmpty').value = pg.emptyText ?? defPg.emptyText ?? '';
+    if ($('#cfgAnimeDetails')) $('#cfgAnimeDetails').value = pg.detailsText ?? defPg.detailsText ?? '';
+    if ($('#cfgAnimeReset')) $('#cfgAnimeReset').value = pg.resetFilterText ?? defPg.resetFilterText ?? '';
+    if ($('#cfgAnimeAlBtn')) $('#cfgAnimeAlBtn').value = pg.externalButtonText || pg.anilistButtonText || defPg.externalButtonText || '';
+    if ($('#cfgAnimeFooter')) $('#cfgAnimeFooter').value = pg.footerText ?? defPg.footerText ?? '';
   }
 
   function saveCurrentPageTextInputsToConfig() {
+    if (!$('#cfgAnimeTitle')) return;
     const S = AdminSecurity.sanitizeText;
     const activeSec = state.activeTextPageId || 'anime';
     if (!state.config.pages) state.config.pages = structuredClone(DEFAULT_CONFIG.pages);
     const defPg = DEFAULT_CONFIG.pages[activeSec] || DEFAULT_CONFIG.pages.anime;
-    const extBtn = S($('#cfgAnimeAlBtn').value, 80) || defPg.externalButtonText || "Kaynakta aç";
+    const extBtn = S($('#cfgAnimeAlBtn')?.value, 80) || defPg.externalButtonText || "Kaynakta aç";
     state.config.pages[activeSec] = {
-      title: S($('#cfgAnimeTitle').value, 120) || defPg.title,
-      subtitle: S($('#cfgAnimeSubtitle').value, 240),
-      metaTitle: S($('#cfgAnimeMetaTitle').value, 140) || defPg.metaTitle,
-      description: S($('#cfgAnimeDesc').value, 300),
-      searchPlaceholder: S($('#cfgAnimeSearch').value, 100) || defPg.searchPlaceholder,
-      emptyText: S($('#cfgAnimeEmpty').value, 180) || defPg.emptyText,
-      detailsText: S($('#cfgAnimeDetails').value, 80) || 'Ayrıntılar',
-      resetFilterText: S($('#cfgAnimeReset').value, 80) || 'Filtreleri sıfırla',
+      title: S($('#cfgAnimeTitle')?.value, 120) || defPg.title,
+      subtitle: S($('#cfgAnimeSubtitle')?.value, 240),
+      metaTitle: S($('#cfgAnimeMetaTitle')?.value, 140) || defPg.metaTitle,
+      description: S($('#cfgAnimeDesc')?.value, 300),
+      searchPlaceholder: S($('#cfgAnimeSearch')?.value, 100) || defPg.searchPlaceholder,
+      emptyText: S($('#cfgAnimeEmpty')?.value, 180) || defPg.emptyText,
+      detailsText: S($('#cfgAnimeDetails')?.value, 80) || 'Ayrıntılar',
+      resetFilterText: S($('#cfgAnimeReset')?.value, 80) || 'Filtreleri sıfırla',
       externalButtonText: extBtn,
       ...(activeSec === 'anime' ? { anilistButtonText: extBtn } : {}),
-      footerText: S($('#cfgAnimeFooter').value, 400)
+      footerText: S($('#cfgAnimeFooter')?.value, 400)
     };
   }
 
@@ -8549,27 +8603,29 @@
   }
 
   function populateEditorFields() {
-    const { site, gift } = state.config;
+    if (!state.config) return;
+    const site = state.config.site || {};
+    const gift = state.config.gift || {};
 
-    $('#cfgSiteTitle').value = site.title || '';
-    $('#cfgSiteSubtitle').value = site.subtitle || '';
-    $('#cfgSiteBarTitle').value = site.barTitle || '';
-    $('#cfgSiteHomeLabel').value = site.homeLabel || '';
-    $('#cfgSiteDesc').value = site.description || '';
+    if ($('#cfgSiteTitle')) $('#cfgSiteTitle').value = site.title || '';
+    if ($('#cfgSiteSubtitle')) $('#cfgSiteSubtitle').value = site.subtitle || '';
+    if ($('#cfgSiteBarTitle')) $('#cfgSiteBarTitle').value = site.barTitle || '';
+    if ($('#cfgSiteHomeLabel')) $('#cfgSiteHomeLabel').value = site.homeLabel || '';
+    if ($('#cfgSiteDesc')) $('#cfgSiteDesc').value = site.description || '';
 
     populatePageTextInputsForSection(state.activeTextPageId || 'anime');
 
-    $('#cfgGiftEnabled').checked = gift.enabled !== false;
-    $('#cfgGiftLead').value = gift.leadText || '';
-    $('#cfgGiftTarget').value = gift.targetDate || '';
-    $('#cfgGiftDateLabel').value = gift.dateLabel || '';
-    $('#cfgGiftExpLead').value = gift.expiredLeadText || '';
-    $('#cfgGiftExpSub').value = gift.expiredSubText || '';
-    $('#cfgGiftExpUrl').value = gift.expiredUrl || '';
-    $('#cfgGiftUnitD').value = (gift.units && gift.units.d) || 'Gün';
-    $('#cfgGiftUnitH').value = (gift.units && gift.units.h) || 'Saat';
-    $('#cfgGiftUnitM').value = (gift.units && gift.units.m) || 'Dakika';
-    $('#cfgGiftUnitS').value = (gift.units && gift.units.s) || 'Saniye';
+    if ($('#cfgGiftEnabled')) $('#cfgGiftEnabled').checked = gift.enabled !== false;
+    if ($('#cfgGiftLead')) $('#cfgGiftLead').value = gift.leadText || '';
+    if ($('#cfgGiftTarget')) $('#cfgGiftTarget').value = gift.targetDate || '';
+    if ($('#cfgGiftDateLabel')) $('#cfgGiftDateLabel').value = gift.dateLabel || '';
+    if ($('#cfgGiftExpLead')) $('#cfgGiftExpLead').value = gift.expiredLeadText || '';
+    if ($('#cfgGiftExpSub')) $('#cfgGiftExpSub').value = gift.expiredSubText || '';
+    if ($('#cfgGiftExpUrl')) $('#cfgGiftExpUrl').value = gift.expiredUrl || '';
+    if ($('#cfgGiftUnitD')) $('#cfgGiftUnitD').value = (gift.units && gift.units.d) || 'Gün';
+    if ($('#cfgGiftUnitH')) $('#cfgGiftUnitH').value = (gift.units && gift.units.h) || 'Saat';
+    if ($('#cfgGiftUnitM')) $('#cfgGiftUnitM').value = (gift.units && gift.units.m) || 'Dakika';
+    if ($('#cfgGiftUnitS')) $('#cfgGiftUnitS').value = (gift.units && gift.units.s) || 'Saniye';
 
     renderImageSlots();
     renderCategoriesEditor();
@@ -8578,31 +8634,48 @@
   }
 
   function collectFormFieldsIntoConfig() {
+    if (!state.config) return;
     const S = AdminSecurity.sanitizeText;
     const U = AdminSecurity.sanitizeUrl;
+    if (!state.config.site) state.config.site = {};
+    if (!state.config.gift) state.config.gift = {};
     const { site, gift } = state.config;
 
-    site.title = S($('#cfgSiteTitle').value, 120) || 'Tempestian';
-    site.subtitle = S($('#cfgSiteSubtitle').value, 120);
-    site.barTitle = S($('#cfgSiteBarTitle').value, 120) || site.title;
-    site.homeLabel = S($('#cfgSiteHomeLabel').value, 80) || 'Ana sayfa';
-    site.description = S($('#cfgSiteDesc').value, 300);
+    const elTitle = $('#cfgSiteTitle');
+    if (elTitle) site.title = S(elTitle.value, 120) || 'Tempestian';
+    const elSub = $('#cfgSiteSubtitle');
+    if (elSub) site.subtitle = S(elSub.value, 120);
+    const elBar = $('#cfgSiteBarTitle');
+    if (elBar) site.barTitle = S(elBar.value, 120) || site.title;
+    const elHome = $('#cfgSiteHomeLabel');
+    if (elHome) site.homeLabel = S(elHome.value, 80) || 'Ana sayfa';
+    const elDesc = $('#cfgSiteDesc');
+    if (elDesc) site.description = S(elDesc.value, 300);
 
     saveCurrentPageTextInputsToConfig();
 
-    gift.enabled = Boolean($('#cfgGiftEnabled').checked);
-    gift.leadText = S($('#cfgGiftLead').value, 200);
-    gift.targetDate = S($('#cfgGiftTarget').value, 60) || '2026-10-26T00:00:00+03:00';
-    gift.dateLabel = S($('#cfgGiftDateLabel').value, 140);
-    gift.expiredLeadText = S($('#cfgGiftExpLead').value, 200);
-    gift.expiredSubText = S($('#cfgGiftExpSub').value, 200);
-    gift.expiredUrl = U($('#cfgGiftExpUrl').value, true);
-    gift.units = {
-      d: S($('#cfgGiftUnitD').value, 30) || 'Gün',
-      h: S($('#cfgGiftUnitH').value, 30) || 'Saat',
-      m: S($('#cfgGiftUnitM').value, 30) || 'Dakika',
-      s: S($('#cfgGiftUnitS').value, 30) || 'Saniye'
-    };
+    const elGiftEn = $('#cfgGiftEnabled');
+    if (elGiftEn) gift.enabled = Boolean(elGiftEn.checked);
+    const elGiftLead = $('#cfgGiftLead');
+    if (elGiftLead) gift.leadText = S(elGiftLead.value, 200);
+    const elGiftTgt = $('#cfgGiftTarget');
+    if (elGiftTgt) gift.targetDate = S(elGiftTgt.value, 60) || '2026-10-26T00:00:00+03:00';
+    const elGiftLbl = $('#cfgGiftDateLabel');
+    if (elGiftLbl) gift.dateLabel = S(elGiftLbl.value, 140);
+    const elGiftExpLead = $('#cfgGiftExpLead');
+    if (elGiftExpLead) gift.expiredLeadText = S(elGiftExpLead.value, 200);
+    const elGiftExpSub = $('#cfgGiftExpSub');
+    if (elGiftExpSub) gift.expiredSubText = S(elGiftExpSub.value, 200);
+    const elGiftExpUrl = $('#cfgGiftExpUrl');
+    if (elGiftExpUrl) gift.expiredUrl = U(elGiftExpUrl.value, true);
+    if ($('#cfgGiftUnitD')) {
+      gift.units = {
+        d: S($('#cfgGiftUnitD')?.value, 30) || 'Gün',
+        h: S($('#cfgGiftUnitH')?.value, 30) || 'Saat',
+        m: S($('#cfgGiftUnitM')?.value, 30) || 'Dakika',
+        s: S($('#cfgGiftUnitS')?.value, 30) || 'Saniye'
+      };
+    }
   }
 
   function resolvePreviewSrc(pathOrUrl) {

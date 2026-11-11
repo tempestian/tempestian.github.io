@@ -2239,8 +2239,8 @@
                 </label>
               </div>
               <div id="aeCoverPickerWrap" class="cover-picker-drawer" hidden></div>
-              <!-- PROJEYE ÖZEL ALANLAR (DİL, DAL, FORK, UPSTREAM, TERMİNAL KOMUTU) -->
-              <div id="aeProjectFieldsWrap" class="field-stack" style="margin-top:6px;padding:12px;border-radius:12px;background:rgba(59,158,255,0.06);border:1px solid rgba(86,182,255,0.18)" hidden>
+              <!-- PROJEYE ÖZEL ALANLAR (DİL, DAL, FORK, UPSTREAM, ÖZET, TERMİNAL KOMUTU) -->
+              <div id="aeProjectFieldsWrap" class="field-stack" hidden>
                 <div class="field-row">
                   <label class="field">
                     <span>Programlama Dili / Ana Teknoloji</span>
@@ -2250,9 +2250,17 @@
                     <span>İzlenen Dal (Branch)</span>
                     <input type="text" id="aeProjectBranch" class="inp glass" placeholder="Örn: main, fix-nix-support...">
                   </label>
-                  <label class="field" style="display:flex;flex-direction:row;align-items:center;gap:8px;margin-top:22px;cursor:pointer">
-                    <input type="checkbox" id="aeProjectIsFork">
-                    <span>Bu bir çatal (fork) depo</span>
+                </div>
+                <div class="project-fork-card" id="aeProjectForkCard">
+                  <label class="project-fork-label">
+                    <input type="checkbox" id="aeProjectIsFork" class="project-fork-check">
+                    <div class="project-fork-info">
+                      <div class="project-fork-title-row">
+                        <span class="project-fork-title">Bu depo bir çataldır (Fork)</span>
+                        <span class="project-fork-badge" id="aeProjectForkBadge">Bağımsız Proje</span>
+                      </div>
+                      <span class="project-fork-sub">snowarch/iNiR gibi orijinal bir upstream depodan türetildi; upstream değişiklikleri ve yamaları takip eder.</span>
+                    </div>
                   </label>
                 </div>
                 <div class="field-row" id="aeProjectUpstreamRow" hidden>
@@ -2267,21 +2275,27 @@
                 </div>
                 <div class="field-row">
                   <label class="field" style="flex:2">
+                    <span>Proje Kısa Özeti <small>(Katalog kartında ve vitrinde görünür)</small></span>
+                    <textarea id="aeProjectSummary" class="inp glass" rows="2" placeholder="Projenin kısa, vurucu ve net tek cümlelik özeti..."></textarea>
+                  </label>
+                </div>
+                <div class="field-row">
+                  <label class="field" style="flex:2">
                     <span>Terminal Kurulum / Klonlama Komutu</span>
-                    <input type="text" id="aeProjectInstallCmd" class="inp glass" placeholder="Örn: sudo nixos-rebuild switch --flake github:tempestian/nixos-config#nixos">
+                    <input type="text" id="aeProjectInstallCmd" class="inp glass project-cmd-input" placeholder="Örn: sudo nixos-rebuild switch --flake github:tempestian/nixos-config#nixos">
                     <small>Katalog kartında tek tıkla kopyalanabilir terminal bloğu olarak gösterilir.</small>
                   </label>
                 </div>
                 <div class="field-row">
                   <label class="field" style="flex:2">
-                    <span>Öne Çıkan Özellikler / Vurgular (Her satıra bir özellik)</span>
-                    <textarea id="aeProjectHighlights" class="inp glass" rows="3" placeholder="Nix Flake & Home Manager modüler mimarisi&#10;Niri scrollable Wayland kompozitör yapılandırması&#10;Quickshell 0.3+ dinamik masaüstü kabuk entegrasyonu"></textarea>
+                    <span>Öne Çıkan Özellikler / Vurgular <small>(Her satıra bir özellik; kartta rozet listesi olarak dizilir)</small></span>
+                    <textarea id="aeProjectHighlights" class="inp glass project-highlights-textarea" rows="5" placeholder="Nix Flake &amp; Home Manager modüler mimarisi&#10;Niri scrollable Wayland kompozitör yapılandırması&#10;Quickshell 0.3+ dinamik masaüstü kabuk entegrasyonu&#10;Matugen ile duvar kâğıdından dinamik tema&#10;Zapret DPI aşımı ve CPU optimizasyonları"></textarea>
                   </label>
                 </div>
                 <div class="field-row">
                   <label class="field" style="flex:2">
                     <span>Proje Detaylı Açıklaması</span>
-                    <textarea id="aeProjectDesc" class="inp glass" rows="2" placeholder="Projenin amacı, mimarisi ve detaylı açıklaması..."></textarea>
+                    <textarea id="aeProjectDesc" class="inp glass" rows="4" placeholder="Projenin amacı, teknik mimarisi ve detaylı açıklaması..."></textarea>
                   </label>
                 </div>
               </div>
@@ -2306,16 +2320,19 @@
                   </select>
                 </label>
                 <label class="field">
-                  <span>Eklenme / İzleme Tarihi</span>
+                  <span style="display:flex;justify-content:space-between;align-items:center">
+                    <span>Eklenme / İzleme Tarihi</span>
+                    <small id="aeAddedAtPreview" style="color:var(--accent);font-size:.78rem;font-weight:600"></small>
+                  </span>
                   <div style="display:flex;gap:6px;align-items:center">
                     <input type="text" id="aeAddedAt" class="inp glass" placeholder="YYYY-AA veya YYYY (Örn: 2024-10)" style="flex:1" autocomplete="off">
-                    <button type="button" class="btn-secondary" id="aeAddedAtNowBtn" style="padding:7px 12px;font-size:.8rem;flex:none;white-space:nowrap" title="Mevcut ayı doldur">Bu Ay</button>
+                    <button type="button" class="btn-secondary" id="aeAddedAtNowBtn" style="height:40px;padding:0 12px;font-size:.8rem;flex:none;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center" title="Mevcut ayı doldur">Bu Ay</button>
                   </div>
-                  <small id="aeAddedAtPreview" style="color:var(--accent);font-size:.78rem;margin-top:2px;display:block"></small>
                 </label>
-                <div class="field" style="align-self:end">
-                  <button type="button" class="fav-toggle-btn" id="aeFavoriteBtn" style="height:42px;justify-content:center">☆ Başyapıt / Favori</button>
-                </div>
+                <label class="field" id="aeFavoriteFieldWrap">
+                  <span id="aeFavoriteFieldLabel">Öne Çıkarma &amp; Vitrin</span>
+                  <button type="button" class="fav-toggle-btn adm-modal-fav-btn" id="aeFavoriteBtn">☆ Başyapıt / Favori</button>
+                </label>
               </div>
             </div>
           </div>
@@ -3411,7 +3428,7 @@
           : "Linkten Kapak & Bağlantılı İçerikleri Çek";
     }
     const exWrap = $('#aeExtraMetaWrap');
-    if (adapter.extraMetaField) {
+    if (adapter.extraMetaField && adapter.id !== 'project') {
       exWrap.hidden = false;
       $('#aeExtraMetaLabel').textContent = adapter.extraMetaField.label;
       $('#aeExtraMetaInput').placeholder = adapter.extraMetaField.placeholder || '';
@@ -3540,15 +3557,22 @@
         prjWrap.hidden = false;
         if ($('#aeProjectLang')) $('#aeProjectLang').value = d.language || '';
         if ($('#aeProjectBranch')) $('#aeProjectBranch').value = d.branch || 'main';
+        const updateForkCardState = (isFork) => {
+          $('#aeProjectForkCard')?.classList.toggle('is-fork', isFork);
+          if ($('#aeProjectForkBadge')) {
+            $('#aeProjectForkBadge').textContent = isFork ? '🍴 Çatal (Fork) Depo' : 'Bağımsız Proje';
+          }
+          if ($('#aeProjectUpstreamRow')) $('#aeProjectUpstreamRow').hidden = !isFork;
+        };
         if ($('#aeProjectIsFork')) {
-          $('#aeProjectIsFork').checked = Boolean(d.isFork);
-          if ($('#aeProjectUpstreamRow')) $('#aeProjectUpstreamRow').hidden = !d.isFork;
-          $('#aeProjectIsFork').onchange = (e) => {
-            if ($('#aeProjectUpstreamRow')) $('#aeProjectUpstreamRow').hidden = !e.target.checked;
-          };
+          const isForkVal = Boolean(d.isFork);
+          $('#aeProjectIsFork').checked = isForkVal;
+          updateForkCardState(isForkVal);
+          $('#aeProjectIsFork').onchange = (e) => updateForkCardState(e.target.checked);
         }
         if ($('#aeProjectUpstreamName')) $('#aeProjectUpstreamName').value = d.upstreamName || '';
         if ($('#aeProjectUpstreamUrl')) $('#aeProjectUpstreamUrl').value = d.upstreamUrl || '';
+        if ($('#aeProjectSummary')) $('#aeProjectSummary').value = d.summary || '';
         if ($('#aeProjectInstallCmd')) $('#aeProjectInstallCmd').value = d.installCommand || '';
         if ($('#aeProjectHighlights')) $('#aeProjectHighlights').value = Array.isArray(d.highlights) ? d.highlights.join('\n') : (d.highlights || '');
         if ($('#aeProjectDesc')) $('#aeProjectDesc').value = d.description || '';
@@ -3615,11 +3639,15 @@
     const adapter = getActiveAdminAdapter();
     const isFav = Boolean(state.editingDraft.favorite);
     btn.classList.toggle('on', isFav);
+    const favLabel = $('#aeFavoriteFieldLabel');
     if (adapter.id === 'guide') {
+      if (favLabel) favLabel.textContent = 'Öne Çıkarma & Rehber';
       btn.textContent = isFav ? '★ Öne Çıkan Rehber (Seçili)' : '☆ Öne Çıkan İşaretle';
     } else if (adapter.id === 'project') {
+      if (favLabel) favLabel.textContent = 'Öne Çıkarma & Vitrin';
       btn.textContent = isFav ? '★ Öne Çıkan Proje (Seçili)' : '☆ Öne Çıkan Proje';
     } else {
+      if (favLabel) favLabel.textContent = 'Öne Çıkarma & Favori';
       btn.textContent = isFav ? '★ Başyapıt (Seçili)' : '☆ Başyapıt İşaretle';
     }
   }
@@ -4855,6 +4883,8 @@
         delete d.upstreamName;
         delete d.upstreamUrl;
       }
+      const summaryVal = S($('#aeProjectSummary')?.value || '', 500).trim();
+      if (summaryVal) d.summary = summaryVal;
       d.installCommand = S($('#aeProjectInstallCmd')?.value || '', 300);
       const hlText = $('#aeProjectHighlights')?.value || '';
       d.highlights = hlText.split('\n').map(l => S(l, 200).trim()).filter(Boolean);
@@ -4873,8 +4903,8 @@
       d.lockedFields = [...locked];
     }
 
-    if (adapter.extraMetaField) {
-      const maxExtraLen = (adapter.id === 'guide' || adapter.id === 'project') ? 500 : 160;
+    if (adapter.extraMetaField && adapter.id !== 'project') {
+      const maxExtraLen = adapter.id === 'guide' ? 500 : 160;
       d[adapter.extraMetaField.key] = S($('#aeExtraMetaInput').value, maxExtraLen);
     }
 

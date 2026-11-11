@@ -686,6 +686,16 @@
     };
   }
 
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   function sanitizeText(str, maxLen = 1000) {
     if (str == null) return '';
     return String(str).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, maxLen);
@@ -767,6 +777,7 @@
     githubListFileCommits,
     githubGetFileAtRef,
     sanitizeText,
-    sanitizeUrl
+    sanitizeUrl,
+    escapeHtml
   };
 })();

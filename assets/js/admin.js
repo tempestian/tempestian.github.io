@@ -8723,7 +8723,19 @@
   // ============================================================================
   // XENFORO ACP NODES (DÜĞÜM & BÖLÜM YÖNETİMİ) SİSTEMİ
   // ============================================================================
+  // XENFORO ACP BÖLÜM VE DÜĞÜM (NODES) YÖNETİMİ MİMARİSİ
+  // ============================================================================
   let activeEditingNodeId = null;
+
+  function safeEscapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
 
   function renderNodesManager() {
     const wrap = $('#categoriesList');
@@ -8732,11 +8744,11 @@
 
     // 1. Düğüm İstatistik Çubuğu (XenForo ACP Nodes Header)
     const statsBar = $('#nodesStatsBar');
-    if (statsBar) {
+    if (statsBar && state.config && Array.isArray(state.config.sections)) {
       const total = state.config.sections.length;
-      const active = state.config.sections.filter(s => s.status === 'active').length;
-      const soon = state.config.sections.filter(s => s.status === 'soon').length;
-      const hidden = state.config.sections.filter(s => s.status === 'hidden').length;
+      const active = state.config.sections.filter(s => s && s.status === 'active').length;
+      const soon = state.config.sections.filter(s => s && s.status === 'soon').length;
+      const hidden = state.config.sections.filter(s => s && s.status === 'hidden').length;
       statsBar.innerHTML = `
         <span class="nodes-stat-pill"><strong>${total}</strong> Toplam Düğüm</span>
         <span class="nodes-stat-pill active"><strong>${active}</strong> Yayında (Aktif)</span>
@@ -8745,19 +8757,35 @@
       `;
     }
 
+    if (!state.config || !Array.isArray(state.config.sections)) return;
+
     // 2. Düğüm Ağacı Listesi
     state.config.sections.forEach((sec, idx) => {
+      if (!sec) return;
       const row = document.createElement('div');
       row.className = 'node-row';
       row.dataset.secId = sec.id;
 
-      const adapter = CONTENT_ADAPTER_REGISTRY[sec.id];
-      const itemsCount = (adapter && adapter.getItems && adapter.getItems()) ? adapter.getItems().length : 0;
+      let itemsCount = 0;
+      try {
+        const adapter = CONTENT_ADAPTER_REGISTRY[sec.id];
+        if (adapter && typeof adapter.getItems === 'function') {
+          const items = adapter.getItems();
+          if (Array.isArray(items)) itemsCount = items.length;
+        }
+      } catch (e) {
+        itemsCount = 0;
+      }
       const countLabel = `${itemsCount} ${sec.unit || 'öğe'}`;
 
-      const icHtml = (window.UI && typeof window.UI.icon === 'function')
-        ? window.UI.icon(sec.icon || sec.id)
-        : '';
+      let icHtml = '';
+      try {
+        if (window.UI && typeof window.UI.icon === 'function') {
+          icHtml = window.UI.icon(sec.icon || sec.id) || '';
+        }
+      } catch (e) {
+        icHtml = '';
+      }
 
       const descSnippet = sec.subtitle || sec.description || 'Açıklama belirtilmemiş';
       const isStrip = Boolean(sec.showStrip);
@@ -8774,11 +8802,11 @@
           </div>
           <div class="node-main-info">
             <div class="node-title-row">
-              <span class="node-title-text">${AdminSecurity.escapeHtml(sec.title || 'İsimsiz Bölüm')}</span>
-              <span class="node-slug-badge">/${AdminSecurity.escapeHtml(sec.path || '')}</span>
+              <span class="node-title-text">${safeEscapeHtml(sec.title || 'İsimsiz Bölüm')}</span>
+              <span class="node-slug-badge">/${safeEscapeHtml(sec.path || '')}</span>
               ${isStrip ? '<span class="node-strip-badge" title="Ana sayfa kartında kapak şeridi gösterilir">🖼️ Kapak Şeridi</span>' : ''}
             </div>
-            <span class="node-desc-preview" title="${AdminSecurity.escapeHtml(descSnippet)}">${AdminSecurity.escapeHtml(descSnippet)}</span>
+            <span class="node-desc-preview" title="${safeEscapeHtml(descSnippet)}">${safeEscapeHtml(descSnippet)}</span>
           </div>
         </div>
 
@@ -8796,51 +8824,65 @@
 
       // Hızlı Durum Değiştirici
       const stSelect = row.querySelector('[data-act="status"]');
-      stSelect.onchange = (e) => {
-        sec.status = e.target.value;
-        stSelect.className = `inp glass node-status-select ${sec.status}`;
-        if (sec.status === 'active' && (!sec.description || sec.description === 'Yakında') && ACTIVE_SECTION_DESCRIPTIONS[sec.id]) {
-          sec.description = ACTIVE_SECTION_DESCRIPTIONS[sec.id];
-        }
-        if (state.activeAdminMediaType === sec.id && $('#admSectionStatusSelect')) {
-          $('#admSectionStatusSelect').value = sec.status;
-        }
-        markDirty('config');
-        renderNodesManager();
-        const stLabels = { active: 'Yayında (Aktif)', soon: 'Yakında Rozetli', hidden: 'Gizli (Taslak)' };
-        toast(`"${sec.title}" yayın durumu "${stLabels[sec.status] || sec.status}" yapıldı.`);
-      };
+      if (stSelect) {
+        stSelect.onchange = (e) => {
+          sec.status = e.target.value;
+          stSelect.className = `inp glass node-status-select ${sec.status}`;
+          if (sec.status === 'active' && (!sec.description || sec.description === 'Yakında') && ACTIVE_SECTION_DESCRIPTIONS[sec.id]) {
+            sec.description = ACTIVE_SECTION_DESCRIPTIONS[sec.id];
+          }
+          if (state.activeAdminMediaType === sec.id && $('#admSectionStatusSelect')) {
+            $('#admSectionStatusSelect').value = sec.status;
+          }
+          markDirty('config');
+          renderNodesManager();
+          const stLabels = { active: 'Yayında (Aktif)', soon: 'Yakında Rozetli', hidden: 'Gizli (Taslak)' };
+          toast(`"${sec.title}" yayın durumu "${stLabels[sec.status] || sec.status}" yapıldı.`);
+        };
+      }
 
       // Düğüm Düzenleme Modalı Aç
-      row.querySelector('[data-act="edit"]').onclick = () => {
-        openNodeEditor(sec.id);
-      };
+      const editBtn = row.querySelector('[data-act="edit"]');
+      if (editBtn) {
+        editBtn.onclick = () => {
+          openNodeEditor(sec.id);
+        };
+      }
 
       // Sıralama Butonları
-      row.querySelector('[data-act="up"]').onclick = () => {
-        if (idx === 0) return;
-        const arr = state.config.sections;
-        [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
-        renderNodesManager();
-        markDirty('config');
-      };
+      const upBtn = row.querySelector('[data-act="up"]');
+      if (upBtn) {
+        upBtn.onclick = () => {
+          if (idx === 0) return;
+          const arr = state.config.sections;
+          [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
+          renderNodesManager();
+          markDirty('config');
+        };
+      }
 
-      row.querySelector('[data-act="down"]').onclick = () => {
-        const arr = state.config.sections;
-        if (idx >= arr.length - 1) return;
-        [arr[idx + 1], arr[idx]] = [arr[idx], arr[idx + 1]];
-        renderNodesManager();
-        markDirty('config');
-      };
+      const downBtn = row.querySelector('[data-act="down"]');
+      if (downBtn) {
+        downBtn.onclick = () => {
+          const arr = state.config.sections;
+          if (idx >= arr.length - 1) return;
+          [arr[idx + 1], arr[idx]] = [arr[idx], arr[idx + 1]];
+          renderNodesManager();
+          markDirty('config');
+        };
+      }
 
       // Silme Butonu
-      row.querySelector('[data-act="del"]').onclick = () => {
-        if (!confirm(`"${sec.title}" bölüm düğümünü silmek istediğinize emin misiniz?\n(Bu işlem içerik dosyalarını silmez, yalnızca site menüsünden ve yapılandırmasından kaldırır.)`)) return;
-        state.config.sections.splice(idx, 1);
-        renderNodesManager();
-        markDirty('config');
-        toast(`"${sec.title}" düğümü kaldırıldı.`);
-      };
+      const delBtn = row.querySelector('[data-act="del"]');
+      if (delBtn) {
+        delBtn.onclick = () => {
+          if (!confirm(`"${sec.title}" bölüm düğümünü silmek istediğinize emin misiniz?\n(Bu işlem içerik dosyalarını silmez, yalnızca site menüsünden ve yapılandırmasından kaldırır.)`)) return;
+          state.config.sections.splice(idx, 1);
+          renderNodesManager();
+          markDirty('config');
+          toast(`"${sec.title}" düğümü kaldırıldı.`);
+        };
+      }
 
       wrap.append(row);
     });
@@ -9880,6 +9922,7 @@
     };
     if ($('#closeNodeModalBtn')) $('#closeNodeModalBtn').onclick = closeNodeModal;
     if ($('#cancelNodeModalBtn')) $('#cancelNodeModalBtn').onclick = closeNodeModal;
+    if ($('#nodeModalBg')) $('#nodeModalBg').onclick = closeNodeModal;
     if ($('#saveNodeModalBtn')) $('#saveNodeModalBtn').onclick = () => saveNodeFromModal();
     $$('#nodeModalTabs [data-node-tab]').forEach(btn => {
       btn.onclick = () => switchNodeModalTab(btn.dataset.nodeTab);
@@ -9989,7 +10032,10 @@
           }
         }
       } else if (e.key === 'Escape') {
-        if ($('#admCmdPaletteModal') && !$('#admCmdPaletteModal').hidden) {
+        if ($('#nodeEditModal') && !$('#nodeEditModal').hidden) {
+          $('#nodeEditModal').hidden = true;
+          activeEditingNodeId = null;
+        } else if ($('#admCmdPaletteModal') && !$('#admCmdPaletteModal').hidden) {
           $('#admCmdPaletteModal').hidden = true;
         }
       }

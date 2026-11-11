@@ -74,7 +74,7 @@
       "title": "Projeler",
       "path": "projeler/",
       "description": "Açık kaynak projelerim ve forklarım",
-      "subtitle": "Kişisel GNU/Linux yapılandırmalarım, masaüstü shell forkları ve açık kaynak katkılarım.",
+      "subtitle": "Kişisel GNU/Linux yapılandırmalarım, açık kaynak projelerim ve forklarım.",
       "data": "data/projects.json",
       "countKey": "projects",
       "unit": "proje",
@@ -172,22 +172,10 @@
       "description": "Bayram Tempestian'ın Technopat Sosyal üzerinde yayınladığı rehberler ve teknik inceleme kataloğu.",
       "searchPlaceholder": "Rehber başlığı, konu veya kategori ara...",
       "emptyText": "Henüz rehber eklenmemiş veya aramayla eşleşen rehber yok.",
+      "footerText": "Rehber kartlarına tıkladığınızda Technopat Sosyal üzerindeki ilgili konuya yönlendirilirsiniz.",
       "detailsText": "Ayrıntılar",
       "resetFilterText": "Filtreleri sıfırla",
-      "externalButtonText": "Technopat Sosyal",
-      "footerText": "Rehber kartlarına tıkladığınızda Technopat Sosyal üzerindeki ilgili konuya yönlendirilirsiniz."
-    },
-    "project": {
-      "title": "Projeler",
-      "subtitle": "Açık kaynak sistem yapılandırmaları, kabuk forkları ve yazılım projeleri kataloğu.",
-      "metaTitle": "Projeler · Tempestian",
-      "description": "Bayram Tempestian'ın açık kaynak projeleri: NixOS yapılandırması, iNiR Quickshell kabuğu ve yazılım depoları.",
-      "searchPlaceholder": "Proje, teknoloji veya anahtar kelime ara...",
-      "emptyText": "Henüz proje eklenmemiş veya aramayla eşleşen proje yok.",
-      "detailsText": "Ayrıntılar",
-      "resetFilterText": "Filtreleri sıfırla",
-      "externalButtonText": "GitHub Deposu",
-      "footerText": "Tüm projeler açık kaynaklıdır. Proje kartlarına tıklayarak doğrudan ilgili GitHub deposuna gidebilirsiniz."
+      "externalButtonText": "Technopat Sosyal"
     },
     "series": {
       "title": "Dizi",
@@ -196,10 +184,10 @@
       "description": "Bayram Tempestian'ın izlediği diziler, sezon puanları ve izleme durumu.",
       "searchPlaceholder": "Dizi, kategori veya kanal ara...",
       "emptyText": "Henüz dizi eklenmemiş veya filtreyle eşleşen dizi yok.",
+      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir.",
       "detailsText": "Ayrıntılar",
       "resetFilterText": "Filtreleri sıfırla",
-      "externalButtonText": "IMDb'de aç",
-      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir."
+      "externalButtonText": "IMDb'de aç"
     },
     "movie": {
       "title": "Film",
@@ -208,10 +196,10 @@
       "description": "Bayram Tempestian'ın izlediği filmler, kişisel puanlar ve favoriler.",
       "searchPlaceholder": "Film, kategori veya yönetmen ara...",
       "emptyText": "Henüz film eklenmemiş veya filtreyle eşleşen film yok.",
+      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir.",
       "detailsText": "Ayrıntılar",
       "resetFilterText": "Filtreleri sıfırla",
-      "externalButtonText": "IMDb'de aç",
-      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir."
+      "externalButtonText": "IMDb'de aç"
     },
     "manga": {
       "title": "Manga",
@@ -220,10 +208,10 @@
       "description": "Bayram Tempestian'ın okuduğu mangalar, cilt/bölüm takibi ve kişisel puanlar.",
       "searchPlaceholder": "Manga, kategori veya yazar ara...",
       "emptyText": "Henüz manga eklenmemiş veya filtreyle eşleşen manga yok.",
+      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir.",
       "detailsText": "Ayrıntılar",
       "resetFilterText": "Filtreleri sıfırla",
-      "externalButtonText": "Kaynakta aç",
-      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir."
+      "externalButtonText": "Kaynakta aç"
     },
     "book": {
       "title": "Kitap",
@@ -232,10 +220,10 @@
       "description": "Bayram Tempestian'ın okuduğu kitaplar, sayfa takibi ve kişisel değerlendirmeler.",
       "searchPlaceholder": "Kitap, kategori veya yazar ara...",
       "emptyText": "Henüz kitap eklenmemiş veya filtreyle eşleşen kitap yok.",
+      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir.",
       "detailsText": "Ayrıntılar",
       "resetFilterText": "Filtreleri sıfırla",
-      "externalButtonText": "Kaynakta aç",
-      "footerText": "Kapak görselleri sahiplerine aittir. Puanlar kişisel değerlendirmedir."
+      "externalButtonText": "Kaynakta aç"
     }
   }
 }

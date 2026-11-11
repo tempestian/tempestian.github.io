@@ -45,18 +45,6 @@
   ],
   "sections": [
     {
-      "id": "anime",
-      "title": "Anime",
-      "path": "anime/",
-      "description": "İzlediğim animeler",
-      "data": "data/anime.json",
-      "countKey": "anime",
-      "unit": "anime",
-      "status": "active",
-      "icon": "anime",
-      "showStrip": true
-    },
-    {
       "id": "guide",
       "title": "Rehber",
       "path": "rehber/",
@@ -68,6 +56,18 @@
       "status": "active",
       "icon": "guide",
       "showStrip": false
+    },
+    {
+      "id": "anime",
+      "title": "Anime",
+      "path": "anime/",
+      "description": "İzlediğim animeler",
+      "data": "data/anime.json",
+      "countKey": "anime",
+      "unit": "anime",
+      "status": "active",
+      "icon": "anime",
+      "showStrip": true
     },
     {
       "id": "project",

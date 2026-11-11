@@ -1106,10 +1106,6 @@
                 <span class="acp-nav-icon">📺</span>
                 <span class="acp-nav-label">Medya &amp; Arşiv</span>
               </button>
-              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="projects" aria-selected="false" title="Projeler &amp; Forklar">
-                <span class="acp-nav-icon">💻</span>
-                <span class="acp-nav-label">Projeler &amp; Forklar</span>
-              </button>
               <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="rapid" aria-selected="false" title="Hızlı Sıralı İnceleme">
                 <span class="acp-nav-icon">⚡</span>
                 <span class="acp-nav-label">Hızlı Sıralı İnceleme</span>
@@ -1121,18 +1117,14 @@
             </div>
 
             <div class="acp-nav-group">
-              <div class="acp-nav-heading">Görünüm &amp; Sayfalar</div>
-              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="texts" aria-selected="false" title="Sayfa Metinleri &amp; Başlıklar">
-                <span class="acp-nav-icon">📝</span>
-                <span class="acp-nav-label">Sayfa Metinleri &amp; Başlıklar</span>
+              <div class="acp-nav-heading">Site Yapısı &amp; Sayfalar</div>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="nodes" aria-selected="false" title="Bölümler &amp; Düğümler (Nodes)">
+                <span class="acp-nav-icon">🌳</span>
+                <span class="acp-nav-label">Bölümler &amp; Düğümler (Nodes)</span>
               </button>
               <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="images" aria-selected="false" title="Görseller &amp; Medya">
                 <span class="acp-nav-icon">🖼️</span>
                 <span class="acp-nav-label">Görseller &amp; Medya</span>
-              </button>
-              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="categories" aria-selected="false" title="Özel Kategoriler &amp; Türler">
-                <span class="acp-nav-icon">🗂️</span>
-                <span class="acp-nav-label">Özel Kategoriler &amp; Türler</span>
               </button>
               <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="boxes" aria-selected="false" title="Kutucuk &amp; Hızlı Linkler">
                 <span class="acp-nav-icon">🧩</span>
@@ -1535,102 +1527,65 @@
         </div>
       </div>
 
-      <div id="panelTexts" class="admin-panel" hidden>
-        <div class="card-grid">
-          <div class="admin-card glass sq">
-            <div class="card-head">
-              <h2>Ana Sayfa &amp; Kimlik Metinleri</h2>
-              <p>Ana sayfa başlığı, alt başlık, üst çubuk ve arama motoru açıklaması.</p>
+      <div id="panelNodes" class="admin-panel" hidden>
+        <div class="admin-card glass sq">
+          <div class="card-head split-head">
+            <div>
+              <h2>Bölümler &amp; Düğümler (Nodes)</h2>
+              <p>Sitenin tüm ana bölümlerini, sayfalarını ve katalog yapısını XenForo ACP hiyerarşisiyle yönetin. Sıralamayı belirleyin, yayın durumunu (Aktif / Yakında / Gizli) tek tıkla değiştirin veya detaylı ayarlarını açın.</p>
             </div>
-            <div class="field-stack">
-              <label class="field">
-                <span>Ana Başlık (h1)</span>
-                <input type="text" id="cfgSiteTitle" class="inp glass" placeholder="Tempestian">
-              </label>
-              <label class="field">
-                <span>Alt Başlık / İsim (.sub)</span>
-                <input type="text" id="cfgSiteSubtitle" class="inp glass" placeholder="Bayram">
-              </label>
-              <label class="field">
-                <span>Üst Çubuk Başlığı (.bar-title)</span>
-                <input type="text" id="cfgSiteBarTitle" class="inp glass" placeholder="Tempestian">
-              </label>
-              <label class="field">
-                <span>Alt Menü Ana Sayfa Etiketi</span>
-                <input type="text" id="cfgSiteHomeLabel" class="inp glass" placeholder="Ana sayfa">
-              </label>
-              <label class="field">
-                <span>Site Meta Açıklaması (description)</span>
-                <textarea id="cfgSiteDesc" class="inp glass" rows="2" placeholder="Bayram Tempestian'ın kişisel sitesi."></textarea>
-              </label>
+            <div class="quick-add-bar">
+              <button type="button" class="btn-primary" id="addCategoryBtn">+ Yeni Düğüm / Bölüm Ekle</button>
             </div>
           </div>
 
-          <div class="admin-card glass sq">
-            <div class="card-head split-head">
-              <div>
-                <h2 id="cfgPageCardHeading">Kategori Sayfası Metinleri (Tüm Bölümler)</h2>
-                <p id="cfgPageCardSub">Anime, Rehber, Projeler, Dizi, Film, Manga ve Kitap sayfalarının başlıklarını, arama kutusu ipuçlarını, butonlarını ve alt bilgi notlarını ayrı ayrı özelleştirin.</p>
-              </div>
-              <button type="button" class="btn-subtle" id="cfgResetPageTextsBtn" title="Seçili sayfanın metinlerini varsayılan değerlere döndürür">🔄 Varsayılana Sıfırla</button>
-            </div>
+          <!-- Düğümler / Site Kimliği Alt Sekmeleri -->
+          <div class="page-text-tabs" id="nodesViewNavTabs" role="tablist" style="margin-bottom:14px">
+            <button type="button" class="page-text-tab active" id="nodesSubNavTreeBtn">🌳 Bölüm &amp; Düğüm Ağacı</button>
+            <button type="button" class="page-text-tab" id="nodesSubNavIdentityBtn">🌐 Site Kimliği &amp; Ana Sayfa Metinleri</button>
+          </div>
 
-            <div class="page-text-tabs" id="cfgPageSectionTabs" role="tablist" aria-label="Sayfa Metni Bölümü Seçin">
-              <button type="button" class="page-text-tab active" data-pg-tab="anime">📺 Anime (/anime/)</button>
-              <button type="button" class="page-text-tab" data-pg-tab="guide">🧭 Rehber (/rehber/)</button>
-              <button type="button" class="page-text-tab" data-pg-tab="project">💻 Projeler (/projeler/)</button>
-              <button type="button" class="page-text-tab" data-pg-tab="series">🎬 Dizi (/dizi/)</button>
-              <button type="button" class="page-text-tab" data-pg-tab="movie">🍿 Film (/film/)</button>
-              <button type="button" class="page-text-tab" data-pg-tab="manga">📖 Manga (/manga/)</button>
-              <button type="button" class="page-text-tab" data-pg-tab="book">📚 Kitap (/kitap/)</button>
+          <!-- ALT GÖRÜNÜM 1: DÜĞÜM AĞACI -->
+          <div id="nodesTreeWrap">
+            <div class="nodes-stats-bar" id="nodesStatsBar"></div>
+            <div class="template-chips" style="margin-bottom:14px">
+              <span>Hızlı Şablon Ekle:</span>
+              <button type="button" class="btn-chip" data-tpl-sec="manga">+ Manga</button>
+              <button type="button" class="btn-chip" data-tpl-sec="book">+ Kitap</button>
+              <button type="button" class="btn-chip" data-tpl-sec="series">+ Dizi</button>
+              <button type="button" class="btn-chip" data-tpl-sec="movie">+ Film</button>
+              <button type="button" class="btn-chip" data-tpl-sec="guide">+ Rehber</button>
+              <button type="button" class="btn-chip" data-tpl-sec="project">+ Projeler</button>
             </div>
+            <div id="categoriesList" class="node-tree"></div>
+          </div>
 
-            <div class="field-stack">
+          <!-- ALT GÖRÜNÜM 2: SİTE KİMLİĞİ VE ANA SAYFA METİNLERİ -->
+          <div id="siteIdentityWrap" hidden>
+            <div class="field-stack" style="margin-top:10px">
               <div class="field-row">
-                <label class="field">
-                  <span>Sayfa Başlığı (h1 &amp; Üst Bar)</span>
-                  <input type="text" id="cfgAnimeTitle" class="inp glass" placeholder="Örn: Anime">
+                <label class="field" style="flex:2">
+                  <span>Ana Sayfa Başlığı (h1)</span>
+                  <input type="text" id="cfgSiteTitle" class="inp glass" placeholder="Tempestian">
                 </label>
                 <label class="field">
-                  <span>Tarayıcı Sekme Başlığı (&lt;title&gt;)</span>
-                  <input type="text" id="cfgAnimeMetaTitle" class="inp glass" placeholder="Örn: Anime · Tempestian">
-                </label>
-              </div>
-              <label class="field">
-                <span>Sayfa Alt Başlığı (.sub — İsteğe Bağlı Açıklama Satırı)</span>
-                <input type="text" id="cfgAnimeSubtitle" class="inp glass" placeholder="Başlığın altında görünecek kısa açıklama (boş bırakılabilir)">
-              </label>
-              <label class="field">
-                <span>Sayfa SEO Meta Açıklaması (meta description)</span>
-                <input type="text" id="cfgAnimeDesc" class="inp glass">
-              </label>
-              <div class="field-row">
-                <label class="field">
-                  <span>Arama Kutusu İpucu (placeholder)</span>
-                  <input type="text" id="cfgAnimeSearch" class="inp glass" placeholder="Ara...">
-                </label>
-                <label class="field">
-                  <span>Boş Sonuç Metni (#empty)</span>
-                  <input type="text" id="cfgAnimeEmpty" class="inp glass" placeholder="Eşleşen kayıt yok.">
+                  <span>Alt Başlık / İsim (.sub)</span>
+                  <input type="text" id="cfgSiteSubtitle" class="inp glass" placeholder="Bayram">
                 </label>
               </div>
               <div class="field-row">
                 <label class="field">
-                  <span>İstatistik Ayrıntılar Butonu</span>
-                  <input type="text" id="cfgAnimeDetails" class="inp glass" placeholder="Ayrıntılar">
-                </label>
-                <label class="field" id="cfgAnimeResetWrap">
-                  <span>Filtre Sıfırlama Butonu</span>
-                  <input type="text" id="cfgAnimeReset" class="inp glass" placeholder="Filtreleri sıfırla">
+                  <span>Üst Çubuk Başlığı (.bar-title)</span>
+                  <input type="text" id="cfgSiteBarTitle" class="inp glass" placeholder="Tempestian">
                 </label>
                 <label class="field">
-                  <span id="cfgAnimeExtBtnLabel">Dış Kaynak Buton Metni</span>
-                  <input type="text" id="cfgAnimeAlBtn" class="inp glass" placeholder="AniList'te aç / IMDb'de aç">
+                  <span>Alt Menü (Dock) Ana Sayfa Etiketi</span>
+                  <input type="text" id="cfgSiteHomeLabel" class="inp glass" placeholder="Ana sayfa">
                 </label>
               </div>
               <label class="field">
-                <span>Alt Bilgi Notu (.foot)</span>
-                <textarea id="cfgAnimeFooter" class="inp glass" rows="2"></textarea>
+                <span>Site Meta Açıklaması (description — SEO ve Arama Motorları)</span>
+                <textarea id="cfgSiteDesc" class="inp glass" rows="2" placeholder="Bayram Tempestian'ın kişisel sitesi."></textarea>
               </label>
             </div>
           </div>
@@ -1669,28 +1624,6 @@
         </div>
       </div>
 
-      <div id="panelCategories" class="admin-panel" hidden>
-        <div class="admin-card glass sq">
-          <div class="card-head split-head">
-            <div>
-              <h2>Site Kategorileri ve Bölüm Kutucukları</h2>
-              <p>Ana sayfadaki kategori kutucuklarını ve alt menüyü (Dock) yönetin. İleride eklenecek bölümleri <b>Yakında</b> veya <b>Gizli</b> olarak şimdiden hazırlayabilirsiniz.</p>
-            </div>
-            <div class="quick-add-bar">
-              <button type="button" class="btn-primary" id="addCategoryBtn">+ Yeni Kategori</button>
-            </div>
-          </div>
-          <div class="template-chips">
-            <span>Hızlı Şablon Ekle:</span>
-            <button type="button" class="btn-chip" data-tpl-sec="manga">+ Manga</button>
-            <button type="button" class="btn-chip" data-tpl-sec="book">+ Kitap</button>
-            <button type="button" class="btn-chip" data-tpl-sec="series">+ Dizi</button>
-            <button type="button" class="btn-chip" data-tpl-sec="movie">+ Film</button>
-            <button type="button" class="btn-chip" data-tpl-sec="guide">+ Rehber</button>
-          </div>
-          <div id="categoriesList" class="editor-stack"></div>
-        </div>
-      </div>
 
       <div id="panelBoxes" class="admin-panel" hidden>
         <div class="admin-card glass sq">
@@ -2399,6 +2332,183 @@
               <button type="button" class="btn-subtle" id="cancelAnimeModalBtn">Vazgeç</button>
               <button type="button" class="btn-primary" id="saveAnimeModalBtn">Animeyi Kaydet</button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- XENFORO ACP DÜĞÜM / BÖLÜM YAPILANDIRMA MODALI -->
+      <div id="nodeEditModal" class="adm-modal" role="dialog" aria-modal="true" aria-labelledby="nodeModalTitle" hidden>
+        <div class="adm-modal-bg" id="nodeModalBg"></div>
+        <div class="adm-modal-card sq" style="max-width:760px">
+          <div class="adm-modal-head">
+            <h3 id="nodeModalTitle">⚙️ Düğüm Yapılandırması: <span id="nodeModalTitleSpan"></span></h3>
+            <button type="button" class="btn glass" id="closeNodeModalBtn" aria-label="Kapat">✕</button>
+          </div>
+
+          <div style="padding:16px 20px">
+            <!-- Düğüm Üst Bilgi Kartı -->
+            <div class="node-modal-banner" id="nodeModalBanner">
+              <span class="node-modal-ic" id="nodeModalIconPreview"></span>
+              <div class="node-modal-meta" style="flex:1">
+                <h4 id="nodeModalHeadTitle">Bölüm Adı</h4>
+                <div class="node-modal-slug-row">
+                  <span class="node-modal-slug" id="nodeModalSlugPreview">/yol/</span>
+                  <span class="node-status-badge" id="nodeModalStatusBadge">🟢 Aktif</span>
+                  <span class="node-count-badge" id="nodeModalCountBadge">0 Öğe</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sekmeli Ayar Grubu -->
+            <div class="page-text-tabs" id="nodeModalTabs" role="tablist">
+              <button type="button" class="page-text-tab active" data-node-tab="general">📌 Temel &amp; Görünüm</button>
+              <button type="button" class="page-text-tab" data-node-tab="texts">📝 Sayfa &amp; Arama Metinleri</button>
+              <button type="button" class="page-text-tab" data-node-tab="advanced">⚙️ Veri &amp; Sistem</button>
+            </div>
+
+            <!-- SEKME 1: TEMEL BİLGİLER & GÖRÜNÜM -->
+            <div id="nodeTabGeneral" class="node-tab-content">
+              <div class="field-row">
+                <label class="field" style="flex:2">
+                  <span>Bölüm / Düğüm Başlığı (title)</span>
+                  <input type="text" id="nmTitle" class="inp glass" placeholder="Örn: Projeler" required>
+                  <small>Menüde, ana sayfa kartında ve sayfa başlığında görünür.</small>
+                </label>
+                <label class="field">
+                  <span>Sayfa Yolu / URL Slug (path)</span>
+                  <input type="text" id="nmPath" class="inp glass" placeholder="Örn: projeler/" required>
+                  <small>Adres satırındaki göreceli yol.</small>
+                </label>
+              </div>
+
+              <div class="field-row">
+                <label class="field" style="flex:2">
+                  <span>Alt Başlık / Slogan (subtitle)</span>
+                  <input type="text" id="nmSubtitle" class="inp glass" placeholder="Örn: Kişisel GNU/Linux yapılandırmalarım, açık kaynak projelerim ve forklarım.">
+                  <small>Kart altında ve sayfa üstünde açıklayıcı slogan olarak yer alır.</small>
+                </label>
+                <label class="field">
+                  <span>Bölüm İkonu</span>
+                  <select id="nmIcon" class="inp glass">
+                    <option value="code">code (Kod / Depo)</option>
+                    <option value="anime">anime (TV / Ekran)</option>
+                    <option value="guide">guide (Rehber / Terminal)</option>
+                    <option value="series">series (Dizi / Film Şeridi)</option>
+                    <option value="movie">movie (Film / Klaket)</option>
+                    <option value="manga">manga (Manga / Çizgi)</option>
+                    <option value="book">book (Kitap / Cilt)</option>
+                    <option value="game">game (Oyun Konsolu)</option>
+                    <option value="music">music (Müzik Notası)</option>
+                    <option value="star">star (Yıldız / Favori)</option>
+                    <option value="sparkle">sparkle (Işıltı / Özel)</option>
+                    <option value="info">info (Bilgi)</option>
+                    <option value="dot">dot (Nokta)</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Yayın Durumu (status)</span>
+                  <select id="nmStatus" class="inp glass">
+                    <option value="active">🟢 Aktif (Sitede Yayında &amp; Menüde Tıklanabilir)</option>
+                    <option value="soon">🟡 Yakında (Ana Sayfada 'Yakında' Rozetiyle Görünür)</option>
+                    <option value="hidden">⚪ Gizli (Ziyaretçilere Kapalı / Taslak)</option>
+                  </select>
+                </label>
+                <label class="field" style="flex:2">
+                  <span>Kutucuk Rozet Açıklaması (description)</span>
+                  <input type="text" id="nmDescription" class="inp glass" placeholder="Örn: Açık kaynak projelerim ve forklarım / Yakında">
+                  <small>Ana sayfa kutucuğundaki kısa durum metni.</small>
+                </label>
+              </div>
+
+              <div class="field-row" style="margin-top:4px">
+                <label class="project-fork-card" style="width:100%;cursor:pointer">
+                  <div class="project-fork-label">
+                    <input type="checkbox" id="nmShowStrip" class="project-fork-check">
+                    <div class="project-fork-info">
+                      <span class="project-fork-title">Ana Sayfa 4'lü Kapak Şeridini Göster</span>
+                      <span class="project-fork-sub">Aktif edildiğinde ana sayfadaki bölüm kutucuğunun içinde son eklenen veya öne çıkan 4 içeriğin kapak görseli mini şerit olarak akar.</span>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- SEKME 2: SAYFA METİNLERİ & ARAMA -->
+            <div id="nodeTabTexts" class="node-tab-content" hidden>
+              <div class="field-row">
+                <label class="field">
+                  <span>Tarayıcı Sekme Başlığı (&lt;title&gt;)</span>
+                  <input type="text" id="nmMetaTitle" class="inp glass" placeholder="Örn: Projeler · Tempestian">
+                </label>
+                <label class="field" style="flex:2">
+                  <span>Sayfa SEO Meta Açıklaması</span>
+                  <input type="text" id="nmMetaDesc" class="inp glass" placeholder="Arama motorlarında ve paylaşımlarda görünen açıklama.">
+                </label>
+              </div>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Arama Kutusu İpucu (searchPlaceholder)</span>
+                  <input type="text" id="nmSearchPlaceholder" class="inp glass" placeholder="Örn: Proje, teknoloji ara...">
+                </label>
+                <label class="field">
+                  <span>Boş Arama Sonucu Metni (emptyText)</span>
+                  <input type="text" id="nmEmptyText" class="inp glass" placeholder="Örn: Henüz proje eklenmemiş veya eşleşen kayıt yok.">
+                </label>
+              </div>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Dış Kaynak Buton Metni</span>
+                  <input type="text" id="nmExternalBtn" class="inp glass" placeholder="Örn: GitHub Deposu / AniList'te aç / Technopat Sosyal">
+                  <small>Detay kartlarında dış kaynağa yönlendiren buton etiketi.</small>
+                </label>
+                <label class="field">
+                  <span>Ayrıntılar Buton Metni</span>
+                  <input type="text" id="nmDetailsText" class="inp glass" placeholder="Ayrıntılar">
+                </label>
+                <label class="field">
+                  <span>Filtre Sıfırlama Buton Metni</span>
+                  <input type="text" id="nmResetText" class="inp glass" placeholder="Filtreleri sıfırla">
+                </label>
+              </div>
+
+              <div class="field-row">
+                <label class="field" style="flex:2">
+                  <span>Sayfa Alt Bilgi Notu (footerText)</span>
+                  <textarea id="nmFooterText" class="inp glass" rows="2" placeholder="Sayfanın en altında görünecek telif, kaynak veya açıklama notu..."></textarea>
+                </label>
+              </div>
+            </div>
+
+            <!-- SEKME 3: VERİ & SİSTEM BAĞLANTISI -->
+            <div id="nodeTabAdvanced" class="node-tab-content" hidden>
+              <div class="field-row">
+                <label class="field">
+                  <span>Veri Dosyası (data)</span>
+                  <input type="text" id="nmDataFile" class="inp glass" placeholder="data/projects.json">
+                  <small>Bölümün içeriklerinin tutulduğu JSON dosyası yolu.</small>
+                </label>
+                <label class="field">
+                  <span>Veri Dizi Anahtarı (countKey)</span>
+                  <input type="text" id="nmCountKey" class="inp glass" placeholder="projects">
+                  <small>JSON içindeki ana dizi anahtarı.</small>
+                </label>
+                <label class="field">
+                  <span>Sayaç Birimi (unit)</span>
+                  <input type="text" id="nmUnit" class="inp glass" placeholder="proje">
+                  <small>Örn: 'proje', 'anime', 'rehber', 'kitap'.</small>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions" style="justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid rgba(86,182,255,0.14);margin:0">
+            <button type="button" class="btn-subtle" id="cancelNodeModalBtn">İptal</button>
+            <button type="button" class="btn-primary" id="saveNodeModalBtn">Değişiklikleri Uygula</button>
           </div>
         </div>
       </div>
@@ -8365,7 +8475,7 @@
       { title: '+ Yeni Rehber Ekle', sub: 'Rehber kataloğuna yeni Technopat konusu ekler', badge: 'Komut', run: () => { switchToMediaSectionAndOpen('guide', '__new__'); } },
       { title: '📊 Yönetim Özeti (Genel Bakış)', sub: 'İçerik metrikleri, veri denetimi ve sistem genel bakışı', badge: 'Panel', run: () => { switchAdminPanel('dashboard'); } },
       { title: '⚡ Hızlı Sıralı Düzenleme Ekranını Aç', sub: 'Kuyruk modunda hızlı kategori ve puan düzenleme', badge: 'Panel', run: () => { switchAdminPanel('rapid'); } },
-      { title: '📝 Kategori Sayfası Metinlerini Düzenle', sub: 'Anime, Rehber, Dizi, Film, Manga ve Kitap sayfa metinleri', badge: 'Panel', run: () => { switchAdminPanel('texts'); } },
+      { title: '🌳 Bölümler & Düğümler (Nodes)', sub: 'Bölüm yapılandırması, URL yolları, sayfa metinleri ve durum yönetimi', badge: 'Panel', run: () => { switchAdminPanel('nodes'); } },
       { title: '🛡️ Veri Sağlığı & Commit Kurtarma Merkezi', sub: 'Eksik kapak/puan denetimi ve tam yedekleme', badge: 'Panel', run: () => { switchAdminPanel('health'); } },
       { title: '💾 Canlı Önizlemeye Uygula (Ctrl+S)', sub: 'Değişiklikleri tarayıcı önbelleğine yazar', badge: 'İşlem', run: () => { $('#previewApplyBtn')?.click(); } },
       { title: "🚀 GitHub'a Kaydet (Commit)", sub: 'Tüm değişiklikleri doğrudan GitHub deposuna gönderir', badge: 'İşlem', run: () => { $('#commitGithubBtn')?.click(); } }
@@ -8610,139 +8720,247 @@
     }
   }
 
-  function renderCategoriesEditor() {
+  // ============================================================================
+  // XENFORO ACP NODES (DÜĞÜM & BÖLÜM YÖNETİMİ) SİSTEMİ
+  // ============================================================================
+  let activeEditingNodeId = null;
+
+  function renderNodesManager() {
     const wrap = $('#categoriesList');
     if (!wrap) return;
     wrap.replaceChildren();
-    const icons = (window.UI && window.UI.icons) || ['anime', 'manga', 'book', 'movie', 'series', 'guide', 'game', 'music', 'code', 'star', 'sparkle', 'info', 'dot'];
 
+    // 1. Düğüm İstatistik Çubuğu (XenForo ACP Nodes Header)
+    const statsBar = $('#nodesStatsBar');
+    if (statsBar) {
+      const total = state.config.sections.length;
+      const active = state.config.sections.filter(s => s.status === 'active').length;
+      const soon = state.config.sections.filter(s => s.status === 'soon').length;
+      const hidden = state.config.sections.filter(s => s.status === 'hidden').length;
+      statsBar.innerHTML = `
+        <span class="nodes-stat-pill"><strong>${total}</strong> Toplam Düğüm</span>
+        <span class="nodes-stat-pill active"><strong>${active}</strong> Yayında (Aktif)</span>
+        <span class="nodes-stat-pill soon"><strong>${soon}</strong> Yakında Rozetli</span>
+        ${hidden > 0 ? `<span class="nodes-stat-pill hidden"><strong>${hidden}</strong> Gizli Taslak</span>` : ''}
+      `;
+    }
+
+    // 2. Düğüm Ağacı Listesi
     state.config.sections.forEach((sec, idx) => {
-      const item = document.createElement('div');
-      item.className = 'editor-item';
-      const iconOpts = icons.map(ic => `<option value="${ic}"${(sec.icon || sec.id) === ic ? ' selected' : ''}>${ic}</option>`).join('');
-      item.innerHTML = `
-        <div class="editor-item-head">
-          <div class="editor-item-title">
-            <span class="sec-ic-preview"></span>
-            <span class="sec-title-lbl"></span>
+      const row = document.createElement('div');
+      row.className = 'node-row';
+      row.dataset.secId = sec.id;
+
+      const adapter = CONTENT_ADAPTER_REGISTRY[sec.id];
+      const itemsCount = (adapter && adapter.getItems && adapter.getItems()) ? adapter.getItems().length : 0;
+      const countLabel = `${itemsCount} ${sec.unit || 'öğe'}`;
+
+      const icHtml = (window.UI && typeof window.UI.icon === 'function')
+        ? window.UI.icon(sec.icon || sec.id)
+        : '';
+
+      const descSnippet = sec.subtitle || sec.description || 'Açıklama belirtilmemiş';
+      const isStrip = Boolean(sec.showStrip);
+
+      row.innerHTML = `
+        <div class="node-row-left">
+          <div class="node-order-controls">
+            <button type="button" class="node-order-btn" data-act="up" title="Yukarı Taşı">▲</button>
+            <span class="node-order-idx">#${idx + 1}</span>
+            <button type="button" class="node-order-btn" data-act="down" title="Aşağı Taşı">▼</button>
           </div>
-          <div class="editor-item-actions">
-            <button type="button" class="icon-btn" data-act="up" title="Yukarı taşı">↑</button>
-            <button type="button" class="icon-btn" data-act="down" title="Aşağı taşı">↓</button>
-            <button type="button" class="icon-btn del" data-act="del" title="Kategoriyi sil">✕</button>
+          <div class="node-icon-box">
+            ${icHtml}
+          </div>
+          <div class="node-main-info">
+            <div class="node-title-row">
+              <span class="node-title-text">${AdminSecurity.escapeHtml(sec.title || 'İsimsiz Bölüm')}</span>
+              <span class="node-slug-badge">/${AdminSecurity.escapeHtml(sec.path || '')}</span>
+              ${isStrip ? '<span class="node-strip-badge" title="Ana sayfa kartında kapak şeridi gösterilir">🖼️ Kapak Şeridi</span>' : ''}
+            </div>
+            <span class="node-desc-preview" title="${AdminSecurity.escapeHtml(descSnippet)}">${AdminSecurity.escapeHtml(descSnippet)}</span>
           </div>
         </div>
-        <div class="field-row">
-          <label class="field">
-            <span>Kategori Kimliği (id)</span>
-            <input type="text" class="inp glass" data-f="id">
-          </label>
-          <label class="field">
-            <span>Başlık</span>
-            <input type="text" class="inp glass" data-f="title">
-          </label>
-          <label class="field">
-            <span>Sayfa Yolu (path)</span>
-            <input type="text" class="inp glass" data-f="path" placeholder="anime/">
-          </label>
-          <label class="field">
-            <span>Durum</span>
-            <select class="inp glass" data-f="status">
-              <option value="active">Aktif (Tıklanabilir &amp; Menüde)</option>
-              <option value="soon">Yakında (Etiketli Kutucuk)</option>
-              <option value="hidden">Gizli (Taslak)</option>
-            </select>
-          </label>
-        </div>
-        <div class="field-row">
-          <label class="field">
-            <span>İkon</span>
-            <select class="inp glass" data-f="icon">${iconOpts}</select>
-          </label>
-          <label class="field">
-            <span>Etiket / Açıklama (Yakında etiketi)</span>
-            <input type="text" class="inp glass" data-f="description" placeholder="İzlediğim animeler / Yakında">
-          </label>
-          <label class="field">
-            <span>Kutucuk Alt Metni (İsteğe bağlı)</span>
-            <input type="text" class="inp glass" data-f="subtitle" placeholder="Ek açıklama satırı">
-          </label>
-        </div>
-        <div class="field-row align-end">
-          <label class="field">
-            <span>Veri Dosyası (data)</span>
-            <input type="text" class="inp glass" data-f="data" placeholder="data/anime.json">
-          </label>
-          <label class="field">
-            <span>Veri Dizi Anahtarı (countKey)</span>
-            <input type="text" class="inp glass" data-f="countKey" placeholder="anime">
-          </label>
-          <label class="field">
-            <span>Sayaç Birimi (unit)</span>
-            <input type="text" class="inp glass" data-f="unit" placeholder="anime">
-          </label>
-          <label class="toggle-switch">
-            <input type="checkbox" data-f="showStrip">
-            <span>4'lü Kapak Şeridini Göster</span>
-          </label>
+
+        <div class="node-row-right">
+          <span class="node-count-badge" title="Toplam kayıtlı içerik">${countLabel}</span>
+          <select class="inp glass node-status-select ${sec.status || 'soon'}" data-act="status" title="Yayın Durumunu Değiştir">
+            <option value="active"${sec.status === 'active' ? ' selected' : ''}>🟢 Aktif (Yayında)</option>
+            <option value="soon"${sec.status === 'soon' ? ' selected' : ''}>🟡 Yakında</option>
+            <option value="hidden"${sec.status === 'hidden' ? ' selected' : ''}>⚪ Gizli (Taslak)</option>
+          </select>
+          <button type="button" class="btn-secondary" data-act="edit" style="padding:0 12px;height:32px;font-size:0.8rem;white-space:nowrap">⚙️ Ayarlar</button>
+          <button type="button" class="icon-btn del" data-act="del" title="Düğümü Sil" style="width:32px;height:32px">✕</button>
         </div>
       `;
 
-      const updateHeader = () => {
-        item.querySelector('.sec-ic-preview').innerHTML = UI.icon(sec.icon || sec.id);
-        item.querySelector('.sec-title-lbl').textContent = `${sec.title || 'İsimsiz Kategori'} (${sec.status === 'active' ? 'Aktif' : sec.status === 'soon' ? 'Yakında' : 'Gizli'})`;
-      };
-      updateHeader();
-
-      item.querySelectorAll('[data-f]').forEach(inp => {
-        const f = inp.dataset.f;
-        if (inp.type === 'checkbox') {
-          inp.checked = sec[f] !== false;
-          inp.onchange = () => { sec[f] = inp.checked; markDirty('config'); };
-        } else {
-          inp.value = sec[f] || '';
-          const handleFieldChange = () => {
-            sec[f] = f === 'path' || f === 'data'
-              ? AdminSecurity.sanitizeUrl(inp.value, true)
-              : AdminSecurity.sanitizeText(inp.value, 160);
-            if (f === 'status' && sec.status === 'active' && (!sec.description || sec.description === 'Yakında') && ACTIVE_SECTION_DESCRIPTIONS[sec.id]) {
-              sec.description = ACTIVE_SECTION_DESCRIPTIONS[sec.id];
-              const descInp = item.querySelector('[data-f="description"]');
-              if (descInp) descInp.value = sec.description;
-            }
-            if (f === 'status' && state.activeAdminMediaType === sec.id && $('#admSectionStatusSelect')) {
-              $('#admSectionStatusSelect').value = sec.status;
-            }
-            updateHeader();
-            markDirty('config');
-          };
-          inp.oninput = handleFieldChange;
-          inp.onchange = handleFieldChange;
+      // Hızlı Durum Değiştirici
+      const stSelect = row.querySelector('[data-act="status"]');
+      stSelect.onchange = (e) => {
+        sec.status = e.target.value;
+        stSelect.className = `inp glass node-status-select ${sec.status}`;
+        if (sec.status === 'active' && (!sec.description || sec.description === 'Yakında') && ACTIVE_SECTION_DESCRIPTIONS[sec.id]) {
+          sec.description = ACTIVE_SECTION_DESCRIPTIONS[sec.id];
         }
-      });
+        if (state.activeAdminMediaType === sec.id && $('#admSectionStatusSelect')) {
+          $('#admSectionStatusSelect').value = sec.status;
+        }
+        markDirty('config');
+        renderNodesManager();
+        const stLabels = { active: 'Yayında (Aktif)', soon: 'Yakında Rozetli', hidden: 'Gizli (Taslak)' };
+        toast(`"${sec.title}" yayın durumu "${stLabels[sec.status] || sec.status}" yapıldı.`);
+      };
 
-      item.querySelector('[data-act="up"]').onclick = () => {
+      // Düğüm Düzenleme Modalı Aç
+      row.querySelector('[data-act="edit"]').onclick = () => {
+        openNodeEditor(sec.id);
+      };
+
+      // Sıralama Butonları
+      row.querySelector('[data-act="up"]').onclick = () => {
         if (idx === 0) return;
         const arr = state.config.sections;
         [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
-        renderCategoriesEditor();
-        markDirty('config');
-      };
-      item.querySelector('[data-act="down"]').onclick = () => {
-        const arr = state.config.sections;
-        if (idx >= arr.length - 1) return;
-        [arr[idx + 1], arr[idx]] = [arr[idx], arr[idx + 1]];
-        renderCategoriesEditor();
-        markDirty('config');
-      };
-      item.querySelector('[data-act="del"]').onclick = () => {
-        state.config.sections.splice(idx, 1);
-        renderCategoriesEditor();
+        renderNodesManager();
         markDirty('config');
       };
 
-      wrap.append(item);
+      row.querySelector('[data-act="down"]').onclick = () => {
+        const arr = state.config.sections;
+        if (idx >= arr.length - 1) return;
+        [arr[idx + 1], arr[idx]] = [arr[idx], arr[idx + 1]];
+        renderNodesManager();
+        markDirty('config');
+      };
+
+      // Silme Butonu
+      row.querySelector('[data-act="del"]').onclick = () => {
+        if (!confirm(`"${sec.title}" bölüm düğümünü silmek istediğinize emin misiniz?\n(Bu işlem içerik dosyalarını silmez, yalnızca site menüsünden ve yapılandırmasından kaldırır.)`)) return;
+        state.config.sections.splice(idx, 1);
+        renderNodesManager();
+        markDirty('config');
+        toast(`"${sec.title}" düğümü kaldırıldı.`);
+      };
+
+      wrap.append(row);
     });
+  }
+
+  function renderCategoriesEditor() {
+    renderNodesManager();
+  }
+
+  function openNodeEditor(secId) {
+    const sec = state.config.sections.find(s => s && s.id === secId);
+    if (!sec) return;
+    activeEditingNodeId = sec.id;
+
+    if (!state.config.pages) state.config.pages = structuredClone(DEFAULT_CONFIG.pages);
+    const defPg = DEFAULT_CONFIG.pages[sec.id] || DEFAULT_CONFIG.pages.anime || {};
+    const pg = { ...defPg, ...(state.config.pages[sec.id] || {}) };
+
+    if ($('#nodeModalTitleSpan')) $('#nodeModalTitleSpan').textContent = sec.title;
+    if ($('#nodeModalHeadTitle')) $('#nodeModalHeadTitle').textContent = sec.title;
+    if ($('#nodeModalSlugPreview')) $('#nodeModalSlugPreview').textContent = `/${sec.path || ''}`;
+    const stLabels = { active: '🟢 Aktif (Yayında)', soon: '🟡 Yakında', hidden: '⚪ Gizli (Taslak)' };
+    if ($('#nodeModalStatusBadge')) $('#nodeModalStatusBadge').textContent = stLabels[sec.status] || sec.status;
+    const adapter = CONTENT_ADAPTER_REGISTRY[sec.id];
+    const itemsCount = (adapter && adapter.getItems && adapter.getItems()) ? adapter.getItems().length : 0;
+    if ($('#nodeModalCountBadge')) $('#nodeModalCountBadge').textContent = `${itemsCount} ${sec.unit || 'Öğe'}`;
+    if ($('#nodeModalIconPreview')) {
+      $('#nodeModalIconPreview').innerHTML = (window.UI && typeof window.UI.icon === 'function')
+        ? window.UI.icon(sec.icon || sec.id)
+        : '';
+    }
+
+    switchNodeModalTab('general');
+
+    // Tab 1: General & Display
+    $('#nmTitle').value = sec.title || '';
+    $('#nmPath').value = sec.path || '';
+    $('#nmSubtitle').value = sec.subtitle || pg.subtitle || '';
+    $('#nmIcon').value = sec.icon || sec.id || 'code';
+    $('#nmStatus').value = sec.status || 'soon';
+    $('#nmDescription').value = sec.description || '';
+    $('#nmShowStrip').checked = sec.showStrip !== false;
+
+    // Tab 2: Page Texts & SEO
+    $('#nmMetaTitle').value = pg.metaTitle || `${sec.title} · Tempestian`;
+    $('#nmMetaDesc').value = pg.description || '';
+    $('#nmSearchPlaceholder').value = pg.searchPlaceholder || '';
+    $('#nmEmptyText').value = pg.emptyText || '';
+    $('#nmExternalBtn').value = pg.externalButtonText || pg.anilistButtonText || '';
+    $('#nmDetailsText').value = pg.detailsText || 'Ayrıntılar';
+    $('#nmResetText').value = pg.resetFilterText || 'Filtreleri sıfırla';
+    $('#nmFooterText').value = pg.footerText || '';
+
+    // Tab 3: Data & Advanced
+    $('#nmDataFile').value = sec.data || '';
+    $('#nmCountKey').value = sec.countKey || '';
+    $('#nmUnit').value = sec.unit || '';
+
+    $('#nodeEditModal').hidden = false;
+  }
+
+  function switchNodeModalTab(tabKey) {
+    $$('#nodeModalTabs [data-node-tab]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.nodeTab === tabKey);
+    });
+    const tabs = {
+      general: $('#nodeTabGeneral'),
+      texts: $('#nodeTabTexts'),
+      advanced: $('#nodeTabAdvanced')
+    };
+    Object.keys(tabs).forEach(k => {
+      if (tabs[k]) tabs[k].hidden = (k !== tabKey);
+    });
+  }
+
+  function saveNodeFromModal() {
+    if (!activeEditingNodeId) return;
+    const sec = state.config.sections.find(s => s && s.id === activeEditingNodeId);
+    if (!sec) return;
+
+    const S = AdminSecurity.sanitizeText;
+
+    // 1. Bölüm Genel Verilerini Güncelle
+    const newTitle = S($('#nmTitle').value, 100) || sec.title;
+    sec.title = newTitle;
+    sec.path = S($('#nmPath').value, 100) || sec.path;
+    sec.subtitle = S($('#nmSubtitle').value, 240);
+    sec.icon = $('#nmIcon').value || sec.icon;
+    sec.status = $('#nmStatus').value || 'soon';
+    sec.description = S($('#nmDescription').value, 200) || sec.description;
+    sec.showStrip = Boolean($('#nmShowStrip').checked);
+    sec.data = S($('#nmDataFile').value, 120) || sec.data;
+    sec.countKey = S($('#nmCountKey').value, 60) || sec.countKey;
+    sec.unit = S($('#nmUnit').value, 40) || sec.unit;
+
+    // 2. Sayfa ve Katalog Metinlerini Güncelle (state.config.pages)
+    if (!state.config.pages) state.config.pages = structuredClone(DEFAULT_CONFIG.pages);
+    const defPg = DEFAULT_CONFIG.pages[sec.id] || DEFAULT_CONFIG.pages.anime || {};
+    const extBtnVal = S($('#nmExternalBtn').value, 80) || defPg.externalButtonText || '';
+
+    state.config.pages[sec.id] = {
+      ...(state.config.pages[sec.id] || {}),
+      title: sec.title,
+      subtitle: sec.subtitle,
+      metaTitle: S($('#nmMetaTitle').value, 140) || `${sec.title} · Tempestian`,
+      description: S($('#nmMetaDesc').value, 300),
+      searchPlaceholder: S($('#nmSearchPlaceholder').value, 100) || defPg.searchPlaceholder,
+      emptyText: S($('#nmEmptyText').value, 180) || defPg.emptyText,
+      detailsText: S($('#nmDetailsText').value, 80) || 'Ayrıntılar',
+      resetFilterText: S($('#nmResetText').value, 80) || 'Filtreleri sıfırla',
+      externalButtonText: extBtnVal,
+      ...(sec.id === 'anime' ? { anilistButtonText: extBtnVal } : {}),
+      footerText: S($('#nmFooterText').value, 400)
+    };
+
+    markDirty('config');
+    renderNodesManager();
+    $('#nodeEditModal').hidden = true;
+    activeEditingNodeId = null;
+    toast(`"${sec.title}" düğüm ayarları başarıyla güncellendi.`);
   }
 
   function renderCustomBoxesEditor() {
@@ -8955,9 +9173,10 @@
     anime: 'Medya & Arşiv',
     rapid: 'Hızlı Sıralı İnceleme',
     instagram: 'Görsel Stüdyosu',
-    texts: 'Sayfa Metinleri & Başlıklar',
+    nodes: 'Bölümler & Düğümler (Nodes)',
+    texts: 'Bölümler & Düğümler (Nodes)',
     images: 'Görseller & Medya',
-    categories: 'Özel Kategoriler & Türler',
+    categories: 'Bölümler & Düğümler (Nodes)',
     boxes: 'Kutucuk & Hızlı Linkler',
     health: '🛠️ Araçlar & Veri Sağlığı',
     security: 'Güvenlik & PAT'
@@ -8968,9 +9187,8 @@
     anime: 'panelAnime',
     rapid: 'panelRapid',
     instagram: 'panelInstagram',
-    texts: 'panelTexts',
+    nodes: 'panelNodes',
     images: 'panelImages',
-    categories: 'panelCategories',
     boxes: 'panelBoxes',
     health: 'panelHealth',
     security: 'panelSecurity'
@@ -8981,6 +9199,9 @@
       state.activeAdminMediaType = 'project';
       targetPanel = 'anime';
       if ($('#admMediaTypeSelect')) $('#admMediaTypeSelect').value = 'project';
+    }
+    if (targetPanel === 'categories' || targetPanel === 'texts') {
+      targetPanel = 'nodes';
     }
     const panelKey = ACP_PANEL_IDS[targetPanel] ? targetPanel : 'dashboard';
 
@@ -9012,6 +9233,8 @@
       if (!options.skipQueueInit) {
         initOrRefreshRapidQueue(options.rebuildQueue !== false);
       }
+    } else if (panelKey === 'nodes') {
+      renderNodesManager();
     } else if (panelKey === 'health') {
       renderHealthAuditor();
       if (typeof updateBatchWizardUI === 'function') updateBatchWizardUI();
@@ -9417,7 +9640,7 @@
       $('#adminShell')?.classList.add('sidebar-collapsed');
     }
 
-    $$('#panelTexts input, #panelTexts textarea, #panelBoxes input').forEach(inp => {
+    $$('#panelNodes input, #panelNodes textarea, #panelBoxes input').forEach(inp => {
       inp.addEventListener('input', () => markDirty('config'));
       inp.addEventListener('change', () => markDirty('config'));
     });
@@ -9634,21 +9857,43 @@
         toast(`${adapter.label} bölümünün yayın durumu "${stLabels[secEntry.status] || secEntry.status}" olarak ayarlandı.`);
       };
     }
-    $$('#cfgPageSectionTabs [data-pg-tab]').forEach(btn => {
-      btn.onclick = () => {
-        saveCurrentPageTextInputsToConfig();
-        populatePageTextInputsForSection(btn.dataset.pgTab);
-      };
-    });
-    if ($('#cfgResetPageTextsBtn')) {
-      $('#cfgResetPageTextsBtn').onclick = () => {
-        const activeSec = state.activeTextPageId || 'anime';
-        state.config.pages[activeSec] = structuredClone(DEFAULT_CONFIG.pages[activeSec] || DEFAULT_CONFIG.pages.anime);
-        populatePageTextInputsForSection(activeSec);
-        markDirty('config');
-        toast(`${(PAGE_TEXT_META[activeSec] && PAGE_TEXT_META[activeSec].label) || activeSec} metinleri varsayılana sıfırlandı.`);
+    if ($('#nodesSubNavTreeBtn')) {
+      $('#nodesSubNavTreeBtn').onclick = () => {
+        $('#nodesSubNavTreeBtn').classList.add('active');
+        $('#nodesSubNavIdentityBtn')?.classList.remove('active');
+        if ($('#nodesTreeWrap')) $('#nodesTreeWrap').hidden = false;
+        if ($('#siteIdentityWrap')) $('#siteIdentityWrap').hidden = true;
       };
     }
+    if ($('#nodesSubNavIdentityBtn')) {
+      $('#nodesSubNavIdentityBtn').onclick = () => {
+        $('#nodesSubNavIdentityBtn').classList.add('active');
+        $('#nodesSubNavTreeBtn')?.classList.remove('active');
+        if ($('#nodesTreeWrap')) $('#nodesTreeWrap').hidden = true;
+        if ($('#siteIdentityWrap')) $('#siteIdentityWrap').hidden = false;
+      };
+    }
+
+    const closeNodeModal = () => {
+      if ($('#nodeEditModal')) $('#nodeEditModal').hidden = true;
+      activeEditingNodeId = null;
+    };
+    if ($('#closeNodeModalBtn')) $('#closeNodeModalBtn').onclick = closeNodeModal;
+    if ($('#cancelNodeModalBtn')) $('#cancelNodeModalBtn').onclick = closeNodeModal;
+    if ($('#saveNodeModalBtn')) $('#saveNodeModalBtn').onclick = () => saveNodeFromModal();
+    $$('#nodeModalTabs [data-node-tab]').forEach(btn => {
+      btn.onclick = () => switchNodeModalTab(btn.dataset.nodeTab);
+    });
+
+    ['#cfgSiteTitle', '#cfgSiteSubtitle', '#cfgSiteBarTitle', '#cfgSiteHomeLabel', '#cfgSiteDesc'].forEach(sel => {
+      const el = $(sel);
+      if (el) {
+        el.addEventListener('input', () => {
+          collectFormFieldsIntoConfig();
+          markDirty('config');
+        });
+      }
+    });
 
     if ($('#toggleTagManagerBtn')) {
       $('#toggleTagManagerBtn').onclick = () => {
@@ -10285,7 +10530,7 @@
       deleteAnimeItem(state.editingAnimeId);
     };
 
-    // Kategori, Özel Kutucuk ve Bağlantı Olayları
+    // Düğüm (Node), Özel Kutucuk ve Bağlantı Olayları
     $('#addCategoryBtn').onclick = () => {
       const newId = 'bolum-' + (state.config.sections.length + 1);
       state.config.sections.push({
@@ -10293,6 +10538,7 @@
         title: 'Yeni Bölüm',
         path: newId + '/',
         description: 'Yakında',
+        subtitle: '',
         data: '',
         countKey: '',
         unit: 'içerik',
@@ -10300,8 +10546,10 @@
         icon: 'sparkle',
         showStrip: true
       });
-      renderCategoriesEditor();
+      renderNodesManager();
       markDirty('config');
+      openNodeEditor(newId);
+      toast('Yeni düğüm eklendi: "Yeni Bölüm". Ayarları düzenleyebilirsiniz.');
     };
 
     $$('[data-tpl-sec]').forEach(btn => {
@@ -10310,12 +10558,13 @@
         const tpl = SECTION_TEMPLATES[key];
         if (!tpl) return;
         if (state.config.sections.some(s => s.id === tpl.id)) {
-          toast(`${tpl.title} kategorisi zaten listede mevcut.`, 'warn');
+          toast(`${tpl.title} düğümü zaten listede mevcut.`, 'warn');
           return;
         }
         state.config.sections.push(structuredClone(tpl));
-        renderCategoriesEditor();
+        renderNodesManager();
         markDirty('config');
+        openNodeEditor(tpl.id);
         toast(`${tpl.title} şablonu eklendi.`);
       };
     });

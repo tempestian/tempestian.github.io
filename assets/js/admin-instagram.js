@@ -158,45 +158,52 @@
     neonBlue: {
       name: 'Neon Mavi',
       accent: '#00a8ff',
-      glow: 'rgba(0, 168, 255, 0.32)',
+      glow: 'rgba(0, 168, 255, 0.35)',
       gradient: ['#5cc8ff', '#0070ba'],
       pillBg: 'rgba(0, 168, 255, 0.16)'
     },
     gold: {
       name: 'Altın & Amber',
       accent: '#f5a623',
-      glow: 'rgba(245, 166, 35, 0.32)',
+      glow: 'rgba(245, 166, 35, 0.35)',
       gradient: ['#ffc247', '#d97706'],
       pillBg: 'rgba(245, 166, 35, 0.16)'
     },
     emerald: {
       name: 'Zümrüt Yeşili',
-      accent: '#52e3a4',
-      glow: 'rgba(82, 227, 164, 0.32)',
-      gradient: ['#75f0ba', '#16a34a'],
-      pillBg: 'rgba(82, 227, 164, 0.16)'
+      accent: '#10b981',
+      glow: 'rgba(16, 185, 129, 0.35)',
+      gradient: ['#34d399', '#059669'],
+      pillBg: 'rgba(16, 185, 129, 0.16)'
     },
     violet: {
       name: 'Büyülü Mor',
       accent: '#a855f7',
-      glow: 'rgba(168, 85, 247, 0.32)',
+      glow: 'rgba(168, 85, 247, 0.35)',
       gradient: ['#c084fc', '#7c3aed'],
       pillBg: 'rgba(168, 85, 247, 0.16)'
     },
     rose: {
       name: 'Canlı Pembe',
-      accent: '#f23d8f',
-      glow: 'rgba(242, 61, 143, 0.32)',
-      gradient: ['#ff70a6', '#be185d'],
-      pillBg: 'rgba(242, 61, 143, 0.16)'
+      accent: '#f43f5e',
+      glow: 'rgba(244, 63, 94, 0.35)',
+      gradient: ['#fb7185', '#e11d48'],
+      pillBg: 'rgba(244, 63, 94, 0.16)'
+    },
+    cyan: {
+      name: 'Sibernetik Turkuaz',
+      accent: '#06b6d4',
+      glow: 'rgba(6, 182, 212, 0.35)',
+      gradient: ['#22d3ee', '#0891b2'],
+      pillBg: 'rgba(6, 182, 212, 0.16)'
     }
   };
 
   // Retina 2x Çözünürlükler (Instagram sıkıştırmasında sıfır kalite kaybı)
   const FORMATS = {
-    square:   { width: 2160, height: 2160, label: 'Kare Gönderi (1:1 — 2160p)' },
-    story:    { width: 2160, height: 3840, label: 'Story (9:16 — 2160p)' },
-    portrait: { width: 2160, height: 2700, label: 'Dikey Gönderi (4:5 — 2160p)' }
+    square:   { width: 2160, height: 2160, label: 'Kare Gönderi (1:1 — 2160 × 2160)' },
+    story:    { width: 2160, height: 3840, label: 'Hikâye (Story — 9:16 — 2160 × 3840)' },
+    portrait: { width: 2160, height: 2700, label: 'Dikey Gönderi (4:5 — 2160 × 2700)' }
   };
 
   const CATEGORY_CONFIG = {
@@ -208,7 +215,7 @@
       typeKey: 'anime',
       creatorLabel: 'Stüdyo',
       subUnitLabel: 'Sezon & Bölüm',
-      defaultHashtags: '#anime #tempestian #animereview #arsiv #animeonerisi'
+      defaultHashtags: '#anime #tempestian #animeinceleme #arsiv #animeonerisi'
     },
     series: {
       file: 'data/series.json',
@@ -216,9 +223,9 @@
       icon: '🎬',
       key: 'items',
       typeKey: 'series',
-      creatorLabel: 'Yayıncı / Network',
+      creatorLabel: 'Yayıncı / Ağ',
       subUnitLabel: 'Sezon & Bölüm',
-      defaultHashtags: '#dizi #series #tempestian #diziinceleme #dizionerisi'
+      defaultHashtags: '#dizi #diziinceleme #tempestian #dizionerisi #arsiv'
     },
     movie: {
       file: 'data/movies.json',
@@ -228,7 +235,7 @@
       typeKey: 'movie',
       creatorLabel: 'Yönetmen',
       subUnitLabel: 'Süre & Çıkış Yılı',
-      defaultHashtags: '#film #cinema #tempestian #sinema #filminceleme #movie'
+      defaultHashtags: '#film #sinema #tempestian #filminceleme #sinemakeyfi'
     },
     manga: {
       file: 'data/manga.json',
@@ -236,9 +243,9 @@
       icon: '📖',
       key: 'items',
       typeKey: 'manga',
-      creatorLabel: 'Mangaka / Çizer',
+      creatorLabel: 'Çizer / Mangaka',
       subUnitLabel: 'Cilt & Bölüm',
-      defaultHashtags: '#manga #tempestian #mangareview #cizgiroman #mangaonerisi'
+      defaultHashtags: '#manga #mangainceleme #tempestian #cizgiroman #mangaonerisi'
     },
     book: {
       file: 'data/books.json',
@@ -248,7 +255,7 @@
       typeKey: 'book',
       creatorLabel: 'Yazar',
       subUnitLabel: 'Sayfa Sayısı',
-      defaultHashtags: '#kitap #book #tempestian #edebiyat #kitapyorumu #okudumbitti'
+      defaultHashtags: '#kitap #edebiyat #tempestian #kitapinceleme #okudumbitti'
     },
     guide: {
       file: 'data/guides.json',
@@ -430,6 +437,91 @@
     return label;
   }
 
+  function formatKindToTurkish(rawFormat, rawKind, catKey = 'anime') {
+    const f = String(rawFormat || '').toUpperCase().trim();
+    const k = String(rawKind || '').toLowerCase().trim();
+    if (f === 'MOVIE' || k === 'movie') return 'Sinema Filmi';
+    if (f === 'TV') return (catKey === 'anime') ? 'TV Anime' : 'TV Dizisi';
+    if (f === 'TV_SHORT') return 'Kısa TV Dizisi';
+    if (f === 'OVA') return 'OVA / Özel';
+    if (f === 'ONA') return 'İnternet Serisi (ONA)';
+    if (f === 'SPECIAL' || k === 'other') return 'Özel / Ek İçerik';
+    if (f === 'MUSIC') return 'Müzik Videosu';
+    if (f === 'MANGA') return 'Manga';
+    if (f === 'NOVEL') return 'Hafif Roman / Kitap';
+    if (f === 'ONE_SHOT') return 'Tek Sayılık (One-shot)';
+    if (k === 'season') return 'TV Sezonu';
+    if (catKey === 'movie') return 'Sinema Filmi';
+    if (catKey === 'book') return 'Basılı Eser';
+    if (catKey === 'manga') return 'Manga';
+    if (catKey === 'guide') return 'Teknik Rehber';
+    return f || (catKey === 'anime' ? 'TV Anime' : 'TV Dizisi');
+  }
+
+  function statusToTurkish(status) {
+    const s = String(status || '').toUpperCase().trim();
+    if (s === 'COMPLETED') return 'Tamamlandı';
+    if (s === 'REPEATING') return 'Tekrar İzlendi';
+    if (s === 'CURRENT' || s === 'WATCHING') return 'Devam Ediyor';
+    if (s === 'PLANNING') return 'Planlandı';
+    if (s === 'PAUSED') return 'Durduruldu';
+    if (s === 'DROPPED') return 'Bırakıldı';
+    return status || 'Arşivde';
+  }
+
+  function getPrestigeSealContent(effScore, isFav, catKey) {
+    const isMasterpiece = (effScore >= 9.0 || isFav);
+    const isPick = (effScore >= 8.0);
+    const isRead = (catKey === 'book' || catKey === 'manga');
+    const isGuide = (catKey === 'guide');
+
+    let icon = '✦';
+    let title = 'ONAYLI ARŞİV';
+    let subtitle = 'DEĞERLENDİRİLDİ';
+
+    if (isMasterpiece) {
+      icon = '🏆';
+      title = 'BAŞYAPIT';
+      if (isGuide) subtitle = 'TEMEL BAŞVURU KAYNAĞI';
+      else if (isRead) subtitle = 'MUTLAKA OKUNMALI';
+      else subtitle = 'MUTLAKA İZLENMELİ';
+    } else if (isPick) {
+      icon = '⭐';
+      title = 'KİŞİSEL SEÇKİ';
+      subtitle = 'YÜKSEK TAVSİYE';
+    }
+
+    return {
+      isMasterpiece,
+      isPick,
+      icon,
+      title,
+      subtitle,
+      footer: 'TEMPESTIAN ARŞİVİ'
+    };
+  }
+
+  function getPartPrestigeSealContent(partScore, isRead) {
+    const isPeak = (partScore >= 9.0);
+    const isHigh = (partScore >= 8.0);
+
+    let icon = '✦';
+    let title = 'ONAYLI SEZON';
+    let subtitle = 'ARŞİVDE KAYITLI';
+
+    if (isPeak) {
+      icon = '🏆';
+      title = 'ZİRVE SEZON';
+      subtitle = isRead ? 'MUTLAKA OKUNMALI' : 'MUTLAKA İZLENMELİ';
+    } else if (isHigh) {
+      icon = '⭐';
+      title = 'SEÇKİN SEZON';
+      subtitle = 'YÜKSEK KALİTE';
+    }
+
+    return { isPeak, isHigh, icon, title, subtitle, footer: 'TEMPESTIAN ARŞİVİ' };
+  }
+
   function getCategoryTerminology(catKey, item) {
     const cfg = CATEGORY_CONFIG[catKey] || CATEGORY_CONFIG.anime;
     let creatorVal = '-';
@@ -442,17 +534,17 @@
       const pCount = item?.pages || (Array.isArray(item?.parts) && item.parts[0]?.episodes) || 0;
       subUnitVal = pCount ? `${pCount} Sayfa` : 'Bilinmiyor';
       extraLabel = 'Yayınevi';
-      extraVal = item?.publisher || item?.extra || 'İthaki / Can';
+      extraVal = item?.publisher || item?.extra || 'Tempestian Arşiv';
     } else if (catKey === 'manga') {
-      creatorVal = item?.author || item?.artist || 'Kentaro Miura';
+      creatorVal = item?.author || item?.artist || 'Belirtilmemiş';
       const parts = Array.isArray(item?.parts) ? item.parts : [];
       const totalCh = parts.reduce((acc, p) => acc + (Number(p.episodes) || 0), 0) || item?.chapters || item?.episodes || 0;
       const vols = parts.length > 1 ? `${parts.length} Cilt · ` : '';
       subUnitVal = `${vols}${totalCh || 'Devam Ediyor'} Bölüm`;
       extraLabel = 'Yayıncı';
-      extraVal = item?.publisher || 'Hakusensha / Kodansha';
+      extraVal = item?.publisher || 'Tempestian Arşiv';
     } else if (catKey === 'series') {
-      creatorVal = item?.network || item?.author || 'HBO / Netflix';
+      creatorVal = item?.network || item?.author || 'Belirtilmemiş';
       const parts = Array.isArray(item?.parts) ? item.parts : [];
       const totalEp = parts.reduce((acc, p) => acc + (Number(p.episodes) || 0), 0) || item?.episodes || 0;
       const seasons = parts.length > 0 ? `${parts.length} Sezon · ` : '';
@@ -460,7 +552,7 @@
       extraLabel = 'Çıkış Yılı';
       extraVal = item?.year || (parts[0]?.year) || '-';
     } else if (catKey === 'movie') {
-      creatorVal = item?.director || item?.author || 'Christopher Nolan';
+      creatorVal = item?.director || item?.author || 'Belirtilmemiş';
       const dur = item?.duration || (item?.parts?.[0]?.duration) || item?.episodes || null;
       subUnitVal = dur ? `${dur} Dakika` : '120 Dakika';
       extraLabel = 'Çıkış Yılı';
@@ -472,13 +564,13 @@
       extraVal = Array.isArray(item?.genres) && item.genres.length ? item.genres[0] : (item?.forumSection || 'Linux & Sistem');
     } else {
       // anime
-      creatorVal = item?.studio || item?.author || 'White Fox';
+      creatorVal = item?.studio || item?.author || 'Belirtilmemiş';
       const parts = Array.isArray(item?.parts) ? item.parts : [];
       const totalEp = parts.reduce((acc, p) => acc + (Number(p.episodes) || 0), 0) || item?.episodes || 0;
       const seasons = parts.length > 1 ? `${parts.length} Sezon · ` : '';
       subUnitVal = `${seasons}${totalEp || '12'} Bölüm`;
       extraLabel = 'Çıkış Yılı';
-      extraVal = item?.year || (parts[0]?.year) || '2021';
+      extraVal = item?.year || (parts[0]?.year) || '2024';
     }
 
     return {
@@ -513,9 +605,8 @@
       formatLabel = item?.forumSection || 'Teknik Rehber';
     } else {
       // anime
-      const fmt = item?.format || firstPart?.format;
+      const fmtStr = formatKindToTurkish(item?.format || firstPart?.format, firstPart?.kind, 'anime');
       const ep = item?.episodes || firstPart?.episodes || 0;
-      const fmtStr = fmt === 'MOVIE' ? 'Anime Filmi' : (fmt === 'OVA' ? 'OVA / Özel' : 'TV Anime');
       formatLabel = ep ? `${fmtStr} · ${ep} Bölüm` : fmtStr;
     }
 
@@ -589,26 +680,34 @@
   // 4. ORTAK CANVAS KATMANLARI (ZEMİN, AMBİENT GLOW, RETINA TIPOGRAFI)
   // --------------------------------------------------------------------------
   function drawRetinaBackground(ctx, W, H, theme, posterImg) {
-    // 1. Derin Safir Taban Gradyanı
+    // 1. Derin Safir & Obsidiyen Taban Gradyanı
     const bgGrad = ctx.createLinearGradient(0, 0, W, H);
-    bgGrad.addColorStop(0, '#060913');
-    bgGrad.addColorStop(0.45, '#0a101f');
-    bgGrad.addColorStop(1, '#0e162c');
+    bgGrad.addColorStop(0, '#040711');
+    bgGrad.addColorStop(0.35, '#070c1a');
+    bgGrad.addColorStop(0.7, '#0a1226');
+    bgGrad.addColorStop(1, '#0e1834');
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
 
     // 2. Poster Varsa Geniş Ambient Glow (Arka Plan Yumuşak Yayma)
     if (posterImg) {
       ctx.save();
-      ctx.globalAlpha = 0.24;
+      ctx.globalAlpha = 0.28;
       if ('filter' in ctx) {
-        ctx.filter = 'blur(110px)';
+        ctx.filter = 'blur(95px) saturate(140%) brightness(55%)';
       }
       ctx.drawImage(posterImg, -W * 0.15, -H * 0.15, W * 1.3, H * 1.3);
       ctx.restore();
     }
 
-    // 3. Tema Renklerinde Radyal Parıltı Halka Katmanları
+    // 3. Sinematik Yumuşak Karartma (Merkez Aydınlık, Kenarlar Odaklı)
+    const vig = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.75);
+    vig.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    vig.addColorStop(1, 'rgba(3, 6, 14, 0.72)');
+    ctx.fillStyle = vig;
+    ctx.fillRect(0, 0, W, H);
+
+    // 4. Tema Renklerinde Parıltı Halka Katmanları
     const rad1 = ctx.createRadialGradient(W * 0.88, H * 0.14, 40, W * 0.88, H * 0.14, W * 0.7);
     rad1.addColorStop(0, theme.glow);
     rad1.addColorStop(1, 'rgba(0, 0, 0, 0)');
@@ -616,12 +715,12 @@
     ctx.fillRect(0, 0, W, H);
 
     const rad2 = ctx.createRadialGradient(W * 0.12, H * 0.88, 40, W * 0.12, H * 0.88, W * 0.75);
-    rad2.addColorStop(0, 'rgba(0, 168, 255, 0.22)');
+    rad2.addColorStop(0, 'rgba(0, 168, 255, 0.2)');
     rad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = rad2;
     ctx.fillRect(0, 0, W, H);
 
-    // 4. Çevre Lüks Çift Hatlı İnce Cam Çerçeve
+    // 5. Çevre Lüks Çift Hatlı İnce Cam Çerçeve
     ctx.save();
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
     ctx.lineWidth = 4;
@@ -632,6 +731,37 @@
     ctx.lineWidth = 2;
     roundRect(ctx, 64, 64, W - 128, H - 128, 40);
     ctx.stroke();
+
+    // 6. Köşe Vurguları (HUD / Cinema Corner Brackets)
+    const cInset = 76;
+    const cLen = 32;
+    ctx.strokeStyle = theme.accent;
+    ctx.lineWidth = 3.5;
+    // Sol Üst
+    ctx.beginPath();
+    ctx.moveTo(cInset, cInset + cLen);
+    ctx.lineTo(cInset, cInset);
+    ctx.lineTo(cInset + cLen, cInset);
+    ctx.stroke();
+    // Sağ Üst
+    ctx.beginPath();
+    ctx.moveTo(W - cInset - cLen, cInset);
+    ctx.lineTo(W - cInset, cInset);
+    ctx.lineTo(W - cInset, cInset + cLen);
+    ctx.stroke();
+    // Sol Alt
+    ctx.beginPath();
+    ctx.moveTo(cInset, H - cInset - cLen);
+    ctx.lineTo(cInset, H - cInset);
+    ctx.lineTo(cInset + cLen, H - cInset);
+    ctx.stroke();
+    // Sağ Alt
+    ctx.beginPath();
+    ctx.moveTo(W - cInset - cLen, H - cInset);
+    ctx.lineTo(W - cInset, H - cInset);
+    ctx.lineTo(W - cInset, H - cInset - cLen);
+    ctx.stroke();
+
     ctx.restore();
   }
 
@@ -806,21 +936,25 @@
     return { lines, fontSize: chosenSize, bottomY };
   }
 
-  function drawTopBrandPill(ctx, W, Y, theme, label = '✦ TEMPESTIAN ARCHIVE · İNCELEME ✦') {
+  function drawTopBrandPill(ctx, W, Y, theme, label = '✦ TEMPESTIAN ARŞİVİ · İNCELEME ✦') {
     ctx.save();
-    ctx.font = `700 34px ${FONT_FAMILY}`;
+    ctx.font = `700 32px ${FONT_FAMILY}`;
     const textW = ctx.measureText(label).width;
-    const pillW = Math.max(640, Math.min(W - 200, textW + 88));
-    const pillH = 84;
+    const pillW = Math.max(660, Math.min(W - 200, textW + 96));
+    const pillH = 82;
     const pillX = (W - pillW) / 2;
 
-    ctx.fillStyle = theme.pillBg;
+    ctx.shadowColor = theme.glow;
+    ctx.shadowBlur = 18;
+
+    ctx.fillStyle = theme.pillBg || 'rgba(0, 168, 255, 0.16)';
     ctx.strokeStyle = theme.accent;
-    ctx.lineWidth = 3;
-    roundRect(ctx, pillX, Y, pillW, pillH, 42);
+    ctx.lineWidth = 2.5;
+    roundRect(ctx, pillX, Y, pillW, pillH, 41);
     ctx.fill();
     ctx.stroke();
 
+    ctx.shadowBlur = 0;
     ctx.fillStyle = theme.accent;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -830,11 +964,26 @@
 
   function drawFooterSignature(ctx, W, H) {
     ctx.save();
+    // Üst İnce Işıltı Çizgisi
+    const lineW = Math.min(W - 240, 1100);
+    const lineX = (W - lineW) / 2;
+    const lineY = H - 110;
+    const lineGrad = ctx.createLinearGradient(lineX, lineY, lineX + lineW, lineY);
+    lineGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+    lineGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.18)');
+    lineGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.strokeStyle = lineGrad;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(lineX, lineY);
+    ctx.lineTo(lineX + lineW, lineY);
+    ctx.stroke();
+
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-    ctx.font = `600 34px ${FONT_FAMILY}`;
-    ctx.fillText('tempestian.com · Bayram Tempestian', W / 2, H - 74);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.48)';
+    ctx.font = `600 32px ${FONT_FAMILY}`;
+    ctx.fillText('✦ tempestian.com · Bayram Tempestian ✦', W / 2, H - 68);
     ctx.restore();
   }
 
@@ -850,7 +999,7 @@
 
     // Üst Marka
     const topY = fmtKey === 'story' ? 160 : 100;
-    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN · ${CATEGORY_CONFIG[catKey]?.label?.toUpperCase() || 'ARŞİV'} ✦`);
+    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN ARŞİVİ · ${CATEGORY_CONFIG[catKey]?.label?.toUpperCase() || 'ARŞİV'} ✦`);
 
     // Dinamik Başlık ve Alt Başlık (Otomatik Metin Kaydırma & Kırpmasız)
     const rawTitle = item?.title || customTitle || 'Yapım İncelemesi';
@@ -1090,7 +1239,7 @@
 
             ctx.fillStyle = '#9ca3af';
             ctx.font = `500 24px ${FONT_FAMILY}`;
-            const kindLabel = p.kind === 'movie' ? 'Film' : (p.kind === 'other' ? 'Özel' : 'TV Sezonu');
+            const kindLabel = formatKindToTurkish(p.format, p.kind, catKey);
             const epLabel = p.episodes ? ` · ${p.episodes} Bölüm` : '';
             const yrLabel = p.year ? ` · ${p.year}` : '';
             ctx.fillText(`${kindLabel}${epLabel}${yrLabel}`, px + 22, partCardY + 92);
@@ -1177,32 +1326,36 @@
         });
 
         // Sağ Taraf Prestij Rozeti
-        const isMasterpiece = (effScore >= 9.0 || item?.favorite);
-        const isPick = (effScore >= 8.0);
+        const seal = getPrestigeSealContent(effScore, item?.favorite, catKey);
         ctx.save();
         ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-        ctx.strokeStyle = isMasterpiece ? '#f59e0b' : (isPick ? theme.accent : '#38bdf8');
+        ctx.strokeStyle = seal.isMasterpiece ? '#f59e0b' : (seal.isPick ? theme.accent : '#38bdf8');
         ctx.lineWidth = 3;
-        roundRect(ctx, sealX, sealY, sealW, sealH, 24);
+        roundRect(ctx, sealX, sealY, sealW, sealH, 26);
         ctx.fill();
+        ctx.stroke();
+
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.lineWidth = 1.5;
+        roundRect(ctx, sealX + 10, sealY + 10, sealW - 20, sealH - 20, 18);
         ctx.stroke();
 
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.font = '50px sans-serif';
-        ctx.fillText(isMasterpiece ? '🏆' : (isPick ? '★' : '✦'), sealX + sealW / 2, sealY + 54);
+        ctx.fillText(seal.icon, sealX + sealW / 2, sealY + 54);
 
-        ctx.fillStyle = isMasterpiece ? '#fbbf24' : (isPick ? theme.accent : '#38bdf8');
+        ctx.fillStyle = seal.isMasterpiece ? '#fbbf24' : (seal.isPick ? theme.accent : '#38bdf8');
         ctx.font = `800 34px ${FONT_FAMILY}`;
-        ctx.fillText(isMasterpiece ? 'BAŞYAPIT' : (isPick ? 'KİŞİSEL SEÇKİ' : 'ONAYLI ARŞİV'), sealX + sealW / 2, sealY + 116);
+        ctx.fillText(seal.title, sealX + sealW / 2, sealY + 116);
 
         ctx.fillStyle = '#ffffff';
         ctx.font = `700 22px ${FONT_FAMILY}`;
-        ctx.fillText(isMasterpiece ? 'MUST-WATCH' : (isPick ? 'YÜKSEK TAVSİYE' : 'DEĞERLENDİRİLDİ'), sealX + sealW / 2, sealY + 158);
+        ctx.fillText(seal.subtitle, sealX + sealW / 2, sealY + 158);
 
         ctx.fillStyle = '#9ca3af';
-        ctx.font = `600 18px ${FONT_FAMILY}`;
-        ctx.fillText('TEMPESTIAN ARCHIVE', sealX + sealW / 2, sealY + sealH - 34);
+        ctx.font = `700 18px ${FONT_FAMILY}`;
+        ctx.fillText(seal.footer, sealX + sealW / 2, sealY + sealH - 34);
         ctx.restore();
       }
       ctx.restore();
@@ -1489,7 +1642,7 @@
 
             ctx.fillStyle = '#9ca3af';
             ctx.font = `500 24px ${FONT_FAMILY}`;
-            const kindLabel = p.kind === 'movie' ? 'Film' : (p.kind === 'other' ? 'Özel' : 'TV Sezonu');
+            const kindLabel = formatKindToTurkish(p.format, p.kind, catKey);
             const epLabel = p.episodes ? ` · ${p.episodes} Bölüm` : '';
             const yrLabel = p.year ? ` · ${p.year}` : '';
             ctx.fillText(`${kindLabel}${epLabel}${yrLabel}`, px + 22, partCardY + 92);
@@ -1636,33 +1789,37 @@
         ctx.restore();
 
         // Sağ Taraf: Prestijli Başyapıt / Tavsiye Rozeti
-        const isMasterpiece = (effScore >= 9.0 || item?.favorite);
-        const isPick = (effScore >= 8.0);
+        const seal = getPrestigeSealContent(effScore, item?.favorite, catKey);
         ctx.save();
         ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-        ctx.strokeStyle = isMasterpiece ? '#f59e0b' : (isPick ? theme.accent : '#38bdf8');
+        ctx.strokeStyle = seal.isMasterpiece ? '#f59e0b' : (seal.isPick ? theme.accent : '#38bdf8');
         ctx.lineWidth = 3;
-        roundRect(ctx, sealX, sealY, sealW, sealH, 24);
+        roundRect(ctx, sealX, sealY, sealW, sealH, 26);
         ctx.fill();
+        ctx.stroke();
+
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.lineWidth = 1.5;
+        roundRect(ctx, sealX + 10, sealY + 10, sealW - 20, sealH - 20, 18);
         ctx.stroke();
 
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
         ctx.font = '54px sans-serif';
-        ctx.fillText(isMasterpiece ? '🏆' : (isPick ? '★' : '✦'), sealX + sealW / 2, sealY + 60);
+        ctx.fillText(seal.icon, sealX + sealW / 2, sealY + 60);
 
-        ctx.fillStyle = isMasterpiece ? '#fbbf24' : (isPick ? theme.accent : '#38bdf8');
+        ctx.fillStyle = seal.isMasterpiece ? '#fbbf24' : (seal.isPick ? theme.accent : '#38bdf8');
         ctx.font = `800 36px ${FONT_FAMILY}`;
-        ctx.fillText(isMasterpiece ? 'BAŞYAPIT' : (isPick ? 'KİŞİSEL SEÇKİ' : 'ONAYLI ARŞİV'), sealX + sealW / 2, sealY + 128);
+        ctx.fillText(seal.title, sealX + sealW / 2, sealY + 128);
 
         ctx.fillStyle = '#ffffff';
         ctx.font = `700 24px ${FONT_FAMILY}`;
-        ctx.fillText(isMasterpiece ? 'MUST-WATCH' : (isPick ? 'YÜKSEK TAVSİYE' : 'DEĞERLENDİRİLDİ'), sealX + sealW / 2, sealY + 172);
+        ctx.fillText(seal.subtitle, sealX + sealW / 2, sealY + 172);
 
         ctx.fillStyle = '#9ca3af';
-        ctx.font = `600 20px ${FONT_FAMILY}`;
-        ctx.fillText('TEMPESTIAN ARCHIVE', sealX + sealW / 2, sealY + (isPortrait ? 250 : 214));
+        ctx.font = `700 20px ${FONT_FAMILY}`;
+        ctx.fillText(seal.footer, sealX + sealW / 2, sealY + (isPortrait ? 250 : 214));
         ctx.restore();
       }
     }
@@ -1682,7 +1839,7 @@
 
     // Parça Başlığı ve Bilgisi (Kırpmasız & Dinamik Sarma)
     const partTitle = part?.name || `${partIndex + 1}. Sezon / Parça`;
-    const kindStr = part?.kind === 'movie' ? 'Sinema Filmi' : (part?.kind === 'other' ? 'Özel / Yan İçerik' : `${partIndex + 1}. Sezon`);
+    const kindStr = formatKindToTurkish(part?.format, part?.kind, catKey);
     const epStr = part?.episodes ? ` · ${part.episodes} Bölüm` : '';
     const yrStr = part?.year ? ` · ${part.year}` : '';
     drawWrappedTitle(ctx, partTitle, W / 2, topY + 130, W - 200, {
@@ -1772,7 +1929,9 @@
 
       ctx.fillStyle = '#ffffff';
       ctx.font = `600 30px ${FONT_FAMILY}`;
-      ctx.fillText(`Format: ${part?.format || 'TV'} · Durum: ${part?.status === 'COMPLETED' ? 'Tamamlandı' : 'İzlendi / Arşivde'}`, rightX + 32, rightY + 104);
+      const partFmtStr = formatKindToTurkish(part?.format, part?.kind, catKey);
+      const partStatStr = statusToTurkish(part?.status);
+      ctx.fillText(`Format: ${partFmtStr} · Durum: ${partStatStr}`, rightX + 32, rightY + 104);
       ctx.restore();
 
       // Kriter Barları
@@ -1892,11 +2051,10 @@
       });
 
       // Sağ Taraf Sezon Rozeti
-      const isPeak = (partScore >= 9.0);
-      const isHigh = (partScore >= 8.0);
+      const partSeal = getPartPrestigeSealContent(partScore, isRead);
       ctx.save();
       ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-      ctx.strokeStyle = isPeak ? '#f59e0b' : (isHigh ? theme.accent : '#38bdf8');
+      ctx.strokeStyle = partSeal.border || theme.accent;
       ctx.lineWidth = 3;
       roundRect(ctx, sealX, sealY, sealW, sealH, 24);
       ctx.fill();
@@ -1905,19 +2063,19 @@
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.font = '50px sans-serif';
-      ctx.fillText(isPeak ? '🏆' : (isHigh ? '★' : '✦'), sealX + sealW / 2, sealY + 54);
+      ctx.fillText(partSeal.icon, sealX + sealW / 2, sealY + 54);
 
-      ctx.fillStyle = isPeak ? '#fbbf24' : (isHigh ? theme.accent : '#38bdf8');
+      ctx.fillStyle = partSeal.color || theme.accent;
       ctx.font = `800 34px ${FONT_FAMILY}`;
-      ctx.fillText(isPeak ? 'ZİRVE SEZON' : (isHigh ? 'SEÇKİN SEZON' : 'ONAYLI SEZON'), sealX + sealW / 2, sealY + 116);
+      ctx.fillText(partSeal.title, sealX + sealW / 2, sealY + 116);
 
       ctx.fillStyle = '#ffffff';
       ctx.font = `700 22px ${FONT_FAMILY}`;
-      ctx.fillText(isPeak ? 'MUST-WATCH' : (isHigh ? 'YÜKSEK KALİTE' : 'ARŞİVDE KAYITLI'), sealX + sealW / 2, sealY + 158);
+      ctx.fillText(partSeal.sub, sealX + sealW / 2, sealY + 158);
 
       ctx.fillStyle = '#9ca3af';
       ctx.font = `600 18px ${FONT_FAMILY}`;
-      ctx.fillText('TEMPESTIAN ARCHIVE', sealX + sealW / 2, sealY + sealH - 34);
+      ctx.fillText(partSeal.footer, sealX + sealW / 2, sealY + sealH - 34);
       ctx.restore();
 
       ctx.restore();
@@ -2001,7 +2159,7 @@
       ctx.fillStyle = '#9ca3af';
       ctx.font = `600 28px ${FONT_FAMILY}`;
       ctx.textAlign = 'right';
-      ctx.fillText(`Format: ${part?.format || 'TV'}`, rightX + rightW - 32, posterY + badgeH / 2);
+      ctx.fillText(`Format: ${formatKindToTurkish(part?.format, part?.kind, catKey)}`, rightX + rightW - 32, posterY + badgeH / 2);
       ctx.restore();
 
       // 2. 2x2 Meta Grid (Y=566, H=340)
@@ -2009,7 +2167,7 @@
       const mCardW = (rightW - 24) / 2; // 528
       const mCardH = 160;
       const metaCards = [
-        { label: 'Format & Tür', val: part?.format || (part?.kind === 'movie' ? 'Sinema Filmi' : 'TV Dizisi') },
+        { label: 'Format & Tür', val: formatKindToTurkish(part?.format, part?.kind, catKey) },
         { label: 'Bölüm / Uzunluk', val: part?.episodes ? `${part.episodes} Bölüm` : (part?.duration ? `${part.duration} Dk` : 'Tek Parça') },
         { label: 'Yayın Yılı', val: part?.year || item?.year || '-' },
         { label: 'Genel Seri Ortalaması', val: `★ ${resolveItemEffectiveScore(item, catKey)} / 10` }
@@ -2229,11 +2387,10 @@
       ctx.restore();
 
       // Sağ: Sezon Prestij Mührü
-      const isPeak = (partScore >= 9.0);
-      const isHigh = (partScore >= 8.0);
+      const partSeal = getPartPrestigeSealContent(partScore, isRead);
       ctx.save();
       ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-      ctx.strokeStyle = isPeak ? '#f59e0b' : (isHigh ? theme.accent : '#38bdf8');
+      ctx.strokeStyle = partSeal.border || theme.accent;
       ctx.lineWidth = 3;
       roundRect(ctx, sealX, sealY, sealW, sealH, 24);
       ctx.fill();
@@ -2243,19 +2400,19 @@
       ctx.textBaseline = 'middle';
 
       ctx.font = '54px sans-serif';
-      ctx.fillText(isPeak ? '🏆' : (isHigh ? '★' : '✦'), sealX + sealW / 2, sealY + 60);
+      ctx.fillText(partSeal.icon, sealX + sealW / 2, sealY + 60);
 
-      ctx.fillStyle = isPeak ? '#fbbf24' : (isHigh ? theme.accent : '#38bdf8');
+      ctx.fillStyle = partSeal.color || theme.accent;
       ctx.font = `800 36px ${FONT_FAMILY}`;
-      ctx.fillText(isPeak ? 'ZİRVE SEZON' : (isHigh ? 'SEÇKİN SEZON' : 'ONAYLI SEZON'), sealX + sealW / 2, sealY + 128);
+      ctx.fillText(partSeal.title, sealX + sealW / 2, sealY + 128);
 
       ctx.fillStyle = '#ffffff';
       ctx.font = `700 24px ${FONT_FAMILY}`;
-      ctx.fillText(isPeak ? 'MUST-WATCH' : (isHigh ? 'YÜKSEK KALİTE' : 'ARŞİVDE KAYITLI'), sealX + sealW / 2, sealY + 172);
+      ctx.fillText(partSeal.sub, sealX + sealW / 2, sealY + 172);
 
       ctx.fillStyle = '#9ca3af';
       ctx.font = `600 20px ${FONT_FAMILY}`;
-      ctx.fillText('TEMPESTIAN ARCHIVE', sealX + sealW / 2, sealY + (isPortrait ? 250 : 214));
+      ctx.fillText(partSeal.footer, sealX + sealW / 2, sealY + (isPortrait ? 250 : 214));
       ctx.restore();
     }
 
@@ -2270,7 +2427,7 @@
     drawRetinaBackground(ctx, W, H, theme, posterImg);
 
     const topY = fmtKey === 'story' ? 160 : 100;
-    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN · ${CATEGORY_CONFIG[catKey]?.label?.toUpperCase() || 'ARŞİV'} ÖZETİ ✦`);
+    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN ARŞİVİ · ${CATEGORY_CONFIG[catKey]?.label?.toUpperCase() || 'ARŞİV'} ÖZETİ ✦`);
 
     // Dinamik Başlık
     drawWrappedTitle(ctx, item?.title || 'Yapım Karnesi', W / 2, topY + 130, W - 200, {
@@ -2398,7 +2555,7 @@
 
       ctx.fillStyle = '#9ca3af';
       ctx.font = `500 26px ${FONT_FAMILY}`;
-      const subInfo = `${p.format || 'TV'} · ${p.episodes || '?'} Bölüm · ${p.year || '-'}`;
+      const subInfo = `${formatKindToTurkish(p.format, p.kind, catKey)} · ${p.episodes ? `${p.episodes} Bölüm` : 'Tek Parça'} · ${p.year || '-'}`;
       ctx.fillText(subInfo, rightX + 96, py + partH / 2 + 22);
 
       // Sağ: Puan Rozeti
@@ -2572,11 +2729,10 @@
     ctx.restore();
 
     // Sağ: Prestij Mührü
-    const isMasterpiece = (effScore >= 9.0 || item?.favorite);
-    const isPick = (effScore >= 8.0);
+    const sealData = getPrestigeSealContent(effScore, item?.favorite, catKey);
     ctx.save();
     ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-    ctx.strokeStyle = (isMasterpiece) ? '#f59e0b' : theme.accent;
+    ctx.strokeStyle = sealData.border || theme.accent;
     ctx.lineWidth = 3;
     roundRect(ctx, sealX, sealY, sealW, sealH, 24);
     ctx.fill();
@@ -2586,19 +2742,19 @@
     ctx.textBaseline = 'middle';
 
     ctx.font = '54px sans-serif';
-    ctx.fillText(isMasterpiece ? '🏆' : (isPick ? '★' : '✦'), sealX + sealW / 2, sealY + 60);
+    ctx.fillText(sealData.icon, sealX + sealW / 2, sealY + 60);
 
-    ctx.fillStyle = isMasterpiece ? '#fbbf24' : (isPick ? theme.accent : '#38bdf8');
+    ctx.fillStyle = sealData.color || theme.accent;
     ctx.font = `800 36px ${FONT_FAMILY}`;
-    ctx.fillText(isMasterpiece ? 'BAŞYAPIT' : (isPick ? 'KİŞİSEL SEÇKİ' : 'ONAYLI ARŞİV'), sealX + sealW / 2, sealY + 128);
+    ctx.fillText(sealData.title, sealX + sealW / 2, sealY + 128);
 
     ctx.fillStyle = '#ffffff';
     ctx.font = `700 24px ${FONT_FAMILY}`;
-    ctx.fillText(isMasterpiece ? 'MUST-WATCH' : (isPick ? 'YÜKSEK TAVSİYE' : 'DEĞERLENDİRİLDİ'), sealX + sealW / 2, sealY + 172);
+    ctx.fillText(sealData.sub, sealX + sealW / 2, sealY + 172);
 
     ctx.fillStyle = '#9ca3af';
     ctx.font = `600 20px ${FONT_FAMILY}`;
-    ctx.fillText('TEMPESTIAN ARCHIVE', sealX + sealW / 2, sealY + (isPortrait ? 250 : 214));
+    ctx.fillText(sealData.footer, sealX + sealW / 2, sealY + (isPortrait ? 250 : 214));
     ctx.restore();
 
     drawFooterSignature(ctx, W, H);
@@ -2613,7 +2769,7 @@
 
     const topY = 120;
     const yearLabel = year === 'all' ? 'TÜM ZAMANLAR' : `${year} YILI`;
-    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN WRAPPED · ${yearLabel} ✦`);
+    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN YILLIK ÖZETİ · ${yearLabel} ✦`);
 
     const titleY = topY + 150;
     ctx.save();
@@ -2622,7 +2778,7 @@
     ctx.font = `800 76px ${FONT_FAMILY}`;
     ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
     ctx.shadowBlur = 18;
-    ctx.fillText('THE CHAMPIONS · YILIN ZİRVEDEKİLERİ', W / 2, titleY);
+    ctx.fillText('ZİRVEDEKİLER · YILIN EN İYİLERİ', W / 2, titleY);
 
     ctx.font = `500 38px ${FONT_FAMILY}`;
     ctx.fillStyle = '#9ca3af';
@@ -2744,7 +2900,7 @@
 
     const topY = 120;
     const yearLabel = year === 'all' ? 'TÜM ZAMANLAR' : `${year} YILI`;
-    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN WRAPPED · ${yearLabel} ✦`);
+    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN YILLIK ÖZETİ · ${yearLabel} ✦`);
 
     const titleY = topY + 150;
     ctx.save();
@@ -2753,7 +2909,7 @@
     ctx.font = `800 76px ${FONT_FAMILY}`;
     ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
     ctx.shadowBlur = 18;
-    ctx.fillText('THE NUMBERS · BÜYÜK RAKAMLAR', W / 2, titleY);
+    ctx.fillText('RAKAMLARLA ARŞİV · YILLIK BİLANÇO', W / 2, titleY);
 
     ctx.font = `500 38px ${FONT_FAMILY}`;
     ctx.fillStyle = '#9ca3af';
@@ -2857,7 +3013,7 @@
 
     const topY = 120;
     const yearLabel = year === 'all' ? 'TÜM ZAMANLAR' : `${year} YILI`;
-    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN WRAPPED · ${yearLabel} ✦`);
+    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN YILLIK ÖZETİ · ${yearLabel} ✦`);
 
     const titleY = topY + 150;
     ctx.save();
@@ -2866,7 +3022,7 @@
     ctx.font = `800 76px ${FONT_FAMILY}`;
     ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
     ctx.shadowBlur = 18;
-    ctx.fillText('THE TASTE · TÜR PROFİLİ VE ZEVKLER', W / 2, titleY);
+    ctx.fillText('BEĞENİ PROFİLİ · EN SEVİLEN TÜRLER', W / 2, titleY);
 
     ctx.font = `500 38px ${FONT_FAMILY}`;
     ctx.fillStyle = '#9ca3af';
@@ -2974,7 +3130,7 @@
 
     const topY = 120;
     const yearLabel = year === 'all' ? 'TÜM ZAMANLAR' : `${year} YILI`;
-    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN WRAPPED · ${yearLabel} ✦`);
+    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN YILLIK ÖZETİ · ${yearLabel} ✦`);
 
     const titleY = topY + 150;
     ctx.save();
@@ -2983,7 +3139,7 @@
     ctx.font = `800 76px ${FONT_FAMILY}`;
     ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
     ctx.shadowBlur = 18;
-    ctx.fillText('HIDDEN GEMS · GİZLİ CEVHERLER', W / 2, titleY);
+    ctx.fillText('GİZLİ CEVHERLER · SÜRPRİZ BAŞYAPITLAR', W / 2, titleY);
 
     ctx.font = `500 38px ${FONT_FAMILY}`;
     ctx.fillStyle = '#9ca3af';
@@ -3095,7 +3251,7 @@
     drawRetinaBackground(ctx, W, H, theme, null);
 
     const topY = 110;
-    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN · ${CATEGORY_CONFIG[catKey]?.label?.toUpperCase() || 'EN İYİLER'} ✦`);
+    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN ARŞİVİ · ${CATEGORY_CONFIG[catKey]?.label?.toUpperCase() || 'EN İYİLER'} ✦`);
 
     const titleY = topY + 140;
     ctx.save();
@@ -3104,7 +3260,7 @@
     ctx.font = `800 74px ${FONT_FAMILY}`;
     ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
     ctx.shadowBlur = 18;
-    ctx.fillText('TOP PICKS · EN YÜKSEK PUANLILAR', W / 2, titleY);
+    ctx.fillText('ÖNE ÇIKANLAR · EN YÜKSEK PUANLILAR', W / 2, titleY);
 
     ctx.font = `500 36px ${FONT_FAMILY}`;
     ctx.fillStyle = '#9ca3af';
@@ -3194,7 +3350,7 @@
         ctx.font = `800 30px ${FONT_FAMILY}`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(`★ ${it.effScore || 'FAV'}`, badgeX + badgeW / 2, badgeY + badgeH / 2);
+        ctx.fillText(`★ ${it.effScore || 'FAVORİ'}`, badgeX + badgeW / 2, badgeY + badgeH / 2);
       }
       ctx.restore();
     }
@@ -3209,7 +3365,7 @@
     drawRetinaBackground(ctx, W, H, theme, null);
 
     const topY = 110;
-    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN · ${CATEGORY_CONFIG[catKey]?.label?.toUpperCase() || 'KATMAN LİSTESİ'} ✦`);
+    drawTopBrandPill(ctx, W, topY, theme, `✦ TEMPESTIAN ARŞİVİ · ${CATEGORY_CONFIG[catKey]?.label?.toUpperCase() || 'KATMAN LİSTESİ'} ✦`);
 
     const titleY = topY + 140;
     ctx.save();
@@ -3218,7 +3374,7 @@
     ctx.font = `800 74px ${FONT_FAMILY}`;
     ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
     ctx.shadowBlur = 18;
-    ctx.fillText('TIER LIST · KATMAN SIRALAMASI', W / 2, titleY);
+    ctx.fillText('KATMAN LİSTESİ · SEVİYE SIRALAMASI', W / 2, titleY);
 
     ctx.font = `500 36px ${FONT_FAMILY}`;
     ctx.fillStyle = '#9ca3af';
@@ -3337,12 +3493,12 @@
 
     if (templateKey === 'wrapped') {
       const yrText = year === 'all' ? 'Tüm Zamanlar' : `${year} Yılı`;
-      return `✦ TEMPESTIAN WRAPPED · ${yrText.toUpperCase()} ✦\n\n` +
+      return `✦ TEMPESTIAN YILLIK ÖZETİ · ${yrText.toUpperCase()} ✦\n\n` +
         `Kişisel medya tüketim ve arşiv yolculuğumun büyük yıllık karnesi!\n\n` +
         `🏆 Zirvedeki başyapıtlar, izlenen yüzlerce bölüm, bitirilen sezonlar ve okunan binlerce sayfa tek bir özette bir araya geldi.\n\n` +
         `📊 Tüm arşiv istatistikleri ve kategorik puanlamalar web sitemde yayında:\n` +
         `🔗 tempestian.com/istatistik/\n\n` +
-        `#tempestian #wrapped #spotifywrapped #anime #dizi #film #manga #kitap #arsiv`;
+        `#tempestian #yillikozet #ozet #anime #dizi #film #manga #kitap #arsiv`;
     }
 
     if (templateKey === 'topPicks') {
@@ -3714,28 +3870,28 @@
             id: 'wrapped-1',
             name: '01-wrapped-champions.png',
             shortLabel: 'Zirvedekiler',
-            title: '1. Slayt: The Champions (Zirvedekiler)',
+            title: '1. Slayt: Zirvedekiler (Yılın En İyileri)',
             render: async () => renderWrappedChampionsSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           },
           {
             id: 'wrapped-2',
             name: '02-wrapped-numbers.png',
             shortLabel: 'Rakamlar',
-            title: '2. Slayt: The Numbers (Büyük Rakamlar)',
+            title: '2. Slayt: Rakamlarla Arşiv (Büyük İstatistikler)',
             render: async () => renderWrappedNumbersSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           },
           {
             id: 'wrapped-3',
             name: '03-wrapped-taste.png',
             shortLabel: 'Tür Profili',
-            title: '3. Slayt: The Taste (Tür Profili)',
+            title: '3. Slayt: Tür Profili ve Zevkler',
             render: async () => renderWrappedTasteSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           },
           {
             id: 'wrapped-4',
             name: '04-wrapped-gems.png',
             shortLabel: 'Gizli Cevherler',
-            title: '4. Slayt: Hidden Gems (Gizli Cevherler)',
+            title: '4. Slayt: Gizli Cevherler (Sürpriz Başyapıtlar)',
             render: async () => renderWrappedHiddenGemsSlide(ctx, W, H, allData, wrappedYear, theme, fmtKey)
           }
         ];
@@ -3745,7 +3901,7 @@
           id: 'slide-topPicks',
           name: '01-top-picks.png',
           shortLabel: 'En İyiler',
-          title: 'Top Picks - En İyiler',
+          title: 'Öne Çıkanlar · En Yüksek Puanlılar',
           render: async () => renderTopPicksTemplate(ctx, W, H, items, theme, fmtKey, catKey)
         });
       } else {
@@ -3755,7 +3911,7 @@
           id: 'slide-tierCollage',
           name: '01-tier-list.png',
           shortLabel: 'Katman Listesi',
-          title: 'Katman (Tier List) Özeti',
+          title: 'Katman Listesi (Tier List) Sıralaması',
           render: async () => renderTierCollageTemplate(ctx, W, H, items, theme, fmtKey, catKey)
         });
       }
@@ -4059,6 +4215,7 @@
                 <span>✨ Vurgu Rengi Teması</span>
                 <select id="batchThemeSelect" class="inp glass">
                   <option value="neonBlue" ${curThm === 'neonBlue' ? 'selected' : ''}>⚡ Neon Mavi</option>
+                  <option value="cyan" ${curThm === 'cyan' ? 'selected' : ''}>💎 Sibernetik Turkuaz</option>
                   <option value="gold" ${curThm === 'gold' ? 'selected' : ''}>🌟 Altın &amp; Amber</option>
                   <option value="emerald" ${curThm === 'emerald' ? 'selected' : ''}>🍀 Zümrüt Yeşili</option>
                   <option value="violet" ${curThm === 'violet' ? 'selected' : ''}>🔮 Büyülü Mor</option>
@@ -4083,7 +4240,7 @@
               </label>
               <label class="batch-checkbox">
                 <input type="checkbox" id="batchIncludeReadme" checked>
-                <span>ℹ️ Arşiv Bilgi Dosyası ekle (<code>README.txt</code>)</span>
+                <span>ℹ️ Arşiv Bilgi Dosyası ekle (<code>BENİOKU.txt</code>)</span>
               </label>
             </div>
 
@@ -4378,18 +4535,18 @@
       if (includeReadme) {
         const verbName = (catKey === 'book' || catKey === 'manga') ? 'Okunan' : (catKey === 'guide' ? 'Yayınlanan' : 'İzlenen');
         const readme = `======================================================================\n` +
-          `TEMPESTIAN · ${catMeta.label.toUpperCase()} ARŞİVİ SOSYAL MEDYA POSTLARI\n` +
+          `TEMPESTIAN · ${catMeta.label.toUpperCase()} ARŞİVİ SOSYAL MEDYA GÖNDERİLERİ\n` +
           `======================================================================\n\n` +
-          `Yazar: Bayram Tempestian\n` +
-          `Tarih: ${dateStr}\n` +
-          `Toplam Yapım: ${totalItems} ${catMeta.label} (${verbName})\n` +
+          `Arşiv Sahibi: Bayram Tempestian\n` +
+          `Paket Tarihi: ${dateStr}\n` +
+          `Toplam İçerik: ${totalItems} ${catMeta.label} (${verbName})\n` +
           `Çözünürlük: ${fmt.label}\n` +
-          `Tema: ${theme.name}\n` +
-          `Düzen: ${partMode === 'compact' ? 'Tek Kare Özet (Kompakt Karne)' : (partMode === 'cover' ? 'Yalnızca Ana Kapak' : 'Tam Karusel Seti')}\n` +
+          `Görsel Tema: ${theme.name}\n` +
+          `Paylaşım Düzeni: ${partMode === 'compact' ? 'Tek Kare Özet (Kompakt Karne)' : (partMode === 'cover' ? 'Yalnızca Ana Kapak' : 'Tam Karusel Seti')}\n` +
           `Arşiv Web Sitesi: https://tempestian.com/\n\n` +
-          `Tüm görseller Retina 2x kalitesinde Instagram, Twitter, Threads ve Discord paylaşımları için optimize edilmiştir.\n`;
+          `Tüm görseller Retina 2x (2160p) kalitesinde Instagram, Twitter/X, Threads ve Discord paylaşımları için özel olarak üretilmiştir.\n`;
         files.push({
-          name: 'README.txt',
+          name: 'BENİOKU.txt',
           blob: new Blob([readme], { type: 'text/plain;charset=utf-8' })
         });
       }

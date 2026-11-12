@@ -1110,9 +1110,9 @@
                 <span class="acp-nav-icon">⚡</span>
                 <span class="acp-nav-label">Hızlı Sıralı İnceleme</span>
               </button>
-              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="instagram" aria-selected="false" title="Görsel Stüdyosu">
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="instagram" aria-selected="false" title="Sosyal Medya Stüdyosu">
                 <span class="acp-nav-icon">📸</span>
-                <span class="acp-nav-label">Görsel Stüdyosu</span>
+                <span class="acp-nav-label">Sosyal Medya</span>
               </button>
             </div>
 
@@ -1963,12 +1963,12 @@
         <div class="admin-card glass sq insta-studio-container">
           <div class="card-head split-head">
             <div>
-              <h2>📸 Instagram Görsel ve Paylaşım Stüdyosu (Retina 2x Studio)</h2>
-              <p>Anime, Dizi, Film, Manga, Kitap ve Rehber arşiviniz için 2160p Retina kalitesinde Tekil İnceleme Kartları, Sezon Karuselleri, Spotify Wrapped tarzı Yıllık Özetler ve Katman kolajları üretin.</p>
+              <h2>📸 Sosyal Medya Görsel ve Paylaşım Stüdyosu (Retina 2x)</h2>
+              <p>Anime, Dizi, Film, Manga, Kitap ve Rehber arşiviniz için 2160p Retina kalitesinde Tekil İnceleme Kartları, Sezon Karuselleri, Yıllık Özetler ve Katman kolajları üretin.</p>
             </div>
             <div class="form-actions" style="display:flex; gap:10px; flex-wrap:wrap">
               <button type="button" class="btn-subtle" id="renderInstaBtn">🎨 Görseli Yenile</button>
-              <button type="button" class="btn-subtle" id="downloadZipInstaBtn" title="Karusel ve Wrapped slaytlarını tek bir ZIP paketi olarak indirin">📦 Tüm Slaytları ZIP İndir</button>
+              <button type="button" class="btn-subtle" id="downloadZipInstaBtn" title="Karusel ve Yıllık Özet slaytlarını tek bir ZIP paketi olarak indirin">📦 Tüm Slaytları ZIP İndir</button>
               <button type="button" class="btn-subtle" id="downloadInstaBtn">💾 Aktif Slaytı PNG İndir</button>
               <button type="button" class="btn-primary" id="downloadAllWatchedAnimeZipBtn" style="background: linear-gradient(135deg, #00a8ff 0%, #7c3aed 100%); border-color: transparent; font-weight: 650; box-shadow: 0 4px 14px rgba(0, 168, 255, 0.35);" title="İzlenen bütün animelerin sosyal medya postlarını tek tıkla ZIP arşivi olarak indirin">📦 Bütün İzlenen Animeleri ZIP İndir</button>
             </div>
@@ -1979,10 +1979,10 @@
               <label class="field">
                 <span>🎨 Şablon / Düzen Türü</span>
                 <select id="instaTemplateSelect" class="inp glass">
-                  <option value="singleReview">🎯 Tekil İçerik Kartı &amp; İnceleme (Review Post)</option>
-                  <option value="wrapped">✨ Tempestian Wrapped (Yıllık Özet Karuseli)</option>
-                  <option value="topPicks">🏆 En Yüksek Puanlılar &amp; Favorilerim (Top Picks)</option>
-                  <option value="tierCollage">🥇 Katman (Tier List) Özeti</option>
+                  <option value="singleReview">🎯 Tekil İçerik Kartı &amp; İnceleme Gönderisi</option>
+                  <option value="wrapped">✨ Tempestian Yıllık Özeti (Karusel)</option>
+                  <option value="topPicks">🏆 En Yüksek Puanlılar &amp; Favorilerim (Öne Çıkanlar)</option>
+                  <option value="tierCollage">🥇 Katman Sıralaması Özeti (Tier List)</option>
                 </select>
               </label>
 
@@ -2014,7 +2014,7 @@
               </label>
 
               <label class="field" id="instaWrappedYearRow" hidden>
-                <span>📅 Wrapped Özeti Yılı</span>
+                <span>📅 Yıllık Özet Dönemi</span>
                 <select id="instaWrappedYear" class="inp glass">
                   <option value="2026">🌟 2026 Yılı Özeti</option>
                   <option value="2025">✨ 2025 Yılı Özeti</option>
@@ -2033,8 +2033,8 @@
               <label class="field">
                 <span>📱 Paylaşım Formatı &amp; Çözünürlük (Retina 2x)</span>
                 <select id="instaFormatSelect" class="inp glass">
-                  <option value="square">🖼️ Instagram Kare Gönderi (1:1 — 2160 × 2160)</option>
-                  <option value="story">📱 Instagram Story (9:16 — 2160 × 3840)</option>
+                  <option value="square">🖼️ Instagram &amp; Sosyal Medya Kare (1:1 — 2160 × 2160)</option>
+                  <option value="story">📱 Instagram Hikâye (Story — 9:16 — 2160 × 3840)</option>
                   <option value="portrait">📐 Instagram Dikey Gönderi (4:5 — 2160 × 2700)</option>
                 </select>
               </label>
@@ -2052,11 +2052,12 @@
               <label class="field">
                 <span>✨ Vurgu Rengi Teması</span>
                 <select id="instaThemeSelect" class="inp glass">
-                  <option value="gold">🌟 Altın &amp; Amber (#f5a623)</option>
                   <option value="neonBlue" selected>⚡ Neon Mavi (#00a8ff)</option>
-                  <option value="emerald">🍀 Zümrüt Yeşili (#52e3a4)</option>
+                  <option value="gold">🌟 Altın &amp; Amber (#f5a623)</option>
+                  <option value="emerald">🍀 Zümrüt Yeşili (#10b981)</option>
                   <option value="violet">🔮 Büyülü Mor (#a855f7)</option>
-                  <option value="rose">💖 Canlı Pembe (#f23d8f)</option>
+                  <option value="rose">💖 Canlı Pembe (#f43f5e)</option>
+                  <option value="cyan">💎 Sibernetik Turkuaz (#06b6d4)</option>
                 </select>
               </label>
 
@@ -2112,10 +2113,10 @@
 
               <div class="insta-caption-box">
                 <div class="insta-caption-header">
-                  <h4>📝 Hazır Instagram Açıklaması (Caption)</h4>
+                  <h4>📝 Hazır Instagram Paylaşım Açıklaması</h4>
                   <button type="button" class="btn-subtle" id="copyInstaCaptionBtn" style="font-size:0.8rem; padding:4px 12px">📋 Açıklamayı Kopyala</button>
                 </div>
-                <textarea id="instaCaptionText" class="insta-caption-textarea" readonly placeholder="Görsel oluşturulduğunda hazır açıklama metni burada belirecektir..."></textarea>
+                <textarea id="instaCaptionText" class="insta-caption-textarea" readonly placeholder="Görsel oluşturulduğunda hazır paylaşım açıklaması burada belirecektir..."></textarea>
               </div>
             </div>
           </div>
@@ -9298,7 +9299,7 @@
     dashboard: 'Yönetim Özeti',
     anime: 'Medya & Arşiv',
     rapid: 'Hızlı Sıralı İnceleme',
-    instagram: 'Görsel Stüdyosu',
+    instagram: 'Sosyal Medya Stüdyosu',
     nodes: 'Bölümler & Düğümler (Nodes)',
     texts: 'Bölümler & Düğümler (Nodes)',
     images: 'Görseller & Medya',

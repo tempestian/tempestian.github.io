@@ -372,9 +372,19 @@
       anime: []
     },
     overrides: { exclude: [], titles: {}, merge: {}, noContinue: [], deletedIds: [] },
+    tensuraData: {
+      schemaVersion: 1,
+      updated: '',
+      title: 'Tensura İzleme Sırası',
+      subtitle: '',
+      introNote: '',
+      footerText: '',
+      items: []
+    },
     dirtyConfig: false,
     dirtyAnime: false,
     dirtyOverrides: false,
+    dirtyTensura: false,
     sessionChangesLog: [],
     initialSnapshots: null,
     dismissedNotices: new Set(),
@@ -898,6 +908,7 @@
     if (kind === 'config') state.dirtyConfig = true;
     else if (kind === 'anime') state.dirtyAnime = true;
     else if (kind === 'overrides') state.dirtyOverrides = true;
+    else if (kind === 'tensura') state.dirtyTensura = true;
     else if (state.multiMediaStore && state.multiMediaStore[kind]) {
       state.multiMediaStore[kind].dirty = true;
     }
@@ -1129,6 +1140,10 @@
               <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="boxes" aria-selected="false" title="Kutucuk &amp; Hızlı Linkler">
                 <span class="acp-nav-icon">🧩</span>
                 <span class="acp-nav-label">Kutucuk &amp; Hızlı Linkler</span>
+              </button>
+              <button type="button" class="acp-nav-item nav-tab" role="tab" data-panel="tensura" aria-selected="false" title="Tensura İzleme Sırası (Gizli Sayfa)">
+                <span class="acp-nav-icon">🌀</span>
+                <span class="acp-nav-label">Tensura İzleme Sırası</span>
               </button>
             </div>
 
@@ -1707,6 +1722,53 @@
             <button type="button" class="btn-primary" id="addLinkBtn">+ Yeni Bağlantı Ekle</button>
           </div>
           <div id="linksList" class="editor-stack"></div>
+        </div>
+      </div>
+
+      <div id="panelTensura" class="admin-panel" hidden>
+        <div class="admin-card glass sq">
+          <div class="card-head split-head">
+            <div>
+              <h2>🌀 Tensura İzleme Sırası (Gizli Sayfa)</h2>
+              <p>Yalnızca <code>tempestian.com/tensura-izleme-sirasi/</code> linki üzerinden erişilebilen, ana siteden gizli izleme rehberini yönetin.</p>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+              <button type="button" class="btn-subtle" id="tensuraCopyUrlBtn">📋 Linki Kopyala</button>
+              <button type="button" class="btn-subtle" id="tensuraPreviewBtn">👁️ Önizle</button>
+              <a class="btn-subtle" href="../tensura-izleme-sirasi/" target="_blank" rel="noopener noreferrer">↗️ Sayfayı Aç</a>
+            </div>
+          </div>
+          <div class="field-stack">
+            <div class="field-row">
+              <label class="field">
+                <span>Sayfa Başlığı</span>
+                <input type="text" id="tensuraTitleInput" class="inp glass" placeholder="Tensura İzleme Sırası">
+              </label>
+              <label class="field">
+                <span>Alt Bilgi (Footer)</span>
+                <input type="text" id="tensuraFooterInput" class="inp glass" placeholder="Bu sayfa yalnızca doğrudan link üzerinden erişilebilir.">
+              </label>
+            </div>
+            <label class="field">
+              <span>Alt Başlık / Açıklama</span>
+              <textarea id="tensuraSubtitleInput" class="inp glass" rows="2" placeholder="Seriye doğru sırayla başlamak için hazırlanmış izleme rehberi..."></textarea>
+            </label>
+            <label class="field">
+              <span>Giriş / Bilgilendirme Notu (İsteğe Bağlı)</span>
+              <textarea id="tensuraIntroNoteInput" class="inp glass" rows="2" placeholder="Önemli: Sırayı yukarıdan aşağıya takip et..."></textarea>
+            </label>
+          </div>
+        </div>
+
+        <div class="admin-card glass sq">
+          <div class="card-head split-head">
+            <div>
+              <h2>📺 İzleme Sırası &amp; İçerik Linkleri</h2>
+              <p>Öğeleri yukarı/aşağı taşıyarak sırayı ayarlayın, her içeriğe bir veya birden fazla izleme linki ekleyin.</p>
+            </div>
+            <button type="button" class="btn-primary" id="addTensuraItemBtn">+ Yeni İçerik Ekle</button>
+          </div>
+          <div id="tensuraItemsList" class="editor-stack"></div>
         </div>
       </div>
 
@@ -2779,13 +2841,39 @@
       };
     }
 
+    let rawTensura = null;
+    try {
+      const prevTensura = localStorage.getItem('tp_tensura_preview');
+      if (prevTensura) {
+        rawTensura = JSON.parse(prevTensura);
+        const clr = $('#clearPreviewBtn');
+        if (clr) clr.hidden = false;
+      }
+    } catch (e) {}
+    if (!rawTensura) {
+      try {
+        const res = await fetch(root + 'data/tensura-watch-order.json', { cache: 'no-store' });
+        if (res.ok) rawTensura = await res.json();
+      } catch (e) {}
+    }
+    state.tensuraData = {
+      schemaVersion: 1,
+      updated: (rawTensura && rawTensura.updated) || '',
+      title: (rawTensura && rawTensura.title) || 'Tensura İzleme Sırası',
+      subtitle: (rawTensura && rawTensura.subtitle) || '',
+      introNote: (rawTensura && rawTensura.introNote) || '',
+      footerText: (rawTensura && rawTensura.footerText) || '',
+      items: Array.isArray(rawTensura && rawTensura.items) ? rawTensura.items : []
+    };
+
     const sess = AdminSecurity.getSessionInfo();
     if (sess && sess.hasToken) {
       try {
         await Promise.allSettled([
           AdminSecurity.githubGetFile('data/anime.json'),
           AdminSecurity.githubGetFile('data/sections.json'),
-          AdminSecurity.githubGetFile('data/overrides.json')
+          AdminSecurity.githubGetFile('data/overrides.json'),
+          AdminSecurity.githubGetFile('data/tensura-watch-order.json')
         ]);
       } catch (e) {
         console.warn('Taban SHA önbelleklenirken hata:', e);
@@ -2795,9 +2883,11 @@
     populateEditorFields();
     renderAnimeAdminPanel();
     renderOverridesEditor();
+    renderTensuraAdminPanel();
     state.dirtyConfig = false;
     state.dirtyAnime = false;
     state.dirtyOverrides = false;
+    state.dirtyTensura = false;
     captureInitialSnapshots();
     state.sessionChangesLog = [];
     updateDirtyIndicator();
@@ -6120,7 +6210,7 @@
 
   function updateDirtyIndicator() {
     const anyMultiDirty = Object.values(state.multiMediaStore || {}).some(s => s && s.dirty);
-    const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || anyMultiDirty || state.pendingUploads.size > 0;
+    const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || state.dirtyTensura || anyMultiDirty || state.pendingUploads.size > 0;
     const ind = $('#dirtyIndicator');
     if (ind) ind.hidden = !anyDirty;
     const acpDirtyVal = $('#acpSysDirtyVal');
@@ -6147,6 +6237,7 @@
         customGenres: Array.isArray(a.customGenres) ? [...a.customGenres] : []
       })),
       overrides: JSON.parse(JSON.stringify(state.overrides || {})),
+      tensura: JSON.parse(JSON.stringify(state.tensuraData || {})),
       multi: {}
     };
     for (const mKey of ['series', 'movie', 'manga', 'book', 'guide', 'project']) {
@@ -6420,6 +6511,18 @@
       });
     }
 
+    // 4b. data/tensura-watch-order.json
+    if (state.dirtyTensura) {
+      const itemCount = Array.isArray(state.tensuraData?.items) ? state.tensuraData.items.length : 0;
+      groups.push({
+        file: 'data/tensura-watch-order.json',
+        label: 'Tensura İzleme Sırası',
+        changes: [
+          { type: 'update', title: 'tensura-watch-order.json', detail: `${itemCount} içerik adımı ve izleme bağlantıları güncellendi`, badge: '~ Güncellenen', badgeClass: 'diff-mod' }
+        ]
+      });
+    }
+
     // 5. Yüklenen Görseller (pendingUploads)
     if (state.pendingUploads.size > 0) {
       const uploadChanges = [];
@@ -6456,6 +6559,7 @@
     if (fileNames.includes('data/books.json')) parts.push('kitap');
     if (fileNames.includes('data/guides.json')) parts.push('rehber');
     if (fileNames.includes('data/projects.json')) parts.push('proje');
+    if (fileNames.includes('data/tensura-watch-order.json')) parts.push('tensura izleme sırası');
     if (hasConfig) parts.push('site ayarları');
     if (hasUploads) parts.push('yeni görseller');
 
@@ -6503,11 +6607,12 @@
     container.replaceChildren();
 
     const anyMultiDirty = Object.values(state.multiMediaStore || {}).some(s => s && s.dirty);
-    const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || anyMultiDirty || state.pendingUploads.size > 0;
+    const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || state.dirtyTensura || anyMultiDirty || state.pendingUploads.size > 0;
     const hasPreview = Boolean(
       localStorage.getItem('tp_site_preview') ||
       localStorage.getItem('tp_anime_preview') ||
-      localStorage.getItem('tp_multimedia_preview')
+      localStorage.getItem('tp_multimedia_preview') ||
+      localStorage.getItem('tp_tensura_preview')
     );
     const missingStats = getGlobalMissingDataStats();
 
@@ -6686,7 +6791,7 @@
 
       // 2. data/sections.json
       const anyMultiDirty = Object.values(state.multiMediaStore || {}).some(s => s && s.dirty);
-      if (state.dirtyConfig || (!state.dirtyAnime && !state.dirtyOverrides && !anyMultiDirty)) {
+      if (state.dirtyConfig || (!state.dirtyAnime && !state.dirtyOverrides && !state.dirtyTensura && !anyMultiDirty)) {
         if (progStatus) progStatus.textContent = 'Site ayarları (data/sections.json) kaydediliyor...';
         if (progBar) progBar.style.width = '35%';
         await AdminSecurity.githubPutFile('data/sections.json', JSON.stringify(state.config, null, 2) + '\n', `${customCommitMsg} [sections.json]`, false);
@@ -6709,6 +6814,15 @@
         state.animeData.updated = new Date().toISOString().slice(0, 10);
         await AdminSecurity.githubPutFile('data/anime.json', JSON.stringify(state.animeData, null, 2) + '\n', `${customCommitMsg} [anime.json]`, false);
         state.dirtyAnime = false;
+      }
+
+      // 4b. data/tensura-watch-order.json
+      if (state.dirtyTensura) {
+        if (progStatus) progStatus.textContent = 'Tensura izleme sırası (data/tensura-watch-order.json) kaydediliyor...';
+        if (progBar) progBar.style.width = '82%';
+        state.tensuraData.updated = new Date().toISOString().slice(0, 10);
+        await AdminSecurity.githubPutFile('data/tensura-watch-order.json', JSON.stringify(state.tensuraData, null, 2) + '\n', `${customCommitMsg} [tensura-watch-order.json]`, false);
+        state.dirtyTensura = false;
       }
 
       // 5. Çoklu Medya Verileri
@@ -6738,6 +6852,7 @@
       localStorage.removeItem('tp_site_preview');
       localStorage.removeItem('tp_anime_preview');
       localStorage.removeItem('tp_multimedia_preview');
+      localStorage.removeItem('tp_tensura_preview');
       localStorage.removeItem('ui2');
       const clrBtn = $('#clearPreviewBtn');
       if (clrBtn) clrBtn.hidden = true;
@@ -6766,7 +6881,7 @@
       console.warn('collectFormFieldsIntoConfig hatası yutuldu:', e);
     }
     const anyMultiDirty = Object.values(state.multiMediaStore || {}).some(s => s && s.dirty);
-    const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || anyMultiDirty || state.pendingUploads.size > 0;
+    const anyDirty = state.dirtyConfig || state.dirtyAnime || state.dirtyOverrides || state.dirtyTensura || anyMultiDirty || state.pendingUploads.size > 0;
 
     if (!anyDirty) {
       toast('Kaydedilecek herhangi bir değişiklik bulunmuyor.');
@@ -9286,6 +9401,325 @@
     });
   }
 
+  function renderTensuraAdminPanel() {
+    const td = state.tensuraData || (state.tensuraData = {
+      schemaVersion: 1,
+      updated: '',
+      title: 'Tensura İzleme Sırası',
+      subtitle: '',
+      introNote: '',
+      footerText: '',
+      items: []
+    });
+    if (!Array.isArray(td.items)) td.items = [];
+
+    const titleInp = $('#tensuraTitleInput');
+    const subInp = $('#tensuraSubtitleInput');
+    const noteInp = $('#tensuraIntroNoteInput');
+    const footerInp = $('#tensuraFooterInput');
+
+    if (titleInp) {
+      titleInp.value = td.title || '';
+      titleInp.oninput = () => { td.title = titleInp.value; markDirty('tensura'); };
+    }
+    if (subInp) {
+      subInp.value = td.subtitle || '';
+      subInp.oninput = () => { td.subtitle = subInp.value; markDirty('tensura'); };
+    }
+    if (noteInp) {
+      noteInp.value = td.introNote || '';
+      noteInp.oninput = () => { td.introNote = noteInp.value; markDirty('tensura'); };
+    }
+    if (footerInp) {
+      footerInp.value = td.footerText || '';
+      footerInp.oninput = () => { td.footerText = footerInp.value; markDirty('tensura'); };
+    }
+
+    const copyBtn = $('#tensuraCopyUrlBtn');
+    if (copyBtn) {
+      copyBtn.onclick = async () => {
+        const shareUrl = 'https://tempestian.com/tensura-izleme-sirasi/';
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          toast('Link kopyalandı: ' + shareUrl);
+        } catch (e) {
+          prompt('Paylaşım Linki:', shareUrl);
+        }
+      };
+    }
+
+    const prevBtn = $('#tensuraPreviewBtn');
+    if (prevBtn) {
+      prevBtn.onclick = () => {
+        try {
+          localStorage.setItem('tp_tensura_preview', JSON.stringify(state.tensuraData));
+          const clr = $('#clearPreviewBtn');
+          if (clr) clr.hidden = false;
+          window.open('../tensura-izleme-sirasi/', '_blank', 'noopener');
+        } catch (e) {
+          toast('Önizleme açılamadı: ' + e.message, 'err');
+        }
+      };
+    }
+
+    const addBtn = $('#addTensuraItemBtn');
+    if (addBtn) {
+      addBtn.onclick = () => {
+        td.items.push({
+          id: 'tensura-' + Date.now(),
+          title: 'Yeni İçerik',
+          kind: 'Ana Seri',
+          episodes: '',
+          optional: false,
+          note: '',
+          links: [{ label: 'İzle', url: '' }]
+        });
+        markDirty('tensura');
+        renderTensuraItemsList();
+      };
+    }
+
+    renderTensuraItemsList();
+  }
+
+  function renderTensuraItemsList() {
+    const wrap = $('#tensuraItemsList');
+    if (!wrap) return;
+    wrap.replaceChildren();
+    const items = (state.tensuraData && Array.isArray(state.tensuraData.items)) ? state.tensuraData.items : [];
+
+    if (items.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'help-txt';
+      empty.textContent = 'Henüz izleme sırası öğesi yok. "+ Yeni İçerik Ekle" butonunu kullanarak başlayın.';
+      wrap.appendChild(empty);
+      return;
+    }
+
+    items.forEach((it, idx) => {
+      if (!Array.isArray(it.links)) it.links = [];
+      const card = document.createElement('div');
+      card.className = 'editor-item glass';
+      card.style.padding = '16px';
+      card.style.marginBottom = '12px';
+
+      const head = document.createElement('div');
+      head.className = 'editor-item-head';
+      head.style.marginBottom = '12px';
+
+      const titleTag = document.createElement('strong');
+      titleTag.textContent = `#${idx + 1} · ${it.title || 'İsimsiz İçerik'}`;
+
+      const actWrap = document.createElement('div');
+      actWrap.className = 'editor-item-actions';
+
+      const upBtn = document.createElement('button');
+      upBtn.type = 'button';
+      upBtn.className = 'mini-btn';
+      upBtn.textContent = '↑';
+      upBtn.title = 'Yukarı Taşı';
+      upBtn.disabled = idx === 0;
+      upBtn.onclick = () => {
+        if (idx === 0) return;
+        [items[idx - 1], items[idx]] = [items[idx], items[idx - 1]];
+        markDirty('tensura');
+        renderTensuraItemsList();
+      };
+
+      const downBtn = document.createElement('button');
+      downBtn.type = 'button';
+      downBtn.className = 'mini-btn';
+      downBtn.textContent = '↓';
+      downBtn.title = 'Aşağı Taşı';
+      downBtn.disabled = idx >= items.length - 1;
+      downBtn.onclick = () => {
+        if (idx >= items.length - 1) return;
+        [items[idx + 1], items[idx]] = [items[idx], items[idx + 1]];
+        markDirty('tensura');
+        renderTensuraItemsList();
+      };
+
+      const delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'mini-btn danger';
+      delBtn.textContent = 'Sil';
+      delBtn.onclick = () => {
+        items.splice(idx, 1);
+        markDirty('tensura');
+        renderTensuraItemsList();
+      };
+
+      actWrap.append(upBtn, downBtn, delBtn);
+      head.append(titleTag, actWrap);
+      card.appendChild(head);
+
+      const grid = document.createElement('div');
+      grid.className = 'field-row';
+
+      // Title
+      const fTitle = document.createElement('label');
+      fTitle.className = 'field';
+      const sTitle = document.createElement('span');
+      sTitle.textContent = 'İçerik Başlığı';
+      const iTitle = document.createElement('input');
+      iTitle.type = 'text';
+      iTitle.className = 'inp glass';
+      iTitle.value = it.title || '';
+      iTitle.placeholder = '1. Sezon (Tensei shitara Slime Datta Ken)';
+      iTitle.oninput = () => {
+        it.title = iTitle.value;
+        titleTag.textContent = `#${idx + 1} · ${it.title || 'İsimsiz İçerik'}`;
+        markDirty('tensura');
+      };
+      fTitle.append(sTitle, iTitle);
+
+      // Kind
+      const fKind = document.createElement('label');
+      fKind.className = 'field';
+      const sKind = document.createElement('span');
+      sKind.textContent = 'Tür';
+      const selKind = document.createElement('select');
+      selKind.className = 'inp glass';
+      ['Ana Seri', 'Film', 'OVA / OAD', 'Yan Seri', 'Özel Bölüm', 'Diğer'].forEach(k => {
+        const opt = document.createElement('option');
+        opt.value = k;
+        opt.textContent = k;
+        selKind.appendChild(opt);
+      });
+      selKind.value = it.kind || 'Ana Seri';
+      selKind.onchange = () => { it.kind = selKind.value; markDirty('tensura'); };
+      fKind.append(sKind, selKind);
+
+      // Episodes
+      const fEp = document.createElement('label');
+      fEp.className = 'field';
+      const sEp = document.createElement('span');
+      sEp.textContent = 'Bölüm / Süre';
+      const iEp = document.createElement('input');
+      iEp.type = 'text';
+      iEp.className = 'inp glass';
+      iEp.value = it.episodes || '';
+      iEp.placeholder = '24 Bölüm';
+      iEp.oninput = () => { it.episodes = iEp.value; markDirty('tensura'); };
+      fEp.append(sEp, iEp);
+
+      grid.append(fTitle, fKind, fEp);
+      card.appendChild(grid);
+
+      // Optional toggle + Note
+      const noteRow = document.createElement('div');
+      noteRow.className = 'field-stack';
+      noteRow.style.marginTop = '10px';
+
+      const optLabel = document.createElement('label');
+      optLabel.className = 'chk';
+      optLabel.style.display = 'inline-flex';
+      optLabel.style.alignItems = 'center';
+      optLabel.style.gap = '8px';
+      optLabel.style.cursor = 'pointer';
+      const optChk = document.createElement('input');
+      optChk.type = 'checkbox';
+      optChk.checked = Boolean(it.optional);
+      optChk.onchange = () => { it.optional = optChk.checked; markDirty('tensura'); };
+      const optSpan = document.createElement('span');
+      optSpan.textContent = 'İsteğe Bağlı (Ana hikaye için zorunlu değil / atlanabilir)';
+      optLabel.append(optChk, optSpan);
+      noteRow.appendChild(optLabel);
+
+      const fNote = document.createElement('label');
+      fNote.className = 'field';
+      const sNote = document.createElement('span');
+      sNote.textContent = 'İzleme Notu / Açıklama';
+      const iNote = document.createElement('textarea');
+      iNote.className = 'inp glass';
+      iNote.rows = 2;
+      iNote.value = it.note || '';
+      iNote.placeholder = 'İzleyecek kişiye kısa açıklama veya uyarı...';
+      iNote.oninput = () => { it.note = iNote.value; markDirty('tensura'); };
+      fNote.append(sNote, iNote);
+      noteRow.appendChild(fNote);
+
+      card.appendChild(noteRow);
+
+      // Watch Links
+      const linksBox = document.createElement('div');
+      linksBox.style.marginTop = '12px';
+      linksBox.style.paddingTop = '10px';
+      linksBox.style.borderTop = '1px solid var(--iris-border, rgba(120,160,220,0.18))';
+
+      const linksHead = document.createElement('div');
+      linksHead.style.display = 'flex';
+      linksHead.style.justifyContent = 'space-between';
+      linksHead.style.alignItems = 'center';
+      linksHead.style.marginBottom = '8px';
+
+      const linksTitle = document.createElement('span');
+      linksTitle.style.fontSize = '0.84rem';
+      linksTitle.style.fontWeight = '650';
+      linksTitle.textContent = 'İzleme Linkleri';
+
+      const addLinkBtn = document.createElement('button');
+      addLinkBtn.type = 'button';
+      addLinkBtn.className = 'mini-btn';
+      addLinkBtn.textContent = '+ Link Ekle';
+      addLinkBtn.onclick = () => {
+        it.links.push({ label: it.links.length === 0 ? 'İzle' : `Alternatif ${it.links.length + 1}`, url: '' });
+        markDirty('tensura');
+        renderTensuraItemsList();
+      };
+      linksHead.append(linksTitle, addLinkBtn);
+      linksBox.appendChild(linksHead);
+
+      if (it.links.length === 0) {
+        const noLnk = document.createElement('div');
+        noLnk.className = 'help-txt';
+        noLnk.style.margin = '0';
+        noLnk.textContent = 'Henüz link eklenmedi. "+ Link Ekle" ile izleme adresi girebilirsiniz.';
+        linksBox.appendChild(noLnk);
+      } else {
+        it.links.forEach((lnk, lIdx) => {
+          const lRow = document.createElement('div');
+          lRow.style.display = 'grid';
+          lRow.style.gridTemplateColumns = '180px minmax(0, 1fr) auto';
+          lRow.style.gap = '8px';
+          lRow.style.marginBottom = '6px';
+          lRow.style.alignItems = 'center';
+
+          const iLbl = document.createElement('input');
+          iLbl.type = 'text';
+          iLbl.className = 'inp glass';
+          iLbl.placeholder = 'Buton adı (ör. İzle)';
+          iLbl.value = lnk.label || '';
+          iLbl.oninput = () => { lnk.label = iLbl.value; markDirty('tensura'); };
+
+          const iUrl = document.createElement('input');
+          iUrl.type = 'url';
+          iUrl.className = 'inp glass';
+          iUrl.placeholder = 'https://...';
+          iUrl.value = lnk.url || '';
+          iUrl.oninput = () => { lnk.url = iUrl.value; markDirty('tensura'); };
+
+          const rmBtn = document.createElement('button');
+          rmBtn.type = 'button';
+          rmBtn.className = 'mini-btn danger';
+          rmBtn.textContent = '✕';
+          rmBtn.title = 'Linki Sil';
+          rmBtn.onclick = () => {
+            it.links.splice(lIdx, 1);
+            markDirty('tensura');
+            renderTensuraItemsList();
+          };
+
+          lRow.append(iLbl, iUrl, rmBtn);
+          linksBox.appendChild(lRow);
+        });
+      }
+
+      card.appendChild(linksBox);
+      wrap.appendChild(card);
+    });
+  }
+
   function downloadBlobJson(obj, filename) {
     const blob = new Blob([JSON.stringify(obj, null, 2) + '\n'], { type: 'application/json' });
     const a = document.createElement('a');
@@ -9305,6 +9739,7 @@
     images: 'Görseller & Medya',
     categories: 'Bölümler & Düğümler (Nodes)',
     boxes: 'Kutucuk & Hızlı Linkler',
+    tensura: 'Tensura İzleme Sırası',
     health: '🛠️ Araçlar & Veri Sağlığı',
     security: 'Güvenlik & PAT'
   };
@@ -9317,6 +9752,7 @@
     nodes: 'panelNodes',
     images: 'panelImages',
     boxes: 'panelBoxes',
+    tensura: 'panelTensura',
     health: 'panelHealth',
     security: 'panelSecurity'
   };
@@ -9356,6 +9792,8 @@
       renderAcpDashboard();
     } else if (panelKey === 'anime') {
       renderAnimeAdminPanel();
+    } else if (panelKey === 'tensura') {
+      renderTensuraAdminPanel();
     } else if (panelKey === 'rapid') {
       if (!options.skipQueueInit) {
         initOrRefreshRapidQueue(options.rebuildQueue !== false);

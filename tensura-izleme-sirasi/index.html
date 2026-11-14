@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#090e1a">
+<meta name="description" content="Tensura (That Time I Got Reincarnated as a Slime) kişisel izleme sırası ve içerik bağlantıları.">
+<title>Tensura İzleme Sırası</title>
+<link rel="icon" href="../assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="../assets/img/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<script src="../assets/js/theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../assets/css/style.css?v=2.2">
+<style>
+.tensura-bar-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.tensura-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 0.96rem;
+  color: var(--iris-ink);
+  letter-spacing: -0.01em;
+}
+.tensura-brand-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #38bdf8, #818cf8);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.65);
+}
+.tensura-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: calc(78px + env(safe-area-inset-top, 0px)) 16px 56px;
+}
+.tensura-hero {
+  padding: 26px 26px 22px;
+  border-radius: 24px;
+  margin-bottom: 18px;
+}
+.tensura-hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.55rem, 3.2vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+.tensura-hero .sub {
+  margin: 0;
+  color: var(--iris-ink-secondary);
+  font-size: 0.97rem;
+  line-height: 1.6;
+}
+.tensura-note-box {
+  margin-top: 16px;
+  padding: 12px 15px;
+  border-radius: 14px;
+  background: var(--iris-fill-quiet);
+  border: 1px solid var(--iris-border, rgba(120, 160, 220, 0.22));
+  color: var(--iris-ink-secondary);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.tensura-note-box strong {
+  color: var(--iris-ink);
+}
+.tensura-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  margin-bottom: 20px;
+}
+.tensura-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tensura-filter-btn {
+  appearance: none;
+  border: 1px solid var(--iris-border, rgba(120, 160, 220, 0.24));
+  background: var(--iris-fill-quiet);
+  color: var(--iris-ink-secondary);
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.14s ease;
+}
+.tensura-filter-btn:hover {
+  background: var(--iris-fill-hover);
+  color: var(--iris-ink);
+}
+.tensura-filter-btn.active {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.24), rgba(99, 102, 241, 0.24));
+  border-color: rgba(56, 189, 248, 0.55);
+  color: var(--iris-ink);
+}
+.tensura-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 190px;
+}
+.tensura-progress-text {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--iris-ink-secondary);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.tensura-progress-bar {
+  width: 110px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--iris-fill);
+  overflow: hidden;
+}
+.tensura-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tensura-timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.tensura-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 16px;
+  padding: 20px;
+  border-radius: 20px;
+  transition: transform 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+.tensura-card:hover {
+  transform: translateY(-2px);
+}
+.tensura-card.is-watched {
+  opacity: 0.78;
+}
+.tensura-card.is-watched .tensura-title {
+  text-decoration: line-through;
+  text-decoration-color: rgba(56, 189, 248, 0.6);
+}
+.tensura-step-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.tensura-step-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-family: var(--iris-font-numbers, sans-serif);
+  font-weight: 700;
+  font-size: 1rem;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(99, 102, 241, 0.2));
+  border: 1px solid rgba(56, 189, 248, 0.38);
+  color: var(--iris-ink);
+}
+.tensura-card.is-watched .tensura-step-num {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.24), rgba(56, 189, 248, 0.22));
+  border-color: rgba(16, 185, 129, 0.55);
+}
+.tensura-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.tensura-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.tensura-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 650;
+  background: var(--iris-fill);
+  color: var(--iris-ink-secondary);
+  border: 1px solid var(--iris-border, rgba(120, 160, 220, 0.2));
+}
+.tensura-pill.kind-main {
+  background: rgba(56, 189, 248, 0.16);
+  border-color: rgba(56, 189, 248, 0.38);
+  color: #38bdf8;
+}
+[data-theme="light"] .tensura-pill.kind-main {
+  color: #0369a1;
+}
+.tensura-pill.kind-movie {
+  background: rgba(168, 85, 247, 0.16);
+  border-color: rgba(168, 85, 247, 0.38);
+  color: #c084fc;
+}
+[data-theme="light"] .tensura-pill.kind-movie {
+  color: #7e22ce;
+}
+.tensura-pill.kind-ova {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.36);
+  color: #fbbf24;
+}
+[data-theme="light"] .tensura-pill.kind-ova {
+  color: #b45309;
+}
+.tensura-pill.req {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #34d399;
+}
+[data-theme="light"] .tensura-pill.req {
+  color: #047857;
+}
+.tensura-pill.opt {
+  background: rgba(148, 163, 184, 0.14);
+  border-color: rgba(148, 163, 184, 0.32);
+  color: var(--iris-ink-muted);
+}
+.tensura-title {
+  margin: 0;
+  font-size: 1.14rem;
+  font-weight: 750;
+  line-height: 1.3;
+  color: var(--iris-ink);
+}
+.tensura-episodes {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--iris-ink-muted);
+}
+.tensura-note {
+  margin: 10px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--iris-ink-secondary);
+}
+.tensura-actions {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.tensura-watch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 15px;
+  border-radius: 12px;
+  font-size: 0.86rem;
+  font-weight: 650;
+  text-decoration: none;
+  background: linear-gradient(135deg, #0284c7, #4f46e5);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 6px 16px -4px rgba(2, 132, 199, 0.45);
+  transition: transform 0.16s ease, filter 0.16s ease;
+}
+.tensura-watch-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+.tensura-no-link {
+  font-size: 0.82rem;
+  color: var(--iris-ink-muted);
+  font-style: italic;
+}
+.tensura-check-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 12px;
+  font-size: 0.83rem;
+  font-weight: 650;
+  cursor: pointer;
+  background: var(--iris-fill-quiet);
+  border: 1px solid var(--iris-border, rgba(120, 160, 220, 0.25));
+  color: var(--iris-ink-secondary);
+  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+.tensura-check-btn:hover {
+  background: var(--iris-fill-hover);
+  color: var(--iris-ink);
+}
+.tensura-check-btn.checked {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.48);
+  color: #34d399;
+}
+[data-theme="light"] .tensura-check-btn.checked {
+  color: #047857;
+}
+.tensura-empty {
+  padding: 36px 20px;
+  text-align: center;
+  border-radius: 20px;
+  color: var(--iris-ink-muted);
+}
+.tensura-footer {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 0.84rem;
+  color: var(--iris-ink-muted);
+}
+.tensura-preview-banner {
+  margin-bottom: 14px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: rgba(245, 158, 11, 0.16);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: var(--iris-ink);
+  font-size: 0.86rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+@media (max-width: 580px) {
+  .tensura-card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+  .tensura-step-col {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  .tensura-step-num {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+    border-radius: 11px;
+  }
+}
+</style>
+</head>
+<body data-root="../" data-section="tensura-watch-order">
+<header class="bar on">
+  <div class="bar-in tensura-bar-in">
+    <div class="tensura-brand">
+      <span class="tensura-brand-dot" aria-hidden="true"></span>
+      <span id="tensuraBarTitle">Tensura İzleme Sırası</span>
+    </div>
+    <button class="btn glass" id="tensuraThemeBtn" type="button" aria-label="Tema değiştir" title="Tema değiştir"></button>
+  </div>
+</header>
+
+<main class="tensura-wrap">
+  <div id="tensuraPreviewBanner" class="tensura-preview-banner" hidden>
+    <span>Önizleme modu aktif (Admin panelindeki kaydedilmemiş taslak gösteriliyor).</span>
+    <button type="button" id="tensuraClearPreviewBtn" class="tensura-filter-btn">Önizlemeyi Kapat</button>
+  </div>
+
+  <section class="tensura-hero glass sq">
+    <h1 id="tensuraPageTitle">Tensura İzleme Sırası</h1>
+    <p class="sub" id="tensuraPageSubtitle">Yükleniyor...</p>
+    <div class="tensura-note-box" id="tensuraIntroNote" hidden>
+      <span aria-hidden="true">💡</span>
+      <div id="tensuraIntroNoteText"></div>
+    </div>
+  </section>
+
+  <section class="tensura-controls glass sq">
+    <div class="tensura-filters" role="tablist" aria-label="İçerik Filtresi">
+      <button type="button" class="tensura-filter-btn active" data-filter="all" aria-selected="true">Tümü</button>
+      <button type="button" class="tensura-filter-btn" data-filter="required" aria-selected="false">Sadece Ana Hikaye</button>
+      <button type="button" class="tensura-filter-btn" data-filter="optional" aria-selected="false">İsteğe Bağlı / Yan</button>
+    </div>
+    <div class="tensura-progress-wrap">
+      <span class="tensura-progress-text" id="tensuraProgressText">0 / 0 izlendi</span>
+      <div class="tensura-progress-bar" aria-hidden="true">
+        <div class="tensura-progress-fill" id="tensuraProgressFill"></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="tensuraTimeline" class="tensura-timeline" aria-live="polite"></div>
+
+  <footer class="tensura-footer" id="tensuraFooter"></footer>
+</main>
+
+<script src="../assets/js/tensura.js"></script>
+</body>
+</html>

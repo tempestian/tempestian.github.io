@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-11-14",
+  "title": "Tensura İzleme Sırası",
+  "subtitle": "Tensei shitara Slime Datta Ken (That Time I Got Reincarnated as a Slime) evrenine doğru sırayla başlamak için hazırlanmış kişisel izleme rehberi.",
+  "introNote": "Hikayeyi akıcı takip edebilmek için sırayı yukarıdan aşağıya doğru izle. \"İsteğe Bağlı\" etiketli içerikleri dilersen atlayabilirsin; ancak karakterleri ve yan olayları daha iyi tanımak için izlemeni öneririm.",
+  "footerText": "Bu sayfa yalnızca doğrudan link üzerinden erişilebilir. İyi seyirler!",
+  "items": [
+    {
+      "id": "tensura-1",
+      "title": "1. Sezon (Tensei shitara Slime Datta Ken)",
+      "kind": "Ana Seri",
+      "episodes": "24 Bölüm + 24.5 (Özel)",
+      "optional": false,
+      "note": "Ana hikayenin başlangıcı. Rimuru'nun reenkarnasyonu ve Tempest'in kuruluşu. Seriye buradan başla.",
+      "links": []
+    },
+    {
+      "id": "tensura-2",
+      "title": "OAD 1 - 5 (Özel Bölümler)",
+      "kind": "OVA / OAD",
+      "episodes": "5 Bölüm",
+      "optional": true,
+      "note": "1. sezon ile 2. sezon arasındaki yan hikayeler. Özellikle OAD 3-5 öğretmenlik dönemini kapsar.",
+      "links": []
+    },
+    {
+      "id": "tensura-3",
+      "title": "Tensura Nikki: The Slime Diaries",
+      "kind": "Yan Seri",
+      "episodes": "12 Bölüm",
+      "optional": true,
+      "note": "1. sezon olaylarının günlük yaşam ve komedi odaklı yan serisi. Karakterlere ısınmak için çok keyiflidir.",
+      "links": []
+    },
+    {
+      "id": "tensura-4",
+      "title": "2. Sezon — 1. Kısım",
+      "kind": "Ana Seri",
+      "episodes": "1 - 12. Bölümler",
+      "optional": false,
+      "note": "Hikayenin en kritik ve tempolu dönüm noktalarından biri. (Öncesinde özet olan 24.9 bölümü atlayabilirsin.)",
+      "links": []
+    },
+    {
+      "id": "tensura-5",
+      "title": "2. Sezon — 2. Kısım",
+      "kind": "Ana Seri",
+      "episodes": "13 - 24. Bölümler",
+      "optional": false,
+      "note": "Walpurgis Konseyi ve büyük yüzleşmelerin yer aldığı devam kısmı.",
+      "links": []
+    },
+    {
+      "id": "tensura-6",
+      "title": "Gekijouban: Guren no Kizuna-hen (Scarlet Bond)",
+      "kind": "Film",
+      "episodes": "Film (108 dk)",
+      "optional": true,
+      "note": "2. sezon sonrasında geçen orijinal yan film. Görsel kalitesi ve aksiyonu oldukça iyidir.",
+      "links": []
+    },
+    {
+      "id": "tensura-7",
+      "title": "Coleus no Yume (Visions of Coleus)",
+      "kind": "OVA / OAD",
+      "episodes": "3 Bölüm",
+      "optional": true,
+      "note": "1. ve 2. sezon arasında geçen 3 bölümlük özel mini seri; ancak karakter bağlantıları sebebiyle 2. sezon sonrası izlemek daha uygundur.",
+      "links": []
+    },
+    {
+      "id": "tensura-8",
+      "title": "3. Sezon (Tensei shitara Slime Datta Ken 3rd Season)",
+      "kind": "Ana Seri",
+      "episodes": "24 Bölüm",
+      "optional": false,
+      "note": "Tempest'in yeni müttefikleri, politik gelişmeler ve festival arkı ile devam eden ana sezon.",
+      "links": []
+    }
+  ]
+}

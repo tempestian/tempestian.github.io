@@ -75,7 +75,7 @@
       "title": "2. Sezon 0. Bölüm (Tensei shitara Slime Datta Ken)",
       "kind": "Ana Seri",
       "episodes": "1 Bölüm",
-      "optional": false,
+      "optional": true,
       "note": "",
       "links": [
         {
@@ -169,7 +169,7 @@
       "title": "Guren no Kizuna Arc",
       "kind": "Film",
       "episodes": "Film",
-      "optional": true,
+      "optional": false,
       "note": "",
       "links": [
         {

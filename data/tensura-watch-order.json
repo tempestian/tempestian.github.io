@@ -48,7 +48,7 @@
       "kind": "OVA / OAD",
       "episodes": "5 Bölüm",
       "optional": true,
-      "note": "Özellik 3,4 ve 5. bölümleri izlemenizi öneririm.",
+      "note": "Özellikle 3,4 ve 5. bölümleri izlemenizi öneririm.",
       "links": [
         {
           "label": "TRAnimeİzle",
@@ -285,7 +285,7 @@
       "title": "Clayman Revenge",
       "kind": "Yan Seri",
       "episodes": "Bölüm Sayısı Bilinmiyor",
-      "optional": false,
+      "optional": true,
       "note": "Bu içerik Nisan 2027'de yayınlanacaktır.",
       "links": []
     },

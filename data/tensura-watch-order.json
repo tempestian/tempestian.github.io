@@ -2,80 +2,300 @@
   "schemaVersion": 1,
   "updated": "2026-11-14",
   "title": "Tensura İzleme Sırası",
-  "subtitle": "Tensei shitara Slime Datta Ken (That Time I Got Reincarnated as a Slime) evrenine doğru sırayla başlamak için hazırlanmış kişisel izleme rehberi.",
+  "subtitle": "TenSura evrenine doğru sırayla başlamak için hazırlanmış izleme rehberi.",
   "introNote": "Hikayeyi akıcı takip edebilmek için sırayı yukarıdan aşağıya doğru izle. \"İsteğe Bağlı\" etiketli içerikleri dilersen atlayabilirsin; ancak karakterleri ve yan olayları daha iyi tanımak için izlemeni öneririm.",
-  "footerText": "Bu sayfa yalnızca doğrudan link üzerinden erişilebilir. İyi seyirler!",
+  "footerText": "Bu sayfa yalnızca bağlantı ile erişilebilir. Bu sayfayı görüntülüyebiliyorsanız, Tempestian Tensura izlemenizi istiyordur. İyi seyirler!",
   "items": [
     {
       "id": "tensura-1",
       "title": "1. Sezon (Tensei shitara Slime Datta Ken)",
       "kind": "Ana Seri",
-      "episodes": "24 Bölüm + 24.5 (Özel)",
+      "episodes": "24 Bölüm",
       "optional": false,
-      "note": "Ana hikayenin başlangıcı. Rimuru'nun reenkarnasyonu ve Tempest'in kuruluşu. Seriye buradan başla.",
-      "links": []
+      "note": "",
+      "links": [
+        {
+          "label": "OpenAnime",
+          "url": "https://openani.me/anime/tensei-shitara-slime-datta-ken/1"
+        },
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/anime/tensei-shitara-slime-datta-ken-izle"
+        },
+        {
+          "label": "Animecix",
+          "url": "https://animecix.tv/titles/7293/tensei-shitara-slime-datta-ken"
+        }
+      ]
     },
     {
-      "id": "tensura-2",
-      "title": "OAD 1 - 5 (Özel Bölümler)",
+      "id": "tensura-1794658706704",
+      "title": "Veldora Nikki 1",
+      "kind": "Özel Bölüm",
+      "episodes": "1 Bölüm",
+      "optional": true,
+      "note": "",
+      "links": [
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/anime/tensei-shitara-slime-datta-ken-kanwa-verudora-nikki-izle"
+        }
+      ]
+    },
+    {
+      "id": "tensura-1794658818356",
+      "title": "OVA",
       "kind": "OVA / OAD",
       "episodes": "5 Bölüm",
       "optional": true,
-      "note": "1. sezon ile 2. sezon arasındaki yan hikayeler. Özellikle OAD 3-5 öğretmenlik dönemini kapsar.",
-      "links": []
+      "note": "Özellik 3,4 ve 5. bölümleri izlemenizi öneririm.",
+      "links": [
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/anime/tensei-shitara-slime-datta-ken-ova-izle"
+        }
+      ]
     },
     {
-      "id": "tensura-3",
-      "title": "Tensura Nikki: The Slime Diaries",
+      "id": "tensura-1794658897567",
+      "title": "Coleus no Yume",
+      "kind": "Yan Seri",
+      "episodes": "3 Bölüm",
+      "optional": true,
+      "note": "",
+      "links": [
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/anime/tensei-shitara-slime-datta-ken-coleus-no-yume-izle"
+        }
+      ]
+    },
+    {
+      "id": "tensura-1794658986351",
+      "title": "2. Sezon 0. Bölüm (Tensei shitara Slime Datta Ken)",
+      "kind": "Ana Seri",
+      "episodes": "1 Bölüm",
+      "optional": false,
+      "note": "",
+      "links": [
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/tensei-shitara-slime-datta-ken-2-sezon-0-bolum-izle"
+        }
+      ]
+    },
+    {
+      "id": "tensura-1794659103075",
+      "title": "2. Sezon 1. Kısım (Tensei shitara Slime Datta Ken)",
+      "kind": "Ana Seri",
+      "episodes": "12 Bölüm",
+      "optional": false,
+      "note": "24 Bölüm olarak yüklenmiş sitelerde yalnızca ilk 12 bölümü izleyiniz.",
+      "links": [
+        {
+          "label": "OpenAnime",
+          "url": "https://openani.me/anime/tensei-shitara-slime-datta-ken/2"
+        },
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/anime/tensei-shitara-slime-datta-ken-2-sezon-izle"
+        },
+        {
+          "label": "Animecix",
+          "url": "https://animecix.tv/titles/7293/tensei-shitara-slime-datta-ken/season/2"
+        }
+      ]
+    },
+    {
+      "id": "tensura-1794659283419",
+      "title": "TenSura Nikki",
       "kind": "Yan Seri",
       "episodes": "12 Bölüm",
       "optional": true,
-      "note": "1. sezon olaylarının günlük yaşam ve komedi odaklı yan serisi. Karakterlere ısınmak için çok keyiflidir.",
-      "links": []
+      "note": "",
+      "links": [
+        {
+          "label": "OpenAnime",
+          "url": "https://openani.me/anime/tensura-nikki-tensei-shitara-slime-datta-ken"
+        },
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/anime/tensura-nikki-tensei-shitara-slime-datta-ken-izle"
+        },
+        {
+          "label": "Animecix",
+          "url": "https://animecix.tv/titles/7927/tensura-nikki-tensei-shitara-slime-datta-ken"
+        }
+      ]
     },
     {
-      "id": "tensura-4",
-      "title": "2. Sezon — 1. Kısım",
+      "id": "tensura-1794659370942",
+      "title": "Veldora Nikki 2",
+      "kind": "Özel Bölüm",
+      "episodes": "1 Bölüm",
+      "optional": true,
+      "note": "",
+      "links": [
+        {
+          "label": "Anizm",
+          "url": "https://anizm.net/tensei-shitara-slime-datta-ken-2nd-season-kanwa-veldora-nikki-2-special-1-bolum-final-izle"
+        }
+      ]
+    },
+    {
+      "id": "tensura-1794659370776",
+      "title": "2. Sezon 2. Kısım (Tensei shitara Slime Datta Ken)",
       "kind": "Ana Seri",
-      "episodes": "1 - 12. Bölümler",
+      "episodes": "12 Bölüm",
       "optional": false,
-      "note": "Hikayenin en kritik ve tempolu dönüm noktalarından biri. (Öncesinde özet olan 24.9 bölümü atlayabilirsin.)",
-      "links": []
+      "note": "",
+      "links": [
+        {
+          "label": "OpenAnime",
+          "url": "https://openani.me/anime/tensei-shitara-slime-datta-ken/2"
+        },
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/anime/tensei-shitara-slime-datta-ken-2-sezon-2-kisim-izle"
+        },
+        {
+          "label": "Alternatif 3",
+          "url": "https://animecix.tv/titles/7293/tensei-shitara-slime-datta-ken/season/2"
+        }
+      ]
     },
     {
-      "id": "tensura-5",
-      "title": "2. Sezon — 2. Kısım",
-      "kind": "Ana Seri",
-      "episodes": "13 - 24. Bölümler",
-      "optional": false,
-      "note": "Walpurgis Konseyi ve büyük yüzleşmelerin yer aldığı devam kısmı.",
-      "links": []
-    },
-    {
-      "id": "tensura-6",
-      "title": "Gekijouban: Guren no Kizuna-hen (Scarlet Bond)",
+      "id": "tensura-1794659371152",
+      "title": "Guren no Kizuna Arc",
       "kind": "Film",
-      "episodes": "Film (108 dk)",
+      "episodes": "Film",
       "optional": true,
-      "note": "2. sezon sonrasında geçen orijinal yan film. Görsel kalitesi ve aksiyonu oldukça iyidir.",
-      "links": []
+      "note": "",
+      "links": [
+        {
+          "label": "OpenAnime",
+          "url": "https://openani.me/anime/tensei-shitara-slime-datta-ken-movie-guren-no-kizuna-hen"
+        },
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/anime/tensei-shitara-slime-datta-ken-guren-no-kizuna-izle"
+        },
+        {
+          "label": "Animecix",
+          "url": "https://animecix.tv/titles/9848/tensei-shitara-slime-datta-ken-movie-scarlet-bond"
+        }
+      ]
     },
     {
-      "id": "tensura-7",
-      "title": "Coleus no Yume (Visions of Coleus)",
-      "kind": "OVA / OAD",
-      "episodes": "3 Bölüm",
+      "id": "tensura-1794660125963",
+      "title": "Diablo Nikki",
+      "kind": "Özel Bölüm",
+      "episodes": "1 Bölüm",
       "optional": true,
-      "note": "1. ve 2. sezon arasında geçen 3 bölümlük özel mini seri; ancak karakter bağlantıları sebebiyle 2. sezon sonrası izlemek daha uygundur.",
-      "links": []
+      "note": "",
+      "links": [
+        {
+          "label": "Animecix",
+          "url": "https://animecix.tv/titles/7293/season/3/episode/25"
+        }
+      ]
     },
     {
-      "id": "tensura-8",
-      "title": "3. Sezon (Tensei shitara Slime Datta Ken 3rd Season)",
+      "id": "tensura-1794659371209",
+      "title": "3. Sezon (Tensei shitara Slime Datta Ken)",
       "kind": "Ana Seri",
       "episodes": "24 Bölüm",
       "optional": false,
-      "note": "Tempest'in yeni müttefikleri, politik gelişmeler ve festival arkı ile devam eden ana sezon.",
+      "note": "",
+      "links": [
+        {
+          "label": "OpenAnime",
+          "url": "https://openani.me/anime/tensei-shitara-slime-datta-ken/3"
+        },
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/anime/tensei-shitara-slime-datta-ken-3-sezon-izle"
+        },
+        {
+          "label": "Animecix",
+          "url": "https://animecix.tv/titles/7293/tensei-shitara-slime-datta-ken/season/3"
+        }
+      ]
+    },
+    {
+      "id": "tensura-1794660126030",
+      "title": "Luminous Memories",
+      "kind": "Özel Bölüm",
+      "episodes": "1 Bölüm",
+      "optional": true,
+      "note": "",
+      "links": [
+        {
+          "label": "Animecix",
+          "url": "https://animecix.tv/titles/7293/season/3/episode/26"
+        }
+      ]
+    },
+    {
+      "id": "tensura-1794660126177",
+      "title": "Soukai no Namida Arc",
+      "kind": "Film",
+      "episodes": "Film",
+      "optional": false,
+      "note": "",
+      "links": [
+        {
+          "label": "OpenAnime",
+          "url": "https://openani.me/anime/tensei-shitara-slime-datta-ken-movie-2-soukai-no-namida-hen"
+        },
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/anime/tensei-shitara-slime-datta-ken-movie-2-soukai-no-namida-hen-izle"
+        },
+        {
+          "label": "Animecix",
+          "url": "https://animecix.tv/titles/13020/tensei-shitara-slime-datta-ken-movie-soukai-no-namida-hen"
+        }
+      ]
+    },
+    {
+      "id": "tensura-1794660327435",
+      "title": "4. Sezon Kısım 1-2",
+      "kind": "Ana Seri",
+      "episodes": "24 Bölüm",
+      "optional": false,
+      "note": "",
+      "links": [
+        {
+          "label": "OpenAnime",
+          "url": "https://openani.me/anime/tensei-shitara-slime-datta-ken/4"
+        },
+        {
+          "label": "TRAnimeİzle",
+          "url": "https://www.tranimeizle.live/anime/tensei-shitara-slime-datta-ken-4-sezon-izle"
+        },
+        {
+          "label": "Animecix",
+          "url": "https://animecix.tv/titles/7293/season/4"
+        }
+      ]
+    },
+    {
+      "id": "tensura-1794660327611",
+      "title": "Clayman Revenge",
+      "kind": "Yan Seri",
+      "episodes": "Bölüm Sayısı Bilinmiyor",
+      "optional": false,
+      "note": "Bu içerik Nisan 2027'de yayınlanacaktır.",
+      "links": []
+    },
+    {
+      "id": "tensura-1794660485520",
+      "title": "4. Sezon 3. Kısım",
+      "kind": "Ana Seri",
+      "episodes": "12 Bölüm",
+      "optional": false,
+      "note": "Bu içerik Temmuz 2027'de yayınlanacaktır.",
       "links": []
     }
   ]

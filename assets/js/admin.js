@@ -2019,32 +2019,33 @@
         </div>
       </div>
 
-      <!-- [AI-MIMARI-NOTU: ADIM 3 — ADMİN İÇİ INSTAGRAM POST VE STORY GÖRSEL ÜRETİCİSİ] -->
-      <!-- [AI-MIMARI-NOTU: ADIM 3 — ADMİN İÇİ INSTAGRAM POST VE STORY GÖRSEL ÜRETİCİSİ (RETINA 2X STUDIO)] -->
+      <!-- [AI-MIMARI-NOTU: ADIM 3 — ADMİN İÇİ SOSYAL MEDYA GÖRSEL STÜDYOSU (2X YÜKSEK ÇÖZÜNÜRLÜK)] -->
       <div id="panelInstagram" class="admin-panel" hidden>
         <div class="admin-card glass sq insta-studio-container">
           <div class="card-head split-head">
             <div>
-              <h2>📸 Sosyal Medya Görsel ve Paylaşım Stüdyosu (Retina 2x)</h2>
-              <p>Anime, Dizi, Film, Manga, Kitap ve Rehber arşiviniz için 2160p Retina kalitesinde Tekil İnceleme Kartları, Sezon Karuselleri, Yıllık Özetler ve Katman kolajları üretin.</p>
+              <h2>📸 Sosyal Medya Görsel ve Paylaşım Stüdyosu</h2>
+              <p>Anime, Dizi, Film, Manga, Kitap ve Rehber arşiviniz için 2160p yüksek çözünürlüklü İnceleme Kartları, Sezon Karuselleri, Yıllık Özetler ve Katman Sıralamaları üretin.</p>
             </div>
-            <div class="form-actions" style="display:flex; gap:10px; flex-wrap:wrap">
+            <div class="form-actions insta-head-actions">
               <button type="button" class="btn-subtle" id="renderInstaBtn">🎨 Görseli Yenile</button>
-              <button type="button" class="btn-subtle" id="downloadZipInstaBtn" title="Karusel ve Yıllık Özet slaytlarını tek bir ZIP paketi olarak indirin">📦 Tüm Slaytları ZIP İndir</button>
               <button type="button" class="btn-subtle" id="downloadInstaBtn">💾 Aktif Slaytı PNG İndir</button>
-              <button type="button" class="btn-primary" id="downloadAllWatchedAnimeZipBtn" style="background: linear-gradient(135deg, #00a8ff 0%, #7c3aed 100%); border-color: transparent; font-weight: 650; box-shadow: 0 4px 14px rgba(0, 168, 255, 0.35);" title="İzlenen bütün animelerin sosyal medya postlarını tek tıkla ZIP arşivi olarak indirin">📦 Bütün İzlenen Animeleri ZIP İndir</button>
+              <button type="button" class="btn-subtle" id="downloadZipInstaBtn" title="Çoklu slaytları tek bir ZIP paketi olarak indirin" hidden>📦 Tüm Slaytları ZIP İndir</button>
+              <button type="button" class="btn-primary insta-batch-cta" id="downloadAllWatchedAnimeZipBtn" title="Seçili kategorideki tüm yapımların sosyal medya görsellerini tek tıkla ZIP arşivi olarak indirin">📦 Tüm İzlenen Animeleri ZIP İndir</button>
             </div>
           </div>
 
           <div class="insta-setup-grid">
-            <div class="field-stack glass" style="padding: 20px; border-radius: var(--rm)">
+            <aside class="field-stack glass insta-controls-card">
+              <div class="insta-control-section-title">İçerik &amp; Şablon</div>
+
               <label class="field">
                 <span>🎨 Şablon / Düzen Türü</span>
                 <select id="instaTemplateSelect" class="inp glass">
-                  <option value="singleReview">🎯 Tekil İçerik Kartı &amp; İnceleme Gönderisi</option>
-                  <option value="wrapped">✨ Tempestian Yıllık Özeti (Karusel)</option>
-                  <option value="topPicks">🏆 En Yüksek Puanlılar &amp; Favorilerim (Öne Çıkanlar)</option>
-                  <option value="tierCollage">🥇 Katman Sıralaması Özeti (Tier List)</option>
+                  <option value="singleReview">🎯 Tekil İçerik Kartı ve İnceleme</option>
+                  <option value="wrapped">✨ Tempestian Yıllık Özeti (Çoklu Slayt)</option>
+                  <option value="topPicks">🏆 En Yüksek Puanlılar ve Favoriler</option>
+                  <option value="tierCollage">🥇 Katman Sıralaması Özeti</option>
                 </select>
               </label>
 
@@ -2070,7 +2071,7 @@
               <label class="field" id="instaPartModeRow" hidden>
                 <span>📑 Parçalı Yapım Düzeni</span>
                 <select id="instaPartModeSelect" class="inp glass">
-                  <option value="carousel">📑 Kaydırmalı Karusel Seti (Çoklu Slayt)</option>
+                  <option value="carousel">📑 Kaydırmalı Çoklu Slayt (Karusel)</option>
                   <option value="compact">🔲 Tek Kare Özet (Kompakt Karne)</option>
                 </select>
               </label>
@@ -2086,36 +2087,29 @@
               </label>
 
               <label class="field" id="instaSlideSelectRow" hidden>
-                <span>🎞️ Canlı Önizlenen Slayt</span>
+                <span>🎞️ Önizlenen Slayt</span>
                 <select id="instaSlideSelect" class="inp glass">
                   <option value="0">1. Slayt</option>
                 </select>
               </label>
 
+              <div class="insta-control-divider"></div>
+              <div class="insta-control-section-title">Format &amp; Görünüm</div>
+
               <label class="field">
-                <span>📱 Paylaşım Formatı &amp; Çözünürlük (Retina 2x)</span>
+                <span>📱 Paylaşım Formatı (2x Yüksek Çözünürlük)</span>
                 <select id="instaFormatSelect" class="inp glass">
-                  <option value="square">🖼️ Instagram &amp; Sosyal Medya Kare (1:1 — 2160 × 2160)</option>
-                  <option value="story">📱 Instagram Hikâye (Story — 9:16 — 2160 × 3840)</option>
-                  <option value="portrait">📐 Instagram Dikey Gönderi (4:5 — 2160 × 2700)</option>
+                  <option value="square">🖼️ Kare Gönderi (1:1 · 2160×2160)</option>
+                  <option value="portrait">📐 Dikey Gönderi (4:5 · 2160×2700)</option>
+                  <option value="story">📱 Hikâye Formatı (9:16 · 2160×3840)</option>
                 </select>
-              </label>
-
-              <label class="field">
-                <span>✍️ Başlık Metni</span>
-                <input type="text" id="instaTitleInput" class="inp glass" value="TEMPESTIAN İNCELEME">
-              </label>
-
-              <label class="field">
-                <span>📝 Alt Başlık Metni</span>
-                <input type="text" id="instaSubInput" class="inp glass" value="Kişisel Medya Arşivim ve Değerlendirmelerim · tempestian.com">
               </label>
 
               <label class="field">
                 <span>✨ Vurgu Rengi Teması</span>
                 <select id="instaThemeSelect" class="inp glass">
                   <option value="neonBlue" selected>⚡ Neon Mavi (#00a8ff)</option>
-                  <option value="gold">🌟 Altın &amp; Amber (#f5a623)</option>
+                  <option value="gold">🌟 Altın ve Kehribar (#f5a623)</option>
                   <option value="emerald">🍀 Zümrüt Yeşili (#10b981)</option>
                   <option value="violet">🔮 Büyülü Mor (#a855f7)</option>
                   <option value="rose">💖 Canlı Pembe (#f43f5e)</option>
@@ -2123,35 +2117,49 @@
                 </select>
               </label>
 
-              <div class="form-actions" style="margin-top: 10px; display:flex; gap:8px">
-                <button type="button" class="btn-primary" id="renderInstaBtnSide" style="flex:1">Görseli Güncelle</button>
+              <div class="insta-control-divider"></div>
+              <div class="insta-control-section-title">Metin Özelleştirme</div>
+
+              <label class="field">
+                <span>✍️ Üst Rozet / Başlık Metni</span>
+                <input type="text" id="instaTitleInput" class="inp glass" value="ANİME İNCELEMESİ" placeholder="Örn: ANİME İNCELEMESİ">
+              </label>
+
+              <label class="field">
+                <span>📝 Alt Başlık Metni</span>
+                <input type="text" id="instaSubInput" class="inp glass" value="Kişisel Medya Arşivim ve Değerlendirmelerim · tempestian.com" placeholder="Alt başlık metni">
+              </label>
+
+              <div class="form-actions" style="margin-top: 6px;">
+                <button type="button" class="btn-primary" id="renderInstaBtnSide" style="width: 100%;">🎨 Görseli Güncelle</button>
               </div>
-            </div>
+            </aside>
 
             <div class="insta-preview-panel">
-              <div id="instaSlideIndicator" class="insta-slide-indicator" hidden>
-                <span>🎞️ Slayt 1 / 1</span>
+              <div class="insta-preview-topbar">
+                <div id="instaSlideIndicator" class="insta-slide-indicator" hidden>
+                  <span>🎞️ Slayt 1 / 1</span>
+                </div>
+                <span class="insta-preview-badge" id="instaResolutionBadge">2160 × 2160 · 2x PNG</span>
               </div>
+
               <div class="insta-canvas-wrapper">
                 <canvas id="instaCanvas" class="insta-canvas"></canvas>
               </div>
 
-              <!-- [AI-MIMARI-NOTU: SLAYT ŞERİDİ & GEZİNME ÇUBUĞU (CAROUSEL FILMSTRIP & SWITCHER)] -->
+              <!-- [AI-MIMARI-NOTU: SLAYT ŞERİDİ & GEZİNME ÇUBUĞU (ÇOKLU SLAYT GEZGİNİ)] -->
               <div id="instaSlideNav" class="insta-slide-nav">
                 <div class="insta-slide-nav-head">
                   <div class="insta-slide-nav-title">
-                    <span class="insta-nav-icon">🎞️</span>
-                    <span id="instaSlideNavHeader">Çoklu Karusel Slaytları (Toplam 1 Gönderi)</span>
+                    <span class="insta-nav-icon" aria-hidden="true">🎞️</span>
+                    <span id="instaSlideNavHeader">Çoklu Slayt Şeridi (Toplam 1 Gönderi)</span>
                   </div>
                   <div class="insta-slide-nav-actions">
-                    <button type="button" class="btn-subtle insta-nav-btn" id="instaDownloadAllAnimeBtn" title="İzlenen bütün animelerin sosyal medya postlarını tek bir ZIP paketi olarak indirin">
-                      📦 Tüm İzlenenler (ZIP)
-                    </button>
                     <button type="button" class="btn-subtle insta-nav-btn" id="instaDownloadSlideBtn" title="Aktif slaytı PNG olarak indirin">
-                      💾 Aktif Slaytı PNG İndir
+                      💾 PNG İndir
                     </button>
-                    <button type="button" class="btn-primary insta-nav-btn" id="instaDownloadZipBtn" title="Tüm karusel slaytlarını tek bir ZIP paketi olarak indirin">
-                      📦 Tüm Slaytları ZIP İndir
+                    <button type="button" class="btn-primary insta-nav-btn" id="instaDownloadZipBtn" title="Tüm slaytları tek bir ZIP paketi olarak indirin">
+                      📦 Tümünü ZIP İndir
                     </button>
                   </div>
                 </div>
@@ -2161,7 +2169,7 @@
                     ◀ Önceki
                   </button>
                   <div id="instaSlidePills" class="insta-slide-pills" role="tablist" aria-label="Slayt Listesi">
-                    <!-- Dinamik Pill Butonları -->
+                    <!-- Dinamik Slayt Butonları -->
                   </div>
                   <button type="button" class="btn-subtle insta-nav-arrow" id="instaNextSlideBtn" title="Sonraki Slayt">
                     Sonraki ▶
@@ -2169,14 +2177,14 @@
                 </div>
               </div>
 
-              <p style="margin-top: 14px; font-size: 0.8rem; color: var(--txt-sub); text-align: center">
-                Canlı önizleme ekrana sığdırılmıştır; indirdiğinizde 2160p Retina 2x ultra keskin kalitede PNG olarak kaydedilir.
+              <p class="insta-preview-note">
+                Canlı önizleme ekrana sığdırılmıştır; indirdiğinizde 2160p yüksek çözünürlüklü PNG olarak kaydedilir.
               </p>
 
               <div class="insta-caption-box">
                 <div class="insta-caption-header">
-                  <h4>📝 Hazır Instagram Paylaşım Açıklaması</h4>
-                  <button type="button" class="btn-subtle" id="copyInstaCaptionBtn" style="font-size:0.8rem; padding:4px 12px">📋 Açıklamayı Kopyala</button>
+                  <h4>📝 Hazır Paylaşım Açıklaması</h4>
+                  <button type="button" class="btn-subtle" id="copyInstaCaptionBtn" style="font-size:0.8rem; padding:5px 12px">📋 Açıklamayı Kopyala</button>
                 </div>
                 <textarea id="instaCaptionText" class="insta-caption-textarea" readonly placeholder="Görsel oluşturulduğunda hazır paylaşım açıklaması burada belirecektir..."></textarea>
               </div>

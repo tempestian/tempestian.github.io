@@ -107,8 +107,8 @@ function validateAnimeJson() {
       } else {
         for (const [k, v] of Object.entries(a.subScores)) {
           const num = Number(v);
-          if (isNaN(num) || num < 1 || num > 5 || !Number.isInteger(num)) {
-            addError(rel, `${prefix} 'subScores.${k}' 1-5 arasında tam sayı olmalıdır (bulunan: ${v})`);
+          if (isNaN(num) || num < 0.1 || num > 10 || Math.abs(Math.round(num * 10) - num * 10) > 1e-9) {
+            addError(rel, `${prefix} 'subScores.${k}' 0.1-10.0 arasında en fazla 1 ondalıklı sayı olmalıdır (bulunan: ${v})`);
           }
         }
       }
@@ -132,8 +132,8 @@ function validateAnimeJson() {
           } else {
             for (const [k, v] of Object.entries(p.subScores)) {
               const num = Number(v);
-              if (isNaN(num) || num < 1 || num > 5 || !Number.isInteger(num)) {
-                addError(rel, `${pRef} 'subScores.${k}' 1-5 arasında tam sayı olmalıdır (bulunan: ${v})`);
+              if (isNaN(num) || num < 0.1 || num > 10 || Math.abs(Math.round(num * 10) - num * 10) > 1e-9) {
+                addError(rel, `${pRef} 'subScores.${k}' 0.1-10.0 arasında en fazla 1 ondalıklı sayı olmalıdır (bulunan: ${v})`);
               }
             }
           }
@@ -225,8 +225,8 @@ function validateMultiMediaFiles() {
         } else {
           for (const [k, v] of Object.entries(it.subScores)) {
             const num = Number(v);
-            if (isNaN(num) || num < 1 || num > 5 || !Number.isInteger(num)) {
-              addError(rel, `${prefix} 'subScores.${k}' 1-5 arasında tam sayı olmalıdır (bulunan: ${v})`);
+            if (isNaN(num) || num < 0.1 || num > 10 || Math.abs(Math.round(num * 10) - num * 10) > 1e-9) {
+              addError(rel, `${prefix} 'subScores.${k}' 0.1-10.0 arasında en fazla 1 ondalıklı sayı olmalıdır (bulunan: ${v})`);
             }
           }
         }
@@ -242,8 +242,8 @@ function validateMultiMediaFiles() {
             } else {
               for (const [k, v] of Object.entries(p.subScores)) {
                 const num = Number(v);
-                if (isNaN(num) || num < 1 || num > 5 || !Number.isInteger(num)) {
-                  addError(rel, `${pRef} 'subScores.${k}' 1-5 arasında tam sayı olmalıdır (bulunan: ${v})`);
+                if (isNaN(num) || num < 0.1 || num > 10 || Math.abs(Math.round(num * 10) - num * 10) > 1e-9) {
+                  addError(rel, `${pRef} 'subScores.${k}' 0.1-10.0 arasında en fazla 1 ondalıklı sayı olmalıdır (bulunan: ${v})`);
                 }
               }
             }

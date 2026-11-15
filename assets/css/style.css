@@ -3053,6 +3053,47 @@ body.sheet-open .bar {
   letter-spacing: 0.08em;
 }
 
+.sh-rb-bar {
+  position: relative;
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.16);
+  overflow: hidden;
+}
+
+.sh-rb-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #38bdf8, #60a5fa);
+  transition: width 0.25s ease;
+}
+
+.sh-rb-item.tier-master .sh-rb-bar-fill {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+.sh-rb-item.tier-master .sh-rb-num {
+  color: #fbbf24;
+}
+
+.sh-rb-item.tier-high .sh-rb-bar-fill {
+  background: linear-gradient(90deg, #06b6d4, #38bdf8);
+}
+
+.sh-rb-item.tier-mid .sh-rb-bar-fill {
+  background: linear-gradient(90deg, #6366f1, #818cf8);
+}
+.sh-rb-item.tier-mid .sh-rb-num {
+  color: #a5b4fc;
+}
+
+.sh-rb-item.tier-low .sh-rb-bar-fill {
+  background: linear-gradient(90deg, #f43f5e, #fb7185);
+}
+.sh-rb-item.tier-low .sh-rb-num {
+  color: #fda4af;
+}
+
 @media (max-width: 640px) {
   .sheet-card::before {
     content: "";

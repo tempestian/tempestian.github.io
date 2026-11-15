@@ -504,7 +504,7 @@
     });
   }
 
-  function computeStatsClient(animeList, rawConfig) {
+  function computeStatsClient(animeList, rawConfig, mediaType = 'anime') {
     const cfg = { ...DEFAULT_STATS_CONFIG, ...(rawConfig || (state.animeData && state.animeData.statsConfig) || {}) };
     const list = Array.isArray(animeList) ? animeList : [];
 
@@ -588,7 +588,7 @@
     stats.excluded = list.length - counted.length;
 
     const rated = counted
-      .map(a => ({ item: a, effScore: resolveEffectiveScore(a) }))
+      .map(a => ({ item: a, effScore: resolveEffectiveScore(a, mediaType) }))
       .filter(x => x.effScore != null && x.effScore > 0);
 
     if (rated.length) {
@@ -687,7 +687,7 @@
       };
     }
 
-    const base = computeStatsClient(list, rawConfig);
+    const base = computeStatsClient(list, rawConfig, mediaType);
     if (mediaType === 'book') {
       return {
         total: list.length,
@@ -1414,7 +1414,7 @@
               <label class="field" style="flex:1.4">
                 <span>Sıralama / Kuyruk Filtresi</span>
                 <select id="rqFilterSelect" class="inp glass">
-                  <option value="no_subscores">★ 5 Yıldız Kriter Karnesi Eksik Olanlar (Hızlı Puanlama)</option>
+                  <option value="no_subscores">★ 10'luk Kriter Karnesi Eksik Olanlar (Hızlı Puanlama)</option>
                   <option value="uncategorized">Özel Kategorisi Seçilmemiş Olanlar</option>
                   <option value="all">Tüm Girdiler (Baştan Sona Sırayla)</option>
                   <option value="favorites">★ Sadece Başyapıtlar / Favoriler</option>
@@ -1518,7 +1518,7 @@
                 <div class="score-studio-top">
                   <div>
                     <h4 id="rqSubItemsHeading">Sezon, Film ve Yan İçerik Puanları (Sezon ×1.00 · Film ×0.35 · Yan İçerik ×0.15)</h4>
-                    <p class="meta">Kriterlere 5 yıldız verin veya parçaları güncelleyin; genel puan otomatik hesaplanır.</p>
+                    <p class="meta">Kriterlere 10 üzerinden (0.1 hassasiyetle) puan verin veya parçaları güncelleyin; genel puan otomatik hesaplanır.</p>
                   </div>
                   <div class="template-chips" id="rqBulkSeasonScoreChips"></div>
                 </div>
@@ -2346,7 +2346,7 @@
             <div class="score-studio-top">
               <div>
                 <h4 id="aeScoreStudioHeading">Ağırlıklı Otomatik Puanlama (Sezon ×1.00 · Film ×0.35 · Yan İçerik ×0.15)</h4>
-                <p class="meta" id="aeScoreStudioSub">Aşağıdaki 5 yıldızlı kriterleri puanlayın; sistem ağırlıklarına göre 10 üzerinden virgüllü puanı otomatik belirler.</p>
+                <p class="meta" id="aeScoreStudioSub">Aşağıdaki kriterleri 10 üzerinden (0.1 hassasiyetle) puanlayın; sistem ağırlıklarına göre genel puanı otomatik belirler.</p>
               </div>
               <div class="score-badge-big" id="aeWeightedScoreDisplay">Puansız</div>
             </div>
@@ -3814,13 +3814,13 @@
 
     syncModalFavoriteBtn();
     const hasMultipleParts = Array.isArray(d.parts) && d.parts.length > 1;
-    const topTitle = hasMultipleParts ? 'Genel Yapım Puanlama Stüdyosu (Opsiyonel)' : '5 Yıldızlı Ağırlıklı Puanlama Stüdyosu';
+    const topTitle = hasMultipleParts ? 'Genel Yapım Puanlama Stüdyosu (Opsiyonel)' : '10\'luk Hassas Kriter Puanlama Stüdyosu';
     const topSub = hasMultipleParts
-      ? 'Aşağıdaki parçaları sezon sezon ayrı ayrı 5 yıldızla puanlayabilirsiniz. Genel puan tüm sezonların ağırlıklı ortalamasından otomatik hesaplanır.'
-      : 'Kriterlere 1–5 yıldız verin; sistem ağırlıklarına göre 10 üzerinden virgüllü puanı otomatik hesaplar.';
+      ? 'Aşağıdaki parçaları sezon sezon ayrı ayrı 10 üzerinden (0.1 hassasiyetle) puanlayabilirsiniz. Genel puan tüm sezonların ağırlıklı ortalamasından otomatik hesaplanır.'
+      : 'Kriterlere 1–10 arası tıklayarak veya 0.1 hassasiyetle puan verin; ağırlıklarına göre genel puan otomatik hesaplanır.';
 
     renderCriteriaRatingStudio($('#aeCriteriaStudioMount'), state.editingDraft, adapter.id, () => {
-      syncScoreStudioUI();
+      syncScoreStudioUI(true);
     }, topTitle, topSub);
     syncScoreStudioUI();
     renderQuickScoreChips();
@@ -3866,18 +3866,18 @@
     }
   }
 
-  function syncScoreStudioUI() {
+  function syncScoreStudioUI(skipMainCritRefresh = false) {
     if (!state.editingDraft) return;
     const adapter = getActiveAdminAdapter();
     const effScore = resolveEffectiveScore(state.editingDraft, adapter.id);
     state.editingDraft.score = effScore;
 
-    // Otomatik Genel Yapım 5 Yıldız Kriter Karnesi Eşleme:
+    // Otomatik Genel Yapım Kriter Karnesi Eşleme:
     // Sezonlar, filmler veya yan içerikler puanlandığında genel yapımın puanı ve karnesi otomatik hesaplanır!
     const parts = Array.isArray(state.editingDraft.parts) ? state.editingDraft.parts : [];
     const hasRatedParts = parts.some(p => p && (p.score != null || (p.subScores && Object.keys(p.subScores).length > 0)));
 
-    if (hasRatedParts && effScore != null && effScore >= 2.0) {
+    if (!skipMainCritRefresh && hasRatedParts && effScore != null && effScore > 0) {
       if (window.TempestianRating && typeof window.TempestianRating.computeWeightedSubScores === 'function') {
         const weightedSub = window.TempestianRating.computeWeightedSubScores(adapter.id, state.editingDraft);
         if (weightedSub) {
@@ -3888,7 +3888,7 @@
       } else if (window.TempestianRating && typeof window.TempestianRating.deriveSubScores === 'function') {
         state.editingDraft.subScores = window.TempestianRating.deriveSubScores(adapter.id, effScore);
       }
-    } else if (hasRatedParts && (effScore == null || effScore < 1.0)) {
+    } else if (!skipMainCritRefresh && hasRatedParts && (effScore == null || effScore <= 0)) {
       delete state.editingDraft.subScores;
     }
 
@@ -3897,12 +3897,18 @@
       badge.textContent = effScore != null ? `★ ${effScore}` : 'Puansız';
     }
 
-    // Ana kriter stüdyosu açıksa güncelle
+    // Ana kriter stüdyosu açıksa (ve tetikleyen bizzat kendisi değilse) güncelle
     const mainCritMount = $('#aeCriteriaStudioMount');
-    if (mainCritMount && mainCritMount.children.length > 0) {
+    if (!skipMainCritRefresh && mainCritMount && mainCritMount.children.length > 0) {
+      const hasMulti = parts.length > 1;
+      const tTitle = hasMulti ? 'Genel Yapım Puanlama Stüdyosu (Opsiyonel)' : '10\'luk Hassas Kriter Puanlama Stüdyosu';
+      const tSub = hasMulti
+        ? 'Aşağıdaki parçaları sezon sezon ayrı ayrı 10 üzerinden (0.1 hassasiyetle) puanlayabilirsiniz. Genel puan tüm sezonların ağırlıklı ortalamasından otomatik hesaplanır.'
+        : 'Kriterlere 1–10 arası tıklayarak veya 0.1 hassasiyetle puan verin; ağırlıklarına göre genel puan otomatik hesaplanır.';
       renderCriteriaRatingStudio(mainCritMount, state.editingDraft, adapter.id, (newSc) => {
         state.editingDraft.score = newSc;
-      });
+        syncScoreStudioUI(true);
+      }, tTitle, tSub);
     }
 
     renderQuickScoreChips();
@@ -3923,8 +3929,8 @@
     const wrap = document.createElement('div');
     wrap.className = 'criteria-studio';
 
-    const titleText = customTitle || '5 Yıldızlı Ağırlıklı Puanlama Stüdyosu';
-    const subText = customSub || 'Kriterlere 1–5 yıldız verin; sistem ağırlıklarına göre 10 üzerinden virgüllü puanı otomatik hesaplar.';
+    const titleText = customTitle || '10\'luk Hassas Kriter Puanlama Stüdyosu';
+    const subText = customSub || 'Kriterlere 1–10 arası tıklayarak veya 0.1 hassasiyetle puan verin; ağırlıklarına göre genel puan otomatik hesaplanır.';
 
     const head = document.createElement('div');
     head.className = 'criteria-studio-head';
@@ -3934,7 +3940,7 @@
         <p class="meta">${subText}</p>
       </div>
       <div class="criteria-studio-actions" style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
-        <button type="button" class="btn-subtle btn-xs" id="autoFillSubScoresBtn" title="Genel puana göre 5 yıldızlı kriterleri otomatik dağıt">★ Puana Göre Kriterleri Doldur</button>
+        <button type="button" class="btn-subtle btn-xs" id="autoFillSubScoresBtn" title="Genel puana göre 10'luk kriterleri otomatik dağıt">★ Puana Göre Kriterleri Doldur</button>
         <button type="button" class="btn-subtle btn-xs" id="clearSubScoresBtn">Puanı Sıfırla</button>
       </div>
     `;
@@ -3959,70 +3965,153 @@
           </div>
           <span class="criterion-desc">${c.desc}</span>
         </div>
-        <div class="criterion-stars-wrap">
-          <div class="criterion-stars" role="radiogroup" aria-label="${c.label}"></div>
-          <span class="criterion-num-badge">${curVal > 0 ? curVal + '/5' : 'Seçilmedi'}</span>
+        <div class="criterion-scale-wrap">
+          <div class="criterion-scale-bar" role="radiogroup" aria-label="${c.label}"></div>
+          <div class="criterion-fine-row">
+            <input type="range" class="c-range-slider" min="0.5" max="10" step="0.1" value="${curVal > 0 ? curVal : 5}" aria-label="${c.label} hassas kaydırıcı">
+            <button type="button" class="c-step-btn" data-step="-0.1" title="0.1 azalt">-0.1</button>
+            <div class="c-num-input-wrap${curVal > 0 ? ' active' : ''}">
+              <input type="number" class="c-num-input" min="0.1" max="10" step="0.1" value="${curVal > 0 ? curVal : ''}" placeholder="-" aria-label="${c.label} sayısal puan">
+              <span class="c-num-max">/10</span>
+            </div>
+            <button type="button" class="c-step-btn" data-step="0.1" title="0.1 artır">+0.1</button>
+            <button type="button" class="c-clear-btn" title="Bu kriter puanını temizle">×</button>
+          </div>
         </div>
       `;
 
-      const starsContainer = row.querySelector('.criterion-stars');
-      const badge = row.querySelector('.criterion-num-badge');
-      if (curVal > 0) badge.classList.add('active');
+      const scaleBar = row.querySelector('.criterion-scale-bar');
+      const slider = row.querySelector('.c-range-slider');
+      const numWrap = row.querySelector('.c-num-input-wrap');
+      const numInput = row.querySelector('.c-num-input');
+      const clearCritBtn = row.querySelector('.c-clear-btn');
 
-      for (let star = 1; star <= 5; star++) {
-        const starBtn = document.createElement('button');
-        starBtn.type = 'button';
-        starBtn.className = 'c-star-btn' + (star <= curVal ? ' on' : '');
-        starBtn.textContent = '★';
-        starBtn.title = `${star} / 5 Yıldız`;
+      const syncRowVisual = (val, skipInputSync = false) => {
+        const hasVal = val != null && !isNaN(val) && val > 0;
+        const clamped = hasVal ? Math.round(Math.max(0.1, Math.min(10.0, val)) * 10) / 10 : 0;
 
-        starBtn.onmouseenter = () => {
-          const allBtns = starsContainer.querySelectorAll('.c-star-btn');
+        numWrap.classList.toggle('active', hasVal);
+        if (!skipInputSync) {
+          numInput.value = hasVal ? clamped : '';
+        }
+        slider.value = hasVal ? clamped : 5;
+
+        const allBtns = scaleBar.querySelectorAll('.c-scale-btn');
+        allBtns.forEach((b, idx) => {
+          const stepNum = idx + 1;
+          const isExact = hasVal && Math.abs(clamped - stepNum) < 0.05;
+          const isHalf = hasVal && !isExact && clamped > (stepNum - 1) && clamped < stepNum;
+          const isFilled = hasVal && clamped >= stepNum;
+          b.classList.toggle('on', isFilled);
+          b.classList.toggle('exact', isExact);
+          b.classList.toggle('half', isHalf);
+        });
+      };
+
+      const applyCriterionValue = (nextVal, skipInputSync = false) => {
+        if (!item.subScores || typeof item.subScores !== 'object') {
+          item.subScores = {};
+        }
+        if (nextVal == null || isNaN(nextVal) || nextVal <= 0) {
+          delete item.subScores[c.id];
+          syncRowVisual(0, skipInputSync);
+        } else {
+          const rounded = Math.round(Math.max(0.1, Math.min(10.0, Number(nextVal))) * 10) / 10;
+          item.subScores[c.id] = rounded;
+          syncRowVisual(rounded, skipInputSync);
+        }
+
+        item.adminModified = true;
+        const hasAny = Object.values(item.subScores).some(v => v != null && Number(v) > 0);
+        if (!hasAny) {
+          delete item.subScores;
+        }
+
+        const calculatedScore = window.TempestianRating ? window.TempestianRating.computeScore(criteria, item.subScores) : null;
+        item.score = calculatedScore;
+        if (typeof onScoreChange === 'function') {
+          onScoreChange(calculatedScore);
+        }
+      };
+
+      for (let num = 1; num <= 10; num++) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'c-scale-btn';
+        btn.textContent = String(num);
+        btn.title = `${num}.0 / 10`;
+
+        btn.onmouseenter = () => {
+          const allBtns = scaleBar.querySelectorAll('.c-scale-btn');
           allBtns.forEach((b, idx) => {
-            b.classList.toggle('hover', idx < star);
+            b.classList.toggle('hover', idx < num);
           });
         };
 
-        starBtn.onmouseleave = () => {
-          const allBtns = starsContainer.querySelectorAll('.c-star-btn');
-          allBtns.forEach(b => b.classList.remove('hover'));
+        btn.onmouseleave = () => {
+          scaleBar.querySelectorAll('.c-scale-btn').forEach(b => b.classList.remove('hover'));
         };
 
-        starBtn.onclick = () => {
-          if (item.subScores[c.id] === star) {
-            delete item.subScores[c.id];
+        btn.onclick = () => {
+          const cur = item.subScores ? Number(item.subScores[c.id]) : 0;
+          if (cur === num) {
+            applyCriterionValue(null);
           } else {
-            item.subScores[c.id] = star;
-          }
-          item.adminModified = true;
-          const updatedVal = Number(item.subScores[c.id]) || 0;
-          badge.textContent = updatedVal > 0 ? updatedVal + '/5' : 'Seçilmedi';
-          badge.classList.toggle('active', updatedVal > 0);
-
-          const allBtns = starsContainer.querySelectorAll('.c-star-btn');
-          allBtns.forEach((b, idx) => {
-            b.classList.toggle('on', idx < updatedVal);
-          });
-
-          const hasAny = Object.values(item.subScores).some(v => v != null && v > 0);
-          if (!hasAny) {
-            delete item.subScores;
-          }
-
-          const calculatedScore = window.TempestianRating ? window.TempestianRating.computeScore(criteria, item.subScores) : null;
-          item.score = calculatedScore;
-          if (typeof onScoreChange === 'function') {
-            onScoreChange(calculatedScore);
+            applyCriterionValue(num);
           }
         };
 
-        starsContainer.appendChild(starBtn);
+        scaleBar.appendChild(btn);
       }
 
+      slider.oninput = () => {
+        applyCriterionValue(Number(slider.value));
+      };
+
+      numInput.oninput = () => {
+        const rawStr = numInput.value.trim();
+        if (rawStr === '') {
+          applyCriterionValue(null, true);
+          return;
+        }
+        const parsed = Number(rawStr);
+        if (!isNaN(parsed) && parsed >= 0.1 && parsed <= 10) {
+          applyCriterionValue(parsed, true);
+        }
+      };
+
+      numInput.onblur = () => {
+        const rawStr = numInput.value.trim();
+        if (rawStr === '') {
+          syncRowVisual(0);
+          return;
+        }
+        const parsed = Number(rawStr);
+        if (isNaN(parsed) || parsed <= 0) {
+          applyCriterionValue(null);
+        } else {
+          applyCriterionValue(Math.max(0.1, Math.min(10, parsed)));
+        }
+      };
+
+      row.querySelectorAll('.c-step-btn').forEach(btn => {
+        btn.onclick = () => {
+          const delta = Number(btn.dataset.step) || 0;
+          const base = (item.subScores && Number(item.subScores[c.id]) > 0) ? Number(item.subScores[c.id]) : 5.0;
+          const next = Math.round(Math.max(0.1, Math.min(10.0, base + delta)) * 10) / 10;
+          applyCriterionValue(next);
+        };
+      });
+
+      clearCritBtn.onclick = () => {
+        applyCriterionValue(null);
+      };
+
+      syncRowVisual(curVal);
       grid.appendChild(row);
     });
 
-    // Akıllı Arketip Profilleri Barı (Hızlı ve gerçekçi puanlama)
+    // Akıllı Arketip Profilleri Barı (Hızlı ve gerçekçi 10'luk puanlama)
     const profilesBar = document.createElement('div');
     profilesBar.className = 'criteria-profiles-bar';
     profilesBar.innerHTML = `
@@ -4034,17 +4123,17 @@
     `;
 
     function applyArchetypeProfile(profKey) {
-      const partRow = mountEl.closest ? mountEl.closest('.part-edit-row') : null;
-      const partScoreInp = partRow ? partRow.querySelector('[data-pf="score"]') : null;
+      const partRow = mountEl.closest ? mountEl.closest('.part-edit-row, .rq-subitem-row') : null;
+      const partScoreInp = partRow ? partRow.querySelector('[data-pf="score"], .rq-part-score-inp') : null;
       const scoreInput = partScoreInp || document.getElementById('editScore') || document.getElementById('p_score');
       let targetVal = (item && item.score != null) ? Number(item.score) : (scoreInput && scoreInput.value !== '' ? Number(scoreInput.value) : null);
-      if (targetVal == null || isNaN(targetVal) || targetVal < 1) {
-        const userVal = prompt('Lütfen profile göre dağıtılacak genel puanı girin (örn: 8.5):', item.score || '8.0');
+      if (targetVal == null || isNaN(targetVal) || targetVal <= 0) {
+        const userVal = prompt('Lütfen profile göre dağıtılacak genel puanı girin (örn: 8.5, 5.3, 1.0):', item.score || '8.0');
         if (!userVal) return;
         targetVal = Number(userVal);
       }
-      if (isNaN(targetVal) || targetVal < 1 || targetVal > 10) {
-        if (typeof showToast === 'function') showToast('Geçerli bir puan giriniz (1 - 10).', 'warn');
+      if (isNaN(targetVal) || targetVal < 0.1 || targetVal > 10) {
+        if (typeof showToast === 'function') showToast('Geçerli bir puan giriniz (0.1 - 10).', 'warn');
         return;
       }
 
@@ -4068,7 +4157,7 @@
       }
       if (typeof showToast === 'function') {
         const profNames = { action: 'Aksiyon & Görsel', story: 'Hikâye & Kurgu', character: 'Karakter & Duygu', balanced: 'Dengeli' };
-        showToast(`[${profNames[profKey] || profKey}] profili ile 5 yıldızlı karnesi uyarlandı! (${targetVal})`, 'success');
+        showToast(`[${profNames[profKey] || profKey}] profili ile 10'luk kriter karnesi uyarlandı! (${targetVal})`, 'success');
       }
     }
 
@@ -4333,7 +4422,7 @@
           <label class="field" style="min-width:145px">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:4px">
               <span>Puan (10 Üz.)</span>
-              <button type="button" class="part-criteria-btn btn-subtle btn-xs" data-pact="toggle-crit" title="5 Yıldızlı Kriterlerle Puanla"></button>
+              <button type="button" class="part-criteria-btn btn-subtle btn-xs" data-pact="toggle-crit" title="10'luk Kriterlerle Puanla"></button>
             </div>
             <input type="number" class="inp glass" data-pf="score" min="0" max="10" step="0.1" placeholder="Örn: 9.0">
           </label>
@@ -4361,15 +4450,16 @@
       const critBtn = row.querySelector('[data-pact="toggle-crit"]');
       const critMount = row.querySelector('.part-criteria-mount');
       const scoreInp = row.querySelector('[data-pf="score"]');
+      const critCount = (window.TempestianRating && (window.TempestianRating.CRITERIA[adapter.id] || window.TempestianRating.CRITERIA.anime).length) || 6;
 
       const syncCritBtnState = () => {
         if (!critBtn) return;
-        const subCount = p.subScores ? Object.values(p.subScores).filter(v => v != null && v > 0).length : 0;
+        const subCount = p.subScores ? Object.values(p.subScores).filter(v => v != null && Number(v) > 0).length : 0;
         if (subCount > 0) {
-          critBtn.textContent = `★ ${p.score != null ? p.score : '-'} (${subCount}/6)`;
+          critBtn.textContent = `★ ${p.score != null ? p.score : '-'} (${subCount}/${critCount})`;
           critBtn.classList.add('has-score');
         } else {
-          critBtn.textContent = '☆ 5 Yıldız';
+          critBtn.textContent = '☆ Kriter';
           critBtn.classList.remove('has-score');
         }
       };
@@ -4393,7 +4483,7 @@
                 syncScoreStudioUI();
               },
               `#${idx + 1} ${AdminSecurity.sanitizeText(p.name || 'Parça', 40)} · Kriter Puanlaması`,
-              'Bu sezon için kriterlere 1–5 yıldız verin; sezonun puanı ve genel yapım puanı ağırlıklarına göre otomatik güncellenir.'
+              'Bu sezon için kriterlere 1–10 arası (0.1 hassasiyetle) puan verin; sezonun puanı ve genel yapım puanı otomatik güncellenir.'
             );
           }
         };
@@ -7136,10 +7226,10 @@
     }
     renderRapidQueueGenres();
     const hasMultiplePartsRq = Array.isArray(d.parts) && d.parts.length > 1;
-    const rqTitle = hasMultiplePartsRq ? 'Genel Yapım Puanlama Stüdyosu (Opsiyonel)' : '5 Yıldızlı Ağırlıklı Puanlama Stüdyosu';
+    const rqTitle = hasMultiplePartsRq ? 'Genel Yapım Puanlama Stüdyosu (Opsiyonel)' : '10\'luk Hassas Kriter Puanlama Stüdyosu';
     const rqSub = hasMultiplePartsRq
-      ? 'Aşağıdaki parçaları sezon sezon ayrı ayrı 5 yıldızla puanlayabilirsiniz. Genel puan tüm sezonların ağırlıklı ortalamasından otomatik hesaplanır.'
-      : 'Kriterlere 1–5 yıldız verin; sistem ağırlıklarına göre 10 üzerinden virgüllü puanı otomatik hesaplar.';
+      ? 'Aşağıdaki parçaları sezon sezon ayrı ayrı 10 üzerinden (0.1 hassasiyetle) puanlayabilirsiniz. Genel puan tüm sezonların ağırlıklı ortalamasından otomatik hesaplanır.'
+      : 'Kriterlere 1–10 arası tıklayarak veya 0.1 hassasiyetle puan verin; ağırlıklarına göre genel puan otomatik hesaplanır.';
 
     renderCriteriaRatingStudio($('#rqCriteriaStudioMount'), d, adapter.id, () => {
       syncRapidQueueScoreBadge();
@@ -7273,7 +7363,7 @@
         <div class="rq-subitem-scores"></div>
         <div style="display:flex;align-items:center;gap:6px">
           <input type="number" class="inp glass rq-part-score-inp" min="0" max="10" step="0.1" placeholder="Puan" style="width:70px;height:34px;padding:0 6px;text-align:center;font-weight:650">
-          <button type="button" class="part-criteria-btn btn-subtle btn-xs rq-crit-btn" title="5 Yıldızlı Kriterlerle Puanla"></button>
+          <button type="button" class="part-criteria-btn btn-subtle btn-xs rq-crit-btn" title="10'luk Kriterlerle Puanla"></button>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
           <span class="meta rq-part-ep-lbl">${p.watched || 0}/${p.episodes || 0} ${adapter.subItemUnitLabel}</span>
@@ -7290,13 +7380,14 @@
       const scWrap = row.querySelector('.rq-subitem-scores');
       const scInp = row.querySelector('.rq-part-score-inp');
       const critBtn = row.querySelector('.rq-crit-btn');
+      const critCount = (window.TempestianRating && (window.TempestianRating.CRITERIA[adapter.id] || window.TempestianRating.CRITERIA.anime).length) || 6;
       scInp.value = p.score != null ? p.score : '';
 
       const syncRqCritBtn = () => {
         if (!critBtn) return;
-        const subCount = p.subScores ? Object.values(p.subScores).filter(v => v != null && v > 0).length : 0;
+        const subCount = p.subScores ? Object.values(p.subScores).filter(v => v != null && Number(v) > 0).length : 0;
         if (subCount > 0) {
-          critBtn.textContent = `★ (${subCount}/6)`;
+          critBtn.textContent = `★ (${subCount}/${critCount})`;
           critBtn.classList.add('has-score');
         } else {
           critBtn.textContent = '☆ Kriter';
@@ -7323,7 +7414,7 @@
                 syncRapidQueueScoreBadge();
               },
               `#${idx + 1} ${AdminSecurity.sanitizeText(p.name || 'Parça', 40)} · Kriter Puanlaması`,
-              'Kriterlere 1–5 yıldız verin; sezonun puanı ve genel yapım puanı otomatik güncellenir.'
+              'Kriterlere 1–10 arası (0.1 hassasiyetle) puan verin; sezonun puanı ve genel yapım puanı otomatik güncellenir.'
             );
             setTimeout(() => {
               critMount.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

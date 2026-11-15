@@ -1335,9 +1335,11 @@
     for (let i = 0; i < list.length; i++) {
       const c = list[i];
       const cy = y + topPad + i * rowSpacing;
-      const rawSub = (subScores && subScores[c.id]) ? Number(subScores[c.id]) : (fallbackScore ? Math.round(fallbackScore / 2) : 4);
-      const subVal = Math.max(0.5, Math.min(5, rawSub));
-      const scoreTen = (subVal * 2).toFixed(1);
+      const rawSub = (subScores && subScores[c.id] != null && Number(subScores[c.id]) > 0)
+        ? Number(subScores[c.id])
+        : (fallbackScore != null && Number(fallbackScore) > 0 ? Number(fallbackScore) : 8);
+      const subVal = Math.max(0.1, Math.min(10, rawSub));
+      const scoreTen = subVal.toFixed(1);
 
       const labelY = cy + rowSpacing * 0.34;
       const barY = cy + rowSpacing * 0.56;
@@ -1364,7 +1366,7 @@
       ctx.fill();
 
       // Bar Doluluk
-      const fillW = Math.max(20, innerW * (subVal / 5));
+      const fillW = Math.max(12, innerW * (subVal / 10));
       const barGrad = ctx.createLinearGradient(x + padX, barY, x + padX + fillW, barY);
       barGrad.addColorStop(0, theme.gradient[0]);
       barGrad.addColorStop(1, theme.gradient[1]);
@@ -1372,11 +1374,11 @@
       roundRect(ctx, x + padX, barY, fillW, barH, 10);
       ctx.fill();
 
-      // 5 Yıldız Segment Çentikleri
-      ctx.strokeStyle = 'rgba(6, 10, 20, 0.45)';
-      ctx.lineWidth = 2;
-      for (let seg = 1; seg <= 4; seg++) {
-        const sx = x + padX + (innerW * seg) / 5;
+      // 10'luk Sistem Segment Çentikleri
+      ctx.strokeStyle = 'rgba(6, 10, 20, 0.42)';
+      ctx.lineWidth = 1.6;
+      for (let seg = 1; seg <= 9; seg++) {
+        const sx = x + padX + (innerW * seg) / 10;
         ctx.beginPath();
         ctx.moveTo(sx, barY);
         ctx.lineTo(sx, barY + barH);
@@ -2958,13 +2960,17 @@
       }
 
       let criteriaLines = '';
+      const subScoresToUse = (window.TempestianRating && typeof window.TempestianRating.computeWeightedSubScores === 'function')
+        ? (window.TempestianRating.computeWeightedSubScores(catKey, item) || item?.subScores)
+        : item?.subScores;
       for (const c of criteriaList) {
-        const subScoresToUse = (window.TempestianRating && typeof window.TempestianRating.computeWeightedSubScores === 'function')
-          ? (window.TempestianRating.computeWeightedSubScores(catKey, item) || item?.subScores)
-          : item?.subScores;
-        const subVal = (subScoresToUse && subScoresToUse[c.id]) ? Number(subScoresToUse[c.id]) : (effScore ? Math.round(effScore / 2) : 4);
-        const stars = '★'.repeat(Math.max(1, Math.min(5, Math.round(subVal)))) + '☆'.repeat(5 - Math.max(1, Math.min(5, Math.round(subVal))));
-        const tenScore = (subVal * 2).toFixed(1);
+        const rawSub = (subScoresToUse && subScoresToUse[c.id] != null && Number(subScoresToUse[c.id]) > 0)
+          ? Number(subScoresToUse[c.id])
+          : (effScore != null && Number(effScore) > 0 ? Number(effScore) : 8);
+        const subVal = Math.max(0.1, Math.min(10, rawSub));
+        const starFill = Math.max(0, Math.min(5, Math.round(subVal / 2)));
+        const stars = '★'.repeat(starFill) + '☆'.repeat(5 - starFill);
+        const tenScore = subVal.toFixed(1);
         criteriaLines += `• ${c.label}: ${stars} (${tenScore}/10)\n`;
       }
 

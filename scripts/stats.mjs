@@ -99,9 +99,9 @@ export function computeCriteriaScore(criteria, subScores) {
   let totalScore = 0;
   let totalWeight = 0;
   for (const c of criteria) {
-    const star = Number(subScores[c.id]);
-    if (!isNaN(star) && star >= 1 && star <= 5) {
-      totalScore += star * 2 * c.weight;
+    const val = Number(subScores[c.id]);
+    if (!isNaN(val) && val > 0 && val <= 10) {
+      totalScore += val * c.weight;
       totalWeight += c.weight;
     }
   }
@@ -112,14 +112,22 @@ export function computeCriteriaScore(criteria, subScores) {
 export function resolveEffectiveScore(a, type = 'anime') {
   if (!a || typeof a !== 'object') return null;
 
+  const criteria = RATING_CRITERIA[type] || RATING_CRITERIA.anime;
   const parts = Array.isArray(a.parts) ? a.parts : [];
   let weightedSum = 0;
   let totalWeight = 0;
 
   for (const p of parts) {
     if (!p) continue;
-    const sc = Number(p.score);
-    if (!isNaN(sc) && sc > 0) {
+    let sc = null;
+    if (p.subScores && typeof p.subScores === 'object') {
+      sc = computeCriteriaScore(criteria, p.subScores);
+    }
+    if (sc == null) {
+      const pNum = Number(p.score);
+      if (!isNaN(pNum) && pNum > 0) sc = pNum;
+    }
+    if (sc != null && !isNaN(sc) && sc > 0) {
       const w = getPartWeight(p);
       weightedSum += sc * w;
       totalWeight += w;
@@ -131,7 +139,6 @@ export function resolveEffectiveScore(a, type = 'anime') {
   }
 
   if (a.subScores && typeof a.subScores === 'object') {
-    const criteria = RATING_CRITERIA[type] || RATING_CRITERIA.anime;
     const s = computeCriteriaScore(criteria, a.subScores);
     if (s != null) return s;
   }
@@ -185,7 +192,7 @@ export function normalizePartsForStats(a) {
   });
 }
 
-export function computeStats(anime, rawConfig = {}) {
+export function computeStats(anime, rawConfig = {}, mediaType = 'anime') {
   const cfg = { ...DEFAULT_STATS_CONFIG, ...(rawConfig || {}) };
   const list = Array.isArray(anime) ? anime : [];
 
@@ -269,7 +276,7 @@ export function computeStats(anime, rawConfig = {}) {
   stats.excluded = list.length - counted.length;
 
   const rated = counted
-    .map(a => ({ item: a, effScore: resolveEffectiveScore(a) }))
+    .map(a => ({ item: a, effScore: resolveEffectiveScore(a, mediaType) }))
     .filter(x => x.effScore != null && x.effScore > 0);
 
   if (rated.length) {
@@ -337,7 +344,7 @@ export function computeMediaStats(items, rawConfig = {}, mediaType = 'anime') {
     };
   }
 
-  const base = computeStats(list, rawConfig);
+  const base = computeStats(list, rawConfig, mediaType);
   if (mediaType === 'book') {
     return {
       total: list.length,

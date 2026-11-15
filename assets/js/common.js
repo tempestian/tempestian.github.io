@@ -104,83 +104,113 @@
         { id: 'impact', label: 'Düşünsel Tortu & Kalıcılık', weight: 0.10, desc: 'Kitap kapağı kapandığında zihne ektiği felsefi veya insani tohum' }
       ]
     },
+    SCALE_MIN: 0.1,
+    SCALE_MAX: 10,
+    /**
+     * Kriter puanlarını ağırlıklı olarak 10 üzerinden hesaplar.
+     * Her kriter 0.1 - 10.0 aralığında değerlendirilir.
+     */
     computeScore(criteria, subScores) {
       if (!subScores || typeof subScores !== 'object') return null;
       let totalScore = 0;
       let totalWeight = 0;
       for (const c of criteria) {
-        const star = Number(subScores[c.id]);
-        if (!isNaN(star) && star >= 1 && star <= 5) {
-          totalScore += star * 2 * c.weight;
+        const val = Number(subScores[c.id]);
+        if (!isNaN(val) && val > 0 && val <= 10) {
+          totalScore += val * c.weight;
           totalWeight += c.weight;
         }
       }
       if (totalWeight <= 0) return null;
       return Math.round((totalScore / totalWeight) * 10) / 10;
     },
+    /**
+     * Kriter haritasını ağırlıklı ortalaması hedef 10'luk puana tam oturacak şekilde ±0.1 adımlarla dengeler.
+     */
+    _calibrateSubScores(criteria, rawMap, targetScore, emphasisMap = {}) {
+      const target = Math.round(Math.max(0.1, Math.min(10.0, Number(targetScore))) * 10) / 10;
+      const clamp10 = v => Math.round(Math.max(0.1, Math.min(10.0, v)) * 10) / 10;
+      const out = {};
+      for (const c of criteria) {
+        const raw = Number(rawMap[c.id]);
+        out[c.id] = clamp10(isNaN(raw) || raw <= 0 ? target : raw);
+      }
+
+      for (let step = 0; step < 60; step++) {
+        const cur = this.computeScore(criteria, out);
+        if (cur == null) break;
+        const diff = Math.round((target - cur) * 10) / 10;
+        if (Math.abs(diff) < 1e-6) break;
+
+        const dir = diff > 0 ? 0.1 : -0.1;
+        let bestId = null;
+        let bestPenalty = Infinity;
+
+        for (const c of criteria) {
+          const nextVal = Math.round((out[c.id] + dir) * 10) / 10;
+          if (nextVal < 0.1 || nextVal > 10.0) continue;
+          const emp = emphasisMap[c.id] || 0;
+          const dirAffinity = dir > 0 ? -emp : emp;
+          const distFromTarget = Math.abs(nextVal - target) * 0.15;
+          const weightBias = -c.weight * 0.05;
+          const penalty = dirAffinity + distFromTarget + weightBias;
+          if (penalty < bestPenalty) {
+            bestPenalty = penalty;
+            bestId = c.id;
+          }
+        }
+        if (!bestId) break;
+        out[bestId] = Math.round((out[bestId] + dir) * 10) / 10;
+      }
+      return out;
+    },
+    /**
+     * Genel 10'luk puandan (örn: 1.0, 3.1, 5.3, 9.9) seçili arketip profiline uygun 0.1-10.0 kriter dağılımı türetir.
+     */
     deriveSubScores(typeKey, targetScore, profile = 'balanced') {
       const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
-      if (!criteria || targetScore == null || isNaN(targetScore) || Number(targetScore) < 1.0) return null;
-      const target = Math.max(2.0, Math.min(10.0, Number(targetScore)));
-      const n = criteria.length;
+      if (!criteria || targetScore == null || isNaN(targetScore) || Number(targetScore) <= 0) return null;
+      const target = Math.round(Math.max(0.1, Math.min(10.0, Number(targetScore))) * 10) / 10;
 
-      const profileWeights = {
-        action: { visuals: 2.2, sound: 1.6, enjoyment: 1.4, directing: 1.5, art: 2.0, story: 0.6, world: 0.8, characters: 0.8, prose: 0.5 },
-        story: { story: 2.2, world: 1.8, characters: 1.2, prose: 2.0, visuals: 0.7, sound: 0.6, enjoyment: 1.0, art: 0.8 },
-        character: { characters: 2.2, enjoyment: 1.8, acting: 2.0, impact: 1.5, story: 1.2, visuals: 0.7, sound: 0.7, world: 0.7, prose: 1.0 },
-        balanced: {}
+      if (profile === 'balanced') {
+        const flat = {};
+        for (const c of criteria) flat[c.id] = target;
+        return flat;
+      }
+
+      const profileOffsets = {
+        action: { visuals: 0.9, sound: 0.5, enjoyment: 0.4, directing: 0.6, art: 0.8, production: 0.7, pacing: 0.5, story: -0.7, world: -0.3, characters: -0.4, acting: -0.4, prose: -0.7 },
+        story: { story: 0.9, world: 0.6, prose: 0.8, characters: 0.2, impact: 0.3, visuals: -0.6, sound: -0.6, art: -0.5, pacing: -0.3, production: -0.5 },
+        character: { characters: 0.9, acting: 0.8, enjoyment: 0.5, impact: 0.6, music_finale: 0.4, story: 0.1, visuals: -0.5, sound: -0.4, world: -0.5, directing: -0.3, prose: 0.1 }
       }[profile] || {};
 
-      let bestCombo = null;
-      let minDiff = Infinity;
-      let bestMetric = -Infinity;
+      let totalW = 0;
+      let weightedOffsetSum = 0;
+      for (const c of criteria) {
+        totalW += c.weight;
+        weightedOffsetSum += (profileOffsets[c.id] || 0) * c.weight;
+      }
+      const meanOffset = totalW > 0 ? weightedOffsetSum / totalW : 0;
 
-      function recurse(idx, current) {
-        if (idx === n) {
-          let sum = 0;
-          let totalW = 0;
-          for (let i = 0; i < n; i++) {
-            sum += current[i] * 2 * criteria[i].weight;
-            totalW += criteria[i].weight;
-          }
-          const score = Math.round((sum / totalW) * 10) / 10;
-          const diff = Math.abs(score - target);
-
-          let metric = 0;
-          if (profile === 'balanced') {
-            const avg = current.reduce((a, b) => a + b, 0) / n;
-            const variance = current.reduce((a, b) => a + Math.pow(b - avg, 2), 0);
-            metric = -variance;
-          } else {
-            for (let i = 0; i < n; i++) {
-              const cid = criteria[i].id;
-              const pw = profileWeights[cid] || 1.0;
-              metric += current[i] * pw;
-            }
-          }
-
-          if (diff < minDiff || (Math.abs(diff - minDiff) < 1e-6 && metric > bestMetric)) {
-            minDiff = diff;
-            bestMetric = metric;
-            bestCombo = [...current];
-          }
-          return;
-        }
-        for (let s = 1; s <= 5; s++) {
-          current.push(s);
-          recurse(idx + 1, current);
-          current.pop();
+      const centered = {};
+      let scale = 1.0;
+      const minBound = target >= 1.0 ? 1.0 : 0.1;
+      for (const c of criteria) {
+        const d = (profileOffsets[c.id] || 0) - meanOffset;
+        centered[c.id] = d;
+        if (d > 0 && target + d * scale > 10.0) {
+          scale = Math.min(scale, (10.0 - target) / d);
+        } else if (d < 0 && target + d * scale < minBound) {
+          scale = Math.min(scale, (target - minBound) / (-d));
         }
       }
+      scale = Math.max(0, scale);
 
-      recurse(0, []);
-
-      if (!bestCombo) return null;
-      const res = {};
-      for (let i = 0; i < n; i++) {
-        res[criteria[i].id] = bestCombo[i];
+      const initial = {};
+      for (const c of criteria) {
+        initial[c.id] = Math.round((target + centered[c.id] * scale) * 10) / 10;
       }
-      return res;
+      return this._calibrateSubScores(criteria, initial, target, centered);
     },
     computeWeightedSubScores(typeKey, item) {
       if (!item) return null;
@@ -188,10 +218,10 @@
       if (!criteria) return null;
 
       const parts = Array.isArray(item.parts) ? item.parts : [];
-      const ratedParts = parts.filter(p => p && p.subScores && typeof p.subScores === 'object' && Object.values(p.subScores).some(v => v != null && v > 0));
+      const ratedParts = parts.filter(p => p && p.subScores && typeof p.subScores === 'object' && Object.values(p.subScores).some(v => v != null && Number(v) > 0));
 
       if (ratedParts.length === 0) {
-        return (item.subScores && typeof item.subScores === 'object' && Object.values(item.subScores).some(v => v != null && v > 0))
+        return (item.subScores && typeof item.subScores === 'object' && Object.values(item.subScores).some(v => v != null && Number(v) > 0))
           ? { ...item.subScores }
           : null;
       }
@@ -219,83 +249,47 @@
         let cSum = 0;
         let cWeight = 0;
         for (const p of ratedParts) {
-          const star = Number(p.subScores[c.id]);
-          if (!isNaN(star) && star >= 1 && star <= 5) {
+          const val = Number(p.subScores[c.id]);
+          if (!isNaN(val) && val > 0 && val <= 10) {
             let w = 1.0;
             if (p.kind === 'movie' || p.format === 'MOVIE') w = 0.35;
             else if (p.kind === 'other' || ['OVA', 'SPECIAL', 'TV_SHORT'].includes(p.format)) w = 0.15;
-            cSum += star * w;
+            cSum += val * w;
             cWeight += w;
           }
         }
-        continuousAvg[c.id] = cWeight > 0 ? cSum / cWeight : 3;
+        continuousAvg[c.id] = cWeight > 0 ? cSum / cWeight : 6;
       }
 
-      const targetScore = totalPartWeight > 0 ? Math.round((weightedSumScore / totalPartWeight) * 10) / 10 : (Number(item.score) || 5);
+      const targetScore = totalPartWeight > 0
+        ? Math.round((weightedSumScore / totalPartWeight) * 10) / 10
+        : (Number(item.score) || 5);
 
-      const n = criteria.length;
-      const options = criteria.map(c => {
-        const a = continuousAvg[c.id];
-        const fl = Math.max(1, Math.min(5, Math.floor(a)));
-        const ce = Math.max(1, Math.min(5, Math.ceil(a)));
-        const set = new Set([fl, ce]);
-        if (fl > 1) set.add(fl - 1);
-        if (ce < 5) set.add(ce + 1);
-        return Array.from(set);
-      });
-
-      let bestCombo = null;
-      let minDiffToTarget = Infinity;
-      let minDeviationFromAvg = Infinity;
-
-      function recurse(idx, current) {
-        if (idx === n) {
-          let sum = 0, tw = 0, dev = 0;
-          for (let i = 0; i < n; i++) {
-            const val = current[i];
-            sum += val * 2 * criteria[i].weight;
-            tw += criteria[i].weight;
-            const diff = val - continuousAvg[criteria[i].id];
-            dev += diff * diff;
-          }
-          const s = Math.round((sum / tw) * 10) / 10;
-          const targetDiff = Math.abs(s - targetScore);
-          if (targetDiff < minDiffToTarget || (Math.abs(targetDiff - minDiffToTarget) < 1e-6 && dev < minDeviationFromAvg)) {
-            minDiffToTarget = targetDiff;
-            minDeviationFromAvg = dev;
-            bestCombo = [...current];
-          }
-          return;
-        }
-        for (const val of options[idx]) {
-          current.push(val);
-          recurse(idx + 1, current);
-          current.pop();
-        }
+      const roundedMap = {};
+      for (const c of criteria) {
+        roundedMap[c.id] = Math.round(Math.max(0.1, Math.min(10.0, continuousAvg[c.id])) * 10) / 10;
       }
-      recurse(0, []);
-
-      if (!bestCombo) return null;
-      const res = {};
-      for (let i = 0; i < n; i++) {
-        res[criteria[i].id] = bestCombo[i];
-      }
-      return res;
+      return this._calibrateSubScores(criteria, roundedMap, targetScore);
     },
     renderBreakdownGrid(typeKey, subScores) {
       const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
       if (!criteria) return '';
       return criteria.map(c => {
-        const star = Number(subScores && subScores[c.id]) || 0;
-        const filledStars = '★'.repeat(star) + '☆'.repeat(5 - star);
+        const raw = Number(subScores && subScores[c.id]) || 0;
+        const val = raw > 0 ? Math.max(0.1, Math.min(10, raw)) : 0;
+        const pct = Math.round((val / 10) * 100);
         const weightPct = Math.round(c.weight * 100);
+        const tierCls = val >= 9 ? ' tier-master' : val >= 7.5 ? ' tier-high' : val >= 5 ? ' tier-mid' : val > 0 ? ' tier-low' : '';
+        const valText = val > 0 ? `${val.toFixed(1)}/10` : '-';
         return `
-          <div class="sh-rb-item" title="${c.desc} (Ağırlık: %${weightPct})">
+          <div class="sh-rb-item${tierCls}" title="${c.desc} (Ağırlık: %${weightPct})">
             <div class="sh-rb-top">
               <span class="sh-rb-lbl">${c.label}</span>
-              <span class="sh-rb-num">${star > 0 ? star + '/5' : '-'}</span>
+              <span class="sh-rb-num">${valText}</span>
             </div>
-            <div class="sh-rb-stars">${filledStars}</div>
+            <div class="sh-rb-bar" role="progressbar" aria-valuenow="${val}" aria-valuemin="0" aria-valuemax="10">
+              <div class="sh-rb-bar-fill" style="width:${pct}%"></div>
+            </div>
           </div>
         `;
       }).join('');

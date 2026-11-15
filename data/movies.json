@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-11-08",
+  "updated": "2026-11-15",
   "source": "site-first:movie",
   "customGenreCatalog": [
     "Bilim Kurgu",
@@ -64,7 +64,8 @@
       "8": 0,
       "9": 2,
       "10": 0
-    }
+    },
+    "episodes": 3
   },
   "items": [
     {

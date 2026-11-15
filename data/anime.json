@@ -243,7 +243,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 4.9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 6,
+            "visuals": 6,
+            "sound": 4,
+            "enjoyment": 6,
+            "characters": 4
+          }
         },
         {
           "id": 138106,
@@ -267,7 +275,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 6,
+            "visuals": 6,
+            "sound": 4,
+            "enjoyment": 8
+          }
         },
         {
           "id": 163943,
@@ -291,7 +307,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 5.9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 4,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 6
+          }
         },
         {
           "id": 187921,
@@ -304,7 +328,15 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 7.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 8,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 8,
+            "characters": 6
+          }
         },
         {
           "id": 213580,
@@ -320,12 +352,12 @@
       ],
       "addedAt": "2026-10",
       "subScores": {
-        "story": 6,
+        "story": 5.5,
         "world": 6,
-        "characters": 6,
-        "visuals": 6,
-        "sound": 6,
-        "enjoyment": 6
+        "characters": 5.5,
+        "visuals": 7,
+        "sound": 5.5,
+        "enjoyment": 7
       },
       "adminModified": true,
       "lockedFields": [
@@ -379,7 +411,15 @@
           "year": 2018,
           "score": 10,
           "repeat": 21,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 106509,
@@ -393,7 +433,15 @@
           "year": 2019,
           "score": 10,
           "repeat": 5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 108511,
@@ -407,7 +455,15 @@
           "year": 2021,
           "score": 10,
           "repeat": 21,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 116741,
@@ -421,7 +477,15 @@
           "year": 2021,
           "score": 10,
           "repeat": 3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 116742,
@@ -435,7 +499,15 @@
           "year": 2021,
           "score": 10,
           "repeat": 20,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 146503,
@@ -448,7 +520,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 161802,
@@ -462,7 +542,15 @@
           "year": 2023,
           "score": 10,
           "repeat": 5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 156822,
@@ -476,7 +564,15 @@
           "year": 2024,
           "score": 10,
           "repeat": 6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 182206,
@@ -489,7 +585,15 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 182205,
@@ -502,7 +606,15 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 217330,
@@ -515,7 +627,15 @@
           "release": "NOT_YET_RELEASED",
           "year": 2027,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 217331,
@@ -528,7 +648,15 @@
           "release": "NOT_YET_RELEASED",
           "year": 2027,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2026-10",
@@ -588,7 +716,15 @@
           "release": "FINISHED",
           "year": 2024,
           "score": 6.3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 6,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 8
+          }
         },
         {
           "id": 181641,
@@ -661,7 +797,15 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 7.3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 6,
+            "characters": 8,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2026-05",
@@ -718,7 +862,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 5.8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 6,
+            "characters": 8,
+            "visuals": 4,
+            "sound": 8,
+            "enjoyment": 6
+          }
         },
         {
           "id": 102969,
@@ -731,16 +883,24 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 5.6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 4,
+            "characters": 6,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 6
+          }
         }
       ],
       "addedAt": "2026-02",
       "subScores": {
-        "story": 4,
-        "world": 6,
-        "characters": 8,
-        "visuals": 4,
-        "sound": 8,
+        "story": 4.3,
+        "world": 5.7,
+        "characters": 7.7,
+        "visuals": 4.3,
+        "sound": 7.7,
         "enjoyment": 6
       },
       "adminModified": true,
@@ -786,7 +946,15 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 7.9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 6,
+            "characters": 8,
+            "visuals": 10,
+            "sound": 8,
+            "enjoyment": 8
+          }
         }
       ],
       "addedAt": "2026-02",
@@ -847,7 +1015,15 @@
           "release": "FINISHED",
           "year": 1992,
           "score": 3.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 2,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 2
+          }
         }
       ],
       "addedAt": "2026-01",
@@ -902,7 +1078,15 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 6.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 4,
+            "characters": 4,
+            "visuals": 10,
+            "sound": 8,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2026-01",
@@ -957,7 +1141,15 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 4.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "characters": 2,
+            "world": 2,
+            "story": 4,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 6
+          }
         },
         {
           "id": 124858,
@@ -970,7 +1162,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 3.3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 2,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 2
+          }
         },
         {
           "id": 138700,
@@ -986,10 +1186,10 @@
       ],
       "addedAt": "2026-01",
       "subScores": {
-        "story": 2,
+        "story": 3,
         "world": 2,
         "characters": 2,
-        "visuals": 10,
+        "visuals": 8,
         "sound": 6,
         "enjoyment": 4
       },
@@ -1041,7 +1241,15 @@
           "release": "FINISHED",
           "year": 2017,
           "score": 8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 6,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 98186,
@@ -1065,7 +1273,15 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 8.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "sound": 10,
+            "visuals": 8,
+            "enjoyment": 8
+          }
         },
         {
           "id": 135866,
@@ -1078,7 +1294,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 6.9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 10,
+            "enjoyment": 8
+          }
         },
         {
           "id": 135865,
@@ -1105,12 +1329,12 @@
       ],
       "addedAt": "2026-01",
       "subScores": {
-        "story": 8,
-        "world": 6,
-        "characters": 6,
+        "story": 7.2,
+        "world": 6.3,
+        "characters": 7.1,
         "visuals": 8,
         "sound": 10,
-        "enjoyment": 10
+        "enjoyment": 8.9
       },
       "adminModified": true,
       "lockedFields": [
@@ -1155,7 +1379,15 @@
           "release": "FINISHED",
           "year": 2001,
           "score": 7.6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 6
+          }
         }
       ],
       "addedAt": "2026-01",
@@ -1215,7 +1447,15 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 159074,
@@ -1228,7 +1468,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 170893,
@@ -1241,7 +1489,15 @@
           "release": "FINISHED",
           "year": 2024,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 170892,
@@ -1254,7 +1510,15 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 189326,
@@ -1267,7 +1531,15 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2026-01",
@@ -1334,7 +1606,15 @@
           "release": "FINISHED",
           "year": 2006,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 1953,
@@ -1358,7 +1638,15 @@
           "release": "FINISHED",
           "year": 2008,
           "score": 9.5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 5163,
@@ -1492,7 +1780,15 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 8.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 8,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 8
+          }
         },
         {
           "id": 117408,
@@ -1519,12 +1815,12 @@
       ],
       "addedAt": "2025-12",
       "subScores": {
-        "story": 8,
-        "world": 10,
+        "story": 8.6,
+        "world": 9.6,
         "characters": 10,
         "visuals": 10,
         "sound": 10,
-        "enjoyment": 10
+        "enjoyment": 9.7
       },
       "adminModified": true,
       "lockedFields": [
@@ -1571,7 +1867,15 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 5.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 4,
+            "visuals": 6,
+            "sound": 4,
+            "enjoyment": 6
+          }
         }
       ],
       "addedAt": "2025-12",
@@ -1626,7 +1930,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 3.9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 4,
+            "characters": 4,
+            "visuals": 8,
+            "sound": 4,
+            "enjoyment": 2
+          }
         },
         {
           "id": 143082,
@@ -1639,7 +1951,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 1,
+            "characters": 1,
+            "visuals": 1,
+            "sound": 1,
+            "enjoyment": 1
+          }
         },
         {
           "id": 146743,
@@ -1652,17 +1972,25 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 1,
+            "characters": 1,
+            "visuals": 1,
+            "sound": 1,
+            "enjoyment": 1
+          }
         }
       ],
       "addedAt": "2025-12",
       "subScores": {
-        "story": 2,
-        "world": 4,
-        "characters": 4,
-        "visuals": 8,
-        "sound": 4,
-        "enjoyment": 2
+        "story": 1.7,
+        "world": 2.9,
+        "characters": 3,
+        "visuals": 5.7,
+        "sound": 3,
+        "enjoyment": 1.7
       },
       "adminModified": true,
       "lockedFields": [
@@ -1707,7 +2035,15 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 4,
+            "visuals": 2,
+            "sound": 8,
+            "enjoyment": 2
+          }
         },
         {
           "id": 17879,
@@ -1731,7 +2067,14 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 6,
+            "characters": 2,
+            "visuals": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 21014,
@@ -1747,12 +2090,12 @@
       ],
       "addedAt": "2025-10",
       "subScores": {
-        "story": 2,
-        "world": 2,
-        "characters": 4,
-        "visuals": 4,
+        "story": 2.5,
+        "world": 3,
+        "characters": 3.4,
+        "visuals": 2.5,
         "sound": 8,
-        "enjoyment": 2
+        "enjoyment": 2.5
       },
       "adminModified": true,
       "lockedFields": [
@@ -1801,7 +2144,15 @@
           "release": "FINISHED",
           "year": 2024,
           "score": 6.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 4,
+            "characters": 8,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 8
+          }
         }
       ],
       "addedAt": "2025-09",
@@ -1860,7 +2211,15 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 7.6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 8,
+            "visuals": 10,
+            "sound": 8,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2025-09",
@@ -2054,7 +2413,15 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 5.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 8
+          }
         },
         {
           "id": 127371,
@@ -2089,7 +2456,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 10
+          }
         },
         {
           "id": 166104,
@@ -2108,9 +2483,9 @@
         "story": 6,
         "world": 6,
         "characters": 6,
-        "visuals": 6,
-        "sound": 8,
-        "enjoyment": 10
+        "visuals": 8,
+        "sound": 6,
+        "enjoyment": 9
       },
       "adminModified": true,
       "lockedFields": [
@@ -2155,7 +2530,15 @@
           "release": "FINISHED",
           "year": 2010,
           "score": 6.5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 4,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 10
+          }
         },
         {
           "id": 16646,
@@ -2308,7 +2691,15 @@
           "release": "FINISHED",
           "year": 2012,
           "score": 6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 6,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 6
+          }
         },
         {
           "id": 14741,
@@ -2321,7 +2712,15 @@
           "release": "FINISHED",
           "year": 2012,
           "score": 8.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 6,
+            "visuals": 10,
+            "sound": 8,
+            "enjoyment": 10
+          }
         },
         {
           "id": 15879,
@@ -2334,7 +2733,15 @@
           "release": "FINISHED",
           "year": 2012,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 16934,
@@ -2347,7 +2754,15 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 8
+          }
         },
         {
           "id": 19021,
@@ -2360,7 +2775,15 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 7,
+            "world": 7,
+            "characters": 7,
+            "visuals": 7,
+            "sound": 7,
+            "enjoyment": 7
+          }
         },
         {
           "id": 20582,
@@ -2373,7 +2796,15 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 6,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 6
+          }
         },
         {
           "id": 18671,
@@ -2386,7 +2817,15 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 8.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 6,
+            "characters": 8,
+            "visuals": 10,
+            "sound": 8,
+            "enjoyment": 10
+          }
         },
         {
           "id": 20660,
@@ -2432,17 +2871,25 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 8.9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 8,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2025-05",
       "subScores": {
-        "story": 8,
-        "world": 8,
-        "characters": 8,
-        "visuals": 8,
-        "sound": 8,
-        "enjoyment": 10
+        "story": 7.2,
+        "world": 6.8,
+        "characters": 6.9,
+        "visuals": 8.1,
+        "sound": 7.2,
+        "enjoyment": 8.1
       },
       "adminModified": true,
       "lockedFields": [
@@ -2487,7 +2934,15 @@
           "release": "FINISHED",
           "year": 2017,
           "score": 7.5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 8
+          }
         },
         {
           "id": 145545,
@@ -2500,7 +2955,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 6.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 8,
+            "characters": 6,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 6
+          }
         },
         {
           "id": 146066,
@@ -2513,7 +2976,15 @@
           "release": "FINISHED",
           "year": 2024,
           "score": 7.5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 8
+          }
         },
         {
           "id": 180745,
@@ -2526,7 +2997,15 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 6.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 6,
+            "characters": 8,
+            "visuals": 2,
+            "sound": 8,
+            "enjoyment": 8
+          }
         },
         {
           "id": 213477,
@@ -2542,12 +3021,12 @@
       ],
       "addedAt": "2025-03",
       "subScores": {
-        "story": 6,
-        "world": 8,
-        "characters": 8,
-        "visuals": 6,
-        "sound": 6,
-        "enjoyment": 8
+        "story": 7.5,
+        "world": 7.5,
+        "characters": 7.5,
+        "visuals": 5,
+        "sound": 6.5,
+        "enjoyment": 7.5
       },
       "adminModified": true,
       "lockedFields": [
@@ -2833,7 +3312,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 7.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 4,
+            "enjoyment": 10
+          }
         },
         {
           "id": 163132,
@@ -2846,17 +3333,25 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 4.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 6,
+            "sound": 4,
+            "enjoyment": 8
+          }
         }
       ],
       "addedAt": "2024-08",
       "subScores": {
         "story": 6,
         "world": 6,
-        "characters": 4,
-        "visuals": 8,
+        "characters": 5,
+        "visuals": 7,
         "sound": 4,
-        "enjoyment": 10
+        "enjoyment": 9
       },
       "adminModified": true,
       "lockedFields": [
@@ -3104,7 +3599,15 @@
           "release": "FINISHED",
           "year": 2001,
           "score": 5.6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 6,
+            "characters": 8,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 8
+          }
         }
       ],
       "addedAt": "2024-03",
@@ -3238,7 +3741,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 7.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 6,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 8
+          }
         }
       ],
       "addedAt": "2024-02",
@@ -3299,7 +3810,15 @@
           "year": 2023,
           "score": 8.4,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 166531,
@@ -3312,7 +3831,15 @@
           "release": "FINISHED",
           "year": 2024,
           "score": 7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 8,
+            "characters": 4,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 6
+          }
         },
         {
           "id": 182587,
@@ -3340,10 +3867,10 @@
       ],
       "addedAt": "2023-06",
       "subScores": {
-        "story": 6,
+        "story": 7,
         "world": 8,
-        "characters": 8,
-        "visuals": 8,
+        "characters": 6,
+        "visuals": 9,
         "sound": 10,
         "enjoyment": 8
       },
@@ -3398,7 +3925,15 @@
           "release": "FINISHED",
           "year": 2010,
           "score": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 2,
+            "visuals": 2,
+            "sound": 2,
+            "enjoyment": 2
+          }
         },
         {
           "id": 8465,
@@ -3567,7 +4102,15 @@
           "release": "FINISHED",
           "year": 2004,
           "score": 9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2023-02",
@@ -3622,7 +4165,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 5.8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 4,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 2,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2023-01",
@@ -3681,7 +4232,15 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 5.8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 8,
+            "characters": 6,
+            "visuals": 6,
+            "sound": 4,
+            "enjoyment": 2
+          }
         },
         {
           "id": 21305,
@@ -3897,7 +4456,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 0.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 0.1,
+            "world": 0.1,
+            "characters": 0.1,
+            "visuals": 0.1,
+            "sound": 0.1,
+            "enjoyment": 0.1
+          }
         },
         {
           "id": 127720,
@@ -3910,7 +4477,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 0.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 0.1,
+            "world": 0.1,
+            "characters": 0.1,
+            "visuals": 0.1,
+            "sound": 0.1,
+            "enjoyment": 0.1
+          }
         },
         {
           "id": 141534,
@@ -3976,7 +4551,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 0.1,
+        "world": 0.1,
+        "characters": 0.1,
+        "visuals": 0.1,
+        "sound": 0.1,
+        "enjoyment": 0.1
+      }
     },
     {
       "id": "al-127230",
@@ -4018,7 +4601,15 @@
           "year": 2022,
           "score": 6.1,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 8,
+            "characters": 2,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 6
+          }
         },
         {
           "id": 198726,
@@ -4042,7 +4633,15 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 8.3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 6,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 204429,
@@ -4058,12 +4657,12 @@
       ],
       "addedAt": "2022-10",
       "subScores": {
-        "story": 4,
+        "story": 5,
         "world": 8,
-        "characters": 4,
+        "characters": 3,
         "visuals": 10,
         "sound": 10,
-        "enjoyment": 8
+        "enjoyment": 7
       },
       "adminModified": true,
       "lockedFields": [
@@ -4116,7 +4715,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 4.6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 8,
+            "characters": 2,
+            "visuals": 10,
+            "sound": 4,
+            "enjoyment": 2
+          }
         }
       ],
       "addedAt": "2022-09",
@@ -4179,7 +4786,15 @@
           "year": 2013,
           "score": 10,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 18753,
@@ -4192,7 +4807,15 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 20698,
@@ -4206,7 +4829,15 @@
           "year": 2015,
           "score": 10,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 21769,
@@ -4219,7 +4850,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 108489,
@@ -4233,7 +4872,15 @@
           "year": 2020,
           "score": 10,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 128643,
@@ -4246,7 +4893,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2022-09",
@@ -4300,7 +4955,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 2.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 2,
+            "visuals": 2,
+            "sound": 4,
+            "enjoyment": 2
+          }
         },
         {
           "id": 104200,
@@ -4377,7 +5040,15 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 4.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 2,
+            "characters": 2,
+            "visuals": 8,
+            "sound": 4,
+            "enjoyment": 8
+          }
         }
       ],
       "addedAt": "2022-07",
@@ -4437,7 +5108,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2022-07",
@@ -4497,7 +5176,15 @@
           "release": "FINISHED",
           "year": 2012,
           "score": 9.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 10,
+            "characters": 8,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 20474,
@@ -4510,7 +5197,15 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 8.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 10,
+            "characters": 6,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 20799,
@@ -4523,7 +5218,15 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 9.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 10,
+            "characters": 8,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 21450,
@@ -4536,7 +5239,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 21778,
@@ -4560,7 +5271,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 131942,
@@ -4573,7 +5292,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 9.6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 8,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 146722,
@@ -4586,7 +5313,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 190327,
@@ -4599,7 +5334,15 @@
           "release": "FINISHED",
           "year": 2026,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 210482,
@@ -4616,9 +5359,9 @@
       ],
       "addedAt": "2022-07",
       "subScores": {
-        "story": 10,
+        "story": 9.3,
         "world": 10,
-        "characters": 8,
+        "characters": 8.8,
         "visuals": 10,
         "sound": 10,
         "enjoyment": 10
@@ -4789,7 +5532,15 @@
           "year": 2016,
           "score": 10,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 21780,
@@ -4824,7 +5575,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 108632,
@@ -4837,7 +5596,15 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 120700,
@@ -4861,7 +5628,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 128306,
@@ -4972,7 +5747,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 4.5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 4,
+            "characters": 6,
+            "visuals": 4,
+            "sound": 2,
+            "enjoyment": 2
+          }
         }
       ],
       "addedAt": "2022-06",
@@ -5034,7 +5817,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 6.5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 4
+          }
         },
         {
           "id": 21679,
@@ -5047,7 +5838,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 5.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 6,
+            "characters": 8,
+            "visuals": 6,
+            "sound": 4,
+            "enjoyment": 6
+          }
         },
         {
           "id": 21791,
@@ -5071,7 +5870,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 8.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 10,
+            "sound": 6,
+            "enjoyment": 8
+          }
         },
         {
           "id": 103223,
@@ -5084,7 +5891,15 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 7.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 6
+          }
         },
         {
           "id": 120150,
@@ -5108,7 +5923,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 7.8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 8
+          }
         },
         {
           "id": 163263,
@@ -5135,12 +5958,12 @@
       ],
       "addedAt": "2022-06",
       "subScores": {
-        "story": 6,
-        "world": 8,
-        "characters": 8,
-        "visuals": 8,
-        "sound": 4,
-        "enjoyment": 6
+        "story": 6.6,
+        "world": 7.1,
+        "characters": 7.5,
+        "visuals": 7.7,
+        "sound": 5.5,
+        "enjoyment": 6.2
       },
       "adminModified": true,
       "lockedFields": [
@@ -5192,7 +6015,15 @@
           "year": 2016,
           "score": 6.5,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 8,
+            "characters": 4,
+            "visuals": 8,
+            "sound": 4,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2022-05",
@@ -5564,7 +6395,15 @@
           "year": 2020,
           "score": 8,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 130588,
@@ -5577,7 +6416,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 4.3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 6,
+            "characters": 4,
+            "visuals": 6,
+            "sound": 2,
+            "enjoyment": 2
+          }
         },
         {
           "id": 130590,
@@ -5594,11 +6441,11 @@
       "addedAt": "2022-05",
       "subScores": {
         "story": 6,
-        "world": 6,
-        "characters": 6,
-        "visuals": 6,
+        "world": 7,
+        "characters": 5,
+        "visuals": 7,
         "sound": 6,
-        "enjoyment": 8
+        "enjoyment": 6
       },
       "adminModified": true,
       "lockedFields": [
@@ -5649,7 +6496,15 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 3.3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 4,
+            "characters": 2,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 6
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -5702,7 +6557,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 0.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 0.1,
+            "world": 0.1,
+            "characters": 0.1,
+            "visuals": 0.1,
+            "sound": 0.1,
+            "enjoyment": 0.1
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -5713,7 +6576,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 0.1,
+        "world": 0.1,
+        "characters": 0.1,
+        "visuals": 0.1,
+        "sound": 0.1,
+        "enjoyment": 0.1
+      }
     },
     {
       "id": "al-11111",
@@ -5753,7 +6624,15 @@
           "release": "FINISHED",
           "year": 2012,
           "score": 7.6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 4,
+            "enjoyment": 8
+          }
         },
         {
           "id": 11701,
@@ -5766,17 +6645,25 @@
           "release": "FINISHED",
           "year": 2012,
           "score": 5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2022-04",
       "subScores": {
-        "story": 8,
-        "world": 8,
-        "characters": 8,
-        "visuals": 8,
-        "sound": 4,
-        "enjoyment": 8
+        "story": 7.7,
+        "world": 7.6,
+        "characters": 7.6,
+        "visuals": 7.6,
+        "sound": 4.1,
+        "enjoyment": 7.6
       },
       "adminModified": true,
       "lockedFields": [
@@ -5831,7 +6718,15 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 8.8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 10,
+            "visuals": 8,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 18397,
@@ -5844,7 +6739,15 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 7,
+            "world": 7,
+            "characters": 7,
+            "visuals": 7,
+            "sound": 7,
+            "enjoyment": 7
+          }
         },
         {
           "id": 20691,
@@ -5868,7 +6771,15 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 8
+          }
         },
         {
           "id": 20692,
@@ -5903,7 +6814,15 @@
           "release": "FINISHED",
           "year": 2017,
           "score": 7.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 6,
+            "sound": 8,
+            "enjoyment": 8
+          }
         },
         {
           "id": 99634,
@@ -5938,7 +6857,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 8.5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 10,
+            "characters": 8,
+            "visuals": 6,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 104578,
@@ -5951,7 +6878,15 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 9.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 6,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 119113,
@@ -5975,7 +6910,15 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 9.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 8,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 131681,
@@ -5988,7 +6931,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 146984,
@@ -6001,7 +6952,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 162314,
@@ -6014,17 +6973,25 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2022-04",
       "subScores": {
-        "story": 10,
-        "world": 8,
-        "characters": 10,
-        "visuals": 8,
-        "sound": 8,
-        "enjoyment": 10
+        "story": 9,
+        "world": 9.3,
+        "characters": 9.3,
+        "visuals": 7.5,
+        "sound": 9.6,
+        "enjoyment": 9.6
       },
       "adminModified": true,
       "lockedFields": [
@@ -6071,7 +7038,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 3.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 2,
+            "characters": 4,
+            "visuals": 6,
+            "sound": 4,
+            "enjoyment": 2
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -6131,7 +7106,15 @@
           "release": "FINISHED",
           "year": 2004,
           "score": 4.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 6,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 8,
+            "enjoyment": 8
+          }
         },
         {
           "id": 834,
@@ -6210,7 +7193,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 7.8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 8,
+            "characters": 6,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 159322,
@@ -6249,11 +7240,11 @@
       "addedAt": "2022-04",
       "subScores": {
         "story": 4,
-        "world": 6,
-        "characters": 6,
-        "visuals": 6,
-        "sound": 10,
-        "enjoyment": 10
+        "world": 7,
+        "characters": 5,
+        "visuals": 7,
+        "sound": 9,
+        "enjoyment": 9
       },
       "adminModified": true,
       "lockedFields": [
@@ -6298,7 +7289,15 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 1,
+            "characters": 1,
+            "visuals": 1,
+            "sound": 1,
+            "enjoyment": 1
+          }
         },
         {
           "id": 20837,
@@ -6311,7 +7310,15 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 1,
+            "world": 1,
+            "characters": 1,
+            "visuals": 1,
+            "sound": 1,
+            "enjoyment": 1
+          }
         },
         {
           "id": 20900,
@@ -6324,7 +7331,15 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 2,
+            "visuals": 2,
+            "sound": 2,
+            "enjoyment": 2
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -6335,7 +7350,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 1.1,
+        "world": 1.1,
+        "characters": 1.1,
+        "visuals": 1.1,
+        "sound": 1.1,
+        "enjoyment": 1.1
+      }
     },
     {
       "id": "al-1535",
@@ -6377,7 +7400,15 @@
           "year": 2006,
           "score": 10,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 2994,
@@ -6390,17 +7421,25 @@
           "release": "FINISHED",
           "year": 2007,
           "score": 9.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 8,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 6
+          }
         }
       ],
       "addedAt": "2022-04",
       "subScores": {
         "story": 10,
         "world": 10,
-        "characters": 10,
+        "characters": 9.7,
         "visuals": 10,
         "sound": 10,
-        "enjoyment": 10
+        "enjoyment": 9.5
       },
       "adminModified": true,
       "lockedFields": [
@@ -6445,7 +7484,15 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 5.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 6,
+            "characters": 2,
+            "visuals": 10,
+            "sound": 8,
+            "enjoyment": 8
+          }
         },
         {
           "id": 112151,
@@ -6458,7 +7505,15 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 8.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 6,
+            "characters": 8,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 8
+          }
         },
         {
           "id": 129874,
@@ -6482,7 +7537,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 6.8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 4,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 8
+          }
         },
         {
           "id": 145139,
@@ -6495,7 +7558,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 4.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 2,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 2
+          }
         },
         {
           "id": 166240,
@@ -6544,12 +7615,12 @@
       ],
       "addedAt": "2022-04",
       "subScores": {
-        "story": 4,
-        "world": 6,
-        "characters": 4,
-        "visuals": 10,
-        "sound": 8,
-        "enjoyment": 6
+        "story": 5,
+        "world": 5.4,
+        "characters": 3.2,
+        "visuals": 9.4,
+        "sound": 8.8,
+        "enjoyment": 6.2
       },
       "adminModified": true,
       "lockedFields": [
@@ -6616,7 +7687,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 0.1,
+        "world": 0.1,
+        "characters": 0.1,
+        "visuals": 0.1,
+        "sound": 0.1,
+        "enjoyment": 0.1
+      }
     },
     {
       "id": "al-101347",
@@ -6656,7 +7735,15 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 8,
+            "characters": 8,
+            "visuals": 10,
+            "sound": 8,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -6715,7 +7802,15 @@
           "year": 2017,
           "score": 6.6,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 8,
+            "characters": 6,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 8
+          }
         },
         {
           "id": 149099,
@@ -6739,17 +7834,25 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 4.5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 8,
+            "characters": 2,
+            "visuals": 6,
+            "sound": 4,
+            "enjoyment": 2
+          }
         }
       ],
       "addedAt": "2022-04",
       "subScores": {
-        "story": 6,
+        "story": 5,
         "world": 8,
         "characters": 4,
         "visuals": 6,
-        "sound": 4,
-        "enjoyment": 4
+        "sound": 5,
+        "enjoyment": 5
       },
       "adminModified": true,
       "lockedFields": [
@@ -6792,7 +7895,15 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 8
+          }
         },
         {
           "id": 21328,
@@ -6816,7 +7927,15 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 6,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 6
+          }
         },
         {
           "id": 98572,
@@ -6829,7 +7948,15 @@
           "release": "FINISHED",
           "year": 2017,
           "score": 9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 9,
+            "world": 9,
+            "characters": 9,
+            "visuals": 9,
+            "sound": 9,
+            "enjoyment": 9
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -6840,7 +7967,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 8.3,
+        "world": 8.3,
+        "characters": 8.3,
+        "visuals": 8.3,
+        "sound": 8.3,
+        "enjoyment": 8.3
+      }
     },
     {
       "id": "al-113415",
@@ -6877,7 +8012,15 @@
           "release": "FINISHED",
           "year": 2020,
           "score": 3.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 2,
+            "visuals": 8,
+            "sound": 4,
+            "enjoyment": 2
+          }
         },
         {
           "id": 131573,
@@ -6890,7 +8033,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 4.9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 2,
+            "characters": 4,
+            "visuals": 8,
+            "sound": 4,
+            "enjoyment": 6
+          }
         },
         {
           "id": 145064,
@@ -6903,7 +8054,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 3.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 2,
+            "visuals": 10,
+            "sound": 4,
+            "enjoyment": 2
+          }
         },
         {
           "id": 192809,
@@ -6952,12 +8111,12 @@
       ],
       "addedAt": "2022-04",
       "subScores": {
-        "story": 2,
+        "story": 2.6,
         "world": 2,
-        "characters": 4,
-        "visuals": 8,
+        "characters": 2.3,
+        "visuals": 8.9,
         "sound": 4,
-        "enjoyment": 2
+        "enjoyment": 2.6
       },
       "adminModified": true,
       "lockedFields": [
@@ -7006,7 +8165,15 @@
           "year": 2019,
           "score": 9.3,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 112641,
@@ -7020,7 +8187,15 @@
           "year": 2020,
           "score": 9.3,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 125368,
@@ -7033,7 +8208,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 165557,
@@ -7058,7 +8241,15 @@
           "year": 2022,
           "score": 10,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 151384,
@@ -7071,7 +8262,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 9.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 8,
+            "enjoyment": 10,
+            "sound": 10
+          }
         },
         {
           "id": 194884,
@@ -7084,7 +8283,15 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 9.6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 8,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 205081,
@@ -7101,12 +8308,12 @@
       ],
       "addedAt": "2022-04",
       "subScores": {
-        "story": 10,
-        "world": 10,
-        "characters": 8,
-        "visuals": 10,
-        "sound": 10,
-        "enjoyment": 10
+        "story": 9.8,
+        "world": 9.7,
+        "characters": 8.9,
+        "visuals": 8.4,
+        "sound": 9.8,
+        "enjoyment": 9.8
       },
       "adminModified": true,
       "lockedFields": [
@@ -7152,7 +8359,15 @@
           "release": "FINISHED",
           "year": 2017,
           "score": 7.3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 8,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 10
+          }
         },
         {
           "id": 100876,
@@ -7165,7 +8380,15 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 6.9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 8,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 6
+          }
         },
         {
           "id": 141351,
@@ -7233,7 +8456,15 @@
           "release": "FINISHED",
           "year": 1989,
           "score": 5.6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 6,
+            "characters": 4,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 8
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -7288,7 +8519,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 4.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 6,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 4
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -7346,7 +8585,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 6.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 6,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 10
+          }
         },
         {
           "id": 154768,
@@ -7415,7 +8662,15 @@
           "release": "FINISHED",
           "year": 1988,
           "score": 7.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 6,
+            "enjoyment": 8
+          }
         },
         {
           "id": 2488,
@@ -7496,7 +8751,15 @@
           "release": "RELEASING",
           "year": 1999,
           "score": 6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 6,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 6
+          }
         },
         {
           "id": 459,
@@ -8024,7 +9287,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 6,
+        "world": 6,
+        "characters": 6,
+        "visuals": 6,
+        "sound": 6,
+        "enjoyment": 6
+      }
     },
     {
       "id": "al-2890",
@@ -8060,7 +9331,15 @@
           "release": "FINISHED",
           "year": 2008,
           "score": 4.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 4,
+            "characters": 4,
+            "visuals": 6,
+            "sound": 8,
+            "enjoyment": 6
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -8121,7 +9400,15 @@
           "year": 2018,
           "score": 7.7,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 6,
+            "characters": 8,
+            "visuals": 6,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 104157,
@@ -8134,7 +9421,15 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 9.1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 8,
+            "characters": 10,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 10
+          }
         },
         {
           "id": 154967,
@@ -8183,11 +9478,11 @@
       ],
       "addedAt": "2022-04",
       "subScores": {
-        "story": 8,
-        "world": 8,
-        "characters": 8,
-        "visuals": 6,
-        "sound": 10,
+        "story": 8.5,
+        "world": 6.5,
+        "characters": 8.5,
+        "visuals": 6.5,
+        "sound": 9.5,
         "enjoyment": 10
       },
       "adminModified": true,
@@ -8240,7 +9535,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 7.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 4,
+            "sound": 6,
+            "enjoyment": 8
+          }
         },
         {
           "id": 98635,
@@ -8253,7 +9556,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 7.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 6,
+            "characters": 10,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 10
+          }
         },
         {
           "id": 108939,
@@ -8269,12 +9580,12 @@
       ],
       "addedAt": "2022-04",
       "subScores": {
-        "story": 10,
-        "world": 6,
-        "characters": 8,
-        "visuals": 4,
+        "story": 8,
+        "world": 7.7,
+        "characters": 8.3,
+        "visuals": 4.3,
         "sound": 6,
-        "enjoyment": 8
+        "enjoyment": 8.3
       },
       "adminModified": true,
       "lockedFields": [
@@ -8324,7 +9635,15 @@
           "year": 2022,
           "score": 7.8,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "world": 8,
+            "story": 8,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 10,
+            "enjoyment": 8
+          }
         },
         {
           "id": 142838,
@@ -8338,7 +9657,15 @@
           "year": 2022,
           "score": 7.8,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "enjoyment": 8,
+            "story": 8,
+            "world": 8,
+            "characters": 6,
+            "visuals": 8,
+            "sound": 10
+          }
         },
         {
           "id": 158927,
@@ -8351,7 +9678,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 8.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "enjoyment": 10,
+            "sound": 8,
+            "visuals": 8,
+            "characters": 8,
+            "world": 8,
+            "story": 8
+          }
         },
         {
           "id": 158928,
@@ -8364,7 +9699,15 @@
           "release": "FINISHED",
           "year": 2023,
           "score": 9.2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 8,
+            "characters": 8,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 177937,
@@ -8377,17 +9720,25 @@
           "release": "FINISHED",
           "year": 2025,
           "score": 8.7,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "characters": 8,
+            "world": 8,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2022-04",
       "subScores": {
-        "story": 8,
+        "story": 8.2,
         "world": 8,
-        "characters": 8,
-        "visuals": 8,
-        "sound": 10,
-        "enjoyment": 8
+        "characters": 7.1,
+        "visuals": 8.6,
+        "sound": 9.5,
+        "enjoyment": 9.1
       },
       "adminModified": true,
       "lockedFields": [
@@ -8437,7 +9788,15 @@
           "year": 2022,
           "score": 9.8,
           "repeat": 2,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 8,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -8496,7 +9855,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 6,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 6,
+            "characters": 6,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 6
+          }
         },
         {
           "id": 98034,
@@ -8509,7 +9876,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 104580,
@@ -8522,7 +9897,15 @@
           "release": "FINISHED",
           "year": 2018,
           "score": 5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         },
         {
           "id": 112625,
@@ -8535,7 +9918,15 @@
           "release": "FINISHED",
           "year": 2019,
           "score": 5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 5,
+            "world": 5,
+            "characters": 5,
+            "visuals": 5,
+            "sound": 5,
+            "enjoyment": 5
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -8546,7 +9937,15 @@
         "status",
         "genres",
         "addedAt"
-      ]
+      ],
+      "subScores": {
+        "story": 4.6,
+        "world": 4.6,
+        "characters": 4.6,
+        "visuals": 4.6,
+        "sound": 4.6,
+        "enjoyment": 4.6
+      }
     },
     {
       "id": "al-129193",
@@ -8586,7 +9985,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 6.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 6,
+            "characters": 4,
+            "visuals": 8,
+            "sound": 4,
+            "enjoyment": 8
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -8647,7 +10054,15 @@
           "release": "FINISHED",
           "year": 2010,
           "score": 4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 4,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 4,
+            "enjoyment": 4
+          }
         },
         {
           "id": 10620,
@@ -8660,7 +10075,15 @@
           "release": "FINISHED",
           "year": 2011,
           "score": 8.3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 10,
+            "characters": 8,
+            "visuals": 6,
+            "sound": 8,
+            "enjoyment": 10
+          }
         },
         {
           "id": 12503,
@@ -8684,17 +10107,25 @@
           "release": "FINISHED",
           "year": 2013,
           "score": 8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 8
+          }
         }
       ],
       "addedAt": "2022-04",
       "subScores": {
-        "story": 8,
-        "world": 10,
-        "characters": 8,
+        "story": 7.5,
+        "world": 9.1,
+        "characters": 7.5,
         "visuals": 6,
-        "sound": 8,
-        "enjoyment": 10
+        "sound": 7.5,
+        "enjoyment": 9.1
       },
       "adminModified": true,
       "lockedFields": [
@@ -8745,7 +10176,15 @@
           "release": "FINISHED",
           "year": 2022,
           "score": 4.5,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 2,
+            "characters": 4,
+            "visuals": 6,
+            "sound": 6,
+            "enjoyment": 8
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -8805,7 +10244,15 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 3.8,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 2,
+            "characters": 4,
+            "visuals": 4,
+            "sound": 8,
+            "enjoyment": 2
+          }
         },
         {
           "id": 20850,
@@ -8818,7 +10265,15 @@
           "release": "FINISHED",
           "year": 2015,
           "score": 2.9,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 2,
+            "world": 2,
+            "characters": 2,
+            "visuals": 4,
+            "sound": 8,
+            "enjoyment": 2
+          }
         },
         {
           "id": 21132,
@@ -8867,9 +10322,9 @@
       ],
       "addedAt": "2022-04",
       "subScores": {
-        "story": 4,
+        "story": 3,
         "world": 2,
-        "characters": 2,
+        "characters": 3,
         "visuals": 4,
         "sound": 8,
         "enjoyment": 2
@@ -8917,7 +10372,15 @@
           "release": "FINISHED",
           "year": 2009,
           "score": 3.3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 6,
+            "characters": 2,
+            "visuals": 2,
+            "sound": 2,
+            "enjoyment": 2
+          }
         },
         {
           "id": 7654,
@@ -8981,7 +10444,15 @@
           "release": "FINISHED",
           "year": 2021,
           "score": 3.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 4,
+            "world": 2,
+            "characters": 2,
+            "visuals": 4,
+            "sound": 6,
+            "enjoyment": 4
+          }
         },
         {
           "id": 132467,
@@ -9093,7 +10564,15 @@
           "year": 2022,
           "score": 8.3,
           "repeat": 3,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 6,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 10
+          }
         }
       ],
       "addedAt": "2022-04",
@@ -9150,7 +10629,15 @@
           "year": 2022,
           "score": 7.9,
           "repeat": 1,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 6,
+            "world": 8,
+            "characters": 8,
+            "visuals": 8,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 171026,
@@ -9217,7 +10704,15 @@
           "release": "FINISHED",
           "year": 2014,
           "score": 10,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 10,
+            "world": 10,
+            "characters": 10,
+            "visuals": 10,
+            "sound": 10,
+            "enjoyment": 10
+          }
         },
         {
           "id": 21039,
@@ -9285,7 +10780,15 @@
           "release": "FINISHED",
           "year": 2016,
           "score": 8.4,
-          "adminModified": true
+          "adminModified": true,
+          "subScores": {
+            "story": 8,
+            "world": 8,
+            "characters": 10,
+            "visuals": 8,
+            "sound": 8,
+            "enjoyment": 8
+          }
         }
       ],
       "addedAt": "2022-04",

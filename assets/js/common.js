@@ -218,15 +218,21 @@
       if (!criteria) return null;
 
       const parts = Array.isArray(item.parts) ? item.parts : [];
-      const ratedParts = parts.filter(p => p && p.subScores && typeof p.subScores === 'object' && Object.values(p.subScores).some(v => v != null && Number(v) > 0));
+      const hasSub = p => p && p.subScores && typeof p.subScores === 'object' && Object.values(p.subScores).some(v => v != null && Number(v) > 0);
+      const getWeight = p => (p.kind === 'movie' || p.format === 'MOVIE')
+        ? 0.35
+        : ((p.kind === 'other' || ['OVA', 'SPECIAL', 'TV_SHORT'].includes(p.format)) ? 0.15 : 1.0);
 
-      if (ratedParts.length === 0) {
+      const ratedParts = parts.filter(p => hasSub(p) || (p && p.score != null && Number(p.score) > 0));
+      const partsWithSub = ratedParts.filter(hasSub);
+
+      if (partsWithSub.length === 0) {
         return (item.subScores && typeof item.subScores === 'object' && Object.values(item.subScores).some(v => v != null && Number(v) > 0))
           ? { ...item.subScores }
           : null;
       }
-      if (ratedParts.length === 1) {
-        return { ...ratedParts[0].subScores };
+      if (ratedParts.length === 1 && partsWithSub.length === 1) {
+        return { ...partsWithSub[0].subScores };
       }
 
       const continuousAvg = {};
@@ -234,12 +240,9 @@
       let weightedSumScore = 0;
 
       for (const p of ratedParts) {
-        const sc = p.score != null ? Number(p.score) : this.computeScore(criteria, p.subScores);
-        let w = 1.0;
-        if (p.kind === 'movie' || p.format === 'MOVIE') w = 0.35;
-        else if (p.kind === 'other' || ['OVA', 'SPECIAL', 'TV_SHORT'].includes(p.format)) w = 0.15;
-
-        if (sc != null && !isNaN(sc)) {
+        const sc = hasSub(p) ? this.computeScore(criteria, p.subScores) : Number(p.score);
+        const w = getWeight(p);
+        if (sc != null && !isNaN(sc) && sc > 0) {
           weightedSumScore += sc * w;
           totalPartWeight += w;
         }
@@ -249,11 +252,9 @@
         let cSum = 0;
         let cWeight = 0;
         for (const p of ratedParts) {
-          const val = Number(p.subScores[c.id]);
+          const val = hasSub(p) ? Number(p.subScores[c.id]) : Number(p.score);
           if (!isNaN(val) && val > 0 && val <= 10) {
-            let w = 1.0;
-            if (p.kind === 'movie' || p.format === 'MOVIE') w = 0.35;
-            else if (p.kind === 'other' || ['OVA', 'SPECIAL', 'TV_SHORT'].includes(p.format)) w = 0.15;
+            const w = getWeight(p);
             cSum += val * w;
             cWeight += w;
           }

@@ -340,6 +340,7 @@ for (const [root, members] of groups) {
       year: (m.media.startDate && m.media.startDate.year) || (prevPart && prevPart.year) || null,
       d: dk(m.media.startDate),
       ...(partScore != null ? { score: partScore } : {}),
+      ...(prevPart && prevPart.subScores && typeof prevPart.subScores === 'object' ? { subScores: prevPart.subScores } : {}),
       createdAt: m.createdAt || 0,
       repeat: (keepAdminPart && prevPart.repeat != null) ? prevPart.repeat : (m.repeat || 0),
       ...(keepAdminPart ? { adminModified: true } : {})
@@ -372,6 +373,7 @@ for (const [root, members] of groups) {
       year: (n.startDate && n.startDate.year) || (prevPart && prevPart.year) || null,
       d: dk(n.startDate || {}),
       ...(prevPart && prevPart.score != null ? { score: prevPart.score } : {}),
+      ...(prevPart && prevPart.subScores && typeof prevPart.subScores === 'object' ? { subScores: prevPart.subScores } : {}),
       repeat: hasLocalProgress ? (prevPart.repeat || 0) : 0,
       ...(hasLocalProgress && prevPart.adminModified ? { adminModified: true } : {})
     };
@@ -452,7 +454,7 @@ for (const [root, members] of groups) {
     ...(next ? { next: true } : {}),
     ...(customGenres && customGenres.length ? { genres: customGenres, customGenres } : {}),
     score: score ?? null,
-    parts: parts.map(({ id, name, kind, format, episodes, watched, status, release, year, score: pScore, repeat, adminModified }) => ({
+    parts: parts.map(({ id, name, kind, format, episodes, watched, status, release, year, score: pScore, subScores: pSubScores, repeat, adminModified }) => ({
       id,
       name,
       kind,
@@ -463,6 +465,7 @@ for (const [root, members] of groups) {
       release,
       year,
       ...(pScore != null ? { score: pScore } : {}),
+      ...(pSubScores && typeof pSubScores === 'object' ? { subScores: pSubScores } : {}),
       ...(repeat > 0 ? { repeat } : {}),
       ...(adminModified ? { adminModified: true } : {})
     })),

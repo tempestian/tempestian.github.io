@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-11-15",
+  "updated": "2026-11-17",
   "source": "site-first:relations_only",
   "statsConfig": {
     "animeCountRule": "completed_season_or_movie",
@@ -15,9 +15,9 @@
     "season": 128,
     "film": 24,
     "other": 25,
-    "episodes": 3376,
+    "episodes": 3378,
     "completedEpisodes": 3297,
-    "inProgressEpisodes": 79,
+    "inProgressEpisodes": 81,
     "favorites": 10,
     "avgScore": 6.3,
     "byStatus": {
@@ -2359,7 +2359,7 @@
           "kind": "season",
           "format": "TV",
           "episodes": 26,
-          "watched": 7,
+          "watched": 9,
           "status": "CURRENT",
           "release": "FINISHED",
           "year": 2002,

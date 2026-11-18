@@ -140,11 +140,26 @@ export function resolveEffectiveScore(a, type = 'anime') {
 
   if (a.subScores && typeof a.subScores === 'object') {
     const s = computeCriteriaScore(criteria, a.subScores);
-    if (s != null) return s;
+    if (s != null) {
+      if (parts.length === 1 && (!parts[0].score || parts[0].score <= 0)) {
+        parts[0].score = s;
+        if (!parts[0].subScores || Object.keys(parts[0].subScores).length === 0) {
+          parts[0].subScores = { ...a.subScores };
+        }
+      }
+      return s;
+    }
   }
 
   const direct = Number(a.score);
-  return !isNaN(direct) && direct > 0 ? Math.round(direct * 10) / 10 : null;
+  if (!isNaN(direct) && direct > 0) {
+    const rounded = Math.round(direct * 10) / 10;
+    if (parts.length === 1 && (!parts[0].score || parts[0].score <= 0)) {
+      parts[0].score = rounded;
+    }
+    return rounded;
+  }
+  return null;
 }
 
 export function resolveEffectiveGenres(a, genreSourceRule = 'custom_only') {

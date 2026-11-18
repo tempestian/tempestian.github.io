@@ -448,12 +448,27 @@
     // 2. Parça puanı yoksa, genel yapım subScores'u (Varsa)
     if (a.subScores && typeof a.subScores === 'object' && criteria) {
       const sc = window.TempestianRating.computeScore(criteria, a.subScores);
-      if (sc != null) return sc;
+      if (sc != null) {
+        if (parts.length === 1 && (!parts[0].score || parts[0].score <= 0)) {
+          parts[0].score = sc;
+          if (!parts[0].subScores || Object.keys(parts[0].subScores).length === 0) {
+            parts[0].subScores = { ...a.subScores };
+          }
+        }
+        return sc;
+      }
     }
 
     // 3. Doğrudan genel puan
     const direct = Number(a.score);
-    return !isNaN(direct) && direct > 0 ? Math.round(direct * 10) / 10 : null;
+    if (!isNaN(direct) && direct > 0) {
+      const rounded = Math.round(direct * 10) / 10;
+      if (parts.length === 1 && (!parts[0].score || parts[0].score <= 0)) {
+        parts[0].score = rounded;
+      }
+      return rounded;
+    }
+    return null;
   }
 
   function resolveEffectiveGenres(a, genreSourceRule = 'custom_only') {
@@ -3890,6 +3905,14 @@
     const parts = Array.isArray(state.editingDraft.parts) ? state.editingDraft.parts : [];
     const hasRatedParts = parts.some(p => p && (p.score != null || (p.subScores && Object.keys(p.subScores).length > 0)));
 
+    // Tek parçalı yapımlarda (örn. film) üst stüdyo doğrudan parçaya senkronize olur:
+    if (parts.length === 1 && state.editingDraft.subScores && Object.keys(state.editingDraft.subScores).length > 0) {
+      parts[0].subScores = { ...state.editingDraft.subScores };
+      if (effScore != null && effScore > 0) parts[0].score = effScore;
+    } else if (parts.length === 1 && effScore != null && effScore > 0 && (!parts[0].score || parts[0].score <= 0)) {
+      parts[0].score = effScore;
+    }
+
     if (!skipMainCritRefresh && hasRatedParts && effScore != null && effScore > 0) {
       if (window.TempestianRating && typeof window.TempestianRating.computeWeightedSubScores === 'function') {
         const weightedSub = window.TempestianRating.computeWeightedSubScores(adapter.id, state.editingDraft);
@@ -3910,6 +3933,29 @@
       badge.textContent = effScore != null ? `★ ${effScore}` : 'Puansız';
     }
 
+    // Parça listesi UI'ını (input ve buton) güncelle (özellikle tek parçalı yapımlarda)
+    parts.forEach((p, idx) => {
+      const partRow = document.querySelector(`.part-edit-row:nth-child(${idx + 1})`);
+      if (partRow) {
+        const scInp = partRow.querySelector('[data-pf="score"]');
+        if (scInp && document.activeElement !== scInp) {
+          scInp.value = p.score != null ? p.score : '';
+        }
+        const critBtn = partRow.querySelector('[data-pact="toggle-crit"]');
+        if (critBtn) {
+          const critCount = (window.TempestianRating && (window.TempestianRating.CRITERIA[adapter.id] || window.TempestianRating.CRITERIA.anime).length) || 6;
+          const subCount = p.subScores ? Object.values(p.subScores).filter(v => v != null && Number(v) > 0).length : 0;
+          if (subCount > 0) {
+            critBtn.textContent = `★ ${p.score != null ? p.score : '-'} (${subCount}/${critCount})`;
+            critBtn.classList.add('has-score');
+          } else {
+            critBtn.textContent = '☆ Kriter';
+            critBtn.classList.remove('has-score');
+          }
+        }
+      }
+    });
+
     // Ana kriter stüdyosu açıksa (ve tetikleyen bizzat kendisi değilse) güncelle
     const mainCritMount = $('#aeCriteriaStudioMount');
     if (!skipMainCritRefresh && mainCritMount && mainCritMount.children.length > 0) {
@@ -3920,6 +3966,11 @@
         : 'Kriterlere 1–10 arası tıklayarak veya 0.1 hassasiyetle puan verin; ağırlıklarına göre genel puan otomatik hesaplanır.';
       renderCriteriaRatingStudio(mainCritMount, state.editingDraft, adapter.id, (newSc) => {
         state.editingDraft.score = newSc;
+        if (parts.length === 1) {
+          parts[0].score = newSc;
+          if (state.editingDraft.subScores) parts[0].subScores = { ...state.editingDraft.subScores };
+          parts[0].adminModified = true;
+        }
         syncScoreStudioUI(true);
       }, tTitle, tSub);
     }
@@ -5110,6 +5161,16 @@
       const statusSel = $('#aeStatus').value;
       d.status = (!statusSel || statusSel === 'auto') ? 'completed' : statusSel;
     } else {
+      // Tek parçalı yapımlarda üst stüdyo doğrudan tek parçaya yansıtılır:
+      if (Array.isArray(d.parts) && d.parts.length === 1) {
+        if (d.subScores && Object.keys(d.subScores).length > 0) {
+          d.parts[0].subScores = { ...d.subScores };
+        }
+        if (d.score != null && (!d.parts[0].score || d.parts[0].score <= 0)) {
+          d.parts[0].score = d.score;
+        }
+      }
+
       d.parts = (d.parts || []).map(p => {
         const ep = Number(p.episodes) || 0;
         let w = Number(p.watched) || 0;
@@ -5128,6 +5189,9 @@
         };
         if (p.score != null && p.score !== '' && !isNaN(Number(p.score)) && Number(p.score) > 0) {
           clean.score = Math.min(10, Math.max(0, Math.round(Number(p.score) * 10) / 10));
+        }
+        if (p.subScores && typeof p.subScores === 'object' && Object.keys(p.subScores).length > 0) {
+          clean.subScores = { ...p.subScores };
         }
         if (p.repeat && Number(p.repeat) > 0) clean.repeat = Number(p.repeat);
         if (p.adminModified) clean.adminModified = true;

@@ -2199,31 +2199,10 @@ body.sheet-open .bar {
   border-radius: var(--md-sys-shape-corner-extra-small);
 }
 
-.part:first-child {
-  border-start-start-radius: var(--md-sys-shape-corner-large-increased);
-  border-start-end-radius: var(--md-sys-shape-corner-large-increased);
+.part::after {
+  display: none !important;
 }
 
-.part:last-child {
-  border-end-start-radius: var(--md-sys-shape-corner-large-increased);
-  border-end-end-radius: var(--md-sys-shape-corner-large-increased);
-}
-
-/* Dikey Zaman Çizgisi Bağlantısı */
-.part:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  left: 22px;
-  top: 28px;
-  bottom: -16px;
-  width: 2px;
-  background: var(--md-sys-color-outline-variant);
-  z-index: 1;
-}
-
-.part.done:not(:last-child)::after {
-  background: var(--md-sys-color-primary);
-}
 
 .pd {
   position: relative;

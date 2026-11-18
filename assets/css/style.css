@@ -8338,12 +8338,17 @@ a.tile:active,
 }
 
 .hh-card {
-  flex: 0 0 132px;
+  flex: 0 0 136px;
+  width: 136px;
   display: flex;
   flex-direction: column;
   gap: 7px;
   text-decoration: none;
   color: inherit;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
   transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
 }
@@ -8379,7 +8384,10 @@ a.tile:active,
   position: absolute;
   top: 6px;
   right: 6px;
-  background: rgba(5, 10, 22, 0.86);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(5, 10, 22, 0.88);
   border: 1px solid rgba(251, 191, 36, 0.55);
   color: #fbbf24;
   font-size: 0.70rem;
@@ -8390,6 +8398,13 @@ a.tile:active,
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+.hh-badge svg {
+  width: 11px;
+  height: 11px;
+  flex: none;
 }
 
 .hh-card-title {

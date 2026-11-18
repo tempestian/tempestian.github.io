@@ -1838,18 +1838,18 @@
         const card = el('a', 'hh-card glass sq');
         card.href = root + 'anime/#' + encodeURIComponent(a.id || '');
 
-        const posterWrap = el('div', 'hh-poster-wrap');
-        const img = el('img', 'hh-poster');
+        const coverWrap = el('div', 'hh-cover-wrap');
+        const img = el('img', 'hh-cover');
         img.src = resolveAsset(a.image || '');
         img.alt = a.title || '';
         img.loading = 'lazy';
         img.decoding = 'async';
-        posterWrap.append(img);
+        coverWrap.append(img);
 
         if (a.score) {
-          const scoreBadge = el('span', 'hh-score-badge');
-          scoreBadge.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ${Number(a.score).toFixed(1)}`;
-          posterWrap.append(scoreBadge);
+          const scoreBadge = el('span', 'hh-badge');
+          scoreBadge.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;display:inline-block;vertical-align:-1px;margin-right:2px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${Number(a.score).toFixed(1)}`;
+          coverWrap.append(scoreBadge);
         }
 
         const info = el('div', 'hh-info');
@@ -1857,14 +1857,13 @@
         t.title = a.title || '';
         info.append(t);
 
-        const metaRow = el('div', 'hh-meta-row');
+        const metaRow = el('div', 'hh-card-meta');
         const firstGenre = (Array.isArray(a.genres) && a.genres[0]) || '';
         const year = (a.parts && a.parts[0] && a.parts[0].year) || '';
-        if (firstGenre) metaRow.append(el('span', 'hh-meta-tag', firstGenre));
-        if (year) metaRow.append(el('span', 'hh-meta-year', String(year)));
+        metaRow.textContent = [firstGenre, year].filter(Boolean).join(' · ');
         info.append(metaRow);
 
-        card.append(posterWrap, info);
+        card.append(coverWrap, info);
         fr.append(card);
       }
 

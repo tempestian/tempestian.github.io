@@ -57,7 +57,7 @@ export function extractSeedAnilistId(item) {
   );
 }
 
-const Q = `query($u:String,$c:Int){MediaListCollection(userName:$u,type:ANIME,chunk:$c,perChunk:100){hasNextChunk lists{name isCustomList entries{status progress repeat score(format:POINT_10_DECIMAL) createdAt customLists media{id format status episodes startDate{year month day} genres title{romaji english} coverImage{large} bannerImage relations{edges{relationType node{id}}}}}}}}`;
+const Q = `query($u:String,$c:Int){MediaListCollection(userName:$u,type:ANIME,chunk:$c,perChunk:100){hasNextChunk lists{name isCustomList entries{status progress repeat score(format:POINT_10_DECIMAL) createdAt startedAt{year month day} completedAt{year month day} customLists media{id format status episodes startDate{year month day} genres title{romaji english} coverImage{large} bannerImage relations{edges{relationType node{id}}}}}}}}`;
 
 const QM = `query($ids:[Int]){Page(perPage:50){media(id_in:$ids,type:ANIME){id format status episodes startDate{year month day} genres title{romaji english} coverImage{large} bannerImage relations{edges{relationType node{id}}}}}}`;
 
@@ -343,7 +343,9 @@ for (const [root, members] of groups) {
       ...(prevPart && prevPart.subScores && typeof prevPart.subScores === 'object' ? { subScores: prevPart.subScores } : {}),
       createdAt: m.createdAt || 0,
       repeat: (keepAdminPart && prevPart.repeat != null) ? prevPart.repeat : (m.repeat || 0),
-      ...(keepAdminPart ? { adminModified: true } : {})
+      ...(keepAdminPart ? { adminModified: true } : {}),
+      startedAt: m.startedAt || null,
+      completedAt: m.completedAt || null
     };
   });
 
@@ -411,8 +413,23 @@ for (const [root, members] of groups) {
 
   const status = (isModified && locked.has('status') && matchedExisting.status) ? matchedExisting.status : computedStatus;
 
+  // Gerçek izleme tarihini hesapla: startedAt veya completedAt (en erken olanı)
+  const watchDates = [];
+  for (const p of own) {
+    const s = p.startedAt;
+    const c = p.completedAt;
+    if (s && s.year) {
+      watchDates.push(s.month ? `${s.year}-${String(s.month).padStart(2, '0')}` : `${s.year}`);
+    } else if (c && c.year) {
+      watchDates.push(c.month ? `${c.year}-${String(c.month).padStart(2, '0')}` : `${c.year}`);
+    }
+  }
+  watchDates.sort();
+  const earliestWatchDate = watchDates[0] || null;
+
   const ts = Math.min(...pool.map(p => p.createdAt || Infinity));
-  const computedAddedAt = isFinite(ts) ? new Date(ts * 1000).toISOString().slice(0, 7) : ((matchedExisting && matchedExisting.addedAt) || new Date().toISOString().slice(0, 7));
+  const createdDate = isFinite(ts) ? new Date(ts * 1000).toISOString().slice(0, 7) : null;
+  const computedAddedAt = earliestWatchDate || (matchedExisting && matchedExisting.addedAt) || createdDate || new Date().toISOString().slice(0, 7);
   let addedAt = (isModified && locked.has('addedAt') && matchedExisting.addedAt) ? matchedExisting.addedAt : computedAddedAt;
   if (addedAt && /^\d{4}-\d{2}-\d{2}$/.test(addedAt)) {
     addedAt = addedAt.slice(0, 7);

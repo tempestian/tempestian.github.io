@@ -26,8 +26,8 @@
 <script src="../assets/js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="stylesheet" href="../assets/css/timeline.css">
+<link rel="stylesheet" href="../assets/css/style.css?v=2.5">
+<link rel="stylesheet" href="../assets/css/timeline.css?v=2.5">
 </head>
 <body data-root="../" data-section="timeline">
 <!-- [AI-MIMARI-NOTU: ADIM 4 — KİŞİSEL İZLEME & OKUMA ZAMAN TÜNELİ] -->
@@ -58,8 +58,13 @@
     </nav>
 
     <div class="timeline-mode-toggle" role="group" aria-label="Zamanlama Türü">
-      <button type="button" class="timeline-mode-btn is-active" data-mode="added">🗓️ İzleme / Okuma Yılına Göre</button>
-      <button type="button" class="timeline-mode-btn" data-mode="release">🎬 Yapım Çıkış Yılına Göre</button>
+      <button type="button" class="timeline-mode-btn is-active" data-mode="added">🗓️ İzleme / Okuma Tarihi</button>
+      <button type="button" class="timeline-mode-btn" data-mode="release">🎬 Çıkış Yılı</button>
+    </div>
+
+    <div class="timeline-order-toggle" role="group" aria-label="Sıralama Yönü">
+      <button type="button" class="timeline-order-btn is-active" data-order="asc" title="Geçmişten Günümüze (İlk izlenenler/çıkışlar başta)">⏳ Eskiden Yeniye</button>
+      <button type="button" class="timeline-order-btn" data-order="desc" title="Günümüzden Geçmişe (Son izlenenler başta)">⌛ Yeniden Eskiye</button>
     </div>
   </div>
 
@@ -69,7 +74,7 @@
 </main>
 <nav id="dock" class="dock glass" aria-label="Bölümler" hidden></nav>
 
-<script src="../assets/js/common.js"></script>
-<script src="../assets/js/timeline.js"></script>
+<script src="../assets/js/common.js?v=2.5"></script>
+<script src="../assets/js/timeline.js?v=2.5"></script>
 </body>
 </html>

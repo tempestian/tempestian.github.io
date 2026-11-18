@@ -34,6 +34,7 @@
   let allMediaItems = [];
   let activeCategory = 'all';
   let activeMode = 'added'; // 'added' veya 'release'
+  let activeOrder = 'asc'; // 'asc' (Eskiden Yeniye) veya 'desc' (Yeniden Eskiye)
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
@@ -141,11 +142,11 @@
       yearGroups.get(yKey).push(it);
     }
 
-    // Yılları azalan sırada sırala (2026 -> 2025 -> ...)
+    // Yılları sıralama yönüne göre düzenle (asc: 2016 -> 2026, desc: 2026 -> 2016)
     const sortedYears = [...yearGroups.keys()].sort((a, b) => {
       const numA = parseInt(a, 10) || 0;
       const numB = parseInt(b, 10) || 0;
-      return numB - numA;
+      return activeOrder === 'asc' ? numA - numB : numB - numA;
     });
 
     const spine = document.createElement('div');
@@ -156,11 +157,23 @@
 
     for (const yStr of sortedYears) {
       const groupItems = yearGroups.get(yStr);
-      // Grup içi sıralama: 'added' modunda ay/tarih sırası (Ekim -> Ocak), ardından puan ve favori
+      // Grup içi sıralama: seçilen yöne göre
       if (activeMode === 'added') {
-        groupItems.sort((a, b) => (b.addedAt || '').localeCompare(a.addedAt || '') || (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0) || (b.score || 0) - (a.score || 0));
+        groupItems.sort((a, b) => {
+          const comp = activeOrder === 'asc'
+            ? (a.addedAt || '').localeCompare(b.addedAt || '')
+            : (b.addedAt || '').localeCompare(a.addedAt || '');
+          if (comp !== 0) return comp;
+          return (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0) || (b.score || 0) - (a.score || 0);
+        });
       } else {
-        groupItems.sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0) || (b.score || 0) - (a.score || 0));
+        groupItems.sort((a, b) => {
+          const comp = activeOrder === 'asc'
+            ? (a.releaseYear || 0) - (b.releaseYear || 0)
+            : (b.releaseYear || 0) - (a.releaseYear || 0);
+          if (comp !== 0) return comp;
+          return (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0) || (b.score || 0) - (a.score || 0);
+        });
       }
 
       const grpEl = document.createElement('div');
@@ -248,6 +261,14 @@
       btn.onclick = () => {
         $$('.timeline-mode-btn').forEach(b => b.classList.toggle('is-active', b === btn));
         activeMode = btn.dataset.mode || 'added';
+        renderTimeline();
+      };
+    });
+
+    $$('.timeline-order-btn').forEach(btn => {
+      btn.onclick = () => {
+        $$('.timeline-order-btn').forEach(b => b.classList.toggle('is-active', b === btn));
+        activeOrder = btn.dataset.order || 'asc';
         renderTimeline();
       };
     });

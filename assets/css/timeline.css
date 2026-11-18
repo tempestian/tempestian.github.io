@@ -141,6 +141,44 @@
   font-weight: 700;
 }
 
+.timeline-order-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+}
+.timeline-order-btn {
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  background: var(--md-sys-color-surface-container-low, var(--glass));
+  color: var(--md-sys-color-on-surface-variant, var(--ink2));
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: var(--md-sys-shape-corner-small, 8px);
+  cursor: pointer;
+  transition:
+    border-radius var(--md-sys-motion-spatial-fast-duration, 333ms) var(--md-sys-motion-spatial-fast-easing, ease),
+    background-color var(--md-sys-motion-effect-fast-duration, 225ms) var(--md-sys-motion-effect-fast-easing, ease),
+    color var(--md-sys-motion-effect-fast-duration, 225ms) var(--md-sys-motion-effect-fast-easing, ease);
+}
+.timeline-order-btn:first-child {
+  border-radius: var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-full, 9999px);
+}
+.timeline-order-btn:last-child {
+  border-radius: var(--md-sys-shape-corner-small, 8px) var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-full, 9999px) var(--md-sys-shape-corner-small, 8px);
+}
+.timeline-order-btn.is-active {
+  background: var(--md-sys-color-secondary-container, var(--glass-hi));
+  color: var(--md-sys-color-on-secondary-container, var(--ink));
+  border-radius: var(--md-sys-shape-corner-full, 9999px) !important;
+  font-weight: 700;
+}
+
 /* Dikey Zaman Tüneli */
 .timeline-container {
   position: relative;

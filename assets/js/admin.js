@@ -1644,59 +1644,72 @@
         <div class="admin-card glass sq">
           <div class="card-head split-head">
             <div>
-              <h2>Sürpriz / Hediye Geri Sayım Kutucuğu (#gift)</h2>
-              <p>Ana sayfadaki animasyonlu hediye kutucuğunun görünürlüğünü, hedef tarihini ve metinlerini yönetin.</p>
+              <h2>✨ Ana Sayfa Zengin Bileşenleri (Öne Çıkanlar, İzleniyor &amp; Hub)</h2>
+              <p>Hero altında ve bölüm kartları arasında yer alan modern bileşenlerin görünürlüğünü ve ayarlarını yönetin.</p>
             </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="cfgGiftEnabled" checked>
-              <span>Kutucuk Aktif</span>
-            </label>
           </div>
           <div class="field-stack">
             <div class="field-row">
-              <label class="field">
-                <span>Geri Sayım Üst Metni (leadText)</span>
-                <input type="text" id="cfgGiftLead" class="inp glass" placeholder="Hediyenin açılmasına kalan süre">
+              <label class="toggle-switch">
+                <input type="checkbox" id="cfgNowWatchingEnabled" checked>
+                <span><b>Şu Anda İzleniyor Kartı</b> (Hero altında aktif izlenen yapım spotlight'ı)</span>
               </label>
-              <label class="field">
-                <span>Hedef Tarih &amp; Saat (ISO 8601)</span>
-                <input type="text" id="cfgGiftTarget" class="inp glass" placeholder="2026-10-26T00:00:00+03:00">
+              <label class="toggle-switch">
+                <input type="checkbox" id="cfgHighlightsEnabled" checked>
+                <span><b>Öne Çıkan Başyapıtlar Vitrini</b> (Yatay kaydırılabilir başyapıt kartları)</span>
               </label>
-              <label class="field">
-                <span>Tarih Alt Etiketi (dateLabel)</span>
-                <input type="text" id="cfgGiftDateLabel" class="inp glass" placeholder="26 Ekim 2026 · 00.00 (TSİ)">
-              </label>
-            </div>
-            <div class="field-row">
-              <label class="field">
-                <span>Süre Dolduğunda Başlık</span>
-                <input type="text" id="cfgGiftExpLead" class="inp glass" placeholder="Hediyenin açılma zamanı geldi">
-              </label>
-              <label class="field">
-                <span>Süre Dolduğunda Alt Metin</span>
-                <input type="text" id="cfgGiftExpSub" class="inp glass" placeholder="Az sonra burada olacak.">
-              </label>
-              <label class="field">
-                <span>Süre Dolduğunda Bağlantı URL (İsteğe bağlı)</span>
-                <input type="text" id="cfgGiftExpUrl" class="inp glass" placeholder="https://...">
+              <label class="toggle-switch">
+                <input type="checkbox" id="cfgHubBannerEnabled" checked>
+                <span><b>Zaman Tüneli &amp; İstatistik Hub'ı</b> (Alt 2'li navigasyon banner'ı)</span>
               </label>
             </div>
             <div class="field-row">
-              <label class="field">
-                <span>Gün Etiketi</span>
-                <input type="text" id="cfgGiftUnitD" class="inp glass" placeholder="Gün">
+              <label class="field" style="flex:1">
+                <span>Başyapıtlar Vitrin Başlığı</span>
+                <input type="text" id="cfgHighlightsTitle" class="inp glass" placeholder="Öne Çıkan Başyapıtlar">
               </label>
-              <label class="field">
-                <span>Saat Etiketi</span>
-                <input type="text" id="cfgGiftUnitH" class="inp glass" placeholder="Saat">
+              <label class="field" style="flex:1">
+                <span>Vitrin Min. Puan Eşiği (Varsayılan: 8.5)</span>
+                <input type="number" id="cfgHighlightsMinScore" class="inp glass" step="0.1" min="0" max="10" placeholder="8.5">
               </label>
-              <label class="field">
-                <span>Dakika Etiketi</span>
-                <input type="text" id="cfgGiftUnitM" class="inp glass" placeholder="Dakika">
+              <label class="field" style="flex:1">
+                <span>Vitrin Kart Sayısı Sınırı (Varsayılan: 8)</span>
+                <input type="number" id="cfgHighlightsLimit" class="inp glass" step="1" min="1" max="24" placeholder="8">
               </label>
-              <label class="field">
-                <span>Saniye Etiketi</span>
-                <input type="text" id="cfgGiftUnitS" class="inp glass" placeholder="Saniye">
+            </div>
+            <div class="field-row">
+              <label class="field" style="flex:2">
+                <span>Hub Banner Zaman Tüneli Açıklaması</span>
+                <input type="text" id="cfgHubTimelineDesc" class="inp glass" placeholder="2016'dan bugüne izlenen ve okunan yapımların eksiksiz kronolojik yolculuğu.">
+              </label>
+              <label class="field" style="flex:2">
+                <span>Hub Banner İstatistikler Açıklaması</span>
+                <input type="text" id="cfgHubStatsDesc" class="inp glass" placeholder="Tür dağılımları, ortalama puanlar, bölüm telemetrisi ve detaylı tüketim analitiği.">
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card glass sq">
+          <div class="card-head split-head">
+            <div>
+              <h2>🐾 Özel Anı Kitabı Giriş Yolları &amp; Gizlilik</h2>
+              <p>Site içinde gizlenmiş anı kitabının bağlantı hedeflerini ve durumunu yapılandırın.</p>
+            </div>
+          </div>
+          <div class="field-stack">
+            <div class="field-row">
+              <label class="field" style="flex:1">
+                <span>Hero Avatar Durum Noktası Hedefi (data-secret-book)</span>
+                <input type="text" id="cfgSecretBookUrl" class="inp glass" placeholder="kitap/ozel/">
+              </label>
+              <label class="field" style="flex:1">
+                <span>Komut Paleti Kısayol Başlığı</span>
+                <input type="text" id="cfgSecretBookTitle" class="inp glass" placeholder="🐾 Özel Anı Kitabı">
+              </label>
+              <label class="field" style="flex:2">
+                <span>Komut Paleti Arama Anahtar Kelimeleri</span>
+                <input type="text" id="cfgSecretBookKeywords" class="inp glass" placeholder="özel, anı, hatıra, kitap, miniğim, book, hediye, pati">
               </label>
             </div>
           </div>
@@ -8835,17 +8848,21 @@
 
     populatePageTextInputsForSection(state.activeTextPageId || 'anime');
 
-    if ($('#cfgGiftEnabled')) $('#cfgGiftEnabled').checked = gift.enabled !== false;
-    if ($('#cfgGiftLead')) $('#cfgGiftLead').value = gift.leadText || '';
-    if ($('#cfgGiftTarget')) $('#cfgGiftTarget').value = gift.targetDate || '';
-    if ($('#cfgGiftDateLabel')) $('#cfgGiftDateLabel').value = gift.dateLabel || '';
-    if ($('#cfgGiftExpLead')) $('#cfgGiftExpLead').value = gift.expiredLeadText || '';
-    if ($('#cfgGiftExpSub')) $('#cfgGiftExpSub').value = gift.expiredSubText || '';
-    if ($('#cfgGiftExpUrl')) $('#cfgGiftExpUrl').value = gift.expiredUrl || '';
-    if ($('#cfgGiftUnitD')) $('#cfgGiftUnitD').value = (gift.units && gift.units.d) || 'Gün';
-    if ($('#cfgGiftUnitH')) $('#cfgGiftUnitH').value = (gift.units && gift.units.h) || 'Saat';
-    if ($('#cfgGiftUnitM')) $('#cfgGiftUnitM').value = (gift.units && gift.units.m) || 'Dakika';
-    if ($('#cfgGiftUnitS')) $('#cfgGiftUnitS').value = (gift.units && gift.units.s) || 'Saniye';
+    const homeFeatures = state.config.homeFeatures || {};
+    const secretBook = state.config.secretBook || {};
+
+    if ($('#cfgNowWatchingEnabled')) $('#cfgNowWatchingEnabled').checked = homeFeatures.nowWatchingEnabled !== false;
+    if ($('#cfgHighlightsEnabled')) $('#cfgHighlightsEnabled').checked = homeFeatures.highlightsEnabled !== false;
+    if ($('#cfgHubBannerEnabled')) $('#cfgHubBannerEnabled').checked = homeFeatures.hubBannerEnabled !== false;
+    if ($('#cfgHighlightsTitle')) $('#cfgHighlightsTitle').value = homeFeatures.highlightsTitle || '';
+    if ($('#cfgHighlightsMinScore')) $('#cfgHighlightsMinScore').value = homeFeatures.highlightsMinScore != null ? homeFeatures.highlightsMinScore : '';
+    if ($('#cfgHighlightsLimit')) $('#cfgHighlightsLimit').value = homeFeatures.highlightsLimit != null ? homeFeatures.highlightsLimit : '';
+    if ($('#cfgHubTimelineDesc')) $('#cfgHubTimelineDesc').value = homeFeatures.hubTimelineDesc || '';
+    if ($('#cfgHubStatsDesc')) $('#cfgHubStatsDesc').value = homeFeatures.hubStatsDesc || '';
+
+    if ($('#cfgSecretBookUrl')) $('#cfgSecretBookUrl').value = secretBook.url || 'kitap/ozel/';
+    if ($('#cfgSecretBookTitle')) $('#cfgSecretBookTitle').value = secretBook.title || '🐾 Özel Anı Kitabı';
+    if ($('#cfgSecretBookKeywords')) $('#cfgSecretBookKeywords').value = Array.isArray(secretBook.keywords) ? secretBook.keywords.join(', ') : (secretBook.keywords || '');
 
     renderImageSlots();
     renderCategoriesEditor();
@@ -8874,27 +8891,36 @@
 
     saveCurrentPageTextInputsToConfig();
 
-    const elGiftEn = $('#cfgGiftEnabled');
-    if (elGiftEn) gift.enabled = Boolean(elGiftEn.checked);
-    const elGiftLead = $('#cfgGiftLead');
-    if (elGiftLead) gift.leadText = S(elGiftLead.value, 200);
-    const elGiftTgt = $('#cfgGiftTarget');
-    if (elGiftTgt) gift.targetDate = S(elGiftTgt.value, 60) || '2026-10-26T00:00:00+03:00';
-    const elGiftLbl = $('#cfgGiftDateLabel');
-    if (elGiftLbl) gift.dateLabel = S(elGiftLbl.value, 140);
-    const elGiftExpLead = $('#cfgGiftExpLead');
-    if (elGiftExpLead) gift.expiredLeadText = S(elGiftExpLead.value, 200);
-    const elGiftExpSub = $('#cfgGiftExpSub');
-    if (elGiftExpSub) gift.expiredSubText = S(elGiftExpSub.value, 200);
-    const elGiftExpUrl = $('#cfgGiftExpUrl');
-    if (elGiftExpUrl) gift.expiredUrl = U(elGiftExpUrl.value, true);
-    if ($('#cfgGiftUnitD')) {
-      gift.units = {
-        d: S($('#cfgGiftUnitD')?.value, 30) || 'Gün',
-        h: S($('#cfgGiftUnitH')?.value, 30) || 'Saat',
-        m: S($('#cfgGiftUnitM')?.value, 30) || 'Dakika',
-        s: S($('#cfgGiftUnitS')?.value, 30) || 'Saniye'
-      };
+    if (!state.config.homeFeatures) state.config.homeFeatures = {};
+    const hf = state.config.homeFeatures;
+    const elNw = $('#cfgNowWatchingEnabled');
+    if (elNw) hf.nowWatchingEnabled = Boolean(elNw.checked);
+    const elHh = $('#cfgHighlightsEnabled');
+    if (elHh) hf.highlightsEnabled = Boolean(elHh.checked);
+    const elHb = $('#cfgHubBannerEnabled');
+    if (elHb) hf.hubBannerEnabled = Boolean(elHb.checked);
+
+    const elHhTitle = $('#cfgHighlightsTitle');
+    if (elHhTitle) hf.highlightsTitle = S(elHhTitle.value, 120);
+    const elHhMin = $('#cfgHighlightsMinScore');
+    if (elHhMin && elHhMin.value !== '') hf.highlightsMinScore = Math.max(0, Math.min(10, parseFloat(elHhMin.value) || 8.5));
+    const elHhLim = $('#cfgHighlightsLimit');
+    if (elHhLim && elHhLim.value !== '') hf.highlightsLimit = Math.max(1, Math.min(30, parseInt(elHhLim.value, 10) || 8));
+
+    const elHubTime = $('#cfgHubTimelineDesc');
+    if (elHubTime) hf.hubTimelineDesc = S(elHubTime.value, 200);
+    const elHubStat = $('#cfgHubStatsDesc');
+    if (elHubStat) hf.hubStatsDesc = S(elHubStat.value, 200);
+
+    if (!state.config.secretBook) state.config.secretBook = {};
+    const sb = state.config.secretBook;
+    const elSbUrl = $('#cfgSecretBookUrl');
+    if (elSbUrl) sb.url = S(elSbUrl.value, 120) || 'kitap/ozel/';
+    const elSbTitle = $('#cfgSecretBookTitle');
+    if (elSbTitle) sb.title = S(elSbTitle.value, 120) || '🐾 Özel Anı Kitabı';
+    const elSbKw = $('#cfgSecretBookKeywords');
+    if (elSbKw) {
+      sb.keywords = elSbKw.value.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
     }
   }
 

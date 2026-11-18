@@ -1200,11 +1200,14 @@
         },
         {
           id: 'act-special-book',
-          title: '🐾 Özel Anı Kitabı',
+          title: (window.SITE_CONFIG && window.SITE_CONFIG.secretBook && window.SITE_CONFIG.secretBook.title) || '🐾 Özel Anı Kitabı',
           desc: 'Fotoğraflı hatıra ve anı sayfalarını açar',
           badge: 'Özel',
-          keywords: ['özel', 'anı', 'hatıra', 'kitap', 'miniğim', 'book', 'hediye', 'patiler', 'pati'],
-          run: () => { location.href = root + 'kitap/ozel/'; }
+          keywords: (window.SITE_CONFIG && window.SITE_CONFIG.secretBook && window.SITE_CONFIG.secretBook.keywords) || ['özel', 'anı', 'hatıra', 'kitap', 'miniğim', 'book', 'hediye', 'patiler', 'pati'],
+          run: () => {
+            const targetUrl = (window.SITE_CONFIG && window.SITE_CONFIG.secretBook && window.SITE_CONFIG.secretBook.url) || 'kitap/ozel/';
+            location.href = root + targetUrl;
+          }
         }
       ];
 
@@ -1746,6 +1749,12 @@
       const nwCard = document.getElementById('nowWatchingCard');
       if (!nwCard) return;
 
+      const hf = (window.SITE_CONFIG && window.SITE_CONFIG.homeFeatures) || {};
+      if (hf.nowWatchingEnabled === false) {
+        nwCard.hidden = true;
+        return;
+      }
+
       // Find an anime with status === 'watching' and a CURRENT part
       let targetAnime = null;
       let targetPart = null;
@@ -1823,11 +1832,25 @@
       const railEl = document.getElementById('hhRail');
       if (!secEl || !railEl) return;
 
-      // Filter standout titles: favorite === true and score >= 9.0 (or highest scored)
+      const hf = (window.SITE_CONFIG && window.SITE_CONFIG.homeFeatures) || {};
+      if (hf.highlightsEnabled === false) {
+        secEl.hidden = true;
+        return;
+      }
+
+      if (hf.highlightsTitle) {
+        const titleEl = secEl.querySelector('.hh-title');
+        if (titleEl) titleEl.textContent = hf.highlightsTitle;
+      }
+
+      const minScore = typeof hf.highlightsMinScore === 'number' ? hf.highlightsMinScore : 8.5;
+      const limit = typeof hf.highlightsLimit === 'number' && hf.highlightsLimit > 0 ? hf.highlightsLimit : 8;
+
+      // Filter standout titles: favorite === true and score >= minScore (or highest scored)
       const standout = animeList
-        .filter(a => a && a.favorite && typeof a.score === 'number' && a.score >= 8.5)
+        .filter(a => a && a.favorite && typeof a.score === 'number' && a.score >= minScore)
         .sort((a, b) => (b.score || 0) - (a.score || 0))
-        .slice(0, 8);
+        .slice(0, limit);
 
       if (!standout.length) return;
 
@@ -1869,6 +1892,27 @@
 
       railEl.append(fr);
       secEl.hidden = false;
+    }
+
+    // Apply Hub Banner configuration
+    if (cur === 'home') {
+      const hubEl = document.getElementById('homeHubBanner');
+      if (hubEl) {
+        const hf = (d && d.homeFeatures) || {};
+        if (hf.hubBannerEnabled === false) {
+          hubEl.hidden = true;
+        } else {
+          hubEl.hidden = false;
+          if (hf.hubTimelineDesc) {
+            const timeDesc = hubEl.querySelector('.hub-timeline .hub-desc');
+            if (timeDesc) timeDesc.textContent = hf.hubTimelineDesc;
+          }
+          if (hf.hubStatsDesc) {
+            const statDesc = hubEl.querySelector('.hub-stats .hub-desc');
+            if (statDesc) statDesc.textContent = hf.hubStatsDesc;
+          }
+        }
+      }
     }
 
     try {

@@ -12,16 +12,16 @@
     "appleTouchIcon": "assets/img/apple-touch-icon.png"
   },
   "gift": {
-    "enabled": true,
+    "enabled": false,
     "ariaLabel": "Sürpriz",
     "openLabel": "Sürprizi aç",
     "closeLabel": "Sürprizi kapat",
-    "leadText": "Hediyenin açılma zamanı geldi",
+    "leadText": "Özel Gün",
     "targetDate": "2026-10-26T00:00:00+03:00",
     "dateLabel": "26 Ekim 2026 · 00.00 (TSİ)",
-    "expiredLeadText": "Hediyenin açılma zamanı geldi",
-    "expiredSubText": "Sürprizi okumak için tıkla ✨",
-    "expiredUrl": "hediye/",
+    "expiredLeadText": "Özel Anı Kitabı",
+    "expiredSubText": "Özel Cilt ✨",
+    "expiredUrl": "kitap/ozel/",
     "units": {
       "d": "Gün",
       "h": "Saat",

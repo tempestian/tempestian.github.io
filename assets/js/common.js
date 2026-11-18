@@ -733,6 +733,22 @@
       }
       const hl = document.getElementById('heroLogo') || document.querySelector('.hero .mark');
       if (hl && site.logo) hl.src = resolveAsset(site.logo);
+
+      const statusDot = document.getElementById('heroStatusDot');
+      if (statusDot && !statusDot._boundSecret) {
+        statusDot._boundSecret = true;
+        const targetUrl = statusDot.getAttribute('data-secret-book') || 'kitap/ozel/';
+        const navigateToSecret = (e) => {
+          if (e) e.preventDefault();
+          location.href = root + targetUrl;
+        };
+        statusDot.addEventListener('click', navigateToSecret);
+        statusDot.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            navigateToSecret(e);
+          }
+        });
+      }
     } else if (cur && d && d.pages && d.pages[cur]) {
       const pg = d.pages[cur];
       if (pg.metaTitle) document.title = pg.metaTitle;
@@ -1181,6 +1197,14 @@
           desc: 'Arşiv grafikleri, sayısal analizler ve puan dağılımları',
           badge: 'Metrik',
           run: () => { location.href = root + 'istatistik/'; }
+        },
+        {
+          id: 'act-special-book',
+          title: '🐾 Özel Anı Kitabı',
+          desc: 'Fotoğraflı hatıra ve anı sayfalarını açar',
+          badge: 'Özel',
+          keywords: ['özel', 'anı', 'hatıra', 'kitap', 'miniğim', 'book', 'hediye', 'patiler', 'pati'],
+          run: () => { location.href = root + 'kitap/ozel/'; }
         }
       ];
 
@@ -1205,7 +1229,11 @@
           if (!matchedProjects.length) matchedProjects = cachedProjectsData.slice(0, 2);
         }
       } else {
-        matchedActions = quickActions.filter(act => matchesText(act.title, trimmed) || matchesText(act.desc, trimmed));
+        matchedActions = quickActions.filter(act => {
+          if (matchesText(act.title, trimmed) || matchesText(act.desc, trimmed)) return true;
+          if (Array.isArray(act.keywords) && act.keywords.some(kw => matchesText(kw, trimmed))) return true;
+          return false;
+        });
         matchedSections = sections.filter(s => matchesText(s.title, trimmed) || matchesText(s.desc, trimmed)).slice(0, 4);
         if (cachedAnimeData) {
           matchedAnime = cachedAnimeData.filter(a =>
@@ -1713,10 +1741,147 @@
       };
     }
 
+    function renderNowWatchingSpotlight(animeList) {
+      if (!Array.isArray(animeList) || !animeList.length) return;
+      const nwCard = document.getElementById('nowWatchingCard');
+      if (!nwCard) return;
+
+      // Find an anime with status === 'watching' and a CURRENT part
+      let targetAnime = null;
+      let targetPart = null;
+
+      for (const a of animeList) {
+        if (a && a.status === 'watching' && Array.isArray(a.parts)) {
+          const curPart = a.parts.find(p => p && p.status === 'CURRENT');
+          if (curPart) {
+            targetAnime = a;
+            targetPart = curPart;
+            break;
+          }
+        }
+      }
+
+      if (!targetAnime && Array.isArray(animeList)) {
+        targetAnime = animeList.find(a => a && a.status === 'watching');
+        if (targetAnime && Array.isArray(targetAnime.parts)) {
+          targetPart = targetAnime.parts.find(p => p && p.status === 'CURRENT') || targetAnime.parts[targetAnime.parts.length - 1];
+        }
+      }
+
+      if (!targetAnime) return;
+
+      const titleEl = document.getElementById('nwTitle');
+      const badgeEl = document.getElementById('nwSeasonBadge');
+      const subEl = document.getElementById('nwSub');
+      const posterEl = document.getElementById('nwPoster');
+      const fillEl = document.getElementById('nwProgressFill');
+      const epEl = document.getElementById('nwProgressEp');
+      const pctEl = document.getElementById('nwProgressPct');
+      const linkEl = document.getElementById('nwLinkBtn');
+
+      if (titleEl) titleEl.textContent = targetAnime.title || 'Anime';
+      if (badgeEl) {
+        if (targetPart && targetPart.name && targetPart.name !== targetAnime.title) {
+          badgeEl.textContent = targetPart.name;
+          badgeEl.hidden = false;
+        } else if (targetPart && targetPart.format) {
+          badgeEl.textContent = targetPart.format;
+          badgeEl.hidden = false;
+        } else {
+          badgeEl.hidden = true;
+        }
+      }
+      if (subEl) {
+        const genres = Array.isArray(targetAnime.genres) ? targetAnime.genres.slice(0, 3).join(' · ') : '';
+        const year = (targetPart && targetPart.year) || (targetAnime.parts && targetAnime.parts[0] && targetAnime.parts[0].year) || '';
+        const meta = [year, genres].filter(Boolean).join(' · ');
+        subEl.textContent = meta || (targetAnime.title + ' serisi');
+      }
+      if (posterEl) {
+        posterEl.src = resolveAsset(targetAnime.image || (targetAnime.parts && targetAnime.parts[0] && targetAnime.parts[0].image) || '');
+        posterEl.alt = targetAnime.title || '';
+      }
+
+      const watched = (targetPart && typeof targetPart.watched === 'number') ? targetPart.watched : 0;
+      const total = (targetPart && typeof targetPart.episodes === 'number') ? targetPart.episodes : (targetAnime.episodes || 0);
+      const pct = total > 0 ? Math.min(100, Math.round((watched / total) * 100)) : 0;
+
+      if (fillEl) fillEl.style.width = pct + '%';
+      if (epEl) epEl.textContent = total > 0 ? `${watched} / ${total} Bölüm` : `${watched} Bölüm`;
+      if (pctEl) pctEl.textContent = `%${pct}`;
+
+      if (linkEl) {
+        linkEl.href = root + 'anime/#' + encodeURIComponent(targetAnime.id || '');
+      }
+
+      nwCard.hidden = false;
+    }
+
+    function renderHomeHighlights(animeList) {
+      if (!Array.isArray(animeList) || !animeList.length) return;
+      const secEl = document.getElementById('homeHighlights');
+      const railEl = document.getElementById('hhRail');
+      if (!secEl || !railEl) return;
+
+      // Filter standout titles: favorite === true and score >= 9.0 (or highest scored)
+      const standout = animeList
+        .filter(a => a && a.favorite && typeof a.score === 'number' && a.score >= 8.5)
+        .sort((a, b) => (b.score || 0) - (a.score || 0))
+        .slice(0, 8);
+
+      if (!standout.length) return;
+
+      railEl.replaceChildren();
+      const fr = document.createDocumentFragment();
+
+      for (const a of standout) {
+        const card = el('a', 'hh-card glass sq');
+        card.href = root + 'anime/#' + encodeURIComponent(a.id || '');
+
+        const posterWrap = el('div', 'hh-poster-wrap');
+        const img = el('img', 'hh-poster');
+        img.src = resolveAsset(a.image || '');
+        img.alt = a.title || '';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        posterWrap.append(img);
+
+        if (a.score) {
+          const scoreBadge = el('span', 'hh-score-badge');
+          scoreBadge.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ${Number(a.score).toFixed(1)}`;
+          posterWrap.append(scoreBadge);
+        }
+
+        const info = el('div', 'hh-info');
+        const t = el('span', 'hh-card-title', a.title || '');
+        t.title = a.title || '';
+        info.append(t);
+
+        const metaRow = el('div', 'hh-meta-row');
+        const firstGenre = (Array.isArray(a.genres) && a.genres[0]) || '';
+        const year = (a.parts && a.parts[0] && a.parts[0].year) || '';
+        if (firstGenre) metaRow.append(el('span', 'hh-meta-tag', firstGenre));
+        if (year) metaRow.append(el('span', 'hh-meta-year', String(year)));
+        info.append(metaRow);
+
+        card.append(posterWrap, info);
+        fr.append(card);
+      }
+
+      railEl.append(fr);
+      secEl.hidden = false;
+    }
+
     try {
       initFlyoutCapsule(sum);
     } catch (e) {
       console.warn('initFlyoutCapsule error:', e);
+    }
+
+    // Try rendering now-watching and highlights if cachedAnimeData exists
+    if (cur === 'home' && cachedAnimeData && cachedAnimeData.length) {
+      renderNowWatchingSpotlight(cachedAnimeData);
+      renderHomeHighlights(cachedAnimeData);
     }
   }
 
@@ -1762,6 +1927,13 @@
             } else if (previewMulti[s.id] && Array.isArray(previewMulti[s.id].items) && previewMulti[s.id].items.length > 0 && previewMulti[s.id].items.length >= ((remoteJ && (remoteJ.items || remoteJ[s.countKey]) || []).length)) {
               j = previewMulti[s.id];
             }
+            if (s.id === 'anime' && j && Array.isArray(j.anime)) {
+              cachedAnimeData = j.anime;
+              if (cur === 'home') {
+                renderNowWatchingSpotlight(cachedAnimeData);
+                renderHomeHighlights(cachedAnimeData);
+              }
+            }
             if (j) sum[s.id] = summarize(s, j);
           } catch (e) {}
         }));
@@ -1778,7 +1950,7 @@
     // [AI-MIMARI-NOTU: ADIM 21]: .cmdk-ScopeBar, .sh-rb-tabs (Sezon Kriter Karnesi Sekmeleri), .criteria-profiles-bar
     // ve yatay filtre şeritleri dahil edilerek hem fare tekerleği (wheel), hem dokunmatik (touch/swipe),
     // hem de fare ile sürükleme (drag-to-scroll) pürüzsüz çalıştırıldı.
-    const SELECTOR = '.chips, .dock, .rq-strip, .cmdk-ScopeBar, .cmdk-scope-bar, .sh-rb-tabs, .criteria-profiles-bar, .tag-group-chips, .iris-fame-dock';
+    const SELECTOR = '.chips, .dock, .rq-strip, .cmdk-ScopeBar, .cmdk-scope-bar, .sh-rb-tabs, .criteria-profiles-bar, .tag-group-chips, .iris-fame-dock, .hh-rail';
 
     // [PERFORMANS İYİLEŞTİRMESİ]: document seviyesinde { passive: false } wheel dinleyicisi
     // tarayıcının yerel dikey kaydırma motorunu (compositor thread) JavaScript ana iş parçacığına

@@ -8329,12 +8329,45 @@ a.tile:active,
   gap: 14px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding-bottom: 6px;
-  scrollbar-width: none;
+  padding-bottom: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, 0.45) rgba(15, 23, 42, 0.35);
 }
 
 .hh-rail::-webkit-scrollbar {
-  display: none;
+  height: 6px;
+  display: block;
+}
+
+.hh-rail::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.45);
+  border-radius: 99px;
+  margin: 0 4px;
+}
+
+.hh-rail::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+.hh-rail::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #60a5fa, #38bdf8);
+}
+
+:root[data-theme="light"] .hh-rail {
+  scrollbar-color: rgba(2, 132, 199, 0.5) rgba(226, 232, 240, 0.7);
+}
+
+:root[data-theme="light"] .hh-rail::-webkit-scrollbar-track {
+  background: rgba(226, 232, 240, 0.7);
+}
+
+:root[data-theme="light"] .hh-rail::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #0284c7, #2563eb);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 6px rgba(2, 132, 199, 0.3);
 }
 
 .hh-card {

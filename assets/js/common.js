@@ -494,6 +494,9 @@
 
         <div class="bar-actions">
           ${statsHref ? `<a class="btn bar-stats-btn" href="${esc(statsHref)}" title="${esc(statsTitle)}" aria-label="${esc(statsTitle)}">${icon('chart')}</a>` : ''}
+          <button class="btn aside-toggle-btn" id="asideToggleBtn" type="button" title="Müzik Paneli (Last.fm)" aria-label="Müzik Paneli">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </button>
           <div class="theme-picker-wrap">
             <button class="btn theme-trigger-btn" id="themePickerBtn" type="button" title="Tema Seç" aria-label="Tema Seç">
               <span class="theme-swatch-dot"></span>
@@ -557,8 +560,78 @@
         </div>
       `;
 
+      // Build Right Aside (Last.fm & Live Music Room)
+      const aside = el('aside', 'app-aside');
+      aside.id = 'appAside';
+      aside.setAttribute('aria-label', 'Müzik ve Last.fm');
+      aside.innerHTML = `
+        <div class="aside-inner">
+          <div class="aside-header">
+            <div class="aside-title-group">
+              <span class="aside-title-ic">🎧</span>
+              <span class="aside-title">Müzik Odası</span>
+            </div>
+            <div class="aside-header-actions">
+              <button type="button" class="btn neo-sq-btn aside-cfg-btn" id="lastfmConfigBtn" title="Last.fm Ayarları / Bağla" aria-label="Last.fm Ayarları">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </button>
+              <button type="button" class="btn neo-sq-btn aside-close-btn" id="asideCloseBtn" title="Kapat" aria-label="Kapat">✕</button>
+            </div>
+          </div>
+
+          <div class="lastfm-card" id="lastfmCard">
+            <div class="lastfm-card-top">
+              <span class="lastfm-live-pill" id="lastfmLivePill">
+                <span class="live-dot"></span>
+                <span id="lastfmStatusTxt">Son Çalınan</span>
+              </span>
+              <span class="lastfm-badge">LAST.FM</span>
+            </div>
+
+            <div class="lastfm-cover-box">
+              <img class="lastfm-cover-img" id="lastfmCoverImg" src="" alt="Albüm Kapağı" style="display:none;" />
+            </div>
+
+            <div class="lastfm-track-info">
+              <a class="lastfm-title" id="lastfmTitle" href="#" target="_blank" rel="noopener">Last.fm Bağlanıyor...</a>
+              <div class="lastfm-artist" id="lastfmArtist">—</div>
+              <div class="lastfm-album" id="lastfmAlbum">—</div>
+            </div>
+
+            <div class="lastfm-card-bottom">
+              <div class="lastfm-equalizer" id="lastfmEq" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <a class="lastfm-user-link" id="lastfmUserLink" href="https://www.last.fm" target="_blank" rel="noopener">
+                <span id="lastfmUserDisplay">@tempestian</span> ↗
+              </a>
+            </div>
+          </div>
+
+          <div class="aside-history-wrap">
+            <div class="aside-group-lbl">Önceki Dinlenenler</div>
+            <div class="lastfm-history-list" id="lastfmHistoryList">
+              <div class="lastfm-hist-placeholder">Geçmiş yükleniyor...</div>
+            </div>
+          </div>
+
+          <div class="lastfm-config-popover" id="lastfmConfigPopover" hidden>
+            <div class="lastfm-pop-title">LAST.FM HESABINI BAĞLA</div>
+            <label class="lastfm-cfg-label" for="lastfmUserInput">Kullanıcı Adı:
+              <input type="text" class="lastfm-cfg-input" id="lastfmUserInput" placeholder="ör. tempestian" />
+            </label>
+            <label class="lastfm-cfg-label" for="lastfmKeyInput">API Anahtarı (İsteğe Bağlı):
+              <input type="text" class="lastfm-cfg-input" id="lastfmKeyInput" placeholder="Varsayılan anahtar hazır" />
+            </label>
+            <div class="lastfm-cfg-actions">
+              <button type="button" class="btn btn-primary" id="lastfmSaveBtn">Kaydet &amp; Yenile</button>
+            </div>
+          </div>
+        </div>
+      `;
+
       mainEl.parentNode.insertBefore(workspace, mainEl);
-      workspace.append(sidebar, mainEl);
+      workspace.append(sidebar, mainEl, aside);
 
       // Mobile horizontal pill strip right inside main top for touch ergonomics
       const mobStrip = el('nav', 'mobile-section-strip');
@@ -600,6 +673,35 @@
         });
       }
 
+      const asideBtn = document.getElementById('asideToggleBtn');
+      const asideClose = document.getElementById('asideCloseBtn');
+      if (asideBtn) {
+        asideBtn.onclick = () => {
+          if (window.innerWidth <= 1280) {
+            workspace.classList.toggle('aside-open');
+          } else {
+            workspace.classList.toggle('aside-collapsed');
+          }
+        };
+      }
+      if (asideClose) {
+        asideClose.onclick = () => {
+          workspace.classList.remove('aside-open');
+          if (window.innerWidth > 1280) {
+            workspace.classList.add('aside-collapsed');
+          }
+        };
+      }
+      document.addEventListener('click', (e) => {
+        if (workspace.classList.contains('aside-open') &&
+            !aside.contains(e.target) &&
+            !asideBtn?.contains(e.target)) {
+          workspace.classList.remove('aside-open');
+        }
+      });
+
+      initLastFmWidget();
+
       const sbWheel = document.getElementById('sbWheelActionBtn');
       if (sbWheel) {
         sbWheel.onclick = async () => {
@@ -617,8 +719,165 @@
       }
     }
 
+    function initLastFmWidget() {
+      const card = document.getElementById('lastfmCard');
+      if (!card) return;
 
-    bindThemeAndIcons();
+      const cfgBtn = document.getElementById('lastfmConfigBtn');
+      const popover = document.getElementById('lastfmConfigPopover');
+      const userInp = document.getElementById('lastfmUserInput');
+      const keyInp = document.getElementById('lastfmKeyInput');
+      const saveBtn = document.getElementById('lastfmSaveBtn');
+
+      const defaultUser = 'TurkTempestian';
+      const defaultKey = 'b25b959554ed76058ac220b7b2e0a026';
+
+      let currentUser = localStorage.getItem('tp_lastfm_user') || defaultUser;
+      let currentKey = localStorage.getItem('tp_lastfm_key') || defaultKey;
+
+      if (cfgBtn && popover) {
+        cfgBtn.onclick = (e) => {
+          e.stopPropagation();
+          popover.hidden = !popover.hidden;
+          if (!popover.hidden) {
+            if (userInp) userInp.value = localStorage.getItem('tp_lastfm_user') || '';
+            if (keyInp) keyInp.value = localStorage.getItem('tp_lastfm_key') || '';
+          }
+        };
+        document.addEventListener('click', (e) => {
+          if (!popover.contains(e.target) && e.target !== cfgBtn) {
+            popover.hidden = true;
+          }
+        });
+      }
+
+      if (saveBtn) {
+        saveBtn.onclick = () => {
+          const u = (userInp && userInp.value.trim()) || '';
+          const k = (keyInp && keyInp.value.trim()) || '';
+          if (u) localStorage.setItem('tp_lastfm_user', u);
+          else localStorage.removeItem('tp_lastfm_user');
+          if (k) localStorage.setItem('tp_lastfm_key', k);
+          else localStorage.removeItem('tp_lastfm_key');
+          currentUser = u || defaultUser;
+          currentKey = k || defaultKey;
+          if (popover) popover.hidden = true;
+          update();
+        };
+      }
+
+      async function update() {
+        const titleEl = document.getElementById('lastfmTitle');
+        const artistEl = document.getElementById('lastfmArtist');
+        const albumEl = document.getElementById('lastfmAlbum');
+        const coverEl = document.getElementById('lastfmCoverImg');
+        const statusTxt = document.getElementById('lastfmStatusTxt');
+        const livePill = document.getElementById('lastfmLivePill');
+        const userLink = document.getElementById('lastfmUserLink');
+        const userDisplay = document.getElementById('lastfmUserDisplay');
+        const historyList = document.getElementById('lastfmHistoryList');
+        const cardEl = document.getElementById('lastfmCard');
+
+        if (userDisplay) userDisplay.textContent = '@' + currentUser;
+        if (userLink) userLink.href = 'https://www.last.fm/user/' + encodeURIComponent(currentUser);
+
+        try {
+          const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${encodeURIComponent(currentUser)}&api_key=${encodeURIComponent(currentKey)}&format=json&limit=5`;
+          const res = await fetch(url);
+          if (!res.ok) throw new Error('API isteği başarısız');
+          const data = await res.json();
+
+          if (data.error) {
+            if (statusTxt) statusTxt.textContent = 'Bağlantı Bekleniyor';
+            if (titleEl) {
+              titleEl.textContent = 'Last.fm Hesabını Bağla';
+              titleEl.href = '#';
+              titleEl.onclick = (e) => { e.preventDefault(); if (cfgBtn) cfgBtn.click(); };
+            }
+            if (artistEl) artistEl.textContent = 'Kullanıcı adı girmek için ⚙️ tıkla';
+            if (albumEl) albumEl.textContent = 'Canlı dinleme verisi burada gösterilecek';
+            if (livePill) livePill.classList.remove('is-now-playing');
+            if (cardEl) cardEl.classList.remove('is-playing');
+            if (historyList) {
+              historyList.innerHTML = '<div class="lastfm-empty-hist">Hesabını bağlamak için ⚙️ simgesine tıkla.</div>';
+            }
+            return;
+          }
+
+          const tracks = (data.recenttracks && data.recenttracks.track) || [];
+          if (!tracks.length) {
+            if (titleEl) titleEl.textContent = 'Kayıtlı Parça Yok';
+            if (artistEl) artistEl.textContent = '—';
+            return;
+          }
+
+          const current = tracks[0];
+          const isNow = current['@attr'] && current['@attr'].nowplaying === 'true';
+
+          if (titleEl) {
+            titleEl.textContent = current.name || 'Bilinmeyen Parça';
+            titleEl.href = current.url || '#';
+            titleEl.onclick = null;
+          }
+          if (artistEl) artistEl.textContent = (current.artist && (current.artist['#text'] || current.artist.name)) || 'Bilinmeyen Sanatçı';
+          if (albumEl) albumEl.textContent = (current.album && current.album['#text']) || '';
+
+          const imgUrl = (current.image && (current.image[3] || current.image[2] || current.image[1])['#text']) || '';
+          if (coverEl) {
+            if (imgUrl) {
+              coverEl.src = imgUrl;
+              coverEl.style.display = 'block';
+            } else {
+              coverEl.src = '';
+              coverEl.style.display = 'none';
+            }
+          }
+
+          if (isNow) {
+            if (statusTxt) statusTxt.textContent = 'Şu An Çalıyor';
+            if (livePill) livePill.classList.add('is-now-playing');
+            if (cardEl) cardEl.classList.add('is-playing');
+          } else {
+            if (statusTxt) statusTxt.textContent = (current.date && current.date['#text']) ? 'Son Çalınan' : 'Dinlendi';
+            if (livePill) livePill.classList.remove('is-now-playing');
+            if (cardEl) cardEl.classList.remove('is-playing');
+          }
+
+          if (historyList) {
+            const historyTracks = tracks.slice(1, 4);
+            if (!historyTracks.length) {
+              historyList.innerHTML = '<div class="lastfm-empty-hist">Önceki parça kaydı yok</div>';
+            } else {
+              historyList.innerHTML = historyTracks.map(t => {
+                const tImg = (t.image && (t.image[1] || t.image[0])['#text']) || '';
+                const tArtist = (t.artist && (t.artist['#text'] || t.artist.name)) || '';
+                return `
+                  <a class="lastfm-hist-item" href="${t.url || '#'}" target="_blank" rel="noopener">
+                    ${tImg ? `<img class="lastfm-hist-thumb" src="${tImg}" alt="" />` : '<div class="lastfm-hist-thumb-ph">🎵</div>'}
+                    <div class="lastfm-hist-info">
+                      <span class="lastfm-hist-title">${t.name}</span>
+                      <span class="lastfm-hist-artist">${tArtist}</span>
+                    </div>
+                  </a>
+                `;
+              }).join('');
+            }
+          }
+        } catch (err) {
+          if (statusTxt) statusTxt.textContent = 'Bağlantı Kurulamadı';
+          if (titleEl) {
+            titleEl.textContent = 'Last.fm Hesabını Bağla';
+            titleEl.href = '#';
+            titleEl.onclick = (e) => { e.preventDefault(); if (cfgBtn) cfgBtn.click(); };
+          }
+          if (artistEl) artistEl.textContent = 'Kullanıcı adı ayarlamak için ⚙️ tıkla';
+        }
+      }
+
+      update();
+      setInterval(update, 35000);
+    }
+
 
     const winBack = document.getElementById('winBackBtn');
     const winFwd = document.getElementById('winFwdBtn');

@@ -185,6 +185,8 @@ html {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 body {
   margin: 0;
@@ -192,6 +194,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   overflow-x: hidden;
+  max-width: 100vw;
 }
 a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; color: inherit; }
@@ -3397,15 +3400,21 @@ body.has-ambient-glow::before {
 /* ==========================================================================
    RESPONSIVE (Tactile App Window across Desktop, Tablet & Mobile)
    ========================================================================== */
+.mobile-section-strip {
+  display: none;
+}
+
 @media (max-width: 940px) {
   .app-workspace {
     display: block;
     margin-bottom: 0;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
   .app-sidebar {
     display: none;
     position: fixed;
-    top: 58px;
+    top: 52px;
     left: 0;
     bottom: 0;
     width: 260px;
@@ -3420,17 +3429,21 @@ body.has-ambient-glow::before {
     align-items: center;
     gap: 8px;
     overflow-x: auto;
-    padding: 10px 14px;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 12px;
     background: var(--surface);
     border-bottom: 2px solid var(--line);
     scrollbar-width: none;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
   }
   .mobile-section-strip::-webkit-scrollbar { display: none; }
   .mobile-strip-item, .mob-strip-pill {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 12px;
+    padding: 5px 12px;
     border-radius: var(--radius-pill);
     border: 1.5px solid var(--line);
     background: var(--bg-elev);
@@ -3439,6 +3452,7 @@ body.has-ambient-glow::before {
     font-weight: 700;
     white-space: nowrap;
     text-decoration: none;
+    flex-shrink: 0;
   }
   .mobile-strip-item.active, .mob-strip-pill.active {
     background: var(--frame-bg);
@@ -3448,22 +3462,164 @@ body.has-ambient-glow::before {
 }
 
 @media (max-width: 768px) {
-  .top-win-header, .bar { height: 52px; padding: 0 10px; }
-  .win-center, .neo-search-bar { max-width: 320px; }
-  .win-search-pill kbd, .neo-search-bar kbd { display: none; }
-  .wrap { padding: 14px 14px 60px; }
-  .hero-spotlight { padding: 24px 18px 52px; min-height: 250px; }
-  .hero-carousel-nav { right: 14px; bottom: 12px; }
-  .hero-progress-track { width: 120px; }
-  .poster-rail { grid-auto-columns: 145px; gap: 10px; }
-  .shelf-head-controls .shelf-head-btn.icon-only { display: none; }
-  .home-live-columns { grid-template-columns: 1fr; gap: 20px; }
-  #list.grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px 10px; }
-  .sheet-head { flex-direction: column; }
-  .sheet-cover { width: 92px; }
-  .sh-sim-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .wheel-winner-card { flex-direction: column; align-items: stretch; }
-  .chibi-speech { display: none; }
-  .back-to-top { bottom: 18px; right: 14px; }
-  .chibi-rimuru-mascot { bottom: 18px; right: 14px; }
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  .app-workspace, .wrap {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+  .top-win-header, .bar {
+    height: 52px;
+    padding: 0 !important;
+    max-width: 100vw;
+  }
+  .bar-in {
+    height: 52px;
+    padding: 0 10px;
+    gap: 8px;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  .bar-left {
+    gap: 8px;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+  .win-nav-Cluster {
+    display: none !important;
+  }
+  .neo-search-bar {
+    flex: 0 0 34px !important;
+    width: 34px !important;
+    max-width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    border-radius: var(--radius-xs) !important;
+  }
+  .neo-search-placeholder,
+  .neo-search-bar kbd {
+    display: none !important;
+  }
+  .bar-actions {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .theme-picker-wrap .theme-btn-lbl {
+    display: none !important;
+  }
+  .theme-trigger-btn {
+    padding: 0 9px;
+    min-width: 34px;
+    height: 34px;
+  }
+  .wrap {
+    padding: 12px 10px 60px;
+  }
+  .hero-spotlight {
+    padding: 20px 14px 48px;
+    min-height: 220px;
+    border-radius: var(--radius-md);
+  }
+  .hero-title, .hero-spotlight-title {
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+  .hero-meta {
+    font-size: 0.82rem;
+    margin-bottom: 14px;
+  }
+  .hero-carousel-nav {
+    right: 10px;
+    bottom: 10px;
+  }
+  .hero-progress-track {
+    width: 80px;
+  }
+  .poster-rail {
+    grid-auto-columns: 135px;
+    gap: 10px;
+    padding-bottom: 8px;
+  }
+  .shelf-head-controls .shelf-head-btn.icon-only {
+    display: none;
+  }
+  .home-live-columns {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  #list.grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+  }
+  .sheet-head {
+    flex-direction: column;
+  }
+  .sheet-cover {
+    width: 92px;
+  }
+  .sh-sim-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .wheel-winner-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .chibi-speech {
+    display: none !important;
+  }
+  .chibi-rimuru-mascot {
+    bottom: 14px;
+    right: 12px;
+    transform: scale(0.85);
+    transform-origin: bottom right;
+  }
+  .back-to-top {
+    bottom: 68px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-brand {
+    padding: 4px 8px 4px 6px;
+    gap: 6px;
+  }
+  .nav-brand span {
+    font-size: 0.95rem;
+  }
+  .sidebar-toggle-btn {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    padding: 0;
+  }
+  .neo-search-bar {
+    width: 32px !important;
+    min-width: 32px !important;
+    height: 32px !important;
+  }
+  .theme-trigger-btn {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    padding: 0;
+  }
+  #theme {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    padding: 0;
+  }
+  .hero-btn-primary, .hero-btn-secondary {
+    height: 34px;
+    padding: 0 12px;
+    font-size: 0.8rem;
+  }
 }

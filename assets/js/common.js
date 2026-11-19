@@ -567,7 +567,11 @@
       mobStrip.innerHTML = allMobileItems.map(it => `
         <a class="mob-strip-pill${isNavActive(it.id) ? ' active' : ''}" href="${root}${it.path}">${it.label}</a>
       `).join('');
-      mainEl.insertBefore(mobStrip, mainEl.firstChild);
+      if (bar) {
+        bar.after(mobStrip);
+      } else {
+        mainEl.insertBefore(mobStrip, mainEl.firstChild);
+      }
 
       const toggleBtn = document.getElementById('sidebarToggleBtn');
       if (toggleBtn) {
@@ -580,6 +584,20 @@
             ls('tp_sidebar_collapsed', c ? '1' : '0');
           }
         };
+
+        sidebar.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => {
+            workspace.classList.remove('sidebar-mobile-open');
+          });
+        });
+
+        document.addEventListener('click', (e) => {
+          if (workspace.classList.contains('sidebar-mobile-open') &&
+              !sidebar.contains(e.target) &&
+              !toggleBtn.contains(e.target)) {
+            workspace.classList.remove('sidebar-mobile-open');
+          }
+        });
       }
 
       const sbWheel = document.getElementById('sbWheelActionBtn');

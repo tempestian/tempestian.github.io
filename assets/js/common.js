@@ -893,12 +893,18 @@
 
           if (isNow) {
             if (statusTxt) statusTxt.textContent = 'Şu An Çalıyor';
-            if (livePill) livePill.classList.add('is-now-playing');
+            if (livePill) {
+              livePill.classList.add('is-now-playing');
+              livePill.title = 'Şu an canlı çalıyor';
+            }
             if (cardEl) cardEl.classList.add('is-playing');
           } else {
             const relTime = current.date && current.date.uts ? formatLastFmTime(current.date.uts) : '';
-            if (statusTxt) statusTxt.textContent = relTime ? `Son Dinlenen · ${relTime}` : 'Son Dinlenen';
-            if (livePill) livePill.classList.remove('is-now-playing');
+            if (statusTxt) statusTxt.textContent = relTime || 'Son Dinlenen';
+            if (livePill) {
+              livePill.classList.remove('is-now-playing');
+              livePill.title = relTime ? `Son Dinlenen · ${relTime}` : 'Son Dinlenen';
+            }
             if (cardEl) cardEl.classList.remove('is-playing');
           }
 

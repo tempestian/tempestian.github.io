@@ -547,26 +547,38 @@ img { display: block; max-width: 100%; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
 }
 .lastfm-live-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 2px 8px;
+  padding: 3px 8px;
   border-radius: var(--radius-pill);
   border: 1.5px solid var(--line);
   background: var(--bg-elev);
   color: var(--ink2);
-  font-size: 0.68rem;
+  font-size: 0.67rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  max-width: calc(100% - 65px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+}
+.lastfm-live-pill span:not(.live-dot) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .live-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--ink3);
+  flex-shrink: 0;
 }
 .lastfm-live-pill.is-now-playing {
   background: rgba(52, 211, 153, 0.18);
@@ -589,6 +601,7 @@ img { display: block; max-width: 100%; }
   font-weight: 800;
   color: #d51007;
   letter-spacing: 0.06em;
+  flex-shrink: 0;
 }
 
 .lastfm-cover-box {
@@ -906,26 +919,38 @@ img { display: block; max-width: 100%; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
 }
 .steam-live-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 2px 8px;
+  padding: 3px 8px;
   border-radius: var(--radius-pill);
   border: 1.5px solid var(--line);
   background: var(--bg-elev);
   color: var(--ink2);
-  font-size: 0.68rem;
+  font-size: 0.67rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  max-width: calc(100% - 60px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+}
+.steam-live-pill span:not(.steam-dot) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .steam-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--ink3);
+  flex-shrink: 0;
 }
 .steam-live-pill.is-in-game {
   background: rgba(52, 211, 153, 0.18);
@@ -951,6 +976,7 @@ img { display: block; max-width: 100%; }
   font-weight: 900;
   letter-spacing: 0.06em;
   color: var(--accent);
+  flex-shrink: 0;
 }
 
 .steam-cover-box {

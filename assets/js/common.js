@@ -1,37 +1,33 @@
 // ============================================================================
-// [AI-MIMARI-NOTU: ORTAK KABUK, ALT MENÜ (#DOCK), ÇOKLU-MEDYA ÖZETİ VE KUTUCUK MOTORU]
-// Bu dosya tüm sayfalarda (Ana sayfa, Anime, Dizi, Film, Manga, Kitap ve Rehber)
-// çalışan ortak veri ve arayüz katmanıdır.
-//
-// 1. Alt Menü (`#dock`) Mimari Notu:
-//    - HTML şablonlarında `<nav id="dock" class="dock glass">` doğrudan flex kapsayıcısıdır.
-//    - İçine ikinci bir `<nav>` EKLENMEMELİDİR; `<a>` öğeleri doğrudan `#dock` içine
-//      yerleştirilir ve aktif sekmenin (`it.id === cur`) içine `<span class="pill">`
-//      eklenerek yan yana (yatay) Liquid Glass sekme görünümü korunur.
-//
-// 2. Çoklu-Medya Arşiv Özeti (`summarize` — Adım 12 & 13):
-//    - `anime`, `series`, `movie`, `manga`, `book` ve `guide` bölümlerinin her biri için
-//      ilgili JSON dosyasındaki (`data/anime.json`, `data/series.json` vb.) `stats` ve
-//      kayıt dizisini okuyarak ana sayfadaki kategori kartlarında zengin sayaçları
-//      (ör. Dizi/Sezon/Bölüm, Film/Ort. Puan, Kitap/Sayfa, Manga/Bölüm) ve 4'lü kapak
-//      şeridini (`strip`) oluşturur.
+// TEMPESTIAN — COMMON SHELL, NAVIGATION, HOME SPOTLIGHT & COMMAND PALETTE
 // ============================================================================
 (() => {
-  const root = document.body.dataset.root || '', cur = document.body.dataset.section;
-  const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
-  const ls = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} };
-  const json = k => { try { return JSON.parse(ls(k)); } catch (e) { return null; } };
+  const root = document.body.dataset.root || '';
+  const cur = document.body.dataset.section || '';
+  const el = (t, c, x) => {
+    const e = document.createElement(t);
+    if (c) e.className = c;
+    if (x != null) e.textContent = x;
+    return e;
+  };
+  const ls = (k, v) => {
+    try {
+      if (v === undefined) return localStorage.getItem(k);
+      localStorage.setItem(k, v);
+    } catch (e) {}
+  };
+  const json = k => {
+    try { return JSON.parse(ls(k)); } catch (e) { return null; }
+  };
 
   const P = {
     home: '<path d="M3.5 10.6 12 3.5l8.5 7.1V19a2 2 0 0 1-2 2h-4.2v-5a1.3 1.3 0 0 0-1.3-1.3h-2a1.3 1.3 0 0 0-1.3 1.3v5H5.5a2 2 0 0 1-2-2z"/>',
-    anime: '<path d="M13 4H5.5A2.5 2.5 0 0 0 3 6.5v9A2.5 2.5 0 0 0 5.5 18h13a2.5 2.5 0 0 0 2.5-2.5V11"/><polygon points="10 8.5 14.8 11.2 10 14" fill="currentColor"/><path d="M8 21h8"/><path d="m18.5 2 1 2.4 2.4 1-2.4 1-1 2.4-1-2.4-2.4-1 2.4-1z" fill="currentColor" stroke="none"/>',
+    anime: '<path d="M13 4H5.5A2.5 2.5 0 0 0 3 6.5v9A2.5 2.5 0 0 0 5.5 18h13a2.5 2.5 0 0 0 2.5-2.5V11"/><polygon points="10 8.5 14.8 11.2 10 14" fill="currentColor"/><path d="M8 21h8"/>',
     manga: '<rect x="3.5" y="3" width="17" height="18" rx="2.5"/><path d="M3.5 10h17"/><path d="M13 3l-2 7"/><path d="M11 10v11"/>',
-    book: '<path d="M2.5 5.5A2.5 2.5 0 0 1 5 3h5.5A1.5 1.5 0 0 1 12 4.5v15a1.5 1.5 0 0 0-1.5-1.5H5a2.5 2.5 0 0 1-2.5-2.5z"/><path d="M21.5 5.5A2.5 2.5 0 0 0 19 3h-5.5A1.5 1.5 0 0 0 12 4.5v15a1.5 1.5 0 0 1 1.5-1.5H19a2.5 2.5 0 0 0 2.5-2.5z"/><path d="M16 3v5.5l1.5-1.2 1.5 1.2V3"/>',
-    movie: '<path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',
+    book: '<path d="M2.5 5.5A2.5 2.5 0 0 1 5 3h5.5A1.5 1.5 0 0 1 12 4.5v15a1.5 1.5 0 0 0-1.5-1.5H5a2.5 2.5 0 0 1-2.5-2.5z"/><path d="M21.5 5.5A2.5 2.5 0 0 0 19 3h-5.5A1.5 1.5 0 0 0 12 4.5v15a1.5 1.5 0 0 1 1.5-1.5H19a2.5 2.5 0 0 0 2.5-2.5z"/>',
+    movie: '<path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',
     series: '<rect x="3" y="7" width="18" height="13" rx="3"/><path d="m8 2.8 4 4.2 4-4.2"/><polygon points="10.2 10.8 14.8 13.5 10.2 16.2" fill="currentColor"/>',
     guide: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="m7.5 9.5 3 2.5-3 2.5"/><path d="M12.5 14.5h4.5"/>',
-    game: '<rect x="2.5" y="6.5" width="19" height="11" rx="5.5"/><path d="M6.5 12h4M8.5 10v4"/><circle cx="15.2" cy="10.8" r="1" fill="currentColor"/><circle cx="17.5" cy="13.2" r="1" fill="currentColor"/>',
-    music: '<path d="M9 18V5.5l10-2V16"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
     code: '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5.5l-3 13"/>',
     info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
     sparkle: '<path d="m12 3 2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/>',
@@ -59,9 +55,15 @@
     anilist: '<path d="m11.9 2 9.6 18.5H16.8l-2.1-4.2H9.3l-2.1 4.2H2.5L11.9 2zm0 6.8-2.6 5.5h5.2l-2.6-5.5z"/>'
   };
   const icon = n => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[n] || P.dot) + '</svg>';
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const resolveAsset = u => {
+    if (!u) return '';
+    if (/^(https?:|data:|blob:|\/)/i.test(u)) return u;
+    return root + u.replace(/^\.?\//, '');
+  };
 
   // ============================================================================
-  // [YENİ 5 YILDIZLI AĞIRLIKLI KRİTER PUANLAMA MOTORU]
+  // WEIGHTED RATING ENGINE (Preserved 100% for all archive pages)
   // ============================================================================
   window.TempestianRating = {
     CRITERIA: {
@@ -106,14 +108,9 @@
     },
     SCALE_MIN: 0.1,
     SCALE_MAX: 10,
-    /**
-     * Kriter puanlarını ağırlıklı olarak 10 üzerinden hesaplar.
-     * Her kriter 0.1 - 10.0 aralığında değerlendirilir.
-     */
     computeScore(criteria, subScores) {
       if (!subScores || typeof subScores !== 'object') return null;
-      let totalScore = 0;
-      let totalWeight = 0;
+      let totalScore = 0, totalWeight = 0;
       for (const c of criteria) {
         const val = Number(subScores[c.id]);
         if (!isNaN(val) && val > 0 && val <= 10) {
@@ -124,9 +121,6 @@
       if (totalWeight <= 0) return null;
       return Math.round((totalScore / totalWeight) * 10) / 10;
     },
-    /**
-     * Kriter haritasını ağırlıklı ortalaması hedef 10'luk puana tam oturacak şekilde ±0.1 adımlarla dengeler.
-     */
     _calibrateSubScores(criteria, rawMap, targetScore, emphasisMap = {}) {
       const target = Math.round(Math.max(0.1, Math.min(10.0, Number(targetScore))) * 10) / 10;
       const clamp10 = v => Math.round(Math.max(0.1, Math.min(10.0, v)) * 10) / 10;
@@ -135,141 +129,87 @@
         const raw = Number(rawMap[c.id]);
         out[c.id] = clamp10(isNaN(raw) || raw <= 0 ? target : raw);
       }
-
       for (let step = 0; step < 60; step++) {
-        const cur = this.computeScore(criteria, out);
-        if (cur == null) break;
-        const diff = Math.round((target - cur) * 10) / 10;
+        const curVal = this.computeScore(criteria, out);
+        if (curVal == null) break;
+        const diff = Math.round((target - curVal) * 10) / 10;
         if (Math.abs(diff) < 1e-6) break;
-
         const dir = diff > 0 ? 0.1 : -0.1;
-        let bestId = null;
-        let bestPenalty = Infinity;
-
+        let bestId = null, bestPenalty = Infinity;
         for (const c of criteria) {
           const nextVal = Math.round((out[c.id] + dir) * 10) / 10;
           if (nextVal < 0.1 || nextVal > 10.0) continue;
           const emp = emphasisMap[c.id] || 0;
-          const dirAffinity = dir > 0 ? -emp : emp;
-          const distFromTarget = Math.abs(nextVal - target) * 0.15;
-          const weightBias = -c.weight * 0.05;
-          const penalty = dirAffinity + distFromTarget + weightBias;
-          if (penalty < bestPenalty) {
-            bestPenalty = penalty;
-            bestId = c.id;
-          }
+          const penalty = (dir > 0 ? -emp : emp) + Math.abs(nextVal - target) * 0.15 - c.weight * 0.05;
+          if (penalty < bestPenalty) { bestPenalty = penalty; bestId = c.id; }
         }
         if (!bestId) break;
         out[bestId] = Math.round((out[bestId] + dir) * 10) / 10;
       }
       return out;
     },
-    /**
-     * Genel 10'luk puandan (örn: 1.0, 3.1, 5.3, 9.9) seçili arketip profiline uygun 0.1-10.0 kriter dağılımı türetir.
-     */
     deriveSubScores(typeKey, targetScore, profile = 'balanced') {
       const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
       if (!criteria || targetScore == null || isNaN(targetScore) || Number(targetScore) <= 0) return null;
       const target = Math.round(Math.max(0.1, Math.min(10.0, Number(targetScore))) * 10) / 10;
-
       if (profile === 'balanced') {
         const flat = {};
         for (const c of criteria) flat[c.id] = target;
         return flat;
       }
-
       const profileOffsets = {
         action: { visuals: 0.9, sound: 0.5, enjoyment: 0.4, directing: 0.6, art: 0.8, production: 0.7, pacing: 0.5, story: -0.7, world: -0.3, characters: -0.4, acting: -0.4, prose: -0.7 },
         story: { story: 0.9, world: 0.6, prose: 0.8, characters: 0.2, impact: 0.3, visuals: -0.6, sound: -0.6, art: -0.5, pacing: -0.3, production: -0.5 },
         character: { characters: 0.9, acting: 0.8, enjoyment: 0.5, impact: 0.6, music_finale: 0.4, story: 0.1, visuals: -0.5, sound: -0.4, world: -0.5, directing: -0.3, prose: 0.1 }
       }[profile] || {};
-
-      let totalW = 0;
-      let weightedOffsetSum = 0;
-      for (const c of criteria) {
-        totalW += c.weight;
-        weightedOffsetSum += (profileOffsets[c.id] || 0) * c.weight;
-      }
+      let totalW = 0, weightedOffsetSum = 0;
+      for (const c of criteria) { totalW += c.weight; weightedOffsetSum += (profileOffsets[c.id] || 0) * c.weight; }
       const meanOffset = totalW > 0 ? weightedOffsetSum / totalW : 0;
-
       const centered = {};
       let scale = 1.0;
       const minBound = target >= 1.0 ? 1.0 : 0.1;
       for (const c of criteria) {
         const d = (profileOffsets[c.id] || 0) - meanOffset;
         centered[c.id] = d;
-        if (d > 0 && target + d * scale > 10.0) {
-          scale = Math.min(scale, (10.0 - target) / d);
-        } else if (d < 0 && target + d * scale < minBound) {
-          scale = Math.min(scale, (target - minBound) / (-d));
-        }
+        if (d > 0 && target + d * scale > 10.0) scale = Math.min(scale, (10.0 - target) / d);
+        else if (d < 0 && target + d * scale < minBound) scale = Math.min(scale, (target - minBound) / (-d));
       }
       scale = Math.max(0, scale);
-
       const initial = {};
-      for (const c of criteria) {
-        initial[c.id] = Math.round((target + centered[c.id] * scale) * 10) / 10;
-      }
+      for (const c of criteria) initial[c.id] = Math.round((target + centered[c.id] * scale) * 10) / 10;
       return this._calibrateSubScores(criteria, initial, target, centered);
     },
     computeWeightedSubScores(typeKey, item) {
       if (!item) return null;
       const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
       if (!criteria) return null;
-
-      const parts = Array.isArray(item.parts) ? item.parts : [];
+      const partsArr = Array.isArray(item.parts) ? item.parts : [];
       const hasSub = p => p && p.subScores && typeof p.subScores === 'object' && Object.values(p.subScores).some(v => v != null && Number(v) > 0);
-      const getWeight = p => (p.kind === 'movie' || p.format === 'MOVIE')
-        ? 0.35
-        : ((p.kind === 'other' || ['OVA', 'SPECIAL', 'TV_SHORT'].includes(p.format)) ? 0.15 : 1.0);
-
-      const ratedParts = parts.filter(p => hasSub(p) || (p && p.score != null && Number(p.score) > 0));
+      const getWeight = p => (p.kind === 'movie' || p.format === 'MOVIE') ? 0.35 : ((p.kind === 'other' || ['OVA', 'SPECIAL', 'TV_SHORT'].includes(p.format)) ? 0.15 : 1.0);
+      const ratedParts = partsArr.filter(p => hasSub(p) || (p && p.score != null && Number(p.score) > 0));
       const partsWithSub = ratedParts.filter(hasSub);
-
       if (partsWithSub.length === 0) {
-        return (item.subScores && typeof item.subScores === 'object' && Object.values(item.subScores).some(v => v != null && Number(v) > 0))
-          ? { ...item.subScores }
-          : null;
+        return (item.subScores && typeof item.subScores === 'object' && Object.values(item.subScores).some(v => v != null && Number(v) > 0)) ? { ...item.subScores } : null;
       }
-      if (ratedParts.length === 1 && partsWithSub.length === 1) {
-        return { ...partsWithSub[0].subScores };
-      }
-
+      if (ratedParts.length === 1 && partsWithSub.length === 1) return { ...partsWithSub[0].subScores };
       const continuousAvg = {};
-      let totalPartWeight = 0;
-      let weightedSumScore = 0;
-
+      let totalPartWeight = 0, weightedSumScore = 0;
       for (const p of ratedParts) {
         const sc = hasSub(p) ? this.computeScore(criteria, p.subScores) : Number(p.score);
         const w = getWeight(p);
-        if (sc != null && !isNaN(sc) && sc > 0) {
-          weightedSumScore += sc * w;
-          totalPartWeight += w;
-        }
+        if (sc != null && !isNaN(sc) && sc > 0) { weightedSumScore += sc * w; totalPartWeight += w; }
       }
-
       for (const c of criteria) {
-        let cSum = 0;
-        let cWeight = 0;
+        let cSum = 0, cWeight = 0;
         for (const p of ratedParts) {
           const val = hasSub(p) ? Number(p.subScores[c.id]) : Number(p.score);
-          if (!isNaN(val) && val > 0 && val <= 10) {
-            const w = getWeight(p);
-            cSum += val * w;
-            cWeight += w;
-          }
+          if (!isNaN(val) && val > 0 && val <= 10) { const w = getWeight(p); cSum += val * w; cWeight += w; }
         }
         continuousAvg[c.id] = cWeight > 0 ? cSum / cWeight : 6;
       }
-
-      const targetScore = totalPartWeight > 0
-        ? Math.round((weightedSumScore / totalPartWeight) * 10) / 10
-        : (Number(item.score) || 5);
-
+      const targetScore = totalPartWeight > 0 ? Math.round((weightedSumScore / totalPartWeight) * 10) / 10 : (Number(item.score) || 5);
       const roundedMap = {};
-      for (const c of criteria) {
-        roundedMap[c.id] = Math.round(Math.max(0.1, Math.min(10.0, continuousAvg[c.id])) * 10) / 10;
-      }
+      for (const c of criteria) roundedMap[c.id] = Math.round(Math.max(0.1, Math.min(10.0, continuousAvg[c.id])) * 10) / 10;
       return this._calibrateSubScores(criteria, roundedMap, targetScore);
     },
     renderBreakdownGrid(typeKey, subScores) {
@@ -282,216 +222,63 @@
         const weightPct = Math.round(c.weight * 100);
         const tierCls = val >= 9 ? ' tier-master' : val >= 7.5 ? ' tier-high' : val >= 5 ? ' tier-mid' : val > 0 ? ' tier-low' : '';
         const valText = val > 0 ? `${val.toFixed(1)}/10` : '-';
-        return `
-          <div class="sh-rb-item${tierCls}" title="${c.desc} (Ağırlık: %${weightPct})">
-            <div class="sh-rb-top">
-              <span class="sh-rb-lbl">${c.label}</span>
-              <span class="sh-rb-num">${valText}</span>
-            </div>
-            <div class="sh-rb-bar" role="progressbar" aria-valuenow="${val}" aria-valuemin="0" aria-valuemax="10">
-              <div class="sh-rb-bar-fill" style="width:${pct}%"></div>
-            </div>
-          </div>
-        `;
+        return `<div class="sh-rb-item${tierCls}" title="${c.desc} (Ağırlık: %${weightPct})"><div class="sh-rb-top"><span class="sh-rb-lbl">${c.label}</span><span class="sh-rb-num">${valText}</span></div><div class="sh-rb-bar" role="progressbar" aria-valuenow="${val}" aria-valuemin="0" aria-valuemax="10"><div class="sh-rb-bar-fill" style="width:${pct}%"></div></div></div>`;
       }).join('');
     },
     renderBreakdownHtml(typeKey, subScores, overallScore) {
-      return `
-        <div class="sh-rb-head">
-          <span class="sh-rb-title">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/></svg>
-            Detaylı Puanlama Karnesi
-          </span>
-          <span class="sh-rb-score">★ ${overallScore || '-'} / 10</span>
-        </div>
-        <div class="sh-rb-grid">
-          ${this.renderBreakdownGrid(typeKey, subScores)}
-        </div>
-      `;
+      return `<div class="sh-rb-head"><span class="sh-rb-title"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/></svg>Detaylı Puanlama Karnesi</span><span class="sh-rb-score">★ ${overallScore || '-'} / 10</span></div><div class="sh-rb-grid">${this.renderBreakdownGrid(typeKey, subScores)}</div>`;
     },
     renderSheetBreakdown(containerEl, typeKey, item, overallScore) {
       if (!containerEl || !item) return;
       const criteria = this.CRITERIA[typeKey] || this.CRITERIA.anime;
-      if (!criteria) {
-        containerEl.hidden = true;
-        containerEl.replaceChildren();
-        return;
-      }
-
-      const parts = Array.isArray(item.parts) ? item.parts : [];
-      const ratedParts = parts.filter(p => p && p.subScores && typeof p.subScores === 'object' && Object.values(p.subScores).some(v => v != null && v > 0));
-      let effectiveItemSubScores = (item.subScores && typeof item.subScores === 'object' && Object.values(item.subScores).some(v => v != null && v > 0))
-        ? item.subScores
-        : null;
-
-      if (!effectiveItemSubScores && ratedParts.length > 0) {
-        effectiveItemSubScores = this.computeWeightedSubScores(typeKey, item);
-      }
-
-      if (!ratedParts.length && !effectiveItemSubScores) {
-        containerEl.hidden = true;
-        containerEl.replaceChildren();
-        return;
-      }
-
+      if (!criteria) { containerEl.hidden = true; containerEl.replaceChildren(); return; }
+      const partsArr = Array.isArray(item.parts) ? item.parts : [];
+      const ratedParts = partsArr.filter(p => p && p.subScores && typeof p.subScores === 'object' && Object.values(p.subScores).some(v => v != null && Number(v) > 0));
+      let effectiveItemSubScores = (item.subScores && typeof item.subScores === 'object' && Object.values(item.subScores).some(v => v != null && Number(v) > 0)) ? item.subScores : null;
+      if (!effectiveItemSubScores && ratedParts.length > 0) effectiveItemSubScores = this.computeWeightedSubScores(typeKey, item);
+      if (!ratedParts.length && !effectiveItemSubScores) { containerEl.hidden = true; containerEl.replaceChildren(); return; }
       containerEl.hidden = false;
-
-      // Durum 1: Tek parça veya doğrudan yapım seviyesi değerlendirme
       if (ratedParts.length <= 1) {
         const targetScores = effectiveItemSubScores || (ratedParts.length === 1 ? ratedParts[0].subScores : null);
-        const targetTitle = (ratedParts.length === 1 && ratedParts[0].name && ratedParts[0].name !== item.title)
-          ? `Detaylı Puanlama Karnesi · ${ratedParts[0].name}`
-          : 'Detaylı Puanlama Karnesi';
+        const targetTitle = (ratedParts.length === 1 && ratedParts[0].name && ratedParts[0].name !== item.title) ? `Detaylı Puanlama Karnesi · ${ratedParts[0].name}` : 'Detaylı Puanlama Karnesi';
         const targetScore = overallScore || (ratedParts.length === 1 && ratedParts[0].score != null ? ratedParts[0].score : null);
-
-        containerEl.innerHTML = `
-          <div class="sh-rb-head">
-            <span class="sh-rb-title">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/></svg>
-              ${esc(targetTitle)}
-            </span>
-            <span class="sh-rb-score">★ ${targetScore || '-'} / 10</span>
-          </div>
-          <div class="sh-rb-grid">
-            ${this.renderBreakdownGrid(typeKey, targetScores)}
-          </div>
-        `;
+        containerEl.innerHTML = `<div class="sh-rb-head"><span class="sh-rb-title"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/></svg>${esc(targetTitle)}</span><span class="sh-rb-score">★ ${targetScore || '-'} / 10</span></div><div class="sh-rb-grid">${this.renderBreakdownGrid(typeKey, targetScores)}</div>`;
         return;
       }
-
-      // Durum 2: Çoklu Sezon / Parça Değerlendirmesi (Kompakt ve şık yatay sekme şeridi ile minimal görünüm)
       const tabs = [];
-      if (effectiveItemSubScores) {
-        tabs.push({ id: 'item_overall', name: 'Genel', score: overallScore, subScores: effectiveItemSubScores });
-      }
-      ratedParts.forEach((p, idx) => {
-        tabs.push({
-          id: 'part_' + idx,
-          name: p.name || `${idx + 1}. Sezon`,
-          score: p.score != null ? p.score : this.computeScore(criteria, p.subScores),
-          subScores: p.subScores
-        });
-      });
-
+      if (effectiveItemSubScores) tabs.push({ id: 'item_overall', name: 'Genel', score: overallScore, subScores: effectiveItemSubScores });
+      ratedParts.forEach((p, idx) => tabs.push({ id: 'part_' + idx, name: p.name || `${idx + 1}. Sezon`, score: p.score != null ? p.score : this.computeScore(criteria, p.subScores), subScores: p.subScores }));
       let activeTabIdx = 0;
-
       const renderView = () => {
         const curTab = tabs[activeTabIdx] || tabs[0];
-        const existingTabsBar = containerEl.querySelector('.sh-rb-tabs');
-        const prevScrollLeft = existingTabsBar ? existingTabsBar.scrollLeft : 0;
-
-        const tabsHtml = tabs.map((t, i) => `
-          <button type="button" class="sh-rb-tab${i === activeTabIdx ? ' active' : ''}" data-tab-idx="${i}" role="tab" aria-selected="${i === activeTabIdx}">
-            <span>${esc(t.name)}</span>
-            <span class="sh-rb-tab-score">· ${t.score || '-'}</span>
-          </button>
-        `).join('');
-
-        containerEl.innerHTML = `
-          <div class="sh-rb-head">
-            <span class="sh-rb-title">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/></svg>
-              Detaylı Puanlama Karnesi
-            </span>
-            <span class="sh-rb-score">★ ${curTab.score || overallScore || '-'} / 10</span>
-          </div>
-          <div class="sh-rb-tabs" role="tablist" aria-label="Sezon Puanları">
-            ${tabsHtml}
-          </div>
-          <div class="sh-rb-grid">
-            ${this.renderBreakdownGrid(typeKey, curTab.subScores)}
-          </div>
-        `;
-
-        const newTabsBar = containerEl.querySelector('.sh-rb-tabs');
-        if (newTabsBar && prevScrollLeft > 0) {
-          newTabsBar.scrollLeft = prevScrollLeft;
-        }
-
+        const tabsHtml = tabs.map((t, i) => `<button type="button" class="sh-rb-tab${i === activeTabIdx ? ' active' : ''}" data-tab-idx="${i}" role="tab" aria-selected="${i === activeTabIdx}"><span>${esc(t.name)}</span><span class="sh-rb-tab-score"> · ${t.score || '-'}</span></button>`).join('');
+        containerEl.innerHTML = `<div class="sh-rb-head"><span class="sh-rb-title"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 3.9l2.4 5.1 5.6.7-4.1 3.9 1 5.6L12 16.4 7.1 19.2l1-5.6L4 9.7l5.6-.7z"/></svg>Detaylı Puanlama Karnesi</span><span class="sh-rb-score">★ ${curTab.score || overallScore || '-'} / 10</span></div><div class="sh-rb-tabs" role="tablist">${tabsHtml}</div><div class="sh-rb-grid">${this.renderBreakdownGrid(typeKey, curTab.subScores)}</div>`;
         containerEl.querySelectorAll('.sh-rb-tab').forEach(btn => {
-          btn.onclick = e => {
-            e.stopPropagation();
-            activeTabIdx = Number(btn.dataset.tabIdx);
-            renderView();
-            const activeBtn = containerEl.querySelector(`.sh-rb-tab[data-tab-idx="${activeTabIdx}"]`);
-            if (activeBtn && typeof activeBtn.scrollIntoView === 'function') {
-              activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
-            }
-          };
+          btn.onclick = e => { e.stopPropagation(); activeTabIdx = Number(btn.dataset.tabIdx); renderView(); };
         });
       };
-
       renderView();
     }
   };
 
-  const resolveAsset = u => {
-    if (!u) return '';
-    if (/^(https?:|data:|blob:|\/)/i.test(u)) return u;
-    return root + u.replace(/^\.?\//, '');
-  };
-
-  // ============================================================================
-  // [AKILLI HİBRİT MODEL: TARİH BİÇİMLENDİRME & GÖSTERİM MOTORU]
-  // 'YYYY-MM' (Ay Yıl, örn: '2024-10' -> 'Ekim 2024')
-  // 'YYYY'    (Yalnızca Yıl, örn: '2023' -> '2023')
-  // Geriye dönük uyumluluk: 'YYYY-MM-DD' gelirse 'Ekim 2024' olarak çözülür.
-  // ============================================================================
-  const TURKISH_MONTHS = [
-    '', 'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-    'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
-  ];
-
+  // Hybrid Date Formatter
+  const TURKISH_MONTHS = ['', 'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
   const formatHybridDate = val => {
     if (!val || typeof val !== 'string') return '';
     const s = val.trim();
     const mMatch = s.match(/^(\d{4})-(\d{1,2})(?:-\d{1,2})?$/);
     if (mMatch) {
-      const y = mMatch[1];
-      const m = parseInt(mMatch[2], 10);
-      const mName = TURKISH_MONTHS[m];
-      return mName ? `${mName} ${y}` : y;
-    }
-    if (/^\d{4}$/.test(s)) {
-      return s;
+      const mName = TURKISH_MONTHS[parseInt(mMatch[2], 10)];
+      return mName ? `${mName} ${mMatch[1]}` : mMatch[1];
     }
     return s;
   };
   window.formatHybridDate = formatHybridDate;
 
-  const themeBtn = document.getElementById('theme');
-  const barIn = document.querySelector('.bar-in:not(.admin-bar-in)');
-  if (barIn) {
-    let actions = barIn.querySelector('.bar-actions');
-    if (!actions) {
-      actions = el('div', 'bar-actions');
-      const statsBtns = Array.from(barIn.querySelectorAll('.bar-stats-btn'));
-      if (themeBtn) {
-        themeBtn.parentNode.insertBefore(actions, themeBtn);
-        statsBtns.forEach(b => actions.appendChild(b));
-        actions.appendChild(themeBtn);
-      } else {
-        barIn.appendChild(actions);
-      }
-    }
-  }
-  const syncIcons = () => {
-    document.querySelectorAll('[data-icon]').forEach(b => { b.innerHTML = icon(b.dataset.icon === 'theme' ? (document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon') : b.dataset.icon); });
-    if (themeBtn) themeBtn.setAttribute('aria-label', document.documentElement.dataset.theme === 'dark' ? 'Açık temaya geç' : 'Koyu temaya geç');
-  };
-  syncIcons(); document.addEventListener('themechange', syncIcons);
-  if (themeBtn) themeBtn.onclick = () => window.toggleTheme();
-
-  const bar = document.querySelector('.bar');
-  let on = false;
-  const upd = () => { const n = scrollY > 36; if (n !== on) { on = n; bar && bar.classList.toggle('on', n); } };
-  addEventListener('scroll', upd, { passive: true }); upd();
-
+  // Parts & Tally Utilities
   const parts = it => {
     const raw = it.parts || (it.seasons || []).map(s => ({ ...s, kind: 'season' }));
-    if (!raw.length && it.status === 'completed') {
-      return [{ kind: 'season', status: 'COMPLETED', episodes: 1, watched: 1, repeat: 0 }];
-    }
+    if (!raw.length && it.status === 'completed') return [{ kind: 'season', status: 'COMPLETED', episodes: 1, watched: 1, repeat: 0 }];
     const anyDone = raw.some(p => p && (p.status === 'COMPLETED' || (p.watched || 0) > 0));
     return raw.map((p, idx) => {
       const ep = Math.max(0, Number(p.episodes) || 0);
@@ -500,13 +287,7 @@
       if (!anyDone && it.status === 'completed' && (p.kind === 'season' || idx === 0)) st = 'COMPLETED';
       if (st === 'COMPLETED' && w === 0) w = ep > 0 ? ep : 1;
       if (ep > 0 && w >= ep && st === 'CURRENT') st = 'COMPLETED';
-      return {
-        ...p,
-        kind: p.kind === 'movie' ? 'movie' : p.kind === 'other' ? 'other' : 'season',
-        episodes: ep,
-        watched: w,
-        status: st
-      };
+      return { ...p, kind: p.kind === 'movie' ? 'movie' : p.kind === 'other' ? 'other' : 'season', episodes: ep, watched: w, status: st };
     });
   };
 
@@ -519,178 +300,292 @@
       const done = ps.filter(p => p.status === 'COMPLETED' && p.watched > 0);
       const doneSeasonOrMovie = done.filter(p => p.kind === 'season' || p.kind === 'movie');
       const active = ps.filter(p => p.status !== 'NONE' && p.status !== 'PLANNING' && p.watched > 0);
-      const isCounted = rule === 'completed_only'
-        ? it.status === 'completed'
-        : rule === 'any_watched'
-          ? (active.length > 0 || done.length > 0 || it.status === 'completed')
-          : (doneSeasonOrMovie.length > 0 || (done.length > 0 && !ps.some(p => p.kind === 'season' || p.kind === 'movie')) || it.status === 'completed');
-
+      const isCounted = rule === 'completed_only' ? it.status === 'completed'
+        : rule === 'any_watched' ? (active.length > 0 || done.length > 0 || it.status === 'completed')
+        : (doneSeasonOrMovie.length > 0 || (done.length > 0 && !ps.some(p => p.kind === 'season' || p.kind === 'movie')) || it.status === 'completed');
       for (const p of done) {
-        if (isCounted) {
-          if (p.kind === 'season') t.season++;
-          else if (p.kind === 'movie') t.film++;
-        }
+        if (isCounted) { if (p.kind === 'season') t.season++; else if (p.kind === 'movie') t.film++; }
         t.ep += p.watched;
       }
       if (includeInProgress) {
-        for (const p of active) {
-          if (p.status !== 'COMPLETED') t.ep += p.watched;
-        }
+        for (const p of active) { if (p.status !== 'COMPLETED') t.ep += p.watched; }
       }
       if (isCounted) t.anime++;
     }
     return t;
   };
-  // [AI-MIMARI-NOTU: ADIM 21 — EVRENSEL GÜVENLİ METİN KAÇIŞI (UI.esc), GELİŞMİŞ ALTYAZI/PARÇA ARAMASI VE MODAL YATAY KAYDIRMA]
-  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-
-  // ============================================================================
-  // [AI-MIMARI-NOTU: AMBİENT GLOW (AURA IŞIK) TAMAMEN KALDIRILDI & FRAGMAN OYNATICI]
-  // Kullanıcı talebi doğrultusunda arka planı kaplayan rahatsız edici sarı/renkli ışık hüzmesi
-  // tamamen kaldırılmış; temiz, sade ve göz yormayan karanlık cam (dark glass) görünüme dönülmüştür.
-  // Geriye dönük uyumluluk için UI.updateAmbientGlow ve UI.hideAmbientGlow güvenli boş fonksiyon yapılmıştır.
-  // ============================================================================
-  try {
-    const staleGlow = document.querySelector('.sheet-ambient-glow');
-    if (staleGlow) staleGlow.remove();
-    document.body.classList.remove('has-sheet-open');
-  } catch (_) {}
-
-  function updateAmbientGlow() {}
-  function hideAmbientGlow() {}
-
-  function openTrailer() {}
-  function closeTrailer() {}
 
   function showToast(msg, type = 'info') {
     let t = document.getElementById('tpToast');
     if (!t) {
-      t = document.createElement('div');
+      t = el('div', 'tp-toast');
       t.id = 'tpToast';
-      t.className = 'tp-toast glass';
       document.body.appendChild(t);
     }
     t.textContent = msg;
     t.dataset.type = type;
     t.classList.add('visible');
     clearTimeout(t._timer);
-    t._timer = setTimeout(() => t.classList.remove('visible'), 3200);
+    t._timer = setTimeout(() => t.classList.remove('visible'), 3000);
   }
   window.showToast = showToast;
+  window.UI = { icon, el, parts, tally, resolveAsset, esc, icons: Object.keys(P), updateAmbientGlow() {}, hideAmbientGlow() {}, openTrailer() {}, closeTrailer() {}, showToast };
 
-  window.UI = { icon, el, parts, tally, resolveAsset, esc, icons: Object.keys(P), updateAmbientGlow, hideAmbientGlow, openTrailer, closeTrailer, showToast };
-  try { localStorage.removeItem('wall'); } catch (e) {}
-
-  const dock = document.getElementById('dock'), list = document.getElementById('sections'), links = document.getElementById('links');
-  const boxesTop = document.getElementById('boxesTop'), boxesBottom = document.getElementById('boxesBottom');
-  const cover = x => x.image || null;
-
-  const CANONICAL_SECTION_META = {
-    anime: { path: 'anime/', data: 'data/anime.json', countKey: 'anime', unit: 'anime', icon: 'anime', showStrip: true },
-    guide: { path: 'rehber/', data: 'data/guides.json', countKey: 'guides', unit: 'rehber', icon: 'guide', showStrip: false },
-    project: { path: 'projeler/', data: 'data/projects.json', countKey: 'projects', unit: 'proje', icon: 'code', showStrip: false },
-    series: { path: 'dizi/', data: 'data/series.json', countKey: 'series', unit: 'dizi', icon: 'series', showStrip: true },
-    movie: { path: 'film/', data: 'data/movies.json', countKey: 'movies', unit: 'film', icon: 'movie', showStrip: true },
-    manga: { path: 'manga/', data: 'data/manga.json', countKey: 'manga', unit: 'manga', icon: 'manga', showStrip: true },
-    book: { path: 'kitap/', data: 'data/books.json', countKey: 'books', unit: 'kitap', icon: 'book', showStrip: true }
-  };
-
-  function ensureSectionDefaults(s) {
-    if (!s || typeof s !== 'object') return s;
-    const def = CANONICAL_SECTION_META[s.id];
-    if (!def) return s;
-    return {
-      ...def,
-      ...s,
-      path: s.path || def.path,
-      data: s.data || def.data,
-      countKey: s.countKey || def.countKey,
-      unit: s.unit || def.unit,
-      icon: s.icon || def.icon,
-      showStrip: s.showStrip !== undefined ? s.showStrip : def.showStrip
+  // ============================================================================
+  // UNIFIED TOP NAVIGATION BAR (Matches 4376.jpg across ALL pages)
+  // ============================================================================
+  function bindThemeAndIcons() {
+    const themeBtn = document.getElementById('theme');
+    const syncIcons = () => {
+      document.querySelectorAll('[data-icon]').forEach(b => {
+        b.innerHTML = icon(b.dataset.icon === 'theme' ? (document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon') : b.dataset.icon);
+      });
+      if (themeBtn) themeBtn.setAttribute('aria-label', document.documentElement.dataset.theme === 'dark' ? 'Açık temaya geç' : 'Koyu temaya geç');
     };
+    syncIcons();
+    if (!window.__tpThemeBound) {
+      window.__tpThemeBound = true;
+      document.addEventListener('themechange', syncIcons);
+    }
+    if (themeBtn) themeBtn.onclick = () => window.toggleTheme();
   }
 
-  // [AI-MIMARI-NOTU: ADIM 12 & 13 — ÇOKLU-MEDYA KART ÖZETLEYİCİ]
-  const summarize = (rawSec, j) => {
-    const s = ensureSectionDefaults(rawSec);
-    const items = (j && (Array.isArray(j.items) ? j.items : Array.isArray(j[s.countKey]) ? j[s.countKey] : Array.isArray(j[s.id]) ? j[s.id] : Array.isArray(j.anime) ? j.anime : [])) || [];
-    const st = j && j.stats;
-    const rawTally = tally(items, j && j.statsConfig);
-    const t = st
-      ? {
-          main: (st.watched ?? st.read ?? st.published ?? st.anime ?? rawTally.anime) || items.length,
-          season: (st.seasons ?? st.volumes ?? st.films ?? st.season ?? rawTally.season) || 0,
-          film: (st.film ?? st.specials ?? st.extras ?? rawTally.film) || 0,
-          ep: (st.episodes ?? st.pages ?? st.chapters ?? st.watchCount ?? rawTally.ep) || 0,
-          avg: st.avgScore
-        }
-      : {
-          main: rawTally.anime || items.length,
-          season: rawTally.season,
-          film: rawTally.film,
-          ep: rawTally.ep,
-          avg: null
-        };
-    let nums;
-    if (s.id === 'anime') {
-      nums = [[st && st.anime != null ? st.anime : t.main, 'anime'], [t.season, 'sezon'], [t.film, 'film'], [t.ep, 'bölüm']];
-    } else if (s.id === 'series') {
-      nums = [[t.main, 'dizi'], [t.season, 'sezon'], [t.ep, 'bölüm']];
-    } else if (s.id === 'movie') {
-      nums = [[t.main, 'film'], ...(t.avg ? [[t.avg, 'ort. puan']] : [])];
-    } else if (s.id === 'manga') {
-      nums = [[t.main, 'manga'], [t.ep, 'bölüm']];
-    } else if (s.id === 'book') {
-      nums = [[t.main, 'kitap'], [t.ep, 'sayfa']];
-    } else if (s.id === 'guide') {
-      const catCount = st && Array.isArray(st.genres) ? st.genres.length : 0;
-      nums = [[items.length, 'rehber'], ...(catCount ? [[catCount, 'kategori']] : [])];
-    } else if (s.id === 'project') {
-      const catCount = st && Array.isArray(st.categories) ? st.categories.length : (st && Array.isArray(st.genres) ? st.genres.length : 0);
-      nums = [[items.length, 'proje'], ...(catCount ? [[catCount, 'kategori']] : [])];
-    } else {
-      nums = [[items.length, s.unit || 'içerik']];
+  function initTopNav() {
+    if (cur === 'admin') {
+      bindThemeAndIcons();
+      return;
     }
-    return { nums: j ? nums : null, imgs: s.showStrip === false ? [] : items.map(cover).filter(Boolean).slice(0, 4) };
-  };
+    const dock = document.getElementById('dock');
+    if (dock) dock.remove();
+
+    const bar = document.querySelector('.bar');
+    if (!bar) return;
+
+    const navItems = [
+      { id: 'anime', label: 'Anime', path: 'anime/' },
+      { id: 'movie', label: 'Film', path: 'film/' },
+      { id: 'series', label: 'Dizi', path: 'dizi/' },
+      { id: 'book', label: 'Kitap', path: 'kitap/' },
+      { id: 'manga', label: 'Manga', path: 'manga/' },
+      { id: 'guide', label: 'Rehber', path: 'rehber/' }
+    ];
+
+    const isNavActive = id => {
+      if (cur === id) return true;
+      if (id === 'movie' && cur === 'film') return true;
+      if (id === 'series' && cur === 'dizi') return true;
+      if (id === 'book' && cur === 'kitap') return true;
+      if (id === 'guide' && cur === 'rehber') return true;
+      return false;
+    };
+
+    // Preserve any existing stats link on subpages (e.g. anime/istatistik/)
+    const existingStatsBtn = bar.querySelector('.bar-stats-btn');
+    const statsHref = existingStatsBtn ? existingStatsBtn.getAttribute('href') : null;
+    const statsTitle = existingStatsBtn ? existingStatsBtn.getAttribute('title') : 'İstatistikler';
+
+    bar.innerHTML = `
+      <div class="bar-in">
+        <div class="bar-left">
+          <a class="nav-brand" href="${root || './'}" id="barTitle">Tempestian</a>
+          <nav class="top-nav" aria-label="Ana gezinme">
+            ${navItems.map(n => `<a class="nav-link${isNavActive(n.id) ? ' active' : ''}" href="${root}${n.path}" data-nav="${n.id}">${n.label}</a>`).join('')}
+          </nav>
+        </div>
+        <div class="bar-actions">
+          ${statsHref ? `<a class="btn bar-stats-btn" href="${esc(statsHref)}" title="${esc(statsTitle)}" aria-label="${esc(statsTitle)}">${icon('chart')}</a>` : ''}
+          <button class="search-pill" id="searchTrigger" type="button" aria-label="Hızlı Arama" title="Hızlı Arama (/ veya Ctrl+K)">
+            <span>Ara</span>
+            <kbd>/</kbd>
+          </button>
+          <button class="btn" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
+        </div>
+      </div>
+    `;
+
+    const themeBtn = document.getElementById('theme');
+    const syncIcons = () => {
+      document.querySelectorAll('[data-icon]').forEach(b => {
+        b.innerHTML = icon(b.dataset.icon === 'theme' ? (document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon') : b.dataset.icon);
+      });
+      if (themeBtn) themeBtn.setAttribute('aria-label', document.documentElement.dataset.theme === 'dark' ? 'Açık temaya geç' : 'Koyu temaya geç');
+    };
+    syncIcons();
+    document.addEventListener('themechange', syncIcons);
+    if (themeBtn) themeBtn.onclick = () => window.toggleTheme();
+
+    const searchBtn = document.getElementById('searchTrigger');
+    if (searchBtn) {
+      searchBtn.onclick = e => {
+        e.preventDefault();
+        if (typeof window.openCommandPalette === 'function') window.openCommandPalette();
+      };
+    }
+
+    let on = false;
+    const upd = () => {
+      const n = scrollY > 18;
+      if (n !== on) { on = n; bar.classList.toggle('on', n); }
+    };
+    addEventListener('scroll', upd, { passive: true });
+    upd();
+  }
+
+  // ============================================================================
+  // HOME PAGE RENDERERS (Hero Spotlight, Öne Çıkan Başyapıtlar, Devam Edilecek)
+  // ============================================================================
+  const FMT_LABEL = { TV: 'TV', TV_SHORT: 'Kısa', MOVIE: 'Film', OVA: 'OVA', SPECIAL: 'Özel', ONA: 'ONA' };
+
+  function buildPosterCard(item, href, gradIndex, showStatus) {
+    const a = el('a', `poster-card grad-${gradIndex % 10}`);
+    a.href = href;
+    if (item.image) {
+      const img = el('img');
+      img.src = resolveAsset(item.image.replace('/cover/medium/', '/cover/large/'));
+      img.alt = item.title || '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.onload = () => img.classList.add('in');
+      a.append(img);
+    }
+    if (typeof item.score === 'number' && item.score > 0) {
+      const badge = el('span', 'poster-rating');
+      badge.innerHTML = `<span class="star">★</span>${item.score.toFixed(1)}`;
+      a.append(badge);
+    }
+    if (showStatus) {
+      const stTxt = item.status === 'watching' ? 'İzleniyor' : item.status === 'paused' ? 'Beklemede' : '';
+      if (stTxt) a.append(el('span', 'poster-status-dot', stTxt));
+    }
+    const title = el('h3', 'poster-title', item.title || '');
+    a.append(title);
+    return a;
+  }
+
+  function renderHeroSpotlight(animeList) {
+    const heroEl = document.getElementById('heroSpotlight');
+    if (!heroEl || !Array.isArray(animeList) || !animeList.length) return;
+
+    let target = null, targetPart = null;
+    for (const a of animeList) {
+      if (a && a.status === 'watching' && Array.isArray(a.parts)) {
+        const cp = a.parts.find(p => p && p.status === 'CURRENT');
+        if (cp) { target = a; targetPart = cp; break; }
+      }
+    }
+    if (!target) {
+      target = animeList.find(a => a && a.status === 'watching') || animeList[0];
+      if (target && Array.isArray(target.parts)) {
+        targetPart = target.parts.find(p => p && p.status === 'CURRENT') || target.parts[0];
+      }
+    }
+    if (!target) return;
+
+    const titleEl = document.getElementById('heroSpotlightTitle');
+    const metaEl = document.getElementById('heroSpotlightMeta');
+    const bgImg = document.getElementById('heroBgImg');
+    const pgGroup = document.getElementById('heroProgressGroup');
+    const pgFill = document.getElementById('heroProgressFill');
+    const pgText = document.getElementById('heroProgressText');
+    const detailBtn = document.getElementById('heroDetailBtn');
+    const archiveBtn = document.getElementById('heroArchiveBtn');
+
+    if (titleEl) titleEl.textContent = target.title || 'Tempestian';
+
+    const fmt = targetPart && targetPart.format ? (FMT_LABEL[targetPart.format] || targetPart.format) : 'TV';
+    const year = (targetPart && targetPart.year) || (target.parts && target.parts[0] && target.parts[0].year) || '';
+    const genres = (Array.isArray(target.customGenres) && target.customGenres.length ? target.customGenres : (target.genres || [])).slice(0, 3);
+    const metaParts = [fmt, year, ...genres].filter(Boolean);
+    if (metaEl) metaEl.textContent = metaParts.join(' · ');
+
+    const bgUrl = target.banner || target.image || '';
+    if (bgImg && bgUrl) {
+      bgImg.onload = () => bgImg.classList.add('loaded');
+      bgImg.src = resolveAsset(bgUrl);
+    }
+
+    const watched = (targetPart && typeof targetPart.watched === 'number') ? targetPart.watched : 0;
+    const total = (targetPart && typeof targetPart.episodes === 'number') ? targetPart.episodes : 0;
+    if (pgGroup && (watched > 0 || total > 0)) {
+      const pct = total > 0 ? Math.min(100, Math.round((watched / total) * 100)) : 25;
+      if (pgFill) pgFill.style.width = pct + '%';
+      if (pgText) pgText.textContent = total > 0 ? `${watched} / ${total} bölüm` : `${watched} bölüm`;
+      pgGroup.hidden = false;
+    }
+
+    if (detailBtn) detailBtn.href = root + 'anime/#' + encodeURIComponent(target.id || '');
+    if (archiveBtn) archiveBtn.href = root + 'anime/';
+    heroEl.dataset.heroId = target.id || '';
+  }
+
+  function renderHomeHighlights(animeList, cfg) {
+    const sec = document.getElementById('homeHighlights');
+    const rail = document.getElementById('hhRail');
+    if (!sec || !rail || !Array.isArray(animeList) || !animeList.length) return;
+
+    const hf = (cfg && cfg.homeFeatures) || {};
+    if (hf.highlightsEnabled === false) { sec.hidden = true; return; }
+    const titleEl = document.getElementById('hhTitle');
+    if (titleEl && hf.highlightsTitle) titleEl.textContent = hf.highlightsTitle;
+
+    const minScore = typeof hf.highlightsMinScore === 'number' ? hf.highlightsMinScore : 8.5;
+    const limit = Math.max(7, Number(hf.highlightsLimit) || 10);
+
+    let standout = animeList
+      .filter(a => a && typeof a.score === 'number' && a.score >= minScore)
+      .sort((a, b) => (b.score || 0) - (a.score || 0) || (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0))
+      .slice(0, limit);
+
+    if (!standout.length) return;
+    const fr = document.createDocumentFragment();
+    standout.forEach((a, i) => fr.append(buildPosterCard(a, root + 'anime/#' + encodeURIComponent(a.id || ''), i, false)));
+    rail.replaceChildren(fr);
+    sec.hidden = false;
+  }
+
+  function renderHomeContinue(animeList) {
+    const sec = document.getElementById('homeContinue');
+    const rail = document.getElementById('continueRail');
+    if (!sec || !rail || !Array.isArray(animeList) || !animeList.length) return;
+
+    const heroId = (document.getElementById('heroSpotlight') && document.getElementById('heroSpotlight').dataset.heroId) || '';
+    const queue = animeList.filter(a => {
+      if (!a || a.id === heroId) return false;
+      return a.status === 'watching' || a.status === 'paused' || Boolean(a.next);
+    });
+
+    if (!queue.length) { sec.hidden = true; return; }
+    const fr = document.createDocumentFragment();
+    queue.slice(0, 12).forEach((a, i) => fr.append(buildPosterCard(a, root + 'anime/#' + encodeURIComponent(a.id || ''), i + 7, false)));
+    rail.replaceChildren(fr);
+    sec.hidden = false;
+  }
+
+  function renderHomeMovies(movieList) {
+    const sec = document.getElementById('homeMovies');
+    const rail = document.getElementById('moviesRail');
+    if (!sec || !rail || !Array.isArray(movieList) || !movieList.length) return;
+
+    const fr = document.createDocumentFragment();
+    movieList.slice(0, 10).forEach((m, i) => fr.append(buildPosterCard(m, root + 'film/#' + encodeURIComponent(m.id || ''), i + 2, false)));
+    rail.replaceChildren(fr);
+    sec.hidden = false;
+  }
 
   function renderCustomBoxes(container, boxItems) {
     if (!container) return;
     const activeBoxes = (boxItems || []).filter(b => b && b.enabled !== false);
-    if (!activeBoxes.length) {
-      container.hidden = true;
-      container.replaceChildren();
-      return;
-    }
+    if (!activeBoxes.length) { container.hidden = true; container.replaceChildren(); return; }
     const fr = document.createDocumentFragment();
     for (const b of activeBoxes) {
-      const li = el('li', 'tile glass sq custom-box' + (b.span === 'full' ? ' span-full' : ''));
-      const isLink = Boolean(b.url);
-      const box = isLink ? Object.assign(el('a'), { href: resolveAsset(b.url) }) : el('div');
-      if (isLink && /^https?:\/\//i.test(b.url)) box.rel = 'noopener';
+      const li = el('li', 'custom-box');
+      const box = b.url ? Object.assign(el('a'), { href: resolveAsset(b.url) }) : el('div');
+      if (b.url && /^https?:\/\//i.test(b.url)) box.rel = 'noopener';
       const kickerRow = el('div', 'cbox-kicker-row');
       kickerRow.append(el('span', 'cbox-kicker', b.badge || 'DURUM NOTU'));
-      if (isLink) {
-        const g = el('span', 'sec-open-lbl');
-        g.innerHTML = 'İncele ' + icon(/^https?:\/\//i.test(b.url) ? 'out' : 'next');
-        kickerRow.append(g);
-      }
       box.append(kickerRow);
-      box.append(el('h2', 'cbox-title', b.title || ''));
-      if (b.text) {
-        box.append(el('p', 'box-txt', b.text));
-      }
-      if (Array.isArray(b.stats) && b.stats.length) {
-        const n = el('p', 'nums');
-        for (const st of b.stats) {
-          if (!st || (st.value == null && !st.label)) continue;
-          const sp = el('span');
-          sp.append(el('b', '', st.value ?? ''), ' ' + (st.label || ''));
-          n.append(sp);
-        }
-        box.append(n);
-      }
+      if (b.title) box.append(el('h3', 'cbox-title', b.title));
+      if (b.text) box.append(el('p', 'box-txt', b.text));
       li.append(box);
       fr.append(li);
     }
@@ -698,350 +593,12 @@
     container.hidden = false;
   }
 
-  function applySiteIdentity(d) {
-    const site = (d && d.site) || {};
-    if (site.favicon32) {
-      const f32 = document.getElementById('fav32') || document.querySelector('link[sizes="32x32"]');
-      if (f32) f32.href = resolveAsset(site.favicon32);
-    }
-    if (site.icon192) {
-      const f192 = document.getElementById('fav192') || document.querySelector('link[sizes="192x192"]');
-      if (f192) f192.href = resolveAsset(site.icon192);
-    }
-    if (site.appleTouchIcon) {
-      const fa = document.getElementById('favApple') || document.querySelector('link[rel="apple-touch-icon"]');
-      if (fa) fa.href = resolveAsset(site.appleTouchIcon);
-    }
-    if (cur === 'home') {
-      if (site.title) document.title = site.title;
-      if (site.description) {
-        const md = document.querySelector('meta[name="description"]');
-        if (md) md.content = site.description;
-      }
-      const bt = document.getElementById('barTitle') || document.querySelector('.bar-title');
-      if (bt && (site.barTitle || site.title)) {
-        const txt = bt.querySelector('.bar-title-txt') || bt.querySelector('span');
-        if (txt) txt.textContent = site.barTitle || site.title;
-        else bt.textContent = site.barTitle || site.title;
-      }
-      const ht = document.getElementById('heroTitle') || document.querySelector('.hero h1');
-      if (ht && site.title !== undefined) ht.textContent = site.title;
-      const hs = document.getElementById('heroSub') || document.querySelector('.hero .sub');
-      if (hs) {
-        hs.textContent = site.subtitle || 'Kişisel medya arşivi, puanlama karneleri ve GNU/Linux teknik rehber dizini.';
-        hs.hidden = false;
-      }
-      const hl = document.getElementById('heroLogo') || document.querySelector('.hero .mark');
-      if (hl && site.logo) hl.src = resolveAsset(site.logo);
-
-      const statusDot = document.getElementById('heroStatusDot');
-      if (statusDot && !statusDot._boundSecret) {
-        statusDot._boundSecret = true;
-        const targetUrl = statusDot.getAttribute('data-secret-book') || 'kitap/ozel/';
-        const navigateToSecret = (e) => {
-          if (e) e.preventDefault();
-          location.href = root + targetUrl;
-        };
-        statusDot.addEventListener('click', navigateToSecret);
-        statusDot.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            navigateToSecret(e);
-          }
-        });
-      }
-    } else if (cur && d && d.pages && d.pages[cur]) {
-      const pg = d.pages[cur];
-      if (pg.metaTitle) document.title = pg.metaTitle;
-      if (pg.description) {
-        const md = document.querySelector('meta[name="description"]');
-        if (md) md.content = pg.description;
-      }
-      const bt = document.querySelector('.bar-title');
-      if (bt && pg.title) {
-        const txt = bt.querySelector('.bar-title-txt') || bt.querySelector('span');
-        if (txt) txt.textContent = pg.title;
-        else bt.textContent = pg.title;
-      }
-      const h1 = document.querySelector('.page-head h1');
-      if (h1 && pg.title) h1.textContent = pg.title;
-      const headEl = document.querySelector('.page-head');
-      if (headEl && pg.subtitle !== undefined) {
-        let subEl = headEl.querySelector('.sub');
-        if (!subEl && pg.subtitle) {
-          subEl = el('p', 'sub');
-          subEl.style.marginTop = '4px';
-          subEl.style.fontSize = '.98rem';
-          headEl.append(subEl);
-        }
-        if (subEl) {
-          subEl.textContent = pg.subtitle;
-          subEl.hidden = !pg.subtitle;
-        }
-      }
-    }
-  }
-
   // ============================================================================
-  // [IRIS FLYOUT CONTROL CAPSULE]: Minimal Island & Dropdown Control Center (Idea 3)
-  // ============================================================================
-  function initFlyoutCapsule(sum) {
-    if (cur === 'admin') return;
-
-    const bar = document.querySelector('.bar');
-    if (!bar) return;
-    const barIn = bar.querySelector('.bar-in');
-    if (!barIn) return;
-
-    let trigger = document.getElementById('flyoutTrigger');
-    let menu = document.getElementById('flyoutMenu');
-
-    if (trigger && !trigger.querySelector('.flyout-chevron')) {
-      const ch = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      ch.setAttribute('class', 'flyout-chevron');
-      ch.setAttribute('viewBox', '0 0 24 24');
-      ch.setAttribute('fill', 'none');
-      ch.setAttribute('stroke', 'currentColor');
-      ch.setAttribute('stroke-width', '2.2');
-      ch.setAttribute('stroke-linecap', 'round');
-      ch.setAttribute('stroke-linejoin', 'round');
-      ch.setAttribute('aria-hidden', 'true');
-      ch.innerHTML = '<polyline points="6 9 12 15 18 9"/>';
-      trigger.appendChild(ch);
-    }
-
-    // Alt sayfalarda flyoutTrigger veya flyoutMenu yoksa dinamik olarak inşa et
-    if (!trigger || !menu) {
-      const titleEl = barIn.querySelector('.bar-title');
-      const curTitle = titleEl ? titleEl.textContent.trim() : (cur ? cur.charAt(0).toUpperCase() + cur.slice(1) : 'Menü');
-
-      if (!trigger) {
-        trigger = el('button', 'bar-title flyout-trigger');
-        trigger.id = 'flyoutTrigger';
-        trigger.type = 'button';
-        trigger.setAttribute('aria-expanded', 'false');
-        trigger.setAttribute('aria-controls', 'flyoutMenu');
-        trigger.setAttribute('aria-label', 'Bölüm Değiştir');
-        trigger.title = 'Bölümler Arasında Geçiş Yap';
-        trigger.innerHTML = `<span>${esc(curTitle)}</span><svg class="flyout-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>`;
-
-        if (titleEl) {
-          titleEl.replaceWith(trigger);
-        } else {
-          barIn.insertBefore(trigger, barIn.querySelector('.bar-actions') || null);
-        }
-      }
-
-      if (!menu) {
-        menu = el('div', 'flyout-menu');
-        menu.id = 'flyoutMenu';
-        menu.hidden = true;
-
-        const isAct = (sec) => (cur === sec ? ' active' : '');
-
-        menu.innerHTML = `
-          <div class="flyout-header">
-            <span class="flyout-sec-title">Gezinme & Arşiv</span>
-          </div>
-          <div class="flyout-grid">
-            <a class="flyout-item${isAct('home')}" href="${root}">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 18 9"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Ana Sayfa</span>
-                <span class="flyout-desc">Portal görünümü</span>
-              </div>
-            </a>
-            <a class="flyout-item${isAct('anime')}" href="${root}anime/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Anime Arşivi</span>
-                <span class="flyout-desc" id="flyAnimeDesc">İzleme Listesi · Puanlar</span>
-              </div>
-              <span class="flyout-badge">Aktif</span>
-            </a>
-            <a class="flyout-item${isAct('guide') || isAct('rehber')}" href="${root}rehber/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Rehberler</span>
-                <span class="flyout-desc" id="flyGuideDesc">GNU/Linux & Donanım</span>
-              </div>
-              <span class="flyout-badge">Technopat</span>
-            </a>
-            <a class="flyout-item${isAct('project') || isAct('projeler')}" href="${root}projeler/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5.5l-3 13"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Projeler</span>
-                <span class="flyout-desc" id="flyProjectDesc">Açık Kaynak & Forklar</span>
-              </div>
-              <span class="flyout-badge">Aktif</span>
-            </a>
-            <a class="flyout-item${isAct('series') || isAct('dizi')}" href="${root}dizi/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Dizi</span>
-                <span class="flyout-desc">Dizi Arşivi</span>
-              </div>
-            </a>
-            <a class="flyout-item${isAct('movie') || isAct('film')}" href="${root}film/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18M17 3v18M3 7.5h4M3 12h18M3 16.5h4M17 7.5h4M17 16.5h4"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Film</span>
-                <span class="flyout-desc">Sinema Arşivi</span>
-              </div>
-            </a>
-            <a class="flyout-item${isAct('manga')}" href="${root}manga/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Manga</span>
-                <span class="flyout-desc">Okuma Listesi</span>
-              </div>
-            </a>
-            <a class="flyout-item${isAct('book') || isAct('kitap')}" href="${root}kitap/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Kitap</span>
-                <span class="flyout-desc">Kitaplık</span>
-              </div>
-            </a>
-          </div>
-          <div class="flyout-sep"></div>
-          <div class="flyout-header">
-            <span class="flyout-sec-title">Zaman ve Metrikler</span>
-          </div>
-          <div class="flyout-grid">
-            <a class="flyout-item${isAct('zaman-tuneli')}" href="${root}zaman-tuneli/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">Zaman Tüneli</span>
-                <span class="flyout-desc">Kronolojik arşiv akışı</span>
-              </div>
-            </a>
-            <a class="flyout-item${isAct('istatistik')}" href="${root}istatistik/">
-              <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-              <div class="flyout-info">
-                <span class="flyout-name">İstatistikler</span>
-                <span class="flyout-desc">Metrik ve grafikler</span>
-              </div>
-            </a>
-          </div>
-        `;
-        bar.appendChild(menu);
-      }
-    }
-
-    if (!trigger || !menu) return;
-
-    if (!trigger._flyoutBound) {
-      trigger._flyoutBound = true;
-
-      const toggle = (force) => {
-        const open = force !== undefined ? force : menu.hidden;
-        menu.hidden = !open;
-        trigger.setAttribute('aria-expanded', String(open));
-        trigger.classList.toggle('open', open);
-      };
-
-      trigger.onclick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        toggle();
-      };
-
-      if (new URLSearchParams(location.search).has('flyout')) {
-        toggle(true);
-      }
-
-      menu.onclick = (e) => {
-        if (e.target.closest('a')) {
-          toggle(false);
-        } else {
-          e.stopPropagation();
-        }
-      };
-
-      document.addEventListener('click', (e) => {
-        if (!menu.hidden && !trigger.contains(e.target) && !menu.contains(e.target)) {
-          toggle(false);
-        }
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !menu.hidden) {
-          toggle(false);
-          trigger.focus();
-        }
-      });
-    }
-
-    const barActions = barIn.querySelector('.bar-actions');
-    if (barActions) {
-      let islandClock = document.getElementById('irisIslandClock');
-      if (!islandClock) {
-        islandClock = el('a', 'iris-island-clock');
-        islandClock.id = 'irisIslandClock';
-        islandClock.href = root + 'zaman-tuneli/';
-        islandClock.setAttribute('aria-label', 'Zaman Tüneli ve Saat');
-        islandClock.innerHTML = '<span class="ic-h">--</span><span class="ic-sep">:</span><span class="ic-m">--</span>';
-        barIn.insertBefore(islandClock, barActions);
-
-        const updateIslandClock = () => {
-          const now = new Date();
-          const hh = String(now.getHours()).padStart(2, '0');
-          const mm = String(now.getMinutes()).padStart(2, '0');
-          const hEl = islandClock.querySelector('.ic-h');
-          const mEl = islandClock.querySelector('.ic-m');
-          if (hEl && hEl.textContent !== hh) hEl.textContent = hh;
-          if (mEl && mEl.textContent !== mm) mEl.textContent = mm;
-          try {
-            const dateStr = now.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' });
-            islandClock.title = `${dateStr} · Zaman Tüneline Git`;
-          } catch (_) {}
-        };
-        updateIslandClock();
-        setInterval(updateIslandClock, 15000);
-      }
-
-      let searchBtn = document.getElementById('searchTrigger');
-      if (!searchBtn) {
-        searchBtn = el('button', 'btn glass');
-        searchBtn.id = 'searchTrigger';
-        searchBtn.type = 'button';
-        searchBtn.setAttribute('aria-label', 'Hızlı Arama');
-        searchBtn.title = 'Hızlı Arama (/ veya Ctrl+K)';
-        searchBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
-        barActions.insertBefore(searchBtn, barActions.firstChild);
-      }
-      if (searchBtn && !searchBtn._boundCmd) {
-        searchBtn._boundCmd = true;
-        searchBtn.onclick = (e) => {
-          e.preventDefault();
-          if (typeof window.openCommandPalette === 'function') {
-            window.openCommandPalette();
-          }
-        };
-      }
-    }
-
-    if (sum && sum.anime && sum.anime.nums && sum.anime.nums[0]) {
-      const animeDescEl = document.getElementById('flyAnimeDesc');
-      if (animeDescEl) animeDescEl.textContent = `${sum.anime.nums[0][0]} Anime · Arşiv`;
-    }
-    if (sum && sum.guide && sum.guide.nums && sum.guide.nums[0]) {
-      const guideDescEl = document.getElementById('flyGuideDesc');
-      if (guideDescEl) guideDescEl.textContent = `${sum.guide.nums[0][0]} Rehber · Donanım & Linux`;
-    }
-    if (sum && sum.project && sum.project.nums && sum.project.nums[0]) {
-      const projectDescEl = document.getElementById('flyProjectDesc');
-      if (projectDescEl) projectDescEl.textContent = `${sum.project.nums[0][0]} Proje · GitHub & Fork`;
-    }
-
-    initCommandPalette();
-  }
-
-  // ============================================================================
-  // [IRIS COMMAND PALETTE & FLOATING LAUNCHER]: Zero-API Global Search (Quickshell Aesthetic)
+  // GLOBAL COMMAND PALETTE (/ or Ctrl+K)
   // ============================================================================
   let cmdPaletteMounted = false;
   let cachedAnimeData = null;
+  let cachedMoviesData = null;
   let cachedGuidesData = null;
   let cachedProjectsData = null;
   let cmdActiveIndex = -1;
@@ -1050,32 +607,25 @@
     if (cmdPaletteMounted || cur === 'admin') return;
     cmdPaletteMounted = true;
 
-    // Create Modal Backdrop
     const backdrop = el('div', 'cmd-palette-backdrop');
     backdrop.id = 'cmdPalette';
     backdrop.hidden = true;
-
     backdrop.innerHTML = `
-      <div class="cmd-palette-modal" role="dialog" aria-modal="true" aria-label="iRiS Komut ve Hızlı Arama Paleti">
+      <div class="cmd-palette-modal" role="dialog" aria-modal="true" aria-label="Hızlı Arama">
         <div class="cmd-palette-head">
-          <span class="cmd-search-ic">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          </span>
-          <input type="text" class="cmd-palette-input" id="cmdInput" placeholder="Bölüm, anime veya rehber ara... (/ veya Ctrl+K)" autocomplete="off" spellcheck="false" />
+          <span class="cmd-search-ic">${icon('search')}</span>
+          <input type="text" class="cmd-palette-input" id="cmdInput" placeholder="Anime, film, rehber veya bölüm ara..." autocomplete="off" spellcheck="false" />
           <span class="cmd-kbd-badge">ESC</span>
-          <button type="button" class="cmd-close-btn" id="cmdClose" aria-label="Kapat" title="Kapat (ESC)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
+          <button type="button" class="cmd-close-btn" id="cmdClose" aria-label="Kapat">${icon('close')}</button>
         </div>
         <div class="cmd-palette-results" id="cmdResults" role="listbox"></div>
         <div class="cmd-palette-footer">
           <span class="cmd-hint"><kbd>↑</kbd><kbd>↓</kbd> Gezin</span>
-          <span class="cmd-hint"><kbd>↵</kbd> Seç</span>
+          <span class="cmd-hint"><kbd>↵</kbd> Aç</span>
           <span class="cmd-hint"><kbd>ESC</kbd> Kapat</span>
         </div>
       </div>
     `;
-
     document.body.appendChild(backdrop);
 
     const input = backdrop.querySelector('#cmdInput');
@@ -1083,1250 +633,327 @@
     const closeBtn = backdrop.querySelector('#cmdClose');
 
     const defaultSections = [
-      { id: 'home', title: 'Ana Sayfa', desc: 'Portal görünümü ve özet metrikler', path: '', badge: 'Portal' },
-      { id: 'anime', title: 'Anime Arşivi', desc: 'İzleme listesi, puanlar ve sıralama', path: 'anime/', badge: 'Aktif' },
-      { id: 'rehber', title: 'Rehberler', desc: 'GNU/Linux ve Donanım makaleleri', path: 'rehber/', badge: 'Technopat' },
-      { id: 'zaman-tuneli', title: 'Zaman Tüneli', desc: 'Kronolojik arşiv akışı', path: 'zaman-tuneli/', badge: 'Akış' },
-      { id: 'istatistik', title: 'İstatistikler', desc: 'Grafikler ve sayısal metrikler', path: 'istatistik/', badge: 'Metrik' },
-      { id: 'dizi', title: 'Dizi', desc: 'Dizi arşivi', path: 'dizi/', badge: 'Yakında' },
-      { id: 'film', title: 'Film', desc: 'Sinema arşivi', path: 'film/', badge: 'Yakında' },
-      { id: 'manga', title: 'Manga', desc: 'Manga ve çizgi roman listesi', path: 'manga/', badge: 'Yakında' },
-      { id: 'kitap', title: 'Kitap', desc: 'Kitaplık ve okuma notları', path: 'kitap/', badge: 'Yakında' }
+      { id: 'home', title: 'Ana Sayfa', desc: 'Vitrin ve öne çıkanlar', path: '', badge: 'Vitrin' },
+      { id: 'anime', title: 'Anime', desc: 'Anime arşivi ve puanlar', path: 'anime/', badge: 'Arşiv' },
+      { id: 'movie', title: 'Film', desc: 'Sinema arşivi', path: 'film/', badge: 'Arşiv' },
+      { id: 'series', title: 'Dizi', desc: 'Dizi arşivi', path: 'dizi/', badge: 'Arşiv' },
+      { id: 'book', title: 'Kitap', desc: 'Kitaplık', path: 'kitap/', badge: 'Arşiv' },
+      { id: 'manga', title: 'Manga', desc: 'Okuma listesi', path: 'manga/', badge: 'Arşiv' },
+      { id: 'guide', title: 'Rehber', desc: 'Technopat GNU/Linux rehberleri', path: 'rehber/', badge: 'Rehber' },
+      { id: 'project', title: 'Projeler', desc: 'Açık kaynak depolar', path: 'projeler/', badge: 'GitHub' },
+      { id: 'timeline', title: 'Zaman Tüneli', desc: 'Kronolojik akış', path: 'zaman-tuneli/', badge: 'Akış' },
+      { id: 'stats', title: 'İstatistikler', desc: 'Metrik ve grafikler', path: 'istatistik/', badge: 'Metrik' }
     ];
 
-    function getSections() {
-      if (window.SITE_CONFIG && Array.isArray(window.SITE_CONFIG.sections)) {
-        return window.SITE_CONFIG.sections.map(s => ({
-          id: s.id,
-          title: s.title || s.name || s.id,
-          desc: s.desc || (s.id === 'anime' ? 'Anime arşivi ve puanlama' : s.id === 'guide' ? 'GNU/Linux ve donanım rehberleri' : 'Bölüm'),
-          path: s.path || (s.id === 'home' ? '' : s.id + '/'),
-          badge: s.status === 'active' ? 'Aktif' : 'Bölüm'
-        }));
-      }
-      return defaultSections;
-    }
-
     async function loadData() {
+      const loaders = [];
       if (!cachedAnimeData) {
-        try {
-          const res = await fetch(root + 'data/anime.json');
-          if (res.ok) {
-            const json = await res.json();
-            cachedAnimeData = Array.isArray(json.anime) ? json.anime : (Array.isArray(json) ? json : []);
-          }
-        } catch (_) {
-          cachedAnimeData = [];
-        }
+        loaders.push(fetch(root + 'data/anime.json').then(r => r.ok ? r.json() : null).then(j => { cachedAnimeData = (j && (j.anime || j.items)) || []; }).catch(() => { cachedAnimeData = []; }));
+      }
+      if (!cachedMoviesData) {
+        loaders.push(fetch(root + 'data/movies.json').then(r => r.ok ? r.json() : null).then(j => { cachedMoviesData = (j && (j.items || j.movies)) || []; }).catch(() => { cachedMoviesData = []; }));
       }
       if (!cachedGuidesData) {
-        try {
-          const res = await fetch(root + 'data/guides.json');
-          if (res.ok) {
-            const json = await res.json();
-            cachedGuidesData = Array.isArray(json.items) ? json.items : (Array.isArray(json) ? json : []);
-          }
-        } catch (_) {
-          cachedGuidesData = [];
-        }
+        loaders.push(fetch(root + 'data/guides.json').then(r => r.ok ? r.json() : null).then(j => { cachedGuidesData = (j && (j.items || j.guides)) || []; }).catch(() => { cachedGuidesData = []; }));
       }
       if (!cachedProjectsData) {
-        try {
-          const res = await fetch(root + 'data/projects.json');
-          if (res.ok) {
-            const json = await res.json();
-            cachedProjectsData = Array.isArray(json.items) ? json.items : (Array.isArray(json) ? json : []);
-          }
-        } catch (_) {
-          cachedProjectsData = [];
-        }
+        loaders.push(fetch(root + 'data/projects.json').then(r => r.ok ? r.json() : null).then(j => { cachedProjectsData = (j && (j.items || j.projects)) || []; }).catch(() => { cachedProjectsData = []; }));
       }
+      await Promise.all(loaders);
     }
 
-    function matchesText(str, query) {
-      if (!str || !query) return false;
-      const s = String(str).toLocaleLowerCase('tr-TR');
-      const q = String(query).toLocaleLowerCase('tr-TR').trim();
-      return s.includes(q);
-    }
+    const matchesText = (str, query) => str && query && String(str).toLocaleLowerCase('tr-TR').includes(String(query).toLocaleLowerCase('tr-TR').trim());
 
     function renderResults(q) {
       resultsContainer.replaceChildren();
       cmdActiveIndex = -1;
-
       const trimmed = (q || '').trim();
-      const sections = getSections();
 
       const quickActions = [
         {
-          id: 'act-random',
-          title: '🎲 Rastgele Bir Anime Seç',
-          desc: 'Katalogdan rastgele bir yapım seçip açar',
-          badge: 'Kısayol',
-          run: () => {
-            const rndBtn = document.getElementById('randomPickBtn');
-            if (rndBtn) {
-              rndBtn.click();
-            } else if (cachedAnimeData && cachedAnimeData.length) {
-              const pick = cachedAnimeData[Math.floor(Math.random() * cachedAnimeData.length)];
-              location.href = root + 'anime/#' + encodeURIComponent(pick.id);
-            } else {
-              location.href = root + 'anime/';
-            }
-          }
+          title: 'Temayı Değiştir',
+          desc: 'Koyu ve açık tema arasında geçiş yap',
+          badge: 'Tema',
+          run: () => { if (typeof window.toggleTheme === 'function') window.toggleTheme(); }
         },
         {
-          id: 'act-theme',
-          title: '🌗 Temayı Değiştir',
-          desc: 'Açık ve koyu görünüm modu arasında anında geçiş yap',
-          badge: 'Görünüm',
-          run: () => {
-            if (typeof window.toggleTheme === 'function') window.toggleTheme();
-          }
-        },
-        {
-          id: 'act-timeline',
-          title: '⏳ Zaman Tüneline Git',
-          desc: 'Kronolojik arşiv ve izleme geçmişi akışı',
-          badge: 'Akış',
-          run: () => { location.href = root + 'zaman-tuneli/'; }
-        },
-        {
-          id: 'act-stats',
-          title: '📊 İstatistikler ve Metrikler',
-          desc: 'Arşiv grafikleri, sayısal analizler ve puan dağılımları',
-          badge: 'Metrik',
-          run: () => { location.href = root + 'istatistik/'; }
-        },
-        {
-          id: 'act-special-book',
-          title: (window.SITE_CONFIG && window.SITE_CONFIG.secretBook && window.SITE_CONFIG.secretBook.title) || '🐾 Özel Anı Kitabı',
-          desc: 'Fotoğraflı hatıra ve anı sayfalarını açar',
+          title: (window.SITE_CONFIG && window.SITE_CONFIG.secretBook && window.SITE_CONFIG.secretBook.title) || 'Özel Anı Kitabı',
+          desc: 'Fotoğraflı hatıra sayfalarını aç',
           badge: 'Özel',
-          keywords: (window.SITE_CONFIG && window.SITE_CONFIG.secretBook && window.SITE_CONFIG.secretBook.keywords) || ['özel', 'anı', 'hatıra', 'kitap', 'miniğim', 'book', 'hediye', 'patiler', 'pati'],
-          run: () => {
-            const targetUrl = (window.SITE_CONFIG && window.SITE_CONFIG.secretBook && window.SITE_CONFIG.secretBook.url) || 'kitap/ozel/';
-            location.href = root + targetUrl;
-          }
+          keywords: (window.SITE_CONFIG && window.SITE_CONFIG.secretBook && window.SITE_CONFIG.secretBook.keywords) || ['özel', 'anı', 'hatıra', 'kitap'],
+          run: () => { location.href = root + ((window.SITE_CONFIG && window.SITE_CONFIG.secretBook && window.SITE_CONFIG.secretBook.url) || 'kitap/ozel/'); }
         }
       ];
 
-      let matchedActions = [];
-      let matchedSections = [];
-      let matchedAnime = [];
-      let matchedGuides = [];
-      let matchedProjects = [];
-
+      let matchedSections = [], matchedAnime = [], matchedMovies = [], matchedGuides = [], matchedProjects = [], matchedActions = [];
       if (!trimmed) {
-        matchedActions = quickActions.slice(0, 2);
-        matchedSections = sections.slice(0, 4);
-        if (cachedAnimeData && cachedAnimeData.length) {
-          matchedAnime = cachedAnimeData.filter(a => a.favorite || (a.score && a.score >= 8.5)).slice(0, 4);
-        }
-        if (cachedGuidesData && cachedGuidesData.length) {
-          matchedGuides = cachedGuidesData.filter(g => g.favorite).slice(0, 3);
-          if (!matchedGuides.length) matchedGuides = cachedGuidesData.slice(0, 3);
-        }
-        if (cachedProjectsData && cachedProjectsData.length) {
-          matchedProjects = cachedProjectsData.filter(p => p.favorite).slice(0, 2);
-          if (!matchedProjects.length) matchedProjects = cachedProjectsData.slice(0, 2);
-        }
+        matchedSections = defaultSections.slice(0, 6);
+        matchedAnime = (cachedAnimeData || []).filter(a => a.favorite || (a.score && a.score >= 9.5)).slice(0, 4);
       } else {
-        matchedActions = quickActions.filter(act => {
-          if (matchesText(act.title, trimmed) || matchesText(act.desc, trimmed)) return true;
-          if (Array.isArray(act.keywords) && act.keywords.some(kw => matchesText(kw, trimmed))) return true;
-          return false;
-        });
-        matchedSections = sections.filter(s => matchesText(s.title, trimmed) || matchesText(s.desc, trimmed)).slice(0, 4);
-        if (cachedAnimeData) {
-          matchedAnime = cachedAnimeData.filter(a =>
-            matchesText(a.title, trimmed) ||
-            matchesText(a.orig, trimmed) ||
-            (Array.isArray(a.genres) && a.genres.some(g => matchesText(g, trimmed))) ||
-            (Array.isArray(a.customGenres) && a.customGenres.some(g => matchesText(g, trimmed)))
-          ).slice(0, 8);
-        }
-        if (cachedGuidesData) {
-          matchedGuides = cachedGuidesData.filter(g =>
-            matchesText(g.title, trimmed) ||
-            matchesText(g.forumSection, trimmed) ||
-            (Array.isArray(g.genres) && g.genres.some(gen => matchesText(gen, trimmed))) ||
-            (Array.isArray(g.customGenres) && g.customGenres.some(cgen => matchesText(cgen, trimmed)))
-          ).slice(0, 6);
-        }
-        if (cachedProjectsData) {
-          matchedProjects = cachedProjectsData.filter(p =>
-            matchesText(p.title, trimmed) ||
-            matchesText(p.name, trimmed) ||
-            matchesText(p.fullName, trimmed) ||
-            matchesText(p.description, trimmed) ||
-            matchesText(p.summary, trimmed) ||
-            matchesText(p.language, trimmed) ||
-            (Array.isArray(p.categories) && p.categories.some(c => matchesText(c, trimmed))) ||
-            (Array.isArray(p.tags) && p.tags.some(t => matchesText(t, trimmed)))
-          ).slice(0, 4);
-        }
+        matchedActions = quickActions.filter(a => matchesText(a.title, trimmed) || matchesText(a.desc, trimmed) || (a.keywords && a.keywords.some(k => matchesText(k, trimmed))));
+        matchedSections = defaultSections.filter(s => matchesText(s.title, trimmed) || matchesText(s.desc, trimmed)).slice(0, 4);
+        matchedAnime = (cachedAnimeData || []).filter(a => matchesText(a.title, trimmed) || (a.genres && a.genres.some(g => matchesText(g, trimmed)))).slice(0, 8);
+        matchedMovies = (cachedMoviesData || []).filter(m => matchesText(m.title, trimmed) || matchesText(m.director, trimmed)).slice(0, 4);
+        matchedGuides = (cachedGuidesData || []).filter(g => matchesText(g.title, trimmed) || matchesText(g.forumSection, trimmed)).slice(0, 5);
+        matchedProjects = (cachedProjectsData || []).filter(p => matchesText(p.title, trimmed) || matchesText(p.name, trimmed) || matchesText(p.description, trimmed)).slice(0, 3);
       }
 
-      if (!matchedActions.length && !matchedSections.length && !matchedAnime.length && !matchedGuides.length && !matchedProjects.length) {
-        const empty = el('div', 'cmd-empty');
-        empty.textContent = `"${trimmed}" için sonuç bulunamadı.`;
-        resultsContainer.appendChild(empty);
+      if (!matchedActions.length && !matchedSections.length && !matchedAnime.length && !matchedMovies.length && !matchedGuides.length && !matchedProjects.length) {
+        resultsContainer.append(el('div', 'cmd-empty', `"${trimmed}" için sonuç bulunamadı.`));
         return;
       }
 
-      // 0. Quick Actions Group
-      if (matchedActions.length) {
-        const title = el('div', 'cmd-group-title');
-        title.textContent = 'Hızlı Eylemler & Kısayollar';
-        resultsContainer.appendChild(title);
+      const addGroup = (label, items, renderItem) => {
+        if (!items.length) return;
+        resultsContainer.append(el('div', 'cmd-group-title', label));
+        items.forEach(it => resultsContainer.append(renderItem(it)));
+      };
 
-        matchedActions.forEach(act => {
-          const item = el('button', 'cmd-item');
-          item.type = 'button';
-          item.innerHTML = `
-            <div class="cmd-item-left">
-              <span class="cmd-item-ic">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </span>
-              <div class="cmd-item-info">
-                <span class="cmd-item-title">${esc(act.title)}</span>
-                <span class="cmd-item-desc">${esc(act.desc)}</span>
-              </div>
-            </div>
-            <span class="cmd-item-badge">${esc(act.badge)}</span>
-          `;
-          item.onclick = (e) => {
-            e.preventDefault();
-            window.closeCommandPalette();
-            act.run();
-          };
-          resultsContainer.appendChild(item);
-        });
-      }
+      addGroup('Bölümler', matchedSections, s => {
+        const a = el('a', 'cmd-item');
+        a.href = root + s.path;
+        a.innerHTML = `<div class="cmd-item-left"><span class="cmd-item-ic">${icon(s.id === 'movie' ? 'movie' : s.id === 'book' ? 'book' : s.id === 'project' ? 'code' : s.id === 'timeline' ? 'clock' : s.id === 'stats' ? 'chart' : s.id)}</span><div class="cmd-item-info"><span class="cmd-item-title">${esc(s.title)}</span><span class="cmd-item-desc">${esc(s.desc)}</span></div></div><span class="cmd-item-badge">${esc(s.badge)}</span>`;
+        a.onclick = () => window.closeCommandPalette();
+        return a;
+      });
 
-      // 1. Sections Group
-      if (matchedSections.length) {
-        const title = el('div', 'cmd-group-title');
-        title.textContent = 'Bölümler & Gezinme';
-        resultsContainer.appendChild(title);
+      addGroup('Anime', matchedAnime, a => {
+        const item = el('a', 'cmd-item');
+        item.href = (cur === 'anime' ? '#' : root + 'anime/#') + encodeURIComponent(a.id);
+        const sc = a.score ? `★ ${Number(a.score).toFixed(1)}` : 'Anime';
+        const thumb = a.image ? `<img class="cmd-item-thumb" src="${esc(resolveAsset(a.image))}" alt="" loading="lazy">` : `<span class="cmd-item-ic">${icon('anime')}</span>`;
+        item.innerHTML = `<div class="cmd-item-left">${thumb}<div class="cmd-item-info"><span class="cmd-item-title">${esc(a.title)}</span><span class="cmd-item-desc">${esc((a.genres || []).slice(0, 3).join(' · ') || 'Anime')}</span></div></div><span class="cmd-item-badge">${esc(sc)}</span>`;
+        item.onclick = () => window.closeCommandPalette();
+        return item;
+      });
 
-        matchedSections.forEach(s => {
-          const item = el('a', 'cmd-item');
-          item.href = root + s.path;
-          item.innerHTML = `
-            <div class="cmd-item-left">
-              <span class="cmd-item-ic">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              </span>
-              <div class="cmd-item-info">
-                <span class="cmd-item-title">${esc(s.title)}</span>
-                <span class="cmd-item-desc">${esc(s.desc)}</span>
-              </div>
-            </div>
-            <span class="cmd-item-badge">${esc(s.badge || 'Bölüm')}</span>
-          `;
-          item.onclick = () => {
-            window.closeCommandPalette();
-          };
-          resultsContainer.appendChild(item);
-        });
-      }
+      addGroup('Filmler', matchedMovies, m => {
+        const item = el('a', 'cmd-item');
+        item.href = (cur === 'movie' ? '#' : root + 'film/#') + encodeURIComponent(m.id);
+        const sc = m.score ? `★ ${Number(m.score).toFixed(1)}` : 'Film';
+        item.innerHTML = `<div class="cmd-item-left"><span class="cmd-item-ic">${icon('movie')}</span><div class="cmd-item-info"><span class="cmd-item-title">${esc(m.title)}</span><span class="cmd-item-desc">${esc([m.year, m.director].filter(Boolean).join(' · ') || 'Film')}</span></div></div><span class="cmd-item-badge">${esc(sc)}</span>`;
+        item.onclick = () => window.closeCommandPalette();
+        return item;
+      });
 
-      // 2. Anime Group
-      if (matchedAnime.length) {
-        const title = el('div', 'cmd-group-title');
-        title.textContent = 'Anime Kataloğu';
-        resultsContainer.appendChild(title);
+      addGroup('Rehberler', matchedGuides, g => {
+        const item = el('a', 'cmd-item');
+        item.href = g.url || (root + 'rehber/');
+        if (g.url && g.url.startsWith('http')) { item.target = '_blank'; item.rel = 'noopener'; }
+        item.innerHTML = `<div class="cmd-item-left"><span class="cmd-item-ic">${icon('guide')}</span><div class="cmd-item-info"><span class="cmd-item-title">${esc(g.title)}</span><span class="cmd-item-desc">${esc(g.forumSection || 'Technopat Sosyal')}</span></div></div><span class="cmd-item-badge">Rehber</span>`;
+        item.onclick = () => window.closeCommandPalette();
+        return item;
+      });
 
-        matchedAnime.forEach(a => {
-          const item = el('a', 'cmd-item');
-          const isAnimePage = cur === 'anime';
-          item.href = isAnimePage ? ('#' + encodeURIComponent(a.id)) : (root + 'anime/#' + encodeURIComponent(a.id));
+      addGroup('Projeler', matchedProjects, p => {
+        const item = el('a', 'cmd-item');
+        item.href = p.url || (root + 'projeler/');
+        if (p.url && p.url.startsWith('http')) { item.target = '_blank'; item.rel = 'noopener'; }
+        item.innerHTML = `<div class="cmd-item-left"><span class="cmd-item-ic">${icon('code')}</span><div class="cmd-item-info"><span class="cmd-item-title">${esc(p.fullName || p.title || p.name)}</span><span class="cmd-item-desc">${esc(p.summary || p.description || 'GitHub')}</span></div></div><span class="cmd-item-badge">${esc(p.language || 'Proje')}</span>`;
+        item.onclick = () => window.closeCommandPalette();
+        return item;
+      });
 
-          const thumbHtml = a.image
-            ? `<img class="cmd-item-thumb" src="${esc(a.image)}" alt="" loading="lazy" />`
-            : `<span class="cmd-item-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>`;
-
-          const scoreTxt = (a.score !== undefined && a.score !== null) ? `★ ${a.score}` : '';
-          const statusTxt = a.status === 'completed' ? 'Tamamlandı' : a.status === 'watching' ? 'İzleniyor' : '';
-          const metaDesc = [scoreTxt, statusTxt, (a.genres || []).slice(0, 2).join(', ')].filter(Boolean).join(' · ');
-
-          item.innerHTML = `
-            <div class="cmd-item-left">
-              ${thumbHtml}
-              <div class="cmd-item-info">
-                <span class="cmd-item-title">${esc(a.title)}</span>
-                <span class="cmd-item-desc">${esc(metaDesc || a.orig || 'Anime')}</span>
-              </div>
-            </div>
-            <span class="cmd-item-badge">${scoreTxt ? esc(scoreTxt) : 'Anime'}</span>
-          `;
-
-          item.onclick = (e) => {
-            window.closeCommandPalette();
-            if (isAnimePage && typeof openSheet === 'function') {
-              e.preventDefault();
-              openSheet(a.id, true);
-            }
-          };
-          resultsContainer.appendChild(item);
-        });
-      }
-
-      // 3. Guides Group
-      if (matchedGuides.length) {
-        const title = el('div', 'cmd-group-title');
-        title.textContent = 'Technopat Rehberleri';
-        resultsContainer.appendChild(title);
-
-        matchedGuides.forEach(g => {
-          const item = el('a', 'cmd-item');
-          item.href = g.url || (root + 'rehber/?q=' + encodeURIComponent(g.title));
-          if (g.url && g.url.startsWith('http')) {
-            item.target = '_blank';
-            item.rel = 'noopener';
-          }
-
-          const cat = g.forumSection || (g.genres && g.genres[0]) || 'Rehber';
-
-          item.innerHTML = `
-            <div class="cmd-item-left">
-              <span class="cmd-item-ic">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
-              </span>
-              <div class="cmd-item-info">
-                <span class="cmd-item-title">${esc(g.title)}</span>
-                <span class="cmd-item-desc">${esc(cat)} · Technopat Sosyal</span>
-              </div>
-            </div>
-            <span class="cmd-item-badge">Rehber</span>
-          `;
-
-          item.onclick = () => {
-            window.closeCommandPalette();
-          };
-          resultsContainer.appendChild(item);
-        });
-      }
-
-      // 4. Projects Group
-      if (matchedProjects.length) {
-        const title = el('div', 'cmd-group-title');
-        title.textContent = 'Açık Kaynak Projeler & Forklar';
-        resultsContainer.appendChild(title);
-
-        matchedProjects.forEach(p => {
-          const item = el('a', 'cmd-item');
-          item.href = p.url || (root + 'projeler/');
-          if (p.url && p.url.startsWith('http')) {
-            item.target = '_blank';
-            item.rel = 'noopener';
-          }
-
-          const cat = (p.categories && p.categories[0]) || (p.isFork ? 'Fork' : 'Proje');
-
-          item.innerHTML = `
-            <div class="cmd-item-left">
-              <span class="cmd-item-ic">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5.5l-3 13"/></svg>
-              </span>
-              <div class="cmd-item-info">
-                <span class="cmd-item-title">${esc(p.fullName || p.title || p.name)}</span>
-                <span class="cmd-item-desc">${esc(p.summary || p.description || cat)}</span>
-              </div>
-            </div>
-            <span class="cmd-item-badge">${esc(p.isFork ? 'Fork' : (p.language || 'Proje'))}</span>
-          `;
-
-          item.onclick = () => {
-            window.closeCommandPalette();
-          };
-          resultsContainer.appendChild(item);
-        });
-      }
+      addGroup('Eylemler', matchedActions, act => {
+        const btn = el('button', 'cmd-item');
+        btn.type = 'button';
+        btn.innerHTML = `<div class="cmd-item-left"><span class="cmd-item-ic">${icon('sparkle')}</span><div class="cmd-item-info"><span class="cmd-item-title">${esc(act.title)}</span><span class="cmd-item-desc">${esc(act.desc)}</span></div></div><span class="cmd-item-badge">${esc(act.badge)}</span>`;
+        btn.onclick = e => { e.preventDefault(); window.closeCommandPalette(); act.run(); };
+        return btn;
+      });
 
       updateSelection(0);
     }
 
     function updateSelection(idx) {
       const items = resultsContainer.querySelectorAll('.cmd-item');
-      if (!items.length) {
-        cmdActiveIndex = -1;
-        return;
-      }
-      if (idx < 0) idx = items.length - 1;
-      if (idx >= items.length) idx = 0;
-      cmdActiveIndex = idx;
-
+      if (!items.length) { cmdActiveIndex = -1; return; }
+      cmdActiveIndex = (idx + items.length) % items.length;
       items.forEach((it, i) => {
-        if (i === cmdActiveIndex) {
-          it.classList.add('selected');
-          it.scrollIntoView({ block: 'nearest' });
-        } else {
-          it.classList.remove('selected');
-        }
+        it.classList.toggle('selected', i === cmdActiveIndex);
+        if (i === cmdActiveIndex) it.scrollIntoView({ block: 'nearest' });
       });
     }
 
-    input.oninput = () => {
-      renderResults(input.value);
-    };
-
-    input.onkeydown = (e) => {
+    input.oninput = () => renderResults(input.value);
+    input.onkeydown = e => {
       const items = resultsContainer.querySelectorAll('.cmd-item');
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        updateSelection(cmdActiveIndex + 1);
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        updateSelection(cmdActiveIndex - 1);
-      } else if (e.key === 'Enter') {
-        e.preventDefault();
-        if (cmdActiveIndex >= 0 && items[cmdActiveIndex]) {
-          items[cmdActiveIndex].click();
-        }
-      }
+      if (e.key === 'ArrowDown') { e.preventDefault(); updateSelection(cmdActiveIndex + 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); updateSelection(cmdActiveIndex - 1); }
+      else if (e.key === 'Enter' && cmdActiveIndex >= 0 && items[cmdActiveIndex]) { e.preventDefault(); items[cmdActiveIndex].click(); }
     };
+    closeBtn.onclick = () => window.closeCommandPalette();
+    backdrop.onclick = e => { if (e.target === backdrop) window.closeCommandPalette(); };
 
-    closeBtn.onclick = (e) => {
-      e.preventDefault();
-      window.closeCommandPalette();
-    };
-
-    backdrop.onclick = (e) => {
-      if (e.target === backdrop) {
-        window.closeCommandPalette();
-      }
-    };
-
-    window.openCommandPalette = (initialQuery) => {
+    window.openCommandPalette = initialQuery => {
       backdrop.hidden = false;
       document.body.style.overflow = 'hidden';
       input.value = typeof initialQuery === 'string' ? initialQuery : '';
-      loadData().then(() => {
-        if (!backdrop.hidden) renderResults(input.value);
-      });
+      loadData().then(() => { if (!backdrop.hidden) renderResults(input.value); });
       renderResults(input.value);
-      setTimeout(() => input.focus(), 30);
+      setTimeout(() => input.focus(), 20);
     };
-
     window.closeCommandPalette = () => {
       backdrop.hidden = true;
       document.body.style.overflow = '';
-      const trigger = document.getElementById('searchTrigger');
-      if (trigger && trigger.focus) trigger.focus({ preventScroll: true });
     };
 
-    // Global Key Listener for Desktop Shortcut Parity
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', e => {
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+      const isInput = activeTag === 'input' || activeTag === 'textarea' || (document.activeElement && document.activeElement.isContentEditable);
       if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
         e.preventDefault();
-        if (backdrop.hidden) window.openCommandPalette();
-        else window.closeCommandPalette();
-        return;
-      }
-      if (e.key === '/' && backdrop.hidden) {
-        const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
-        if (activeTag === 'input' || activeTag === 'textarea' || (document.activeElement && document.activeElement.isContentEditable)) {
-          return;
-        }
+        backdrop.hidden ? window.openCommandPalette() : window.closeCommandPalette();
+      } else if (e.key === '/' && backdrop.hidden && !isInput) {
         e.preventDefault();
         window.openCommandPalette();
-        return;
-      }
-      if (e.key === 'Escape' && !backdrop.hidden) {
+      } else if (e.key === 'Escape' && !backdrop.hidden) {
         e.preventDefault();
         window.closeCommandPalette();
       }
     });
-
-    const urlParams = new URLSearchParams(location.search);
-    if (urlParams.has('cmd') || urlParams.has('search')) {
-      const qVal = urlParams.get('cmd') || urlParams.get('search') || '';
-      window.openCommandPalette(qVal);
-    }
   }
 
-  function render(d, sum) {
-    window.SITE_CONFIG = d;
-    document.dispatchEvent(new CustomEvent('siteconfig', { detail: d }));
-    applySiteIdentity(d);
-
-    const visibleSections = (d.sections || []).filter(Boolean).map(ensureSectionDefaults).filter(s => s.status !== 'hidden');
-    const active = visibleSections.filter(s => s.status === 'active' || s.id === cur);
-
-    // [AI-MIMARI-NOTU]: #dock zaten <nav id="dock" class="dock glass"> olduğu için
-    // Dock completely removed in favor of Top Flyout Capsule (Idea 3)
-    if (dock) {
-      dock.replaceChildren();
-      dock.hidden = true;
-      dock.remove();
-    }
-
-    if (boxesTop || boxesBottom) {
-      const allBoxes = Array.isArray(d.boxes) ? d.boxes : [];
-      renderCustomBoxes(boxesTop, allBoxes.filter(b => b.position !== 'below'));
-      renderCustomBoxes(boxesBottom, allBoxes.filter(b => b.position === 'below'));
-    }
-
-    if (list) {
-      const fr = document.createDocumentFragment();
-      let featuredIndex = 0;
-      const defaultKickers = {
-        anime: 'MEDYA ARŞİVİ',
-        guide: 'TEKNİK BİLGİ BANKASI',
-        project: 'AÇIK KAYNAK & YAZILIM',
-        series: 'DİZİ ARŞİVİ',
-        movie: 'SİNEMA & FİLM',
-        manga: 'MANGA & ÇİZGİ',
-        book: 'KİTAP & OKUMA'
-      };
-
-      for (const s of visibleSections) {
-        const on = s.status === 'active', m = sum[s.id] || {};
-        const isFeatured = on && (s.id === 'anime' || s.id === 'guide' || s.id === 'project' || s.isFeatured);
-        const li = el('li', 'tile glass sq' + (isFeatured ? (' tile-featured' + (s.id === 'project' ? ' tile-project' : '')) : on ? ' tile-active' : ' tile-companion soon'));
-        const box = on ? Object.assign(el('a'), { href: root + s.path }) : el('div');
-
-        if (isFeatured) {
-          featuredIndex++;
-          const numStr = String(featuredIndex).padStart(2, '0');
-          const kickerLabel = s.kicker || defaultKickers[s.id] || (s.title || '').toUpperCase();
-          const kickerText = `${numStr} · ${kickerLabel}`;
-
-          const kickerRow = el('div', 'sec-kicker-row');
-          kickerRow.append(
-            el('span', 'sec-kicker', kickerText),
-            Object.assign(el('span', 'sec-open-lbl'), { innerHTML: 'Bölümü Aç ' + icon('next') })
-          );
-          box.append(kickerRow);
-
-          const headMain = el('div', 'sec-head-main');
-          headMain.append(el('h2', '', s.title));
-          if (s.subtitle) {
-            headMain.append(el('p', 'box-txt', s.subtitle));
-          }
-          box.append(headMain);
-
-          if (on && m.nums) {
-            const n = el('p', 'nums');
-            for (const [v, u] of m.nums) { const sp = el('span'); sp.append(el('b', '', v), ' ' + u); n.append(sp); }
-            box.append(n);
-          }
-
-          if (s.id === 'anime' && m.imgs && m.imgs.length && s.showStrip !== false) {
-            const st = el('div', 'strip');
-            for (const u of m.imgs) { const im = el('img'); im.src = resolveAsset(u); im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.width = 110; im.height = 165; im.onload = () => im.classList.add('in'); st.append(im); }
-            box.append(st);
-          } else if (s.id === 'guide') {
-            const topicGrid = el('div', 'guide-topic-grid');
-            for (const [tTitle, tDesc] of [
-              ['GNU/Linux & Sistem', 'NixOS, çekirdek, servis ve dağıtım yapılandırmaları'],
-              ['Masaüstü & Kabuk', 'Wayland, Niri, Quickshell ve pencere yöneticileri'],
-              ['Donanım & Sürücü', 'OmenCtl, güç profilleri, sensör ve donanım optimizasyonu'],
-              ['El Konsolu & Retro', 'R36S, PortMaster, J2ME ve gömülü Linux sistemler']
-            ]) {
-              const cell = el('div', 'guide-topic-cell');
-              cell.append(el('b', 'gt-title', tTitle), el('span', 'gt-desc', tDesc));
-              topicGrid.append(cell);
-            }
-            box.append(topicGrid);
-          } else if (s.id === 'project') {
-            const projectGrid = el('div', 'project-bento-grid');
-            const pProjects = [
-              {
-                title: 'tempestian/nixos-config',
-                badge: 'Nix Flake',
-                desc: 'NixOS sistem ve Home Manager yapılandırması. Niri Wayland WM & Quickshell iNiR masaüstü kabuk entegrasyonu.',
-                tags: ['Nix', 'Niri', 'Quickshell']
-              },
-              {
-                title: 'tempestian/iNiR (Fork)',
-                badge: 'Kabuk Fork',
-                desc: 'snowarch/iNiR Quickshell Wayland masaüstü kabuk forkumuz. NixOS / Nixpkgs tam bağımlılık ve sistem desteği.',
-                tags: ['QML', 'Nix Flake', 'fix-nix-support']
-              }
-            ];
-            for (const p of pProjects) {
-              const cell = el('div', 'project-bento-cell');
-              const tRow = el('div', 'pb-title-row');
-              tRow.append(el('span', 'pb-title', p.title), el('span', 'pb-badge', p.badge));
-              cell.append(tRow);
-              cell.append(el('p', 'pb-desc', p.desc));
-              const bRow = el('div', 'pb-badges');
-              for (const tag of p.tags) {
-                bRow.append(el('span', 'pb-badge', tag));
-              }
-              cell.append(bRow);
-              projectGrid.append(cell);
-            }
-            box.append(projectGrid);
-          }
-        } else {
-          const top = el('div', 'tile-top');
-          const headLeft = el('div', 'box-head-left');
-          if (s.icon && P[s.icon]) {
-            const ic = el('span', 'box-ic');
-            ic.innerHTML = icon(s.icon);
-            headLeft.append(ic);
-          }
-          headLeft.append(el('h2', '', s.title));
-          top.append(headLeft);
-          if (on) {
-            const g = el('span', 'sec-open-lbl');
-            g.innerHTML = icon('next');
-            top.append(g);
-          } else {
-            top.append(el('span', 'tag', s.badgeText || 'Yakında'));
-          }
-          box.append(top);
-        }
-
-        li.append(box); fr.append(li);
-      }
-      list.replaceChildren(fr);
-    }
-
-    if (links) {
-      const activeLinks = (d.links || []).filter(l => l && l.enabled !== false);
-      const fr = document.createDocumentFragment();
-      for (const l of activeLinks) {
-        const li = el('li', 'link-item');
-        const a = el('a', 'glass sq link-btn');
-        a.href = l.url; a.target = '_blank'; a.rel = 'noopener me';
-        let icName = 'link';
-        if (/technopat\.net/i.test(l.url)) icName = 'technopat';
-        else if (/github\.com/i.test(l.url)) icName = 'github';
-        else if (/anilist\.co/i.test(l.url)) icName = 'anilist';
-        const ic = el('span', 'link-ic');
-        ic.innerHTML = icon(icName);
-        a.append(ic);
-        a.append(el('span', 'link-title', l.title));
-        const o = el('span', 'out'); o.innerHTML = icon('out'); a.append(o);
-        li.append(a); fr.append(li);
-      }
-      links.replaceChildren(fr);
-    }
-
-    // Dynamic greeting and hero counters
-    const gEl = document.getElementById('irisGreeting');
-    if (gEl) {
-      const hr = new Date().getHours();
-      let g = 'İyi akşamlar';
-      if (hr >= 5 && hr < 12) g = 'Günaydın';
-      else if (hr >= 12 && hr < 18) g = 'İyi günler';
-      else if (hr >= 18 && hr < 23) g = 'İyi akşamlar';
-      else g = 'İyi geceler';
-      gEl.textContent = g;
-    }
-    if (sum && sum.anime && sum.anime.nums && sum.anime.nums[0]) {
-      const ca = document.getElementById('chipAnimeCount');
-      if (ca) ca.textContent = sum.anime.nums[0][0];
-      const da = document.getElementById('deckAnimeCount');
-      if (da) da.textContent = sum.anime.nums[0][0];
-      const epPair = sum.anime.nums.find(x => x && /bölüm/i.test(x[1])) || sum.anime.nums[3];
-      const de = document.getElementById('deckEpCount');
-      if (de && epPair) de.textContent = epPair[0];
-    }
-    if (sum && sum.guide && sum.guide.nums && sum.guide.nums[0]) {
-      const cg = document.getElementById('chipGuideCount');
-      if (cg) cg.textContent = sum.guide.nums[0][0];
-      const dg = document.getElementById('deckGuideCount');
-      if (dg) dg.textContent = sum.guide.nums[0][0];
-    }
-    const deckCmdBtn = document.getElementById('deckCmdBtn');
-    if (deckCmdBtn && !deckCmdBtn._boundCmd) {
-      deckCmdBtn._boundCmd = true;
-      deckCmdBtn.onclick = (e) => {
-        e.preventDefault();
-        if (typeof window.openCommandPalette === 'function') window.openCommandPalette();
-      };
-    }
-
-    function renderNowWatchingSpotlight(animeList) {
-      if (!Array.isArray(animeList) || !animeList.length) return;
-      const nwCard = document.getElementById('nowWatchingCard');
-      if (!nwCard) return;
-
-      const hf = (window.SITE_CONFIG && window.SITE_CONFIG.homeFeatures) || {};
-      if (hf.nowWatchingEnabled === false) {
-        nwCard.hidden = true;
-        return;
-      }
-
-      // Find an anime with status === 'watching' and a CURRENT part
-      let targetAnime = null;
-      let targetPart = null;
-
-      for (const a of animeList) {
-        if (a && a.status === 'watching' && Array.isArray(a.parts)) {
-          const curPart = a.parts.find(p => p && p.status === 'CURRENT');
-          if (curPart) {
-            targetAnime = a;
-            targetPart = curPart;
-            break;
-          }
-        }
-      }
-
-      if (!targetAnime && Array.isArray(animeList)) {
-        targetAnime = animeList.find(a => a && a.status === 'watching');
-        if (targetAnime && Array.isArray(targetAnime.parts)) {
-          targetPart = targetAnime.parts.find(p => p && p.status === 'CURRENT') || targetAnime.parts[targetAnime.parts.length - 1];
-        }
-      }
-
-      if (!targetAnime) return;
-
-      const titleEl = document.getElementById('nwTitle');
-      const badgeEl = document.getElementById('nwSeasonBadge');
-      const subEl = document.getElementById('nwSub');
-      const posterEl = document.getElementById('nwPoster');
-      const fillEl = document.getElementById('nwProgressFill');
-      const epEl = document.getElementById('nwProgressEp');
-      const pctEl = document.getElementById('nwProgressPct');
-      const linkEl = document.getElementById('nwLinkBtn');
-
-      if (titleEl) titleEl.textContent = targetAnime.title || 'Anime';
-      if (badgeEl) {
-        if (targetPart && targetPart.name && targetPart.name !== targetAnime.title) {
-          badgeEl.textContent = targetPart.name;
-          badgeEl.hidden = false;
-        } else if (targetPart && targetPart.format) {
-          badgeEl.textContent = targetPart.format;
-          badgeEl.hidden = false;
-        } else {
-          badgeEl.hidden = true;
-        }
-      }
-      if (subEl) {
-        const genres = Array.isArray(targetAnime.genres) ? targetAnime.genres.slice(0, 3).join(' · ') : '';
-        const year = (targetPart && targetPart.year) || (targetAnime.parts && targetAnime.parts[0] && targetAnime.parts[0].year) || '';
-        const meta = [year, genres].filter(Boolean).join(' · ');
-        subEl.textContent = meta || (targetAnime.title + ' serisi');
-      }
-      if (posterEl) {
-        posterEl.src = resolveAsset(targetAnime.image || (targetAnime.parts && targetAnime.parts[0] && targetAnime.parts[0].image) || '');
-        posterEl.alt = targetAnime.title || '';
-      }
-
-      const watched = (targetPart && typeof targetPart.watched === 'number') ? targetPart.watched : 0;
-      const total = (targetPart && typeof targetPart.episodes === 'number') ? targetPart.episodes : (targetAnime.episodes || 0);
-      const pct = total > 0 ? Math.min(100, Math.round((watched / total) * 100)) : 0;
-
-      if (fillEl) fillEl.style.width = pct + '%';
-      if (epEl) epEl.textContent = total > 0 ? `${watched} / ${total} Bölüm` : `${watched} Bölüm`;
-      if (pctEl) pctEl.textContent = `%${pct}`;
-
-      if (linkEl) {
-        linkEl.href = root + 'anime/#' + encodeURIComponent(targetAnime.id || '');
-      }
-
-      nwCard.hidden = false;
-    }
-
-    function renderHomeHighlights(animeList) {
-      if (!Array.isArray(animeList) || !animeList.length) return;
-      const secEl = document.getElementById('homeHighlights');
-      const railEl = document.getElementById('hhRail');
-      if (!secEl || !railEl) return;
-
-      const hf = (window.SITE_CONFIG && window.SITE_CONFIG.homeFeatures) || {};
-      if (hf.highlightsEnabled === false) {
-        secEl.hidden = true;
-        return;
-      }
-
-      if (hf.highlightsTitle) {
-        const titleEl = secEl.querySelector('.hh-title');
-        if (titleEl) titleEl.textContent = hf.highlightsTitle;
-      }
-
-      const minScore = typeof hf.highlightsMinScore === 'number' ? hf.highlightsMinScore : 8.5;
-      const limit = typeof hf.highlightsLimit === 'number' && hf.highlightsLimit > 0 ? hf.highlightsLimit : 8;
-
-      // Filter standout titles: favorite === true and score >= minScore (or highest scored)
-      const standout = animeList
-        .filter(a => a && a.favorite && typeof a.score === 'number' && a.score >= minScore)
-        .sort((a, b) => (b.score || 0) - (a.score || 0))
-        .slice(0, limit);
-
-      if (!standout.length) return;
-
-      railEl.replaceChildren();
-      const fr = document.createDocumentFragment();
-
-      for (const a of standout) {
-        const card = el('a', 'hh-card glass sq');
-        card.href = root + 'anime/#' + encodeURIComponent(a.id || '');
-
-        const coverWrap = el('div', 'hh-cover-wrap');
-        const img = el('img', 'hh-cover');
-        img.src = resolveAsset(a.image || '');
-        img.alt = a.title || '';
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        coverWrap.append(img);
-
-        if (a.score) {
-          const scoreBadge = el('span', 'hh-badge');
-          scoreBadge.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;display:inline-block;vertical-align:-1px;margin-right:2px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${Number(a.score).toFixed(1)}`;
-          coverWrap.append(scoreBadge);
-        }
-
-        const info = el('div', 'hh-info');
-        const t = el('span', 'hh-card-title', a.title || '');
-        t.title = a.title || '';
-        info.append(t);
-
-        const metaRow = el('div', 'hh-card-meta');
-        const firstGenre = (Array.isArray(a.genres) && a.genres[0]) || '';
-        const year = (a.parts && a.parts[0] && a.parts[0].year) || '';
-        metaRow.textContent = [firstGenre, year].filter(Boolean).join(' · ');
-        info.append(metaRow);
-
-        card.append(coverWrap, info);
-        fr.append(card);
-      }
-
-      railEl.append(fr);
-      secEl.hidden = false;
-    }
-
-    // Apply Hub Banner configuration
-    if (cur === 'home') {
-      const hubEl = document.getElementById('homeHubBanner');
-      if (hubEl) {
-        const hf = (d && d.homeFeatures) || {};
-        if (hf.hubBannerEnabled === false) {
-          hubEl.hidden = true;
-        } else {
-          hubEl.hidden = false;
-          if (hf.hubTimelineDesc) {
-            const timeDesc = hubEl.querySelector('.hub-timeline .hub-desc');
-            if (timeDesc) timeDesc.textContent = hf.hubTimelineDesc;
-          }
-          if (hf.hubStatsDesc) {
-            const statDesc = hubEl.querySelector('.hub-stats .hub-desc');
-            if (statDesc) statDesc.textContent = hf.hubStatsDesc;
-          }
-        }
-      }
-    }
-
-    try {
-      initFlyoutCapsule(sum);
-    } catch (e) {
-      console.warn('initFlyoutCapsule error:', e);
-    }
-
-    // Try rendering now-watching and highlights if cachedAnimeData exists
-    if (cur === 'home' && cachedAnimeData && cachedAnimeData.length) {
-      renderNowWatchingSpotlight(cachedAnimeData);
-      renderHomeHighlights(cachedAnimeData);
-    }
-  }
-
-  const previewCfg = json('tp_site_preview');
-  const cached = json('ui2');
-  if (previewCfg) {
-    render(previewCfg, (cached && cached.s) || {});
-  } else if (cached && cached.d) {
-    const hasProject = (cached.d.sections || []).some(s => s.id === 'project');
-    if (hasProject) {
-      render(cached.d, cached.s || {});
-    }
-  }
-
-  (async () => {
-    try {
-      const remoteCfg = await fetch(root + 'data/sections.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null);
-      let d = remoteCfg || previewCfg;
-      if (previewCfg && remoteCfg && Array.isArray(remoteCfg.sections)) {
-        const prevIds = new Set((previewCfg.sections || []).map(s => s.id));
-        const mergedSecs = [...(previewCfg.sections || [])];
-        for (const rs of remoteCfg.sections) {
-          if (!prevIds.has(rs.id)) mergedSecs.push(rs);
-          else if (rs.status === 'active') {
-            const idx = mergedSecs.findIndex(x => x.id === rs.id);
-            if (idx >= 0 && mergedSecs[idx].status !== 'active') mergedSecs[idx].status = 'active';
-          }
-        }
-        d = { ...remoteCfg, ...previewCfg, sections: mergedSecs };
-      }
-      if (!d) return;
-      const sum = (cached && cached.s) || {};
-      render(d, sum);
-      if (list) {
-        const previewAnime = json('tp_anime_preview');
-        const previewMulti = json('tp_multimedia_preview') || {};
-        await Promise.all((d.sections || []).filter(Boolean).map(ensureSectionDefaults).filter(s => s.status === 'active' && s.data).map(async s => {
-          try {
-            const remoteJ = await fetch(root + s.data, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null);
-            let j = remoteJ;
-            if (s.id === 'anime' && previewAnime && Array.isArray(previewAnime.anime) && previewAnime.anime.length >= ((remoteJ && remoteJ.anime && remoteJ.anime.length) || 0)) {
-              j = previewAnime;
-            } else if (previewMulti[s.id] && Array.isArray(previewMulti[s.id].items) && previewMulti[s.id].items.length > 0 && previewMulti[s.id].items.length >= ((remoteJ && (remoteJ.items || remoteJ[s.countKey]) || []).length)) {
-              j = previewMulti[s.id];
-            }
-            if (s.id === 'anime' && j && Array.isArray(j.anime)) {
-              cachedAnimeData = j.anime;
-              if (cur === 'home') {
-                renderNowWatchingSpotlight(cachedAnimeData);
-                renderHomeHighlights(cachedAnimeData);
-              }
-            }
-            if (j) sum[s.id] = summarize(s, j);
-          } catch (e) {}
-        }));
-        render(d, sum);
-      }
-      ls('ui2', JSON.stringify({ d, s: sum }));
-    } catch (e) {}
-  })();
-
-  // [AI-MIMARI-NOTU]: Masaüstünde (PC) `.chips`, `.dock` ve `.rq-strip` gibi yatay şeritlerin
-  // hem fareyle basılı tutup sürükleyerek (drag-to-scroll) hem de fare tekerleğiyle (wheel)
-  // kaydırılabilmesini sağlayan evrensel olay dinleyicisi.
-  (() => {
-    // [AI-MIMARI-NOTU: ADIM 21]: .cmdk-ScopeBar, .sh-rb-tabs (Sezon Kriter Karnesi Sekmeleri), .criteria-profiles-bar
-    // ve yatay filtre şeritleri dahil edilerek hem fare tekerleği (wheel), hem dokunmatik (touch/swipe),
-    // hem de fare ile sürükleme (drag-to-scroll) pürüzsüz çalıştırıldı.
-    const SELECTOR = '.chips, .dock, .rq-strip, .cmdk-ScopeBar, .cmdk-scope-bar, .sh-rb-tabs, .criteria-profiles-bar, .tag-group-chips, .iris-fame-dock, .hh-rail';
-
-    // [PERFORMANS İYİLEŞTİRMESİ]: document seviyesinde { passive: false } wheel dinleyicisi
-    // tarayıcının yerel dikey kaydırma motorunu (compositor thread) JavaScript ana iş parçacığına
-    // bağımlı kılarak sayfada takılmalara (jank/freeze) yol açıyordu. Wheel dinleyicisi sadece
-    // yatay şeridin üzerine gelindiğinde izole olarak o elemana bağlanır.
+  // ============================================================================
+  // HORIZONTAL RAIL DRAG & WHEEL SCROLL + BACK-TO-TOP + SHORTCUTS
+  // ============================================================================
+  function initInteractions() {
+    const SELECTOR = '.poster-rail, .chips, .sh-rb-tabs';
     let activeWheelEl = null;
-
-    const onContainerWheel = e => {
+    const onWheel = e => {
       if (!activeWheelEl || activeWheelEl.scrollWidth <= activeWheelEl.clientWidth) return;
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        const maxScroll = activeWheelEl.scrollWidth - activeWheelEl.clientWidth;
-        const canRight = e.deltaY > 0 && activeWheelEl.scrollLeft < maxScroll - 1;
-        const canLeft = e.deltaY < 0 && activeWheelEl.scrollLeft > 1;
-        if (canRight || canLeft) {
+        const max = activeWheelEl.scrollWidth - activeWheelEl.clientWidth;
+        if ((e.deltaY > 0 && activeWheelEl.scrollLeft < max - 1) || (e.deltaY < 0 && activeWheelEl.scrollLeft > 1)) {
           e.preventDefault();
           activeWheelEl.scrollLeft += e.deltaY;
         }
       }
     };
-
     document.addEventListener('pointerover', e => {
-      const el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
-      if (el && el !== activeWheelEl) {
-        if (activeWheelEl) activeWheelEl.removeEventListener('wheel', onContainerWheel);
-        activeWheelEl = el;
-        activeWheelEl.addEventListener('wheel', onContainerWheel, { passive: false });
-      } else if (!el && activeWheelEl) {
-        activeWheelEl.removeEventListener('wheel', onContainerWheel);
+      const target = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
+      if (target && target !== activeWheelEl) {
+        if (activeWheelEl) activeWheelEl.removeEventListener('wheel', onWheel);
+        activeWheelEl = target;
+        activeWheelEl.addEventListener('wheel', onWheel, { passive: false });
+      } else if (!target && activeWheelEl) {
+        activeWheelEl.removeEventListener('wheel', onWheel);
         activeWheelEl = null;
       }
     }, { passive: true });
 
-    document.addEventListener('mousedown', e => {
-      if (e.button !== 0) return;
-      const el = e.target && e.target.closest ? e.target.closest(SELECTOR) : null;
-      if (!el || el.scrollWidth <= el.clientWidth) return;
-
-      const startX = e.clientX;
-      const startScroll = el.scrollLeft;
-      let moved = false;
-
-      const onMove = ev => {
-        const dx = ev.clientX - startX;
-        if (!moved && Math.abs(dx) > 5) {
-          moved = true;
-          el.classList.add('is-dragging');
-        }
-        if (moved) {
-          ev.preventDefault();
-          el.scrollLeft = startScroll - dx;
-        }
-      };
-
-      const onUp = () => {
-        window.removeEventListener('mousemove', onMove);
-        window.removeEventListener('mouseup', onUp);
-        if (moved) {
-          setTimeout(() => el.classList.remove('is-dragging'), 0);
-          const stopClick = ce => {
-            ce.stopPropagation();
-            ce.preventDefault();
-          };
-          window.addEventListener('click', stopClick, { capture: true, once: true });
-        } else {
-          el.classList.remove('is-dragging');
-        }
-      };
-
-      window.addEventListener('mousemove', onMove);
-      window.addEventListener('mouseup', onUp);
-    });
-
-    document.addEventListener('click', e => {
-      const btn = e.target && e.target.closest ? e.target.closest('.chips button, .sh-rb-tab') : null;
-      if (!btn) return;
-      const bar = btn.closest('.chips, .sh-rb-tabs');
-      if (bar && bar.scrollWidth > bar.clientWidth && typeof btn.scrollIntoView === 'function') {
-        btn.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
-      }
-    });
-
-    // [AI-MIMARI-NOTU: AKILLI DOCK & SEKME GEÇİŞİ — GERİ TUŞU YIĞILMASINI ÖNLEME]
-    // Kullanıcı alt menüdeki (dock) sekmeler arasında gezinirken tarayıcı geçmişine
-    // sürekli yeni sayfa katmanı yığıp kullanıcının siteden çıkmak için 5-10 kez
-    // geri tuşuna basmak zorunda kalmasını engellemek için dock geçişleri 'replace' (yerine yazma)
-    // mantığıyla çalıştırılır.
-    document.addEventListener('click', e => {
-      const dockLink = e.target && e.target.closest ? e.target.closest('#dock a') : null;
-      if (!dockLink) return;
-      // Yeni sekmede açma veya özel tuş kombinasyonlarını (Ctrl/Cmd/Shift) tarayıcıya bırak
-      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      if (dockLink.target && dockLink.target !== '_self') return;
-
-      const targetHref = dockLink.getAttribute('href');
-      if (!targetHref || targetHref.startsWith('#')) return;
-
-      // Aynı sayfaya tıklanmışsa işlem yapma
-      if (dockLink.getAttribute('aria-current') === 'page') {
-        e.preventDefault();
-        return;
-      }
-
-      const targetUrl = new URL(dockLink.href, window.location.href);
-      if (targetUrl.origin !== window.location.origin) return;
-
-      // Standart tıklamayı ele al ve geçmiş yığılmasını önleyerek konumu güncelle
-      e.preventDefault();
-      if (typeof window.location.replace === 'function') {
-        window.location.replace(targetUrl.href);
-      } else {
-        window.location.href = targetUrl.href;
-      }
-    });
-  })();
-
-
-  // [IRIS ARCHITECTURE]: Legacy ADIM 16 (cmdk-modal) replaced by unified iRiS Floating Launcher & Command Palette.
-
-  // ============================================================================
-  // [YENİ ÖZELLİK 1]: AKILLI YUKARI ÇIK (BACK TO TOP) BUTONU
-  // ============================================================================
-  (() => {
+    // Back to top
     let topBtn = null;
-    function ensureBackToTopBtn() {
-      if (topBtn) return topBtn;
-      topBtn = document.createElement('button');
-      topBtn.type = 'button';
-      topBtn.className = 'back-to-top glass';
-      topBtn.id = 'backToTopBtn';
-      topBtn.setAttribute('aria-label', 'Yukarı Çık');
-      topBtn.setAttribute('title', 'Yukarı Çık');
-      topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>';
-      topBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-      document.body.appendChild(topBtn);
-      return topBtn;
-    }
-
-    let isScrolling = false;
     window.addEventListener('scroll', () => {
-      if (isScrolling) return;
-      isScrolling = true;
-      requestAnimationFrame(() => {
-        const btn = ensureBackToTopBtn();
-        if (window.scrollY > 320) {
-          btn.classList.add('visible');
-        } else {
-          btn.classList.remove('visible');
-        }
-        isScrolling = false;
-      });
+      if (!topBtn) {
+        topBtn = el('button', 'back-to-top');
+        topBtn.type = 'button';
+        topBtn.setAttribute('aria-label', 'Yukarı Çık');
+        topBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>';
+        topBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.body.appendChild(topBtn);
+      }
+      topBtn.classList.toggle('visible', window.scrollY > 360);
     }, { passive: true });
-  })();
 
-  // ============================================================================
-  // [YENİ ÖZELLİK 2]: HIZLI ARAMA KISAYOLU (/), TEMİZLEME (✕), ESC VE YARDIM PENCERESİ (?)
-  // ============================================================================
-  (() => {
-    // 1. Kısayol Yardım Penceresi (Modal)
-    let kbdOverlay = null;
-    const createKbdModal = () => {
-      if (kbdOverlay) return kbdOverlay;
-      kbdOverlay = document.createElement('div');
-      kbdOverlay.className = 'kbd-overlay';
-      kbdOverlay.setAttribute('role', 'dialog');
-      kbdOverlay.setAttribute('aria-modal', 'true');
-      kbdOverlay.setAttribute('aria-label', 'Klavye Kısayolları');
-      kbdOverlay.innerHTML = `
-        <div class="kbd-dialog glass sq">
-          <div class="kbd-head">
-            <h3>Klavye Kısayolları</h3>
-            <button type="button" class="kbd-close" aria-label="Kapat">✕</button>
-          </div>
-          <ul class="kbd-list">
-            <li><span>Arama kutusuna odaklan</span><div class="kbd-keys"><kbd>/</kbd></div></li>
-            <li><span>Açık pencereyi kapat / Aramayı temizle</span><div class="kbd-keys"><kbd>Esc</kbd></div></li>
-            <li><span>Koyu / Açık tema değiştir</span><div class="kbd-keys"><kbd>T</kbd></div></li>
-            <li><span>Rastgele yapım seç</span><div class="kbd-keys"><kbd>R</kbd></div></li>
-            <li><span>Kart / Liste / Katman görünümü</span><div class="kbd-keys"><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd></div></li>
-            <li><span>Bu yardım penceresini aç / kapat</span><div class="kbd-keys"><kbd>?</kbd></div></li>
-          </ul>
-        </div>
-      `;
-      document.body.appendChild(kbdOverlay);
-      kbdOverlay.addEventListener('click', e => {
-        if (e.target === kbdOverlay || e.target.closest('.kbd-close')) {
-          closeKbdModal();
-        }
-      });
-      return kbdOverlay;
-    };
-
-    const toggleKbdModal = () => {
-      const modal = createKbdModal();
-      modal.classList.toggle('open');
-    };
-    const closeKbdModal = () => {
-      if (kbdOverlay) kbdOverlay.classList.remove('open');
-    };
-
-    // 2. Klavye Dinleyicisi
+    // Keyboard shortcuts (T, R, 1/2/3)
     document.addEventListener('keydown', e => {
-      const activeTag = document.activeElement && document.activeElement.tagName;
-      const isInputActive = activeTag === 'INPUT' || activeTag === 'TEXTAREA' || (document.activeElement && document.activeElement.isContentEditable);
-      
-      // '?' Tuşu: Kısayol modalını aç/kapat
-      if ((e.key === '?' || (e.shiftKey && e.key === '/')) && !isInputActive) {
-        e.preventDefault();
-        toggleKbdModal();
-        return;
-      }
-
-      // '/' Tuşu: Arama kutusuna odaklan
-      if (e.key === '/' && !isInputActive && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        const searchInp = document.getElementById('search') || document.getElementById('q') || document.querySelector('input[type="search"]');
-        if (searchInp) {
-          e.preventDefault();
-          searchInp.focus();
-          searchInp.select();
-        }
-      }
-      // 'Escape' Tuşu: Modal açıksa kapat, yoksa arama kutusundaysa metni temizle ve odaktan çık
-      else if (e.key === 'Escape') {
-        if (kbdOverlay && kbdOverlay.classList.contains('open')) {
-          e.preventDefault();
-          closeKbdModal();
-          return;
-        }
-        if (isInputActive) {
-          const searchInp = document.activeElement;
-          if (searchInp && (searchInp.id === 'search' || searchInp.id === 'q' || searchInp.type === 'search')) {
-            if (searchInp.value) {
-              searchInp.value = '';
-              searchInp.dispatchEvent(new Event('input', { bubbles: true }));
-            }
-            searchInp.blur();
-          }
-        }
-      }
-      // 'T' Tuşu: Tema değiştir
-      else if ((e.key === 't' || e.key === 'T') && !isInputActive && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        if (typeof window.toggleTheme === 'function') {
-          e.preventDefault();
-          window.toggleTheme();
-        }
-      }
-      // 'R' Tuşu: Rastgele seç (varsa)
-      else if ((e.key === 'r' || e.key === 'R') && !isInputActive && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        const diceBtn = document.getElementById('randomPickBtn') || document.querySelector('[data-icon="dice"]');
-        if (diceBtn) {
-          e.preventDefault();
-          diceBtn.click();
-        }
-      }
-      // '1', '2', '3' Tuşları: Görünüm değiştir
-      else if (['1', '2', '3'].includes(e.key) && !isInputActive && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        const viewMap = { '1': 'grid', '2': 'list', '3': 'tier' };
-        const viewBtn = document.querySelector(`[data-view="${viewMap[e.key]}"]`);
-        if (viewBtn) {
-          e.preventDefault();
-          viewBtn.click();
-        }
+      const tag = document.activeElement && document.activeElement.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === 't' || e.key === 'T') {
+        if (typeof window.toggleTheme === 'function') { e.preventDefault(); window.toggleTheme(); }
+      } else if (e.key === 'r' || e.key === 'R') {
+        const dice = document.getElementById('randomPickBtn');
+        if (dice) { e.preventDefault(); dice.click(); }
+      } else if (['1', '2', '3'].includes(e.key)) {
+        const map = { '1': 'grid', '2': 'list', '3': 'tier' };
+        const btn = document.querySelector(`[data-view="${map[e.key]}"]`);
+        if (btn) { e.preventDefault(); btn.click(); }
       }
     });
 
-    // 3. Arama Temizleme (✕) Butonu ve Kısayol İpucu Entegrasyonu
-    const mountSearchControls = () => {
-      const searchInps = document.querySelectorAll('input#search, input#q, .search input');
-      searchInps.forEach(searchInp => {
-        const wrap = searchInp.parentElement;
-        if (!wrap) return;
-        wrap.classList.add('search-wrap');
-
-        // Kısayol rozeti ('/')
-        if (!wrap.querySelector('.search-kbd-hint')) {
-          const hint = document.createElement('kbd');
-          hint.className = 'search-kbd-hint';
-          hint.textContent = '/';
-          hint.setAttribute('title', 'Aramak için / tuşuna basın');
-          wrap.appendChild(hint);
-        }
-
-        // Temizleme butonu ('✕')
-        let clearBtn = wrap.querySelector('.search-clear');
-        if (!clearBtn) {
-          clearBtn = document.createElement('button');
-          clearBtn.type = 'button';
-          clearBtn.className = 'search-clear';
-          clearBtn.setAttribute('aria-label', 'Aramayı temizle');
-          clearBtn.innerHTML = '✕';
-          wrap.appendChild(clearBtn);
-
-          const syncClear = () => {
-            clearBtn.classList.toggle('on', Boolean(searchInp.value && searchInp.value.trim().length > 0));
-          };
-          searchInp.addEventListener('input', syncClear);
-          syncClear();
-
-          clearBtn.addEventListener('click', e => {
-            e.preventDefault();
-            searchInp.value = '';
-            searchInp.dispatchEvent(new Event('input', { bubbles: true }));
-            searchInp.focus();
-            syncClear();
-          });
-        }
-      });
-    };
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountSearchControls);
-    else mountSearchControls();
-  })();
-
-  // ============================================================================
-  // [YENİ ÖZELLİK 3]: KIRIK GÖRSEL FALLBACK POSTERİ (SVG DİNAMİK YEDEKLEME)
-  // ============================================================================
-  (() => {
-    window.addEventListener('error', e => {
-      const target = e.target;
-      if (target && target.tagName === 'IMG' && !target.dataset.fallbackApplied) {
-        target.dataset.fallbackApplied = 'true';
-        const altText = target.alt || target.title || 'Tempestian';
-        const initial = (altText.trim()[0] || 'T').toUpperCase();
-        const svgFallback = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="420" viewBox="0 0 300 420"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%231a1e2e"/><stop offset="100%" stop-color="%230f121d"/></linearGradient></defs><rect width="100%" height="100%" fill="url(%23g)"/><rect x="12" y="12" width="276" height="396" rx="16" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/><text x="50%" y="46%" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="54" fill="rgba(255,255,255,0.35)" text-anchor="middle" dominant-baseline="central">${encodeURIComponent(initial)}</text><text x="50%" y="60%" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="14" fill="rgba(255,255,255,0.45)" text-anchor="middle" dominant-baseline="central">Görsel Yok</text></svg>`;
-        target.src = svgFallback;
-        target.classList.add('img-fallback-applied');
-      }
-    }, true);
-  })();
-
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => initFlyoutCapsule());
-  } else {
-    initFlyoutCapsule();
+    // Secret book dot
+    const secretDot = document.getElementById('heroStatusDot');
+    if (secretDot) {
+      const go = e => { if (e) e.preventDefault(); location.href = root + (secretDot.getAttribute('data-secret-book') || 'kitap/ozel/'); };
+      secretDot.addEventListener('click', go);
+      secretDot.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') go(e); });
+    }
   }
 
+  // ============================================================================
+  // BOOTSTRAP & DATA HYDRATION
+  // ============================================================================
+  async function boot() {
+    initTopNav();
+    initCommandPalette();
+    initInteractions();
+
+    try {
+      const cfg = await fetch(root + 'data/sections.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null);
+      if (cfg) {
+        window.SITE_CONFIG = cfg;
+        document.dispatchEvent(new CustomEvent('siteconfig', { detail: cfg }));
+
+        // Footer links on home
+        const linksEl = document.getElementById('links');
+        if (linksEl && Array.isArray(cfg.links)) {
+          const fr = document.createDocumentFragment();
+          for (const l of cfg.links.filter(x => x && x.enabled !== false)) {
+            const li = el('li');
+            const a = el('a', '', l.title);
+            a.href = l.url;
+            a.target = '_blank';
+            a.rel = 'noopener me';
+            li.append(a);
+            fr.append(li);
+          }
+          linksEl.replaceChildren(fr);
+        }
+
+        // Custom boxes on home
+        const boxesTop = document.getElementById('boxesTop');
+        const boxesBottom = document.getElementById('boxesBottom');
+        if (boxesTop || boxesBottom) {
+          const allBoxes = Array.isArray(cfg.boxes) ? cfg.boxes : [];
+          renderCustomBoxes(boxesTop, allBoxes.filter(b => b.position !== 'below'));
+          renderCustomBoxes(boxesBottom, allBoxes.filter(b => b.position === 'below'));
+        }
+      }
+
+      if (cur === 'home') {
+        const [animeJson, moviesJson, guidesJson, projectsJson] = await Promise.all([
+          fetch(root + 'data/anime.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch(root + 'data/movies.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch(root + 'data/guides.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch(root + 'data/projects.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null)
+        ]);
+
+        const animeList = (animeJson && (animeJson.anime || animeJson.items)) || [];
+        cachedAnimeData = animeList;
+        renderHeroSpotlight(animeList);
+        renderHomeHighlights(animeList, cfg);
+        renderHomeContinue(animeList);
+
+        const movieList = (moviesJson && (moviesJson.items || moviesJson.movies)) || [];
+        cachedMoviesData = movieList;
+        renderHomeMovies(movieList);
+
+        const guideList = (guidesJson && (guidesJson.items || guidesJson.guides)) || [];
+        cachedGuidesData = guideList;
+        const gs = document.getElementById('hubGuideSub');
+        if (gs && guideList.length) gs.textContent = `${guideList.length} teknik rehber · GNU/Linux & Donanım`;
+
+        const projectList = (projectsJson && (projectsJson.items || projectsJson.projects)) || [];
+        cachedProjectsData = projectList;
+        const ps = document.getElementById('hubProjectSub');
+        if (ps && projectList.length) ps.textContent = `${projectList.length} açık kaynak proje · GitHub`;
+      }
+    } catch (e) {
+      console.warn('Bootstrap error:', e);
+    }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
 })();

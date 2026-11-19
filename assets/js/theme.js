@@ -17,7 +17,7 @@
     const m = mode || urlTheme() || root.dataset.theme || savedTheme() || 'dark';
     root.dataset.theme = m;
     const c = document.querySelector('meta[name=theme-color]');
-    if (c) c.content = m === 'dark' ? '#090e1a' : '#f0f6ff';
+    if (c) c.content = m === 'dark' ? '#0b0d14' : '#f4f6fb';
     document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: m } }));
   };
 

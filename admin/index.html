@@ -5,27 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; connect-src 'self' https://api.github.com https://raw.githubusercontent.com https://graphql.anilist.co https://api.tvmaze.com https://*.tvmaze.com https://openlibrary.org https://*.openlibrary.org https://www.omdbapi.com https://*.omdbapi.com https://query.wikidata.org https://*.wikidata.org https://v3.sg.media-imdb.com https://*.media-imdb.com https://search.imdbot.workers.dev; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self';">
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#eceef3">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0d14">
 <title>Yönetim · Tempestian</title>
 <link rel="icon" href="../assets/img/favicon-32.png" type="image/png" sizes="32x32">
 <script src="../assets/js/theme.js"></script>
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="stylesheet" href="../assets/css/admin.css">
+<link rel="stylesheet" href="../assets/css/style.css?v=3.0">
+<link rel="stylesheet" href="../assets/css/admin.css?v=3.0">
 </head>
 <body data-root="../" data-section="admin">
 <header class="bar on">
   <div class="bar-in admin-bar-in">
     <div class="admin-brand">
-      <a class="btn glass" href="../" data-icon="back" aria-label="Siteye dön" title="Siteye dön"></a>
-      <span class="admin-title">Tempestian Yönetim</span>
+      <a class="btn" href="../" data-icon="back" aria-label="Siteye dön" title="Siteye dön"></a>
+      <span class="admin-title">Tempestian</span>
+      <span class="admin-eyebrow">Yönetim</span>
       <span class="admin-badge" id="sessionBadge" hidden>Kilitli</span>
     </div>
     <div class="admin-bar-actions">
-      <button class="btn glass" id="lockBtn" type="button" title="Oturumu Kilitle" aria-label="Oturumu Kilitle" hidden>
+      <button class="btn" id="lockBtn" type="button" title="Oturumu Kilitle" aria-label="Oturumu Kilitle" hidden>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
       </button>
-      <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
+      <button class="btn" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
     </div>
   </div>
 </header>
@@ -33,12 +34,13 @@
 <main class="wrap admin-wrap">
   <div id="toastArea" class="toast-area" aria-live="polite"></div>
 
-  <section id="authGate" class="auth-gate glass sq">
+  <section id="authGate" class="auth-gate">
     <div class="auth-head">
       <div class="auth-shield" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 19 5.8v5.7c0 5-3.2 8.8-7 10-3.8-1.2-7-5-7-10V5.8z"/><path d="m9.5 12 1.8 1.8 3.6-3.6"/></svg>
       </div>
       <div>
+        <span class="auth-eyebrow">YÖNETİM PANELİ</span>
         <h1>Yönetici Girişi</h1>
         <p class="sub" id="authSubtitle">GitHub Fine-Grained Token (PAT) ile giriş yapın.</p>
       </div>
@@ -61,20 +63,20 @@
           <div class="field-row">
             <label class="field">
               <span>Repo Sahibi</span>
-              <input type="text" id="tokenRepoOwner" class="inp glass" value="tempestian" required>
+              <input type="text" id="tokenRepoOwner" class="inp" value="tempestian" required>
             </label>
             <label class="field">
               <span>Repo Adı</span>
-              <input type="text" id="tokenRepoName" class="inp glass" value="tempestian.github.io" required>
+              <input type="text" id="tokenRepoName" class="inp" value="tempestian.github.io" required>
             </label>
             <label class="field">
               <span>Dal (Branch)</span>
-              <input type="text" id="tokenBranch" class="inp glass" value="main" required>
+              <input type="text" id="tokenBranch" class="inp" value="main" required>
             </label>
           </div>
           <label class="field">
             <span>GitHub Fine-Grained Personal Access Token (PAT)</span>
-            <input type="password" id="loginPatInput" class="inp glass" placeholder="github_pat_..." autocomplete="current-password" required>
+            <input type="password" id="loginPatInput" class="inp" placeholder="github_pat_..." autocomplete="current-password" required>
             <small><code>tempestian/tempestian.github.io</code> deposuna <b>Contents: Read and write</b> yetkisine sahip GitHub Token'ınızı girin.</small>
           </label>
           <label class="chk" style="display:inline-flex;align-items:center;gap:0.5rem;cursor:pointer;margin-top:0.5rem;user-select:none;">
@@ -92,7 +94,7 @@
   <section id="adminApp" class="admin-app" hidden></section>
 </main>
 
-<script src="../assets/js/common.js"></script>
+<script src="../assets/js/common.js?v=3.0"></script>
 <script src="../assets/js/qr.js"></script>
 <script src="../assets/js/admin-security.js"></script>
 <script src="../assets/js/admin.js"></script>

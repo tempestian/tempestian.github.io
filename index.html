@@ -3,22 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#111113">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0d14">
 <title>Tempestian</title>
-<meta name="description" content="Bayram Tempestian'ın kişisel sitesi ve medya arşivi: Anime, GNU/Linux rehberleri, puanlar ve incelemeler.">
-<!-- [AI-MIMARI-NOTU: ADIM 22 — SOSYAL MEDYA PAYLAŞIM KARTLARI (OPEN GRAPH & TWITTER)] -->
+<meta name="description" content="Bayram Tempestian'ın kişisel sitesi ve medya arşivi: Anime, film, dizi, kitap, manga ve GNU/Linux rehberleri.">
 <meta property="og:site_name" content="Tempestian">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tempestian.com/">
 <meta property="og:title" content="Tempestian · Bayram">
-<meta property="og:description" content="Bayram Tempestian'ın kişisel sitesi ve medya arşivi: Anime, GNU/Linux rehberleri, puanlar ve incelemeler.">
+<meta property="og:description" content="Bayram Tempestian'ın kişisel sitesi ve medya arşivi: Anime, film, dizi, kitap, manga ve GNU/Linux rehberleri.">
 <meta property="og:image" content="https://tempestian.com/assets/img/icon-512.png">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tempestian · Bayram">
-<meta name="twitter:description" content="Bayram Tempestian'ın kişisel sitesi ve medya arşivi: Anime, GNU/Linux rehberleri, puanlar ve incelemeler.">
+<meta name="twitter:description" content="Bayram Tempestian'ın kişisel sitesi ve medya arşivi: Anime, film, dizi, kitap, manga ve GNU/Linux rehberleri.">
 <meta name="twitter:image" content="https://tempestian.com/assets/img/icon-512.png">
 <link rel="icon" id="fav32" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="icon" id="fav192" href="assets/img/icon-192.png" type="image/png" sizes="192x192">
@@ -26,238 +25,125 @@
 <script src="assets/js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Rubik:wght@500;600;700&display=swap">
-<link rel="stylesheet" href="assets/css/style.css?v=2.5">
+<link rel="stylesheet" href="assets/css/style.css?v=3.0">
 <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-root="" data-section="home">
 <header class="bar">
   <div class="bar-in">
-    <button class="island-brand flyout-trigger" id="flyoutTrigger" type="button" aria-expanded="false" aria-controls="flyoutMenu" aria-label="Kontrol Menüsü">
-      <span class="island-dot" aria-hidden="true"></span>
-      <span class="bar-title" id="barTitle">Tempestian</span>
-      <svg class="flyout-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
+    <div class="bar-left">
+      <a class="nav-brand" href="./" id="barTitle">Tempestian</a>
+      <nav class="top-nav" aria-label="Ana gezinme">
+        <a class="nav-link" href="anime/" data-nav="anime">Anime</a>
+        <a class="nav-link" href="film/" data-nav="movie">Film</a>
+        <a class="nav-link" href="dizi/" data-nav="series">Dizi</a>
+        <a class="nav-link" href="kitap/" data-nav="book">Kitap</a>
+        <a class="nav-link" href="manga/" data-nav="manga">Manga</a>
+        <a class="nav-link" href="rehber/" data-nav="guide">Rehber</a>
+      </nav>
+    </div>
     <div class="bar-actions">
-      <button class="btn glass" id="searchTrigger" type="button" aria-label="Hızlı Arama" title="Hızlı Arama (/ veya Ctrl+K)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
-      <button class="btn glass" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
-    </div>
-  </div>
-  <div class="flyout-menu" id="flyoutMenu" hidden>
-    <div class="flyout-header">
-      <span class="flyout-sec-title">Gezinme & Arşiv</span>
-    </div>
-    <div class="flyout-grid">
-      <a class="flyout-item active" href="./">
-        <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-        <div class="flyout-info">
-          <span class="flyout-name">Ana Sayfa</span>
-          <span class="flyout-desc">Portal görünümü</span>
-        </div>
-      </a>
-      <a class="flyout-item" href="anime/">
-        <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
-        <div class="flyout-info">
-          <span class="flyout-name">Anime Arşivi</span>
-          <span class="flyout-desc" id="flyAnimeDesc">450+ Başlık · İzleme Listesi</span>
-        </div>
-        <span class="flyout-badge">Aktif</span>
-      </a>
-      <a class="flyout-item" href="rehber/">
-        <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg></span>
-        <div class="flyout-info">
-          <span class="flyout-name">Rehberler</span>
-          <span class="flyout-desc" id="flyGuideDesc">GNU/Linux & Donanım</span>
-        </div>
-        <span class="flyout-badge">Technopat</span>
-      </a>
-      <a class="flyout-item" href="projeler/">
-        <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5.5l-3 13"/></svg></span>
-        <div class="flyout-info">
-          <span class="flyout-name">Projeler</span>
-          <span class="flyout-desc" id="flyProjectDesc">Açık Kaynak & Forklar</span>
-        </div>
-        <span class="flyout-badge">Aktif</span>
-      </a>
-      <a class="flyout-item" href="dizi/">
-        <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
-        <div class="flyout-info">
-          <span class="flyout-name">Dizi</span>
-          <span class="flyout-desc">Dizi Arşivi</span>
-        </div>
-      </a>
-      <a class="flyout-item" href="film/">
-        <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18M17 3v18M3 7.5h4M3 12h18M3 16.5h4M17 7.5h4M17 16.5h4"/></svg></span>
-        <div class="flyout-info">
-          <span class="flyout-name">Film</span>
-          <span class="flyout-desc">Sinema Arşivi</span>
-        </div>
-      </a>
-      <a class="flyout-item" href="manga/">
-        <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
-        <div class="flyout-info">
-          <span class="flyout-name">Manga</span>
-          <span class="flyout-desc">Okuma Listesi</span>
-        </div>
-      </a>
-      <a class="flyout-item" href="kitap/">
-        <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg></span>
-        <div class="flyout-info">
-          <span class="flyout-name">Kitap</span>
-          <span class="flyout-desc">Kitaplık</span>
-        </div>
-      </a>
-    </div>
-    <div class="flyout-sep"></div>
-    <div class="flyout-header">
-      <span class="flyout-sec-title">Zaman ve Metrikler</span>
-    </div>
-    <div class="flyout-grid">
-      <a class="flyout-item" href="zaman-tuneli/">
-        <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
-        <div class="flyout-info">
-          <span class="flyout-name">Zaman Tüneli</span>
-          <span class="flyout-desc">Kronolojik arşiv akışı</span>
-        </div>
-      </a>
-      <a class="flyout-item" href="istatistik/">
-        <span class="flyout-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-        <div class="flyout-info">
-          <span class="flyout-name">İstatistikler</span>
-          <span class="flyout-desc">Metrik ve grafikler</span>
-        </div>
-      </a>
+      <button class="search-pill" id="searchTrigger" type="button" aria-label="Hızlı Arama" title="Hızlı Arama (/ veya Ctrl+K)">
+        <span>Ara</span>
+        <kbd>/</kbd>
+      </button>
+      <button class="btn" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
     </div>
   </div>
 </header>
+
 <main class="wrap">
-  <section class="hero glass sq iris-hero" id="heroSection">
-    <div class="iris-hero-grid">
-      <div class="iris-hero-profile">
-        <div class="iris-avatar-wrap">
-          <img class="mark" id="heroLogo" src="assets/img/logo.png" width="76" height="76" alt="" decoding="async">
-          <span class="iris-status-dot" id="heroStatusDot" data-secret-book="kitap/ozel/" title="Sistem Aktif (Özel Cilt ✨)" role="button" tabindex="0"></span>
-        </div>
-        <div class="iris-hero-meta">
-          <div class="iris-tag-row">
-            <span class="iris-pulse-dot"></span>
-            <span class="iris-greeting-tag" id="irisGreeting">İyi akşamlar</span>
+  <section class="hero-spotlight" id="heroSpotlight" aria-label="Şu Anda İzleniyor">
+    <img class="hero-bg-img" id="heroBgImg" alt="" decoding="async">
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow" id="heroEyebrow">ŞU ANDA İZLENİYOR</span>
+      <h1 class="hero-title" id="heroSpotlightTitle">Tempestian</h1>
+      <p class="hero-meta" id="heroSpotlightMeta">Kişisel medya arşivi yükleniyor…</p>
+      <div class="hero-controls">
+        <div class="hero-progress-group" id="heroProgressGroup" hidden>
+          <div class="hero-progress-track">
+            <i class="hero-progress-fill" id="heroProgressFill"></i>
           </div>
-          <h1 id="heroTitle">Tempestian</h1>
-          <p class="sub" id="heroSub">Kişisel medya arşivi, puanlama karneleri ve GNU/Linux teknik rehber dizini.</p>
+          <span class="hero-progress-text" id="heroProgressText"></span>
         </div>
-      </div>
-      <div class="iris-hero-deck" aria-label="Sistem Telemetrisi ve Hızlı Erişim">
-        <a class="iris-deck-cell" href="anime/">
-          <span class="deck-lbl">ANİME ARŞİVİ</span>
-          <b class="deck-val" id="deckAnimeCount">79</b>
-          <span class="deck-sub">Kayıtlı Yapım</span>
-        </a>
-        <a class="iris-deck-cell" href="anime/istatistik/">
-          <span class="deck-lbl">TOPLAM İZLEME</span>
-          <b class="deck-val" id="deckEpCount">3376</b>
-          <span class="deck-sub">İzlenen Bölüm</span>
-        </a>
-        <a class="iris-deck-cell" href="rehber/">
-          <span class="deck-lbl">TECHNOPAT</span>
-          <b class="deck-val" id="deckGuideCount">54</b>
-          <span class="deck-sub">Teknik Rehber</span>
-        </a>
-        <button class="iris-deck-cell iris-deck-cmd" type="button" id="deckCmdBtn" aria-label="Komut Paletini Aç">
-          <span class="deck-lbl">BAŞLATICI</span>
-          <b class="deck-val deck-kbd">Ctrl+K</b>
-          <span class="deck-sub">Hızlı Arama (/)</span>
-        </button>
-      </div>
-    </div>
-  </section>
-  <section class="now-watching-card glass sq" id="nowWatchingCard" hidden aria-label="Şu Anda İzleniyor">
-    <div class="nw-kicker-row">
-      <div class="nw-kicker-left">
-        <span class="nw-pulse-dot" aria-hidden="true"></span>
-        <span class="nw-kicker-lbl">Şu Anda İzleniyor</span>
-      </div>
-      <a class="nw-link-btn" id="nwLinkBtn" href="anime/">
-        <span>Arşivde Aç</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-      </a>
-    </div>
-    <div class="nw-body">
-      <img class="nw-poster" id="nwPoster" alt="" loading="lazy" decoding="async">
-      <div class="nw-info">
-        <div class="nw-title-row">
-          <h2 class="nw-title" id="nwTitle"></h2>
-          <span class="nw-season-badge" id="nwSeasonBadge"></span>
-        </div>
-        <p class="nw-sub" id="nwSub"></p>
-        <div class="nw-progress-wrap">
-          <div class="nw-progress-bar"><i id="nwProgressFill" style="width:0%"></i></div>
-          <div class="nw-progress-meta">
-            <span class="nw-progress-ep" id="nwProgressEp"></span>
-            <span class="nw-progress-pct" id="nwProgressPct"></span>
-          </div>
+        <div class="hero-btn-group">
+          <a class="hero-btn-primary" id="heroDetailBtn" href="anime/">Detay</a>
+          <a class="hero-btn-secondary" id="heroArchiveBtn" href="anime/">Arşivde aç</a>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="home-highlights glass sq" id="homeHighlights" hidden aria-label="Öne Çıkan Başyapıtlar">
-    <div class="hh-header">
-      <div class="hh-title-group">
-        <h2 class="hh-title">Öne Çıkan Başyapıtlar</h2>
-      </div>
-      <a class="hh-more-link" href="anime/">
-        <span>Tüm Arşiv (79)</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-      </a>
+  <section class="shelf-section" id="homeHighlights" hidden aria-label="Öne Çıkan Başyapıtlar">
+    <div class="shelf-head">
+      <h2 class="shelf-title" id="hhTitle">Öne Çıkan Başyapıtlar</h2>
+      <a class="shelf-more" href="anime/">Tümünü gör ›</a>
     </div>
-    <div class="hh-rail-wrapper">
-      <div class="hh-rail" id="hhRail" role="region" aria-label="Başyapıt Kartları"></div>
-    </div>
+    <div class="poster-rail" id="hhRail" role="region" aria-label="Öne Çıkan Başyapıtlar"></div>
   </section>
 
-  <ul class="tiles custom-boxes" id="boxesTop" hidden></ul>
-  <ul class="tiles" id="sections"></ul>
+  <section class="shelf-section" id="homeContinue" hidden aria-label="Devam Edilecek">
+    <div class="shelf-head">
+      <h2 class="shelf-title">Devam Edilecek</h2>
+      <a class="shelf-more" href="anime/">Listeyi aç ›</a>
+    </div>
+    <div class="poster-rail" id="continueRail" role="region" aria-label="Devam Edilecek"></div>
+  </section>
 
-  <section class="home-hub-banner" id="homeHubBanner" aria-label="Sistem ve Arşiv Hub'ı">
-    <a class="hub-cell glass sq hub-timeline" href="zaman-tuneli/">
-      <div class="hub-icon-wrap" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+  <section class="shelf-section" id="homeMovies" hidden aria-label="Filmler">
+    <div class="shelf-head">
+      <h2 class="shelf-title">Filmler</h2>
+      <a class="shelf-more" href="film/">Tüm filmler ›</a>
+    </div>
+    <div class="poster-rail" id="moviesRail" role="region" aria-label="Filmler"></div>
+  </section>
+
+  <ul class="custom-boxes" id="boxesTop" hidden></ul>
+
+  <section class="home-secondary" aria-label="Diğer Bölümler">
+    <a class="mini-hub-card" href="rehber/">
+      <div class="mini-hub-info">
+        <span class="mini-hub-title">Technopat Rehberleri</span>
+        <span class="mini-hub-sub" id="hubGuideSub">GNU/Linux, donanım ve yazılım</span>
       </div>
-      <div class="hub-content">
-        <div class="hub-kicker-row">
-          <span class="hub-kicker">KRONOLOJİK AKIŞ</span>
-          <span class="hub-tag">3.370+ Kayıt</span>
-        </div>
-        <h3 class="hub-title">Medya Zaman Tüneli</h3>
-        <p class="hub-desc">2018'den bugüne izlenen ve okunan yapımların eksiksiz kronolojik yolculuğu.</p>
-      </div>
-      <span class="hub-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </span>
+      <span class="mini-hub-arrow" aria-hidden="true">›</span>
     </a>
-    <a class="hub-cell glass sq hub-stats" href="anime/istatistik/">
-      <div class="hub-icon-wrap" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    <a class="mini-hub-card" href="projeler/">
+      <div class="mini-hub-info">
+        <span class="mini-hub-title">Açık Kaynak Projeler</span>
+        <span class="mini-hub-sub" id="hubProjectSub">NixOS, iNiR ve GitHub depoları</span>
       </div>
-      <div class="hub-content">
-        <div class="hub-kicker-row">
-          <span class="hub-kicker">TELEMETRİ & GRAFİKLER</span>
-          <span class="hub-tag">10 Başyapıt</span>
-        </div>
-        <h3 class="hub-title">Genel İstatistikler</h3>
-        <p class="hub-desc">Tür dağılımları, ortalama puanlar, bölüm telemetrisi ve detaylı tüketim analitiği.</p>
+      <span class="mini-hub-arrow" aria-hidden="true">›</span>
+    </a>
+    <a class="mini-hub-card" href="zaman-tuneli/">
+      <div class="mini-hub-info">
+        <span class="mini-hub-title">Zaman Tüneli</span>
+        <span class="mini-hub-sub">Kronolojik izleme ve okuma akışı</span>
       </div>
-      <span class="hub-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </span>
+      <span class="mini-hub-arrow" aria-hidden="true">›</span>
+    </a>
+    <a class="mini-hub-card" href="istatistik/">
+      <div class="mini-hub-info">
+        <span class="mini-hub-title">İstatistikler</span>
+        <span class="mini-hub-sub">Tür dağılımları ve puan grafikleri</span>
+      </div>
+      <span class="mini-hub-arrow" aria-hidden="true">›</span>
     </a>
   </section>
 
-  <ul class="tiles custom-boxes" id="boxesBottom" hidden></ul>
-  <ul class="links" id="links" aria-label="Bağlantılar"></ul>
-  <noscript><p class="note">Bölümler için JavaScript gerekiyor.</p></noscript>
+  <ul class="custom-boxes" id="boxesBottom" hidden></ul>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <span class="secret-dot" id="heroStatusDot" data-secret-book="kitap/ozel/" title="Özel Cilt" role="button" tabindex="0"></span>
+      <span>Tempestian · Kişisel Medya Arşivi</span>
+    </div>
+    <ul class="footer-links" id="links" aria-label="Bağlantılar"></ul>
+  </footer>
+
+  <noscript><p class="note">İçerikler için JavaScript gerekiyor.</p></noscript>
 </main>
-<script src="assets/js/common.js?v=2.4"></script>
+<script src="assets/js/common.js?v=3.0"></script>
 </body>
 </html>

@@ -2301,7 +2301,7 @@ img { display: block; max-width: 100%; }
   margin: -24px -24px 18px;
   height: 175px;
   overflow: hidden;
-  border-bottom: 2px solid var(--line);
+  border-bottom: none;
   background: var(--surface);
 }
 .sheet-backdrop-img {
@@ -2314,7 +2314,7 @@ img { display: block; max-width: 100%; }
 .sheet-backdrop-grad {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, var(--bg-elev) 0%, rgba(17, 20, 32, 0.3) 60%, transparent 100%);
+  background: linear-gradient(to top, var(--bg-elev) 0%, var(--bg-elev) 35%, transparent 100%);
 }
 
 .sheet-head {

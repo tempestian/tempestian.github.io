@@ -11,34 +11,23 @@
     "icon192": "assets/img/icon-192.png",
     "appleTouchIcon": "assets/img/apple-touch-icon.png"
   },
-  "homeFeatures": {
-    "nowWatchingEnabled": true,
-    "highlightsEnabled": true,
-    "highlightsTitle": "Öne Çıkan Başyapıtlar",
-    "highlightsMinScore": 8.5,
-    "highlightsLimit": 8,
-    "hubBannerEnabled": true,
-    "hubTimelineDesc": "2016'dan bugüne izlenen ve okunan yapımların eksiksiz kronolojik yolculuğu.",
-    "hubStatsDesc": "Tür dağılımları, ortalama puanlar, bölüm telemetrisi ve detaylı tüketim analitiği."
-  },
-  "lastfm": {
+  "gift": {
     "enabled": true,
-    "user": "TurkTempestian",
-    "apiKey": "b25b959554ed76058ac220b7b2e0a026"
-  },
-  "secretBook": {
-    "url": "kitap/ozel/",
-    "title": "🐾 Özel Anı Kitabı",
-    "keywords": [
-      "özel",
-      "anı",
-      "hatıra",
-      "kitap",
-      "miniğim",
-      "book",
-      "hediye",
-      "pati"
-    ]
+    "ariaLabel": "Sürpriz",
+    "openLabel": "Sürprizi aç",
+    "closeLabel": "Sürprizi kapat",
+    "leadText": "Hediyenin açılma zamanı geldi",
+    "targetDate": "2026-10-26T00:00:00+03:00",
+    "dateLabel": "26 Ekim 2026 · 00.00 (TSİ)",
+    "expiredLeadText": "Hediyenin açılma zamanı geldi",
+    "expiredSubText": "Sürprizi okumak için tıkla ✨",
+    "expiredUrl": "hediye/",
+    "units": {
+      "d": "Gün",
+      "h": "Saat",
+      "m": "Dakika",
+      "s": "Saniye"
+    }
   },
   "boxes": [
     {
@@ -248,5 +237,23 @@
       "resetFilterText": "Filtreleri sıfırla",
       "externalButtonText": "Kaynakta aç"
     }
+  },
+  "homeFeatures": {
+    "nowWatchingEnabled": true,
+    "highlightsEnabled": true,
+    "hubBannerEnabled": true,
+    "highlightsTitle": "",
+    "hubTimelineDesc": "",
+    "hubStatsDesc": ""
+  },
+  "lastfm": {
+    "enabled": true,
+    "user": "tempestian",
+    "apiKey": ""
+  },
+  "secretBook": {
+    "url": "kitap/ozel/",
+    "title": "🐾 Özel Anı Kitabı",
+    "keywords": []
   }
 }

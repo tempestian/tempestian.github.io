@@ -1,5 +1,7 @@
 # tempestian.github.io
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 Statik site, derleme gerektirmez. Tüm veri AniList'ten gelir. Depo adı `tempestian.github.io` olmalı; dosyalar kök dizine yüklenir (`.nojekyll` dahil).
 
 ## Performans notları
@@ -71,4 +73,10 @@ Sayılar (`stats` alanı dahil) AniList'in toplam veya özel liste sayılarında
 
 - **[Bayram (Tempestian)](https://github.com/tempestian)** — Proje sahibi, mimari & vizyon
 - **[Gemini (@gemini-code-assist)](https://github.com/gemini-code-assist)** — AI Pair Programmer (Arayüz & performans optimizasyonu, mobil uygulama One UI mimarisi, admin paneli)
+
+---
+
+## 📄 Lisans (License)
+
+Bu proje [GNU General Public License v3.0 (GPL-3.0)](LICENSE) altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına göz atabilirsiniz.
 

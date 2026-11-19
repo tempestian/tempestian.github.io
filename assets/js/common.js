@@ -754,7 +754,7 @@
         if (extLink) extLink.href = profileUrl;
 
         try {
-          const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${encodeURIComponent(currentUser)}&api_key=${encodeURIComponent(currentKey)}&format=json&limit=5`;
+          const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${encodeURIComponent(currentUser)}&api_key=${encodeURIComponent(currentKey)}&format=json&limit=8`;
           const res = await fetch(url);
           if (!res.ok) throw new Error('API isteği başarısız');
           const data = await res.json();
@@ -815,7 +815,7 @@
           }
 
           if (historyList) {
-            const historyTracks = tracks.slice(1, 4);
+            const historyTracks = tracks.slice(1, 6);
             if (!historyTracks.length) {
               historyList.innerHTML = '<div class="lastfm-empty-hist">Önceki parça kaydı yok</div>';
             } else {

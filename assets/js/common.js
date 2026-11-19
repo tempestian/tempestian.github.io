@@ -1016,13 +1016,28 @@
             if (statusTxt) statusTxt.textContent = isOnline ? 'Çevrimiçi' : 'Çevrimdışı';
             if (livePill) livePill.className = 'steam-live-pill ' + (isOnline ? 'is-online' : 'is-offline');
             if (card) card.classList.remove('is-in-game');
-            if (titleEl) {
-              titleEl.textContent = isOnline ? 'Şu An Oyunda Değil' : 'Steam Çevrimdışı';
-              titleEl.href = profileUrl;
+
+            const recent = data.recentGames && data.recentGames[0];
+            if (recent) {
+              if (titleEl) {
+                titleEl.textContent = recent.name;
+                titleEl.href = recent.appid ? `https://store.steampowered.com/app/${recent.appid}/` : profileUrl;
+              }
+              if (subEl) subEl.textContent = isOnline ? 'Son oynanan · Çevrimiçi' : 'Son oynanan oyun';
+              if (coverEl && recent.header) {
+                coverEl.src = recent.header;
+                coverEl.style.display = 'block';
+                if (phEl) phEl.style.display = 'none';
+              }
+            } else {
+              if (titleEl) {
+                titleEl.textContent = isOnline ? 'Şu An Oyunda Değil' : 'Steam Çevrimdışı';
+                titleEl.href = profileUrl;
+              }
+              if (subEl) subEl.textContent = isOnline ? 'Steam oturumu açık' : 'Son aktivite bekleniyor';
+              if (coverEl) coverEl.style.display = 'none';
+              if (phEl) phEl.style.display = 'flex';
             }
-            if (subEl) subEl.textContent = isOnline ? 'Steam oturumu açık' : 'Son aktivite bekleniyor';
-            if (coverEl) coverEl.style.display = 'none';
-            if (phEl) phEl.style.display = 'flex';
           }
         } catch (_) {
           if (statusTxt) statusTxt.textContent = 'Çevrimiçi';

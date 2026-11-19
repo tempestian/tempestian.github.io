@@ -2,7 +2,7 @@ name: Steam Telemetri Senkronu
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Her 30 dakikada bir otomatik
+    - cron: '*/15 * * * *' # Her 15 dakikada bir otomatik
   workflow_dispatch:
 
 permissions:

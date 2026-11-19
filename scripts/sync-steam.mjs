@@ -72,30 +72,76 @@ async function syncSteam() {
         const mini = await miniRes.json();
         steamData.personaName = mini.persona_name || steamData.personaName;
         steamData.avatar = mini.avatar_url || steamData.avatar;
-        if (mini.in_game) {
+        if (mini.in_game && mini.in_game.name) {
           steamData.onlineState = 'in-game';
           steamData.stateMessage = `Oyunda: ${mini.in_game.name}`;
+          const appid = mini.in_game.appid || (mini.in_game.logo && mini.in_game.logo.match(/\/apps\/(\d+)\//)?.[1]) || null;
           steamData.inGame = {
             name: mini.in_game.name,
-            appid: mini.in_game.appid || null,
-            header: mini.in_game.appid ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${mini.in_game.appid}/header.jpg` : null
+            appid: appid,
+            header: appid ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/header.jpg` : (mini.in_game.logo || null)
           };
         }
       }
 
-      // XML Fallback for status
-      const xmlRes = await fetch(`https://steamcommunity.com/profiles/${STEAM_ID}/?xml=1`);
-      if (xmlRes.ok) {
-        const xml = await xmlRes.text();
-        const stMatch = xml.match(/<onlineState>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/onlineState>/i);
-        const msgMatch = xml.match(/<stateMessage>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/stateMessage>/i);
-        if (stMatch && !steamData.inGame) {
-          const st = stMatch[1].toLowerCase();
-          steamData.onlineState = st === 'in-game' ? 'in-game' : st === 'online' ? 'online' : 'offline';
+      // Fetch profile HTML for recent games and fallback status
+      try {
+        const profRes = await fetch(`https://steamcommunity.com/profiles/${STEAM_ID}/`);
+        if (profRes.ok) {
+          const html = await profRes.text();
+          const recentGames = [];
+          const regex = /<div[^>]*class=\"recent_game\"[\s\S]*?<div class=\"game_name\">[\s\S]*?<a[^>]*href=\"[^\"]*\/app\/(\d+)\"[^>]*>([\s\S]*?)<\/a>/gi;
+          let m;
+          while ((m = regex.exec(html)) !== null && recentGames.length < 5) {
+            const appid = m[1];
+            const name = m[2].trim();
+            recentGames.push({
+              appid,
+              name,
+              header: `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/header.jpg`
+            });
+          }
+          if (recentGames.length) {
+            steamData.recentGames = recentGames;
+          }
+
+          // In-game fallback from profile HTML if miniprofile didn't report it
+          if (!steamData.inGame) {
+            const inGameMatch = html.match(/<div class=\"profile_in_game_header\">([\s\S]*?)<\/div>/i);
+            const gameNameMatch = html.match(/<div class=\"profile_in_game_name\">([\s\S]*?)<\/div>/i);
+            const appLinkMatch = html.match(/href=\"https:\/\/steamcommunity\.com\/app\/(\d+)\"/i);
+            if (inGameMatch && inGameMatch[1].toLowerCase().includes('in-game') && gameNameMatch) {
+              const name = gameNameMatch[1].trim();
+              const appid = appLinkMatch ? appLinkMatch[1] : null;
+              steamData.onlineState = 'in-game';
+              steamData.stateMessage = `Oyunda: ${name}`;
+              steamData.inGame = {
+                name,
+                appid,
+                header: appid ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${appid}/header.jpg` : null
+              };
+            }
+          }
         }
-        if (msgMatch && !steamData.inGame) {
-          steamData.stateMessage = msgMatch[1].replace(/<br\s*\/?>/gi, ' - ').trim();
-        }
+      } catch (_) {}
+
+      // XML Fallback for status if still needed
+      if (!steamData.inGame) {
+        try {
+          const xmlRes = await fetch(`https://steamcommunity.com/profiles/${STEAM_ID}/?xml=1`);
+          if (xmlRes.ok) {
+            const xml = await xmlRes.text();
+            const stMatch = xml.match(/<onlineState>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/onlineState>/i);
+            const msgMatch = xml.match(/<stateMessage>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/stateMessage>/i);
+            if (stMatch) {
+              const st = stMatch[1].toLowerCase();
+              steamData.onlineState = st === 'in-game' ? 'in-game' : st === 'online' ? 'online' : 'offline';
+            }
+            if (msgMatch) {
+              steamData.stateMessage = msgMatch[1].replace(/<br\s*\/?>/gi, ' - ').trim();
+            }
+          }
+        } catch (_) {}
       }
     }
 

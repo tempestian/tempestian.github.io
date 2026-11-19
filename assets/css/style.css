@@ -587,7 +587,6 @@ img { display: block; max-width: 100%; }
 }
 .lastfm-live-pill.is-now-playing .live-dot {
   background: var(--ok);
-  box-shadow: 0 0 8px var(--ok);
   animation: livePulse 1.4s infinite ease-in-out;
 }
 @keyframes livePulse {
@@ -628,23 +627,7 @@ img { display: block; max-width: 100%; }
   opacity: 0.25;
   pointer-events: none;
 }
-@keyframes liveMusicPulse {
-  0%, 100% {
-    box-shadow: var(--neo-shadow-sm), 0 0 12px rgba(52, 211, 153, 0.2);
-    border-color: var(--line);
-  }
-  50% {
-    box-shadow: var(--neo-shadow), 0 0 24px rgba(52, 211, 153, 0.42);
-    border-color: var(--ok);
-  }
-}
-.lastfm-card.is-playing {
-  animation: liveMusicPulse 2.8s infinite ease-in-out;
-}
-.lastfm-card.is-playing .lastfm-cover-box {
-  border-color: var(--ok);
-  box-shadow: 0 0 16px rgba(52, 211, 153, 0.3);
-}
+
 
 .lastfm-track-info {
   display: flex;
@@ -910,10 +893,6 @@ img { display: block; max-width: 100%; }
   transform: translate(-1px, -1px);
   box-shadow: var(--neo-shadow);
 }
-.steam-card.is-in-game {
-  border-color: var(--ok);
-  animation: liveMusicPulse 2.8s infinite ease-in-out;
-}
 
 .steam-card-top {
   display: flex;
@@ -959,7 +938,6 @@ img { display: block; max-width: 100%; }
 }
 .steam-live-pill.is-in-game .steam-dot {
   background: var(--ok);
-  box-shadow: 0 0 8px var(--ok);
   animation: livePulse 1.4s infinite ease-in-out;
 }
 .steam-live-pill.is-online {
@@ -969,7 +947,6 @@ img { display: block; max-width: 100%; }
 }
 .steam-live-pill.is-online .steam-dot {
   background: #3b82f6;
-  box-shadow: 0 0 6px #3b82f6;
 }
 .steam-badge {
   font-size: 0.64rem;
@@ -990,10 +967,6 @@ img { display: block; max-width: 100%; }
   align-items: center;
   justify-content: center;
   position: relative;
-}
-.steam-card.is-in-game .steam-cover-box {
-  border-color: var(--ok);
-  box-shadow: 0 0 16px rgba(52, 211, 153, 0.3);
 }
 .steam-cover-img {
   width: 100%;

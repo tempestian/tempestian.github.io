@@ -617,36 +617,6 @@
       }
     }
 
-    // Floating Chibi Rimuru Mascot in bottom-right corner (like reference image 1!)
-    if (!document.getElementById('chibiRimuruMascot')) {
-      const mascot = el('button', 'chibi-rimuru-mascot');
-      mascot.id = 'chibiRimuruMascot';
-      mascot.type = 'button';
-      mascot.title = "Rimuru'nun Kader Çarkını Aç (Ne İzlemeliyim?)";
-      mascot.setAttribute('aria-label', 'Rimuru Kader Çarkı');
-      mascot.innerHTML = `
-        <span class="chibi-speech">Ne izlesek? 💧</span>
-        <svg class="chibi-rimuru-svg" viewBox="0 0 110 100" width="68" height="62">
-          <!-- Tactile sticker white outline & shadow -->
-          <path d="M14 64 C14 30, 34 14, 55 14 C76 14, 96 30, 96 64 C96 82, 78 88, 55 88 C32 88, 14 82, 14 64 Z" fill="#58b9ff" stroke="#14131d" stroke-width="5.5"/>
-          <path d="M22 60 C22 35, 38 22, 55 22 C72 22, 88 35, 88 60" fill="none" stroke="#9ee6ff" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
-          <ellipse cx="38" cy="34" rx="10" ry="5" transform="rotate(-20 38 34)" fill="#ffffff" opacity="0.75"/>
-          <!-- Happy squinted golden/dark anime eyes -->
-          <path d="M35 55 Q42 49 48 55" fill="none" stroke="#14131d" stroke-width="4.5" stroke-linecap="round"/>
-          <path d="M62 55 Q68 49 75 55" fill="none" stroke="#14131d" stroke-width="4.5" stroke-linecap="round"/>
-          <!-- Blush cheeks -->
-          <ellipse cx="29" cy="61" rx="5.5" ry="3" fill="#ff6b9d" opacity="0.75"/>
-          <ellipse cx="81" cy="61" rx="5.5" ry="3" fill="#ff6b9d" opacity="0.75"/>
-          <!-- Small happy cat/slime mouth -->
-          <path d="M50 61 Q55 66 60 61" fill="none" stroke="#14131d" stroke-width="3.5" stroke-linecap="round"/>
-        </svg>
-      `;
-      mascot.onclick = () => {
-        const sbWheel = document.getElementById('sbWheelActionBtn');
-        if (sbWheel) sbWheel.click();
-      };
-      document.body.appendChild(mascot);
-    }
 
     bindThemeAndIcons();
 

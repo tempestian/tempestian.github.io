@@ -3334,46 +3334,10 @@ body.has-ambient-glow::before {
   box-shadow: var(--neo-shadow-lg);
 }
 
-/* Chibi Rimuru Mascot floating sticker */
-.chibi-rimuru-mascot {
-  position: fixed;
-  right: 22px;
-  bottom: 20px;
-  z-index: 95;
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 8px;
-  cursor: pointer;
-  user-select: none;
-  transition: transform 150ms var(--ease);
-}
-.chibi-rimuru-mascot:hover {
-  transform: scale(1.08) translateY(-2px);
-}
-.chibi-speech {
-  padding: 5px 10px;
-  border-radius: 12px;
-  background: var(--surface);
-  color: var(--ink);
-  border: 2px solid var(--line);
-  box-shadow: var(--neo-shadow-sm);
-  font-size: 0.74rem;
-  font-weight: 800;
-  white-space: nowrap;
-}
-.chibi-sprite {
-  filter: drop-shadow(2px 3px 0px var(--line));
-  animation: rimuruChibiBounce 2.4s infinite ease-in-out;
-}
-@keyframes rimuruChibiBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
 .back-to-top {
   position: fixed;
   right: 22px;
-  bottom: 78px;
+  bottom: 22px;
   z-index: 90;
   width: 38px;
   height: 38px;
@@ -3569,20 +3533,11 @@ body.has-ambient-glow::before {
     flex-direction: column;
     align-items: stretch;
   }
-  .chibi-speech {
-    display: none !important;
-  }
-  .chibi-rimuru-mascot {
-    bottom: 14px;
-    right: 12px;
-    transform: scale(0.85);
-    transform-origin: bottom right;
-  }
   .back-to-top {
-    bottom: 68px;
-    right: 12px;
-    width: 34px;
-    height: 34px;
+    bottom: 18px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
   }
 }
 

@@ -789,6 +789,188 @@ img { display: block; max-width: 100%; }
   white-space: nowrap;
 }
 
+/* Aside Divider between Last.fm & Steam */
+.aside-divider {
+  height: 2px;
+  background: var(--line);
+  margin: 18px 0 16px;
+  border-radius: 2px;
+  opacity: 0.8;
+}
+
+/* Steam Lounge / Gaming Room Card */
+.steam-header {
+  margin-bottom: 12px;
+}
+.steam-card {
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 13px;
+  box-shadow: var(--neo-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  overflow: hidden;
+  transition: transform 120ms var(--ease), box-shadow 120ms var(--ease), border-color 150ms var(--ease);
+}
+.steam-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--neo-shadow);
+}
+.steam-card.is-in-game {
+  border-color: var(--ok);
+  animation: liveMusicPulse 2.8s infinite ease-in-out;
+}
+
+.steam-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.steam-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--line);
+  background: var(--bg-elev);
+  color: var(--ink2);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.steam-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink3);
+}
+.steam-live-pill.is-in-game {
+  background: rgba(52, 211, 153, 0.18);
+  color: var(--ok);
+  border-color: var(--ok);
+}
+.steam-live-pill.is-in-game .steam-dot {
+  background: var(--ok);
+  box-shadow: 0 0 8px var(--ok);
+  animation: livePulse 1.4s infinite ease-in-out;
+}
+.steam-live-pill.is-online {
+  background: rgba(59, 130, 246, 0.18);
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+.steam-live-pill.is-online .steam-dot {
+  background: #3b82f6;
+  box-shadow: 0 0 6px #3b82f6;
+}
+.steam-badge {
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.steam-cover-box {
+  width: 100%;
+  aspect-ratio: 460 / 215;
+  border-radius: var(--radius-xs);
+  border: 2px solid var(--line);
+  background: var(--surface-2);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.steam-card.is-in-game .steam-cover-box {
+  border-color: var(--ok);
+  box-shadow: 0 0 16px rgba(52, 211, 153, 0.3);
+}
+.steam-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.steam-cover-ph {
+  font-size: 2.2rem;
+  opacity: 0.35;
+  user-select: none;
+}
+
+.steam-game-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.steam-title {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 120ms var(--ease);
+}
+.steam-title:hover {
+  color: var(--accent);
+}
+.steam-sub {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--ink3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.steam-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 9px;
+  border-top: 1px dashed var(--line);
+  margin-top: 2px;
+}
+.steam-user-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.steam-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.steam-user-name {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.steam-user-link {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  transition: opacity 120ms var(--ease);
+  flex-shrink: 0;
+}
+.steam-user-link:hover {
+  text-decoration: underline;
+}
+
 .sidebar-inner {
   display: flex;
   flex-direction: column;

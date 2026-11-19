@@ -1735,6 +1735,35 @@
         <div class="admin-card glass sq">
           <div class="card-head split-head">
             <div>
+              <h2>🎮 Steam Entegrasyonu &amp; Canlı Oyun Odası</h2>
+              <p>Masaüstü ve mobil sağ panelde yer alan "Oyun Odası" bileşeni için Steam profilinizi bağlayın. Ziyaretçiler anlık oynadığınız veya son oynadığınız oyunu canlı olarak burada görebilir.</p>
+            </div>
+          </div>
+          <div class="field-stack">
+            <div class="field-row">
+              <label class="toggle-switch">
+                <input type="checkbox" id="cfgSteamEnabled" checked>
+                <span><b>Oyun Odasını Aktif Et</b> (Sağ panelde Steam canlı durum kartı)</span>
+              </label>
+            </div>
+            <div class="field-row">
+              <label class="field" style="flex:1">
+                <span>SteamID64 (Profil Kimliği)</span>
+                <input type="text" id="cfgSteamId" class="inp glass" placeholder="ör. 76561199415059525">
+                <small>Steam profilinizin 17 haneli sayısal SteamID64 kimliği.</small>
+              </label>
+              <label class="field" style="flex:1">
+                <span>Steam Web API Anahtarı (İsteğe Bağlı)</span>
+                <input type="text" id="cfgSteamApiKey" class="inp glass" placeholder="Gelişmiş senkronizasyon için">
+                <small>Boş bırakıldığında miniprofile ve önbelleğe alınmış senkronizasyon kullanılır.</small>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card glass sq">
+          <div class="card-head split-head">
+            <div>
               <h2>🐾 Özel Anı Kitabı Giriş Yolları &amp; Gizlilik</h2>
               <p>Site içinde gizlenmiş anı kitabının bağlantı hedeflerini ve durumunu yapılandırın.</p>
             </div>
@@ -8956,6 +8985,11 @@
     if ($('#cfgLastfmUser')) $('#cfgLastfmUser').value = localStorage.getItem('tp_lastfm_user') || lastfm.user || 'tempestian';
     if ($('#cfgLastfmApiKey')) $('#cfgLastfmApiKey').value = localStorage.getItem('tp_lastfm_key') || lastfm.apiKey || '';
 
+    const steam = state.config.steam || {};
+    if ($('#cfgSteamEnabled')) $('#cfgSteamEnabled').checked = steam.enabled !== false;
+    if ($('#cfgSteamId')) $('#cfgSteamId').value = steam.steamId || '76561199415059525';
+    if ($('#cfgSteamApiKey')) $('#cfgSteamApiKey').value = steam.apiKey || '';
+
     if ($('#cfgSecretBookUrl')) $('#cfgSecretBookUrl').value = secretBook.url || 'kitap/ozel/';
     if ($('#cfgSecretBookTitle')) $('#cfgSecretBookTitle').value = secretBook.title || '🐾 Özel Anı Kitabı';
     if ($('#cfgSecretBookKeywords')) $('#cfgSecretBookKeywords').value = Array.isArray(secretBook.keywords) ? secretBook.keywords.join(', ') : (secretBook.keywords || '');
@@ -9022,6 +9056,15 @@
       lfm.apiKey = S(elLfmKey.value, 100).trim();
       if (lfm.apiKey) localStorage.setItem('tp_lastfm_key', lfm.apiKey);
     }
+
+    if (!state.config.steam) state.config.steam = {};
+    const stm = state.config.steam;
+    const elStmEn = $('#cfgSteamEnabled');
+    if (elStmEn) stm.enabled = Boolean(elStmEn.checked);
+    const elStmId = $('#cfgSteamId');
+    if (elStmId) stm.steamId = S(elStmId.value, 40).trim() || '76561199415059525';
+    const elStmKey = $('#cfgSteamApiKey');
+    if (elStmKey) stm.apiKey = S(elStmKey.value, 100).trim();
 
     if (!state.config.secretBook) state.config.secretBook = {};
     const sb = state.config.secretBook;
@@ -10687,7 +10730,7 @@
       btn.onclick = () => switchNodeModalTab(btn.dataset.nodeTab);
     });
 
-    ['#cfgSiteTitle', '#cfgSiteSubtitle', '#cfgSiteBarTitle', '#cfgSiteHomeLabel', '#cfgSiteDesc', '#cfgLastfmUser', '#cfgLastfmApiKey', '#cfgLastfmEnabled'].forEach(sel => {
+    ['#cfgSiteTitle', '#cfgSiteSubtitle', '#cfgSiteBarTitle', '#cfgSiteHomeLabel', '#cfgSiteDesc', '#cfgLastfmUser', '#cfgLastfmApiKey', '#cfgLastfmEnabled', '#cfgSteamEnabled', '#cfgSteamId', '#cfgSteamApiKey'].forEach(sel => {
       const el = $(sel);
       if (el) {
         const evt = el.type === 'checkbox' ? 'change' : 'input';

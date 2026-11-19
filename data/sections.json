@@ -251,6 +251,12 @@
     "user": "tempestian",
     "apiKey": ""
   },
+  "steam": {
+    "enabled": true,
+    "steamId": "76561199415059525",
+    "apiKey": "",
+    "proxyUrl": ""
+  },
   "secretBook": {
     "url": "kitap/ozel/",
     "title": "🐾 Özel Anı Kitabı",

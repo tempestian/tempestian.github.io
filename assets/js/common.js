@@ -608,14 +608,58 @@
             </div>
           </div>
 
-          <div class="aside-history-wrap">
-            <div class="aside-group-lbl">Önceki Dinlenenler</div>
-            <div class="lastfm-history-list" id="lastfmHistoryList">
-              <div class="lastfm-hist-placeholder">Geçmiş yükleniyor...</div>
+            <div class="aside-history-wrap">
+              <div class="aside-group-lbl">Önceki Dinlenenler</div>
+              <div class="lastfm-history-list" id="lastfmHistoryList">
+                <div class="lastfm-hist-placeholder">Geçmiş yükleniyor...</div>
+              </div>
+            </div>
+
+            <div class="aside-divider"></div>
+
+            <div class="aside-header steam-header">
+              <div class="aside-title-group">
+                <span class="aside-title-ic">🎮</span>
+                <span class="aside-title">Oyun Odası</span>
+              </div>
+              <div class="aside-header-actions">
+                <a href="https://steamcommunity.com/profiles/76561199415059525/" target="_blank" rel="noopener" class="btn neo-sq-btn aside-link-btn" id="steamExtLink" title="Steam Profilini Aç">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <div class="steam-card" id="steamCard">
+              <div class="steam-card-top">
+                <span class="steam-live-pill is-online" id="steamLivePill">
+                  <span class="steam-dot"></span>
+                  <span id="steamStatusTxt">Çevrimiçi</span>
+                </span>
+                <span class="steam-badge">STEAM</span>
+              </div>
+
+              <div class="steam-cover-box" id="steamCoverBox">
+                <img class="steam-cover-img" id="steamCoverImg" src="" alt="Oyun Afişi" style="display:none;" />
+                <div class="steam-cover-ph" id="steamCoverPh">🎮</div>
+              </div>
+
+              <div class="steam-game-info">
+                <a class="steam-title" id="steamGameTitle" href="https://steamcommunity.com/profiles/76561199415059525/" target="_blank" rel="noopener">Şu An Oyunda Değil</a>
+                <div class="steam-sub" id="steamGameSub">Steam profili bağlı</div>
+              </div>
+
+              <div class="steam-card-bottom">
+                <div class="steam-user-mini">
+                  <img class="steam-avatar" id="steamAvatar" src="https://avatars.fastly.steamstatic.com/8f9816f51d7293088a0e21ef2fc1f6290577bc43_full.jpg" alt="" />
+                  <span class="steam-user-name" id="steamUserName">@Tempestian</span>
+                </div>
+                <a class="steam-user-link" id="steamUserLink" href="https://steamcommunity.com/profiles/76561199415059525/" target="_blank" rel="noopener">
+                  Profil ↗
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      `;
+        `;
 
       mainEl.parentNode.insertBefore(workspace, mainEl);
       workspace.append(sidebar, mainEl, aside);
@@ -688,6 +732,7 @@
       });
 
       initLastFmWidget();
+      initSteamWidget();
 
       const sbWheel = document.getElementById('sbWheelActionBtn');
       if (sbWheel) {
@@ -858,6 +903,100 @@
             titleEl.href = profileUrl;
           }
           if (artistEl) artistEl.textContent = 'Last.fm hesabı: ' + currentUser;
+        }
+      }
+
+      update();
+      setInterval(update, 35000);
+    }
+
+    async function initSteamWidget() {
+      const card = document.getElementById('steamCard');
+      if (!card) return;
+
+      const defaultSteamId = '76561199415059525';
+
+      async function update() {
+        let siteConfig = null;
+        try {
+          const preview = localStorage.getItem('tp_site_preview');
+          if (preview) siteConfig = JSON.parse(preview);
+          else {
+            const secRes = await fetch(root + 'data/sections.json?v=' + Date.now());
+            if (secRes.ok) siteConfig = await secRes.json();
+          }
+        } catch (_) {}
+
+        const steamCfg = (siteConfig && siteConfig.steam) || {};
+        if (steamCfg.enabled === false) {
+          const steamHeader = document.querySelector('.steam-header');
+          const steamDivider = document.querySelector('.aside-divider');
+          if (steamHeader) steamHeader.style.display = 'none';
+          if (steamDivider) steamDivider.style.display = 'none';
+          card.style.display = 'none';
+          return;
+        }
+
+        const steamId = localStorage.getItem('tp_steam_id') || steamCfg.steamId || defaultSteamId;
+        const profileUrl = `https://steamcommunity.com/profiles/${encodeURIComponent(steamId)}/`;
+
+        const titleEl = document.getElementById('steamGameTitle');
+        const subEl = document.getElementById('steamGameSub');
+        const coverEl = document.getElementById('steamCoverImg');
+        const phEl = document.getElementById('steamCoverPh');
+        const statusTxt = document.getElementById('steamStatusTxt');
+        const livePill = document.getElementById('steamLivePill');
+        const avatarEl = document.getElementById('steamAvatar');
+        const userEl = document.getElementById('steamUserName');
+        const userLink = document.getElementById('steamUserLink');
+        const extLink = document.getElementById('steamExtLink');
+
+        if (userLink) userLink.href = profileUrl;
+        if (extLink) extLink.href = profileUrl;
+
+        try {
+          const res = await fetch(root + 'data/steam-status.json?v=' + Date.now());
+          if (!res.ok) throw new Error('Steam status fetch failed');
+          const data = await res.json();
+
+          if (userEl && data.personaName) userEl.textContent = '@' + data.personaName;
+          if (avatarEl && data.avatar) avatarEl.src = data.avatar;
+
+          if (data.onlineState === 'in-game' && data.inGame) {
+            if (statusTxt) statusTxt.textContent = 'Oyunda';
+            if (livePill) livePill.className = 'steam-live-pill is-in-game';
+            if (card) card.classList.add('is-in-game');
+            if (titleEl) {
+              titleEl.textContent = data.inGame.name;
+              titleEl.href = data.inGame.appid ? `https://store.steampowered.com/app/${data.inGame.appid}/` : profileUrl;
+            }
+            if (subEl) subEl.textContent = 'Şu an bu oyunu oynuyor';
+            if (coverEl) {
+              if (data.inGame.header) {
+                coverEl.src = data.inGame.header;
+                coverEl.style.display = 'block';
+                if (phEl) phEl.style.display = 'none';
+              } else {
+                coverEl.style.display = 'none';
+                if (phEl) phEl.style.display = 'flex';
+              }
+            }
+          } else {
+            const isOnline = data.onlineState === 'online';
+            if (statusTxt) statusTxt.textContent = isOnline ? 'Çevrimiçi' : 'Çevrimdışı';
+            if (livePill) livePill.className = 'steam-live-pill ' + (isOnline ? 'is-online' : 'is-offline');
+            if (card) card.classList.remove('is-in-game');
+            if (titleEl) {
+              titleEl.textContent = isOnline ? 'Şu An Oyunda Değil' : 'Steam Çevrimdışı';
+              titleEl.href = profileUrl;
+            }
+            if (subEl) subEl.textContent = isOnline ? 'Steam oturumu açık' : 'Son aktivite bekleniyor';
+            if (coverEl) coverEl.style.display = 'none';
+            if (phEl) phEl.style.display = 'flex';
+          }
+        } catch (_) {
+          if (statusTxt) statusTxt.textContent = 'Çevrimiçi';
+          if (titleEl) titleEl.textContent = 'Steam Odası';
         }
       }
 

@@ -21,6 +21,18 @@
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
   const SECTION_CONFIGS = {
+    overview: {
+      id: 'overview',
+      title: 'Tüm Arşiv Genel Özeti',
+      label: 'Genel Özet',
+      icon: '🌐',
+      navPath: 'istatistik/',
+      appPath: '',
+      unitItem: 'Yapım',
+      unitSub: 'Saat',
+      timePerUnitMin: 60,
+      timeVerb: 'Toplam Süre'
+    },
     anime: {
       id: 'anime',
       title: 'Anime İstatistikleri',
@@ -149,7 +161,7 @@
     nav.className = 'stats-nav glass sq';
     nav.setAttribute('aria-label', 'İstatistik Kategorileri');
 
-    const sections = ['anime', 'series', 'movie', 'manga', 'book'];
+    const sections = ['overview', 'anime', 'series', 'movie', 'manga', 'book'];
     nav.innerHTML = sections.map(secKey => {
       const cfg = SECTION_CONFIGS[secKey];
       const isActive = secKey === currentSection;
@@ -167,26 +179,71 @@
     const rootPath = document.body.dataset.root || '../../';
     const sectionKey = document.body.dataset.statsSection || document.body.dataset.section || 'anime';
     const cfg = SECTION_CONFIGS[sectionKey] || SECTION_CONFIGS.anime;
-    const dataUrl = document.body.dataset.data || `${rootPath}data/${sectionKey === 'series' ? 'series.json' : (sectionKey === 'movie' ? 'movies.json' : (sectionKey === 'book' ? 'books.json' : `${sectionKey}.json`))}`;
 
     const mount = $('#statsApp');
     if (!mount) return;
 
-    // Üst Navigasyon Sekmeleri
     const navEl = renderCategoryNav(sectionKey, rootPath);
     mount.appendChild(navEl);
 
-    // Hero Başlık
     const heroEl = document.createElement('div');
     heroEl.className = 'stats-hero';
     heroEl.innerHTML = `
-      <div class="stats-badge">${cfg.icon} ${cfg.label} ARŞİV ANALİZİ</div>
+      <div class="stats-badge">${cfg.icon} ${cfg.label.toUpperCase()} ANALİZİ</div>
       <h1>${cfg.title}</h1>
-      <p class="sub">Bayram Tempestian kişisel ${cfg.label.toLowerCase()} arşivi puanlama, süre, tür ve durum dağılımı analizi.</p>
+      <p class="sub">${sectionKey === 'overview' ? 'Bayram Tempestian kişisel medya arşivinin (Anime, Film, Dizi, Kitap ve Manga) birleştirilmiş genel veri analizi.' : `Bayram Tempestian kişisel ${cfg.label.toLowerCase()} arşivi puanlama, süre, tür ve durum dağılımı analizi.`}</p>
     `;
     mount.appendChild(heroEl);
 
-    // Veri Yükleme
+    if (sectionKey === 'overview') {
+      try {
+        const [aRes, sRes, mRes, mgRes, bRes] = await Promise.all([
+          fetch(`${rootPath}data/anime.json`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+          fetch(`${rootPath}data/series.json`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+          fetch(`${rootPath}data/movies.json`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+          fetch(`${rootPath}data/manga.json`).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+          fetch(`${rootPath}data/books.json`).then(r => r.ok ? r.json() : {}).catch(() => ({}))
+        ]);
+        const allItems = [];
+        let totalMinutes = 0;
+        const pushItems = (arr, secId, minPerUnit) => {
+          for (const it of (arr || [])) {
+            if (!it) continue;
+            let units = 0;
+            if (secId === 'anime' && Array.isArray(it.parts)) {
+              for (const p of it.parts) units += (p.watched || (p.status === 'COMPLETED' ? (p.episodes || 1) : 0));
+            } else if (secId === 'movie') {
+              units = it.status === 'completed' ? 1 : 0;
+            } else {
+              units = Number(it.pages || it.chapters || it.episodes || 0);
+            }
+            totalMinutes += units * minPerUnit;
+            allItems.push({ ...it, _secId: secId });
+          }
+        };
+        pushItems(aRes.anime || aRes.items, 'anime', 23);
+        pushItems(sRes.items || sRes.series, 'series', 45);
+        pushItems(mRes.items || mRes.movies, 'movie', 110);
+        pushItems(mgRes.items || mgRes.manga, 'manga', 6);
+        pushItems(bRes.items || bRes.books, 'book', 1.5);
+
+        const syntheticData = {
+          items: allItems,
+          stats: {
+            total: allItems.length,
+            customTotalHours: Math.round(totalMinutes / 60),
+            customTotalMinutes: totalMinutes
+          }
+        };
+        renderDashboard(mount, { ...cfg, appPath: 'anime/' }, syntheticData, rootPath);
+      } catch (err) {
+        console.error('[StatsOverview]:', err);
+      }
+      return;
+    }
+
+    const dataUrl = document.body.dataset.data || `${rootPath}data/${sectionKey === 'series' ? 'series.json' : (sectionKey === 'movie' ? 'movies.json' : (sectionKey === 'book' ? 'books.json' : `${sectionKey}.json`))}`;
+
     try {
       const res = await fetch(dataUrl);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -290,11 +347,12 @@
 
     // Anime JSON stats'ten yedekleme
     if (isAnime && statsObj.episodes) totalUnits = statsObj.completedEpisodes || statsObj.episodes;
+    if (statsObj.customTotalHours != null) totalUnits = statsObj.customTotalHours;
     if (isAnime && statsObj.favorites) favoritesCount = statsObj.favorites;
     const avgScore = statsObj.avgScore || (scoredItems > 0 ? (scoreSum / scoredItems).toFixed(1) : 0);
 
     // Süre Hesabı
-    const totalMinutes = totalUnits * cfg.timePerUnitMin;
+    const totalMinutes = statsObj.customTotalMinutes != null ? statsObj.customTotalMinutes : (totalUnits * cfg.timePerUnitMin);
     const timeInfo = formatTime(totalMinutes);
 
     // 1. KPI Izgarası

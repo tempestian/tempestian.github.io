@@ -89,6 +89,7 @@
 
           list.push({
             id: it.id,
+            rawItem: it,
             title: it.title || '',
             image: it.image || '',
             score,
@@ -149,6 +150,26 @@
       return activeOrder === 'asc' ? numA - numB : numB - numA;
     });
 
+    // Step 14: Quick Year Jump Strip
+    if (sortedYears.length > 1) {
+      const jumpBar = document.createElement('nav');
+      jumpBar.className = 'timeline-year-jump';
+      jumpBar.setAttribute('aria-label', 'Yıllara Hızlı Geçiş');
+      jumpBar.innerHTML = `<span class="tyj-lbl">Yıla Git:</span>` + sortedYears.map(y => `
+        <button type="button" class="tyj-btn" data-target-year="year-${esc(y)}">
+          <span>${esc(y)}</span>
+          <small>${yearGroups.get(y).length}</small>
+        </button>
+      `).join('');
+      jumpBar.querySelectorAll('.tyj-btn').forEach(btn => {
+        btn.onclick = () => {
+          const targetEl = document.getElementById(btn.dataset.targetYear);
+          if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+      });
+      mount.appendChild(jumpBar);
+    }
+
     const spine = document.createElement('div');
     spine.className = 'timeline-spine';
     mount.appendChild(spine);
@@ -178,6 +199,7 @@
 
       const grpEl = document.createElement('div');
       grpEl.className = 'timeline-year-group';
+      grpEl.id = `year-${yStr}`;
 
       const hdrEl = document.createElement('div');
       hdrEl.className = 'timeline-year-header';
@@ -192,13 +214,13 @@
       const listEl = document.createElement('div');
       listEl.className = 'timeline-items-list';
 
+      const rawGroupList = groupItems.map(g => g.rawItem).filter(Boolean);
+
       for (const it of groupItems) {
         const sideClass = globalIndex % 2 === 0 ? 'is-left' : 'is-right';
         const itemEl = document.createElement('div');
         itemEl.className = `timeline-item ${sideClass} ${it.favorite ? 'is-fav' : ''}`;
 
-        // [AI-MIMARI-NOTU: ADIM 4 — GÖRESEL RELATİF PATH DÜZELTMESİ]
-        // Alt dizinde ('zaman-tuneli/') çalışan sayfa için yerel resimlerin '../' ile çözülmesi garanti edilir.
         let coverUrl = '../assets/img/icon-512.png';
         if (it.image) {
           if (it.image.startsWith('http')) {
@@ -233,6 +255,19 @@
             </div>
           </a>
         `;
+
+        // Step 14: Open in-place detail modal when clicking a timeline card
+        const cardLink = itemEl.querySelector('.timeline-card');
+        if (cardLink && it.rawItem) {
+          cardLink.addEventListener('click', e => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            if (typeof window.openHomeSheet === 'function') {
+              e.preventDefault();
+              window.openHomeSheet(it.rawItem, rawGroupList, it.section);
+            }
+          });
+        }
+
         listEl.appendChild(itemEl);
         globalIndex++;
       }

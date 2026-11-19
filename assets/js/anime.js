@@ -694,6 +694,7 @@ function fillSheet(it){
     cardEl.classList.remove('has-backdrop');
   }
   t('#sh-title').textContent = it.title;
+  if (window.UI && window.UI.updateAmbientGlow) window.UI.updateAmbientGlow(it.title || it.id);
   const bits = [];
   if (it.favorite) bits.push('★ Başyapıt');
   bits.push(it.status==='completed' && it.next ? NEXT : (ST[it.status]||it.status));

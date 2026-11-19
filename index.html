@@ -73,6 +73,11 @@
         </div>
       </div>
     </div>
+    <div class="hero-carousel-nav" id="heroCarouselNav" hidden aria-label="Vitrin Slaytları">
+      <button type="button" class="hero-slide-arrow" id="heroPrevBtn" aria-label="Önceki slayt" title="Önceki">‹</button>
+      <div class="hero-slide-dots" id="heroSlideDots" role="tablist"></div>
+      <button type="button" class="hero-slide-arrow" id="heroNextBtn" aria-label="Sonraki slayt" title="Sonraki">›</button>
+    </div>
   </section>
 
   <section class="shelf-section" id="homeHighlights" hidden aria-label="Öne Çıkan Başyapıtlar">
@@ -80,7 +85,11 @@
       <h2 class="shelf-title" id="hhTitle">Öne Çıkan Başyapıtlar</h2>
       <a class="shelf-more" href="anime/">Tümünü gör ›</a>
     </div>
-    <div class="poster-rail" id="hhRail" role="region" aria-label="Öne Çıkan Başyapıtlar"></div>
+    <div class="shelf-rail-wrap">
+      <button type="button" class="shelf-nav-btn prev" data-rail="hhRail" aria-label="Sola kaydır">‹</button>
+      <div class="poster-rail" id="hhRail" role="region" aria-label="Öne Çıkan Başyapıtlar"></div>
+      <button type="button" class="shelf-nav-btn next" data-rail="hhRail" aria-label="Sağa kaydır">›</button>
+    </div>
   </section>
 
   <section class="shelf-section" id="homeContinue" hidden aria-label="Devam Edilecek">
@@ -88,7 +97,11 @@
       <h2 class="shelf-title">Devam Edilecek</h2>
       <a class="shelf-more" href="anime/">Listeyi aç ›</a>
     </div>
-    <div class="poster-rail" id="continueRail" role="region" aria-label="Devam Edilecek"></div>
+    <div class="shelf-rail-wrap">
+      <button type="button" class="shelf-nav-btn prev" data-rail="continueRail" aria-label="Sola kaydır">‹</button>
+      <div class="poster-rail" id="continueRail" role="region" aria-label="Devam Edilecek"></div>
+      <button type="button" class="shelf-nav-btn next" data-rail="continueRail" aria-label="Sağa kaydır">›</button>
+    </div>
   </section>
 
   <section class="shelf-section" id="homeMovies" hidden aria-label="Filmler">
@@ -96,10 +109,32 @@
       <h2 class="shelf-title">Filmler</h2>
       <a class="shelf-more" href="film/">Tüm filmler ›</a>
     </div>
-    <div class="poster-rail" id="moviesRail" role="region" aria-label="Filmler"></div>
+    <div class="shelf-rail-wrap">
+      <button type="button" class="shelf-nav-btn prev" data-rail="moviesRail" aria-label="Sola kaydır">‹</button>
+      <div class="poster-rail" id="moviesRail" role="region" aria-label="Filmler"></div>
+      <button type="button" class="shelf-nav-btn next" data-rail="moviesRail" aria-label="Sağa kaydır">›</button>
+    </div>
   </section>
 
   <ul class="custom-boxes" id="boxesTop" hidden></ul>
+
+  <div class="home-live-columns" id="homeLiveColumns" hidden>
+    <section class="home-live-col" id="homeGuidesSection" aria-label="Son Technopat Rehberleri">
+      <div class="shelf-head">
+        <h2 class="shelf-title">Son Technopat Rehberleri</h2>
+        <a class="shelf-more" href="rehber/">Tüm rehberler ›</a>
+      </div>
+      <div class="home-preview-list" id="homeGuidesList"></div>
+    </section>
+
+    <section class="home-live-col" id="homeProjectsSection" aria-label="Açık Kaynak Projeler">
+      <div class="shelf-head">
+        <h2 class="shelf-title">Açık Kaynak Projeler</h2>
+        <a class="shelf-more" href="projeler/">Tüm projeler ›</a>
+      </div>
+      <div class="home-preview-list" id="homeProjectsList"></div>
+    </section>
+  </div>
 
   <section class="home-secondary" aria-label="Diğer Bölümler">
     <a class="mini-hub-card" href="rehber/">
@@ -126,7 +161,7 @@
     <a class="mini-hub-card" href="istatistik/">
       <div class="mini-hub-info">
         <span class="mini-hub-title">İstatistikler</span>
-        <span class="mini-hub-sub">Tür dağılımları ve puan grafikleri</span>
+        <span class="mini-hub-sub">Tüm arşiv özeti ve puan grafikleri</span>
       </div>
       <span class="mini-hub-arrow" aria-hidden="true">›</span>
     </a>

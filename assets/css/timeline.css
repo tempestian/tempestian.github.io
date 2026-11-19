@@ -102,6 +102,52 @@
   color: var(--ink);
 }
 
+/* Quick Year Jump Bar */
+.timeline-year-jump {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.tyj-lbl {
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink3);
+  margin-right: 4px;
+}
+.tyj-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--ink2);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition: background 140ms var(--ease), border-color 140ms var(--ease), color 140ms var(--ease);
+}
+.tyj-btn:hover {
+  background: var(--surface-2);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+.tyj-btn small {
+  font-size: 0.68rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
 /* Vertical Spine & Items */
 .timeline-container {
   position: relative;
@@ -111,7 +157,7 @@
 }
 .timeline-spine {
   position: absolute;
-  top: 24px;
+  top: 76px;
   bottom: 24px;
   left: 20px;
   width: 2px;

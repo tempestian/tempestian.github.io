@@ -329,10 +329,71 @@
     t._timer = setTimeout(() => t.classList.remove('visible'), 3000);
   }
   window.showToast = showToast;
-  window.UI = { icon, el, parts, tally, resolveAsset, esc, icons: Object.keys(P), updateAmbientGlow() {}, hideAmbientGlow() {}, openTrailer() {}, closeTrailer() {}, showToast };
 
   // ============================================================================
-  // UNIFIED TOP NAVIGATION BAR (Matches 4376.jpg across ALL pages)
+  // STEP 8 — AMBIENT GLOW ENGINE (Dynamic Accent & Backdrop Glow)
+  // ============================================================================
+  const GLOW_PALETTES = [
+    'rgba(88, 185, 255, 0.24)',
+    'rgba(168, 85, 247, 0.24)',
+    'rgba(52, 211, 153, 0.22)',
+    'rgba(245, 158, 11, 0.22)',
+    'rgba(236, 72, 153, 0.24)',
+    'rgba(99, 102, 241, 0.25)'
+  ];
+
+  function hashColor(str) {
+    let h = 0;
+    const s = String(str || 'tempestian');
+    for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+    return GLOW_PALETTES[Math.abs(h) % GLOW_PALETTES.length];
+  }
+
+  function updateAmbientGlow(seedOrUrl) {
+    const col = hashColor(seedOrUrl);
+    document.documentElement.style.setProperty('--ambient-glow', col);
+    document.body.classList.add('has-ambient-glow');
+  }
+
+  function hideAmbientGlow() {
+    document.body.classList.remove('has-ambient-glow');
+  }
+
+  window.UI = {
+    icon,
+    el,
+    parts,
+    tally,
+    resolveAsset,
+    esc,
+    icons: Object.keys(P),
+    updateAmbientGlow,
+    hideAmbientGlow,
+    openTrailer() {},
+    closeTrailer() {},
+    showToast
+  };
+
+  // ============================================================================
+  // STEP 9 — BROKEN POSTER / IMAGE SVG FALLBACK ENGINE
+  // ============================================================================
+  function initImageFallback() {
+    window.addEventListener('error', e => {
+      const target = e.target;
+      if (target && target.tagName === 'IMG' && !target.dataset.fallbackApplied) {
+        target.dataset.fallbackApplied = 'true';
+        const altText = (target.alt || target.title || 'Tempestian').trim();
+        const initial = (altText[0] || 'T').toUpperCase();
+        const label = altText.slice(0, 22);
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="480" viewBox="0 0 320 480"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e293b"/><stop offset="50%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#0b0d14"/></linearGradient></defs><rect width="100%" height="100%" fill="url(#g)"/><rect x="14" y="14" width="292" height="452" rx="16" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><text x="50%" y="44%" font-family="Inter,system-ui,sans-serif" font-weight="800" font-size="68" fill="rgba(88,185,255,0.45)" text-anchor="middle" dominant-baseline="central">${esc(initial)}</text><text x="50%" y="58%" font-family="Inter,system-ui,sans-serif" font-weight="600" font-size="14" fill="rgba(244,246,251,0.55)" text-anchor="middle" dominant-baseline="central">${esc(label)}</text></svg>`;
+        target.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+        target.classList.add('in', 'loaded', 'img-fallback-applied');
+      }
+    }, true);
+  }
+
+  // ============================================================================
+  // UNIFIED TOP NAVIGATION BAR + STEP 15 MOBILE FLOATING BOTTOM BAR
   // ============================================================================
   function bindThemeAndIcons() {
     const themeBtn = document.getElementById('theme');
@@ -362,12 +423,12 @@
     if (!bar) return;
 
     const navItems = [
-      { id: 'anime', label: 'Anime', path: 'anime/' },
-      { id: 'movie', label: 'Film', path: 'film/' },
-      { id: 'series', label: 'Dizi', path: 'dizi/' },
-      { id: 'book', label: 'Kitap', path: 'kitap/' },
-      { id: 'manga', label: 'Manga', path: 'manga/' },
-      { id: 'guide', label: 'Rehber', path: 'rehber/' }
+      { id: 'anime', label: 'Anime', path: 'anime/', icon: 'anime' },
+      { id: 'movie', label: 'Film', path: 'film/', icon: 'movie' },
+      { id: 'series', label: 'Dizi', path: 'dizi/', icon: 'series' },
+      { id: 'book', label: 'Kitap', path: 'kitap/', icon: 'book' },
+      { id: 'manga', label: 'Manga', path: 'manga/', icon: 'manga' },
+      { id: 'guide', label: 'Rehber', path: 'rehber/', icon: 'guide' }
     ];
 
     const isNavActive = id => {
@@ -379,7 +440,6 @@
       return false;
     };
 
-    // Preserve any existing stats link on subpages (e.g. anime/istatistik/)
     const existingStatsBtn = bar.querySelector('.bar-stats-btn');
     const statsHref = existingStatsBtn ? existingStatsBtn.getAttribute('href') : null;
     const statsTitle = existingStatsBtn ? existingStatsBtn.getAttribute('title') : 'İstatistikler';
@@ -403,16 +463,7 @@
       </div>
     `;
 
-    const themeBtn = document.getElementById('theme');
-    const syncIcons = () => {
-      document.querySelectorAll('[data-icon]').forEach(b => {
-        b.innerHTML = icon(b.dataset.icon === 'theme' ? (document.documentElement.dataset.theme === 'dark' ? 'sun' : 'moon') : b.dataset.icon);
-      });
-      if (themeBtn) themeBtn.setAttribute('aria-label', document.documentElement.dataset.theme === 'dark' ? 'Açık temaya geç' : 'Koyu temaya geç');
-    };
-    syncIcons();
-    document.addEventListener('themechange', syncIcons);
-    if (themeBtn) themeBtn.onclick = () => window.toggleTheme();
+    bindThemeAndIcons();
 
     const searchBtn = document.getElementById('searchTrigger');
     if (searchBtn) {
@@ -420,6 +471,38 @@
         e.preventDefault();
         if (typeof window.openCommandPalette === 'function') window.openCommandPalette();
       };
+    }
+
+    // Step 15: Mobile Floating Bottom Navigation Bar (<768px)
+    if (!document.getElementById('mobileBottomNav')) {
+      const mNav = el('nav', 'mobile-bottom-nav');
+      mNav.id = 'mobileBottomNav';
+      mNav.setAttribute('aria-label', 'Mobil hızlı menü');
+      const mobileLinks = [
+        { id: 'home', label: 'Vitrin', href: root || './', ic: 'home', active: cur === 'home' },
+        { id: 'anime', label: 'Anime', href: root + 'anime/', ic: 'anime', active: isNavActive('anime') },
+        { id: 'movie', label: 'Film', href: root + 'film/', ic: 'movie', active: isNavActive('movie') },
+        { id: 'guide', label: 'Rehber', href: root + 'rehber/', ic: 'guide', active: isNavActive('guide') }
+      ];
+      mNav.innerHTML = mobileLinks.map(m => `
+        <a class="mob-nav-item${m.active ? ' active' : ''}" href="${m.href}">
+          ${icon(m.ic)}
+          <span>${m.label}</span>
+        </a>
+      `).join('') + `
+        <button type="button" class="mob-nav-item" id="mobSearchTrigger" aria-label="Ara">
+          ${icon('search')}
+          <span>Ara</span>
+        </button>
+      `;
+      document.body.appendChild(mNav);
+      const mobSearch = document.getElementById('mobSearchTrigger');
+      if (mobSearch) {
+        mobSearch.onclick = e => {
+          e.preventDefault();
+          if (typeof window.openCommandPalette === 'function') window.openCommandPalette();
+        };
+      }
     }
 
     let on = false;
@@ -432,11 +515,251 @@
   }
 
   // ============================================================================
-  // HOME PAGE RENDERERS (Hero Spotlight, Öne Çıkan Başyapıtlar, Devam Edilecek)
+  // STEP 5 & 7 — IN-PLACE HOME DETAIL MODAL SHEET & CLICKABLE GENRE CHIPS
+  // ============================================================================
+  let homeSheetEl = null;
+  let homeSheetList = [];
+  let homeSheetIdx = -1;
+  let homeSheetType = 'anime';
+
+  function getHomeEffectiveScore(item, typeKey = 'anime') {
+    if (!item) return null;
+    const criteria = window.TempestianRating ? (window.TempestianRating.CRITERIA[typeKey] || window.TempestianRating.CRITERIA.anime) : null;
+    const ps = Array.isArray(item.parts) ? item.parts : [];
+    let wSum = 0, wTot = 0;
+    for (const p of ps) {
+      if (!p) continue;
+      const sc = (p.subScores && criteria) ? window.TempestianRating.computeScore(criteria, p.subScores) : Number(p.score);
+      if (sc != null && !isNaN(sc) && sc > 0) {
+        const w = (p.kind === 'movie' || p.format === 'MOVIE') ? 0.35 : (p.kind === 'other' ? 0.15 : 1.0);
+        wSum += sc * w;
+        wTot += w;
+      }
+    }
+    if (wTot > 0) return Math.round((wSum / wTot) * 10) / 10;
+    if (item.subScores && criteria) {
+      const sc = window.TempestianRating.computeScore(criteria, item.subScores);
+      if (sc != null) return sc;
+    }
+    const s = Number(item.score);
+    return !isNaN(s) && s > 0 ? Math.round(s * 10) / 10 : null;
+  }
+
+  function ensureHomeSheet() {
+    if (homeSheetEl) return homeSheetEl;
+    homeSheetEl = el('div', 'sheet');
+    homeSheetEl.hidden = true;
+    homeSheetEl.setAttribute('role', 'dialog');
+    homeSheetEl.setAttribute('aria-modal', 'true');
+    homeSheetEl.setAttribute('aria-labelledby', 'home-sh-title');
+    homeSheetEl.innerHTML = `
+      <div class="sheet-bg"></div>
+      <div class="sheet-card">
+        <div class="sheet-backdrop" hidden>
+          <img class="sheet-backdrop-img" alt="" decoding="async">
+          <div class="sheet-backdrop-grad"></div>
+        </div>
+        <div class="sheet-head">
+          <img class="sheet-cover" alt="" decoding="async">
+          <div class="sheet-t">
+            <h2 id="home-sh-title"></h2>
+            <p class="sh-sub"></p>
+            <div class="sh-genres"></div>
+          </div>
+          <button class="btn" type="button" aria-label="Kapat" data-close>${icon('close')}</button>
+        </div>
+        <div class="sh-pg" hidden><i></i></div>
+        <div class="sh-rating-breakdown" id="homeShRatingBreakdown" hidden></div>
+        <ol class="parts"></ol>
+        <div class="sheet-foot-bar">
+          <div class="sheet-nav-grp">
+            <button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki (←)">← Önceki</button>
+            <span class="sheet-pos-lbl" data-sh-pos></span>
+            <button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki (→)">Sonraki →</button>
+          </div>
+          <div class="sheet-act-grp">
+            <button type="button" class="sheet-share-btn" data-sh-share>🔗 Bağlantıyı Kopyala</button>
+            <a class="sh-al" target="_blank" rel="noopener"></a>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(homeSheetEl);
+
+    const close = () => {
+      homeSheetEl.hidden = true;
+      document.body.style.overflow = '';
+      hideAmbientGlow();
+    };
+    homeSheetEl.querySelector('.sheet-bg').onclick = close;
+    homeSheetEl.querySelector('[data-close]').onclick = close;
+
+    window.addEventListener('keydown', e => {
+      if (!homeSheetEl || homeSheetEl.hidden) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') {
+        const b = homeSheetEl.querySelector('[data-sh-prev]');
+        if (b && !b.disabled) b.click();
+      } else if (e.key === 'ArrowRight') {
+        const b = homeSheetEl.querySelector('[data-sh-next]');
+        if (b && !b.disabled) b.click();
+      }
+    });
+
+    return homeSheetEl;
+  }
+
+  function openHomeSheet(item, list, typeKey = 'anime') {
+    if (!item) return;
+    const sh = ensureHomeSheet();
+    homeSheetList = Array.isArray(list) && list.length ? list : [item];
+    homeSheetIdx = homeSheetList.findIndex(x => x && x.id === item.id);
+    if (homeSheetIdx < 0) homeSheetIdx = 0;
+    homeSheetType = typeKey;
+
+    const t = s => sh.querySelector(s);
+    const card = t('.sheet-card');
+    const bdEl = t('.sheet-backdrop');
+    const bdImg = t('.sheet-backdrop-img');
+    const bdUrl = item.banner || item.backdrop || '';
+    if (bdUrl) {
+      bdEl.hidden = false;
+      bdImg.src = resolveAsset(bdUrl);
+      card.classList.add('has-backdrop');
+    } else {
+      bdEl.hidden = true;
+      bdImg.src = '';
+      card.classList.remove('has-backdrop');
+    }
+
+    updateAmbientGlow(item.title || item.id);
+
+    t('#home-sh-title').textContent = item.title || '';
+    const effScore = getHomeEffectiveScore(item, typeKey);
+    const stMap = { completed: 'İzlendi', watching: 'İzleniyor', paused: 'Beklemede', dropped: 'Bırakıldı', planned: 'Planlandı' };
+    const bits = [];
+    if (item.favorite) bits.push('★ Başyapıt');
+    if (item.director) bits.push(item.director);
+    if (item.author) bits.push(item.author);
+    if (item.status) bits.push(stMap[item.status] || item.status);
+    if (effScore) bits.push('★ ' + effScore);
+    t('.sh-sub').textContent = bits.join(' · ');
+
+    const genres = (Array.isArray(item.customGenres) && item.customGenres.length ? item.customGenres : (item.genres || []));
+    const gWrap = t('.sh-genres');
+    const sectionFolder = typeKey === 'movie' ? 'film/' : typeKey === 'series' ? 'dizi/' : typeKey === 'book' ? 'kitap/' : typeKey === 'manga' ? 'manga/' : 'anime/';
+    gWrap.innerHTML = genres.map(g => `<a class="sh-genre-chip is-clickable" href="${root}${sectionFolder}?tur=${encodeURIComponent(g)}" title="${esc(g)} türündeki yapımları filtrele">${esc(g)}</a>`).join('');
+    gWrap.hidden = !genres.length;
+
+    const cov = t('.sheet-cover');
+    if (item.image) {
+      cov.src = resolveAsset(item.image.replace('/cover/medium/', '/cover/large/'));
+      cov.hidden = false;
+    } else {
+      cov.hidden = true;
+    }
+
+    const ps = parts(item);
+    const totEp = ps.reduce((a, p) => a + (p.episodes || 0), 0);
+    const watEp = ps.reduce((a, p) => a + (p.watched || 0), 0);
+    const pg = t('.sh-pg');
+    if (totEp > 0 && watEp > 0 && watEp < totEp) {
+      pg.hidden = false;
+      pg.firstChild.style.setProperty('--w', Math.round((watEp / totEp) * 100) + '%');
+    } else {
+      pg.hidden = true;
+    }
+
+    const rbEl = t('#homeShRatingBreakdown');
+    if (rbEl && window.TempestianRating) {
+      window.TempestianRating.renderSheetBreakdown(rbEl, typeKey, item, effScore);
+    }
+
+    const ol = t('.parts');
+    ol.replaceChildren();
+    const FMT = { TV: 'TV', TV_SHORT: 'Kısa', MOVIE: 'Film', OVA: 'OVA', SPECIAL: 'Özel', ONA: 'ONA' };
+    for (const p of ps) {
+      const li = el('li', 'part ' + (p.status === 'COMPLETED' ? 'done' : p.status === 'CURRENT' ? 'cur' : p.status === 'DROPPED' ? 'drop' : 'no'));
+      const epStr = p.episodes ? `${p.watched || 0}/${p.episodes} bölüm` : (p.watched ? `${p.watched} bölüm` : '');
+      const stTxt = p.status === 'COMPLETED' ? 'İzlendi' : p.status === 'CURRENT' ? `İzleniyor · ${epStr}` : p.status === 'PAUSED' ? `Beklemede · ${epStr}` : 'Planlandı';
+      li.innerHTML = `<span class="pd"></span><div class="pt"><span class="pt-name">${esc(p.name || item.title)}</span><span class="pm">${esc([FMT[p.format] || '', p.year, p.episodes > 1 ? p.episodes + ' bölüm' : '', p.score ? '★ ' + p.score : ''].filter(Boolean).join(' · '))}</span></div><span class="ps">${esc(stTxt)}</span>`;
+      ol.append(li);
+    }
+
+    const al = t('.sh-al');
+    const extUrl = item.url || item.firstSeasonUrl || (item.anilistId ? 'https://anilist.co/anime/' + item.anilistId : '');
+    if (extUrl) {
+      al.href = extUrl;
+      al.textContent = typeKey === 'anime' ? "AniList'te aç" : typeKey === 'movie' || typeKey === 'series' ? "IMDb'de aç" : 'Kaynakta aç';
+      al.hidden = false;
+    } else {
+      al.hidden = true;
+    }
+
+    const prevBtn = t('[data-sh-prev]');
+    const nextBtn = t('[data-sh-next]');
+    const posLbl = t('[data-sh-pos]');
+    if (posLbl) posLbl.textContent = `${homeSheetIdx + 1} / ${homeSheetList.length}`;
+    if (prevBtn) {
+      prevBtn.disabled = homeSheetIdx <= 0;
+      prevBtn.onclick = () => { if (homeSheetIdx > 0) openHomeSheet(homeSheetList[homeSheetIdx - 1], homeSheetList, homeSheetType); };
+    }
+    if (nextBtn) {
+      nextBtn.disabled = homeSheetIdx >= homeSheetList.length - 1;
+      nextBtn.onclick = () => { if (homeSheetIdx < homeSheetList.length - 1) openHomeSheet(homeSheetList[homeSheetIdx + 1], homeSheetList, homeSheetType); };
+    }
+
+    const shareBtn = t('[data-sh-share]');
+    if (shareBtn) {
+      shareBtn.textContent = '🔗 Bağlantıyı Kopyala';
+      shareBtn.onclick = () => {
+        const folderMap = { anime: 'a', movie: 'f', series: 'd', book: 'k', manga: 'm' };
+        const shareUrl = `${location.origin}/${folderMap[typeKey] || 'a'}/${encodeURIComponent(item.id)}.html`;
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          shareBtn.textContent = '✓ Kopyalandı!';
+          setTimeout(() => { shareBtn.textContent = '🔗 Bağlantıyı Kopyala'; }, 2000);
+        });
+      };
+    }
+
+    sh.hidden = false;
+    document.body.style.overflow = 'hidden';
+    card.scrollTop = 0;
+  }
+  window.openHomeSheet = openHomeSheet;
+
+  // Step 7: Delegated click handler so any .sh-genre-chip on any archive page filters by genre immediately
+  document.addEventListener('click', e => {
+    const chipEl = e.target.closest('.sh-genre-chip');
+    if (!chipEl) return;
+    if (chipEl.tagName === 'A') return; // Already a link on home sheet
+    const genreName = (chipEl.textContent || '').trim();
+    if (!genreName) return;
+    const matchingFilterBtn = [...document.querySelectorAll('[data-g="gn"]')].find(b => b.dataset.v === genreName);
+    if (matchingFilterBtn) {
+      e.preventDefault();
+      matchingFilterBtn.click();
+      const closeBtn = document.querySelector('.sheet:not([hidden]) [data-close]');
+      if (closeBtn) closeBtn.click();
+      showToast(`🏷️ "${genreName}" kategorisine göre filtrelendi`);
+    }
+  });
+
+  // Step 8: Ambient glow on poster hover and detail modal open
+  document.addEventListener('pointerover', e => {
+    const card = e.target.closest('.poster-card, #list.grid li, .fame-card');
+    if (card) {
+      const title = card.querySelector('h3, .poster-title, .fame-title');
+      updateAmbientGlow((title && title.textContent) || '');
+    }
+  }, { passive: true });
+
+  // ============================================================================
+  // STEP 1, 2, 3, 4 — HOME PAGE RENDERERS (Hero Carousel, Progress Cards, Arrows, Live Previews)
   // ============================================================================
   const FMT_LABEL = { TV: 'TV', TV_SHORT: 'Kısa', MOVIE: 'Film', OVA: 'OVA', SPECIAL: 'Özel', ONA: 'ONA' };
 
-  function buildPosterCard(item, href, gradIndex, showStatus) {
+  function buildPosterCard(item, href, gradIndex, showStatus, listContext = [], typeKey = 'anime') {
     const a = el('a', `poster-card grad-${gradIndex % 10}`);
     a.href = href;
     if (item.image) {
@@ -448,17 +771,44 @@
       img.onload = () => img.classList.add('in');
       a.append(img);
     }
-    if (typeof item.score === 'number' && item.score > 0) {
+    const effScore = getHomeEffectiveScore(item, typeKey);
+    if (typeof effScore === 'number' && effScore > 0) {
       const badge = el('span', 'poster-rating');
-      badge.innerHTML = `<span class="star">★</span>${item.score.toFixed(1)}`;
+      badge.innerHTML = `<span class="star">★</span>${effScore.toFixed(1)}`;
       a.append(badge);
     }
+
+    // Step 2: Progress bar & episode badge on Continue Watching / active cards
+    const ps = parts(item);
+    const activePart = ps.find(p => p.status === 'CURRENT' || p.status === 'PAUSED') || ps[0];
+    const watched = activePart ? (activePart.watched || 0) : 0;
+    const total = activePart ? (activePart.episodes || 0) : 0;
+
     if (showStatus) {
-      const stTxt = item.status === 'watching' ? 'İzleniyor' : item.status === 'paused' ? 'Beklemede' : '';
+      const stTxt = item.status === 'watching'
+        ? (watched > 0 ? `İzleniyor · ${total ? watched + '/' + total : watched + '. blm'}` : 'İzleniyor')
+        : item.status === 'paused'
+        ? (watched > 0 ? `Beklemede · ${total ? watched + '/' + total : watched}` : 'Beklemede')
+        : item.next ? 'Sıradaki' : '';
       if (stTxt) a.append(el('span', 'poster-status-dot', stTxt));
+      if (watched > 0 && total > 0) {
+        const pct = Math.min(100, Math.round((watched / total) * 100));
+        const pg = el('div', 'poster-card-pg');
+        pg.innerHTML = `<i style="width:${pct}%"></i>`;
+        a.append(pg);
+      }
     }
+
     const title = el('h3', 'poster-title', item.title || '');
     a.append(title);
+
+    // Step 5: In-place modal opening on home page without page reload
+    a.addEventListener('click', e => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      openHomeSheet(item, listContext, typeKey);
+    });
+
     return a;
   }
 
@@ -466,21 +816,16 @@
     const heroEl = document.getElementById('heroSpotlight');
     if (!heroEl || !Array.isArray(animeList) || !animeList.length) return;
 
-    let target = null, targetPart = null;
-    for (const a of animeList) {
-      if (a && a.status === 'watching' && Array.isArray(a.parts)) {
-        const cp = a.parts.find(p => p && p.status === 'CURRENT');
-        if (cp) { target = a; targetPart = cp; break; }
-      }
-    }
-    if (!target) {
-      target = animeList.find(a => a && a.status === 'watching') || animeList[0];
-      if (target && Array.isArray(target.parts)) {
-        targetPart = target.parts.find(p => p && p.status === 'CURRENT') || target.parts[0];
-      }
-    }
-    if (!target) return;
+    // Step 1: Collect up to 5 spotlight slides (Watching items + recent 9.5+ Masterpieces)
+    const watchingItems = animeList.filter(a => a && a.status === 'watching');
+    const masterpieces = animeList
+      .filter(a => a && a.status !== 'watching' && (a.favorite || (getHomeEffectiveScore(a, 'anime') || 0) >= 9.5))
+      .slice(0, 4);
+    const slides = [...watchingItems, ...masterpieces].slice(0, 5);
+    if (!slides.length && animeList[0]) slides.push(animeList[0]);
+    if (!slides.length) return;
 
+    const eyebrowEl = document.getElementById('heroEyebrow');
     const titleEl = document.getElementById('heroSpotlightTitle');
     const metaEl = document.getElementById('heroSpotlightMeta');
     const bgImg = document.getElementById('heroBgImg');
@@ -489,33 +834,101 @@
     const pgText = document.getElementById('heroProgressText');
     const detailBtn = document.getElementById('heroDetailBtn');
     const archiveBtn = document.getElementById('heroArchiveBtn');
+    const navWrap = document.getElementById('heroCarouselNav');
+    const dotsWrap = document.getElementById('heroSlideDots');
+    const prevBtn = document.getElementById('heroPrevBtn');
+    const nextBtn = document.getElementById('heroNextBtn');
 
-    if (titleEl) titleEl.textContent = target.title || 'Tempestian';
+    let activeSlideIdx = 0;
+    let slideTimer = null;
 
-    const fmt = targetPart && targetPart.format ? (FMT_LABEL[targetPart.format] || targetPart.format) : 'TV';
-    const year = (targetPart && targetPart.year) || (target.parts && target.parts[0] && target.parts[0].year) || '';
-    const genres = (Array.isArray(target.customGenres) && target.customGenres.length ? target.customGenres : (target.genres || [])).slice(0, 3);
-    const metaParts = [fmt, year, ...genres].filter(Boolean);
-    if (metaEl) metaEl.textContent = metaParts.join(' · ');
+    function showSlide(idx) {
+      activeSlideIdx = (idx + slides.length) % slides.length;
+      const target = slides[activeSlideIdx];
+      if (!target) return;
 
-    const bgUrl = target.banner || target.image || '';
-    if (bgImg && bgUrl) {
-      bgImg.onload = () => bgImg.classList.add('loaded');
-      bgImg.src = resolveAsset(bgUrl);
+      const targetPart = (Array.isArray(target.parts) && (target.parts.find(p => p && p.status === 'CURRENT') || target.parts[0])) || null;
+      const isWatching = target.status === 'watching';
+      const effSc = getHomeEffectiveScore(target, 'anime');
+
+      if (eyebrowEl) {
+        eyebrowEl.textContent = isWatching ? 'ŞU ANDA İZLENİYOR' : `★ BAŞYAPIT VİTRİNİ${effSc ? ' · ' + effSc.toFixed(1) : ''}`;
+      }
+      if (titleEl) titleEl.textContent = target.title || 'Tempestian';
+
+      const fmt = targetPart && targetPart.format ? (FMT_LABEL[targetPart.format] || targetPart.format) : 'TV';
+      const year = (targetPart && targetPart.year) || (target.parts && target.parts[0] && target.parts[0].year) || '';
+      const genres = (Array.isArray(target.customGenres) && target.customGenres.length ? target.customGenres : (target.genres || [])).slice(0, 3);
+      const metaParts = [fmt, year, ...genres].filter(Boolean);
+      if (metaEl) metaEl.textContent = metaParts.join(' · ');
+
+      const bgUrl = target.banner || target.image || '';
+      if (bgImg) {
+        if (bgUrl) {
+          bgImg.classList.remove('loaded');
+          bgImg.onload = () => bgImg.classList.add('loaded');
+          bgImg.src = resolveAsset(bgUrl);
+        } else {
+          bgImg.classList.remove('loaded');
+          bgImg.removeAttribute('src');
+        }
+      }
+
+      const watched = (targetPart && typeof targetPart.watched === 'number') ? targetPart.watched : 0;
+      const total = (targetPart && typeof targetPart.episodes === 'number') ? targetPart.episodes : 0;
+      if (pgGroup && (watched > 0 || total > 0)) {
+        const pct = total > 0 ? Math.min(100, Math.round((watched / total) * 100)) : (isWatching ? 25 : 100);
+        if (pgFill) pgFill.style.width = pct + '%';
+        if (pgText) pgText.textContent = total > 0 ? `${watched} / ${total} bölüm` : `${watched} bölüm`;
+        pgGroup.hidden = false;
+      } else if (pgGroup) {
+        pgGroup.hidden = true;
+      }
+
+      if (detailBtn) {
+        detailBtn.href = root + 'anime/#' + encodeURIComponent(target.id || '');
+        detailBtn.onclick = e => {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+          e.preventDefault();
+          openHomeSheet(target, slides, 'anime');
+        };
+      }
+      if (archiveBtn) archiveBtn.href = root + 'anime/#' + encodeURIComponent(target.id || '');
+      if (activeSlideIdx === 0) heroEl.dataset.heroId = target.id || '';
+
+      if (dotsWrap) {
+        dotsWrap.querySelectorAll('.hero-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === activeSlideIdx);
+          d.setAttribute('aria-selected', i === activeSlideIdx);
+        });
+      }
     }
 
-    const watched = (targetPart && typeof targetPart.watched === 'number') ? targetPart.watched : 0;
-    const total = (targetPart && typeof targetPart.episodes === 'number') ? targetPart.episodes : 0;
-    if (pgGroup && (watched > 0 || total > 0)) {
-      const pct = total > 0 ? Math.min(100, Math.round((watched / total) * 100)) : 25;
-      if (pgFill) pgFill.style.width = pct + '%';
-      if (pgText) pgText.textContent = total > 0 ? `${watched} / ${total} bölüm` : `${watched} bölüm`;
-      pgGroup.hidden = false;
+    function resetAutoTimer() {
+      clearInterval(slideTimer);
+      if (slides.length > 1) {
+        slideTimer = setInterval(() => {
+          if (!document.hidden && (!homeSheetEl || homeSheetEl.hidden)) {
+            showSlide(activeSlideIdx + 1);
+          }
+        }, 7000);
+      }
     }
 
-    if (detailBtn) detailBtn.href = root + 'anime/#' + encodeURIComponent(target.id || '');
-    if (archiveBtn) archiveBtn.href = root + 'anime/';
-    heroEl.dataset.heroId = target.id || '';
+    if (slides.length > 1 && navWrap && dotsWrap) {
+      dotsWrap.innerHTML = slides.map((s, i) => `<button type="button" class="hero-dot${i === 0 ? ' active' : ''}" role="tab" aria-label="${esc(s.title)}" title="${esc(s.title)}"></button>`).join('');
+      dotsWrap.querySelectorAll('.hero-dot').forEach((d, i) => {
+        d.onclick = () => { showSlide(i); resetAutoTimer(); };
+      });
+      if (prevBtn) prevBtn.onclick = () => { showSlide(activeSlideIdx - 1); resetAutoTimer(); };
+      if (nextBtn) nextBtn.onclick = () => { showSlide(activeSlideIdx + 1); resetAutoTimer(); };
+      navWrap.hidden = false;
+      heroEl.addEventListener('pointerenter', () => clearInterval(slideTimer));
+      heroEl.addEventListener('pointerleave', resetAutoTimer);
+    }
+
+    showSlide(0);
+    resetAutoTimer();
   }
 
   function renderHomeHighlights(animeList, cfg) {
@@ -529,16 +942,16 @@
     if (titleEl && hf.highlightsTitle) titleEl.textContent = hf.highlightsTitle;
 
     const minScore = typeof hf.highlightsMinScore === 'number' ? hf.highlightsMinScore : 8.5;
-    const limit = Math.max(7, Number(hf.highlightsLimit) || 10);
+    const limit = Math.max(7, Number(hf.highlightsLimit) || 12);
 
-    let standout = animeList
-      .filter(a => a && typeof a.score === 'number' && a.score >= minScore)
-      .sort((a, b) => (b.score || 0) - (a.score || 0) || (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0))
+    const standout = animeList
+      .filter(a => a && typeof getHomeEffectiveScore(a, 'anime') === 'number' && getHomeEffectiveScore(a, 'anime') >= minScore)
+      .sort((a, b) => (getHomeEffectiveScore(b, 'anime') || 0) - (getHomeEffectiveScore(a, 'anime') || 0) || (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0))
       .slice(0, limit);
 
     if (!standout.length) return;
     const fr = document.createDocumentFragment();
-    standout.forEach((a, i) => fr.append(buildPosterCard(a, root + 'anime/#' + encodeURIComponent(a.id || ''), i, false)));
+    standout.forEach((a, i) => fr.append(buildPosterCard(a, root + 'anime/#' + encodeURIComponent(a.id || ''), i, false, standout, 'anime')));
     rail.replaceChildren(fr);
     sec.hidden = false;
   }
@@ -555,8 +968,9 @@
     });
 
     if (!queue.length) { sec.hidden = true; return; }
+    const slice = queue.slice(0, 12);
     const fr = document.createDocumentFragment();
-    queue.slice(0, 12).forEach((a, i) => fr.append(buildPosterCard(a, root + 'anime/#' + encodeURIComponent(a.id || ''), i + 7, false)));
+    slice.forEach((a, i) => fr.append(buildPosterCard(a, root + 'anime/#' + encodeURIComponent(a.id || ''), i + 7, true, slice, 'anime')));
     rail.replaceChildren(fr);
     sec.hidden = false;
   }
@@ -566,10 +980,74 @@
     const rail = document.getElementById('moviesRail');
     if (!sec || !rail || !Array.isArray(movieList) || !movieList.length) return;
 
+    const slice = movieList.slice(0, 10);
     const fr = document.createDocumentFragment();
-    movieList.slice(0, 10).forEach((m, i) => fr.append(buildPosterCard(m, root + 'film/#' + encodeURIComponent(m.id || ''), i + 2, false)));
+    slice.forEach((m, i) => fr.append(buildPosterCard(m, root + 'film/#' + encodeURIComponent(m.id || ''), i + 2, false, slice, 'movie')));
     rail.replaceChildren(fr);
     sec.hidden = false;
+  }
+
+  // Step 4: Live Guides & Open Source Projects Preview Cards on Home
+  function renderHomeGuidesAndProjects(guideList, projectList) {
+    const wrap = document.getElementById('homeLiveColumns');
+    const gBox = document.getElementById('homeGuidesList');
+    const pBox = document.getElementById('homeProjectsList');
+    if (!wrap || !gBox || !pBox) return;
+
+    const topGuides = [...(guideList || [])]
+      .sort((a, b) => (Number(Boolean(b.favorite)) - Number(Boolean(a.favorite))) || (b.addedAt || '').localeCompare(a.addedAt || ''))
+      .slice(0, 3);
+
+    const topProjects = [...(projectList || [])]
+      .sort((a, b) => (Number(Boolean(b.favorite)) - Number(Boolean(a.favorite))) || (b.addedAt || '').localeCompare(a.addedAt || ''))
+      .slice(0, 3);
+
+    if (!topGuides.length && !topProjects.length) return;
+
+    gBox.innerHTML = topGuides.map(g => {
+      const cat = (Array.isArray(g.customGenres) && g.customGenres[0]) || (Array.isArray(g.genres) && g.genres[0]) || 'GNU/Linux';
+      const dt = (g.addedAt && window.formatHybridDate) ? window.formatHybridDate(g.addedAt) : (g.addedAt || '');
+      return `
+        <a class="home-preview-card" href="${esc(g.url || 'rehber/')}" target="_blank" rel="noopener">
+          <div class="hp-top">
+            <span class="tag${g.favorite ? ' tag-active' : ''}">${esc(cat)}</span>
+            <span class="hp-meta">${esc(dt)}</span>
+          </div>
+          <h3 class="hp-title">${esc(g.title)}</h3>
+          <span class="hp-link">Technopat Sosyal ↗</span>
+        </a>
+      `;
+    }).join('');
+
+    pBox.innerHTML = topProjects.map(p => {
+      const lang = p.language || 'Linux';
+      const col = p.languageColor || '#58b9ff';
+      return `
+        <a class="home-preview-card" href="${esc(p.url || 'projeler/')}" target="_blank" rel="noopener">
+          <div class="hp-top">
+            <span class="tag"><span class="lang-dot" style="background:${esc(col)}"></span>${esc(lang)}</span>
+            ${p.isFork ? '<span class="tag tag-fork">Fork</span>' : ''}
+          </div>
+          <h3 class="hp-title">${esc(p.fullName || p.title || p.name)}</h3>
+          <p class="hp-desc">${esc(p.summary || p.description || '')}</p>
+        </a>
+      `;
+    }).join('');
+
+    wrap.hidden = false;
+  }
+
+  // Step 3: Shelf Scroll Arrows Binding
+  function initShelfArrows() {
+    document.querySelectorAll('.shelf-nav-btn[data-rail]').forEach(btn => {
+      const rail = document.getElementById(btn.dataset.rail);
+      if (!rail) return;
+      btn.onclick = () => {
+        const dir = btn.classList.contains('prev') ? -1 : 1;
+        const step = Math.max(320, Math.round(rail.clientWidth * 0.72));
+        rail.scrollBy({ left: dir * step, behavior: 'smooth' });
+      };
+    });
   }
 
   function renderCustomBoxes(container, boxItems) {
@@ -594,11 +1072,118 @@
   }
 
   // ============================================================================
-  // GLOBAL COMMAND PALETTE (/ or Ctrl+K)
+  // STEP 12 — TIER LIST EXPORT / SHARE IMAGE BUTTON
+  // ============================================================================
+  function initTierExportButton() {
+    const tierBoard = document.getElementById('tierBoard');
+    const toolsBar = document.querySelector('.tools');
+    if (!tierBoard || !toolsBar || document.getElementById('tierExportBtn')) return;
+
+    const expBtn = el('button', 'btn tier-export-btn');
+    expBtn.id = 'tierExportBtn';
+    expBtn.type = 'button';
+    expBtn.hidden = true;
+    expBtn.title = 'Katman Listesini Görsel Olarak İndir (PNG)';
+    expBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Tier Görseli İndir</span>`;
+    toolsBar.appendChild(expBtn);
+
+    const syncVisibility = () => {
+      expBtn.hidden = tierBoard.hidden;
+    };
+    const obs = new MutationObserver(syncVisibility);
+    obs.observe(tierBoard, { attributes: true, attributeFilter: ['hidden'] });
+    syncVisibility();
+
+    expBtn.onclick = () => {
+      const rows = [...tierBoard.querySelectorAll('.tier-row')];
+      if (!rows.length) return;
+      showToast('🖼️ Katman (Tier List) görseli hazırlanıyor...');
+
+      const tierData = rows.map(r => {
+        const letter = (r.querySelector('.tier-letter') && r.querySelector('.tier-letter').textContent) || 'S';
+        const name = (r.querySelector('.tier-name') && r.querySelector('.tier-name').textContent) || '';
+        const fg = r.querySelector('.tier-head') ? getComputedStyle(r.querySelector('.tier-head')).getPropertyValue('--tier-fg').trim() || '#f5c542' : '#f5c542';
+        const items = [...r.querySelectorAll('.tier-card')].map(c => ({
+          title: (c.querySelector('.tier-card-title') && c.querySelector('.tier-card-title').textContent) || '',
+          score: (c.querySelector('.tier-card-sc') && c.querySelector('.tier-card-sc').textContent) || ''
+        }));
+        return { letter, name, fg, items };
+      });
+
+      const canvas = document.createElement('canvas');
+      const W = 1200;
+      const rowHeights = tierData.map(t => Math.max(96, 52 + Math.ceil(t.items.length / 4) * 38));
+      const H = 110 + rowHeights.reduce((a, b) => a + b + 14, 0);
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#0b0d14';
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.fillStyle = '#f4f6fb';
+      ctx.font = '800 26px Inter, system-ui, sans-serif';
+      const pageHeading = (document.querySelector('h1') && document.querySelector('h1').textContent) || 'Arşiv';
+      ctx.fillText(`Tempestian · ${pageHeading} Katman Listesi (Tier List)`, 36, 56);
+
+      ctx.fillStyle = '#9ba3b8';
+      ctx.font = '500 14px Inter, system-ui, sans-serif';
+      ctx.fillText(`tempestian.com · ${new Date().toLocaleDateString('tr-TR')}`, 36, 82);
+
+      let y = 108;
+      tierData.forEach((t, idx) => {
+        const rh = rowHeights[idx];
+        ctx.fillStyle = '#151926';
+        ctx.fillRect(36, y, W - 72, rh);
+        ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+        ctx.strokeRect(36, y, W - 72, rh);
+
+        ctx.fillStyle = t.fg.startsWith('var') ? '#58b9ff' : t.fg;
+        ctx.fillRect(36, y, 88, rh);
+        ctx.fillStyle = '#0b0d14';
+        ctx.font = '800 28px Inter, system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(t.letter, 80, y + rh / 2 + 10);
+        ctx.textAlign = 'left';
+
+        t.items.forEach((it, i) => {
+          const col = i % 4;
+          const row = Math.floor(i / 4);
+          const ix = 142 + col * 252;
+          const iy = y + 16 + row * 36;
+          ctx.fillStyle = '#1c2132';
+          ctx.fillRect(ix, iy, 240, 28);
+          ctx.fillStyle = '#f4f6fb';
+          ctx.font = '600 12px Inter, system-ui, sans-serif';
+          const shortT = it.title.length > 26 ? it.title.slice(0, 25) + '…' : it.title;
+          ctx.fillText(shortT, ix + 10, iy + 18);
+          if (it.score) {
+            ctx.fillStyle = '#f5c542';
+            ctx.font = '700 11px Inter, system-ui, sans-serif';
+            ctx.fillText(it.score, ix + 195, iy + 18);
+          }
+        });
+
+        y += rh + 14;
+      });
+
+      const link = document.createElement('a');
+      link.download = `tempestian-${cur || 'tier'}-list.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('✅ Tier List görseli indirildi!');
+    };
+  }
+
+  // ============================================================================
+  // STEP 10 — GLOBAL COMMAND PALETTE (/ or Ctrl+K) COVERING ALL 7 ARCHIVES
   // ============================================================================
   let cmdPaletteMounted = false;
   let cachedAnimeData = null;
   let cachedMoviesData = null;
+  let cachedSeriesData = null;
+  let cachedBooksData = null;
+  let cachedMangaData = null;
   let cachedGuidesData = null;
   let cachedProjectsData = null;
   let cmdActiveIndex = -1;
@@ -614,7 +1199,7 @@
       <div class="cmd-palette-modal" role="dialog" aria-modal="true" aria-label="Hızlı Arama">
         <div class="cmd-palette-head">
           <span class="cmd-search-ic">${icon('search')}</span>
-          <input type="text" class="cmd-palette-input" id="cmdInput" placeholder="Anime, film, rehber veya bölüm ara..." autocomplete="off" spellcheck="false" />
+          <input type="text" class="cmd-palette-input" id="cmdInput" placeholder="Anime, film, dizi, kitap, manga, rehber veya proje ara..." autocomplete="off" spellcheck="false" />
           <span class="cmd-kbd-badge">ESC</span>
           <button type="button" class="cmd-close-btn" id="cmdClose" aria-label="Kapat">${icon('close')}</button>
         </div>
@@ -642,23 +1227,18 @@
       { id: 'guide', title: 'Rehber', desc: 'Technopat GNU/Linux rehberleri', path: 'rehber/', badge: 'Rehber' },
       { id: 'project', title: 'Projeler', desc: 'Açık kaynak depolar', path: 'projeler/', badge: 'GitHub' },
       { id: 'timeline', title: 'Zaman Tüneli', desc: 'Kronolojik akış', path: 'zaman-tuneli/', badge: 'Akış' },
-      { id: 'stats', title: 'İstatistikler', desc: 'Metrik ve grafikler', path: 'istatistik/', badge: 'Metrik' }
+      { id: 'stats', title: 'İstatistikler', desc: 'Tüm arşiv özeti ve grafikler', path: 'istatistik/', badge: 'Metrik' }
     ];
 
     async function loadData() {
       const loaders = [];
-      if (!cachedAnimeData) {
-        loaders.push(fetch(root + 'data/anime.json').then(r => r.ok ? r.json() : null).then(j => { cachedAnimeData = (j && (j.anime || j.items)) || []; }).catch(() => { cachedAnimeData = []; }));
-      }
-      if (!cachedMoviesData) {
-        loaders.push(fetch(root + 'data/movies.json').then(r => r.ok ? r.json() : null).then(j => { cachedMoviesData = (j && (j.items || j.movies)) || []; }).catch(() => { cachedMoviesData = []; }));
-      }
-      if (!cachedGuidesData) {
-        loaders.push(fetch(root + 'data/guides.json').then(r => r.ok ? r.json() : null).then(j => { cachedGuidesData = (j && (j.items || j.guides)) || []; }).catch(() => { cachedGuidesData = []; }));
-      }
-      if (!cachedProjectsData) {
-        loaders.push(fetch(root + 'data/projects.json').then(r => r.ok ? r.json() : null).then(j => { cachedProjectsData = (j && (j.items || j.projects)) || []; }).catch(() => { cachedProjectsData = []; }));
-      }
+      if (!cachedAnimeData) loaders.push(fetch(root + 'data/anime.json').then(r => r.ok ? r.json() : null).then(j => { cachedAnimeData = (j && (j.anime || j.items)) || []; }).catch(() => { cachedAnimeData = []; }));
+      if (!cachedMoviesData) loaders.push(fetch(root + 'data/movies.json').then(r => r.ok ? r.json() : null).then(j => { cachedMoviesData = (j && (j.items || j.movies)) || []; }).catch(() => { cachedMoviesData = []; }));
+      if (!cachedSeriesData) loaders.push(fetch(root + 'data/series.json').then(r => r.ok ? r.json() : null).then(j => { cachedSeriesData = (j && (j.items || j.series)) || []; }).catch(() => { cachedSeriesData = []; }));
+      if (!cachedBooksData) loaders.push(fetch(root + 'data/books.json').then(r => r.ok ? r.json() : null).then(j => { cachedBooksData = (j && (j.items || j.books)) || []; }).catch(() => { cachedBooksData = []; }));
+      if (!cachedMangaData) loaders.push(fetch(root + 'data/manga.json').then(r => r.ok ? r.json() : null).then(j => { cachedMangaData = (j && (j.items || j.manga)) || []; }).catch(() => { cachedMangaData = []; }));
+      if (!cachedGuidesData) loaders.push(fetch(root + 'data/guides.json').then(r => r.ok ? r.json() : null).then(j => { cachedGuidesData = (j && (j.items || j.guides)) || []; }).catch(() => { cachedGuidesData = []; }));
+      if (!cachedProjectsData) loaders.push(fetch(root + 'data/projects.json').then(r => r.ok ? r.json() : null).then(j => { cachedProjectsData = (j && (j.items || j.projects)) || []; }).catch(() => { cachedProjectsData = []; }));
       await Promise.all(loaders);
     }
 
@@ -685,20 +1265,24 @@
         }
       ];
 
-      let matchedSections = [], matchedAnime = [], matchedMovies = [], matchedGuides = [], matchedProjects = [], matchedActions = [];
+      let matchedSections = [], matchedAnime = [], matchedMovies = [], matchedSeries = [], matchedBooks = [], matchedManga = [], matchedGuides = [], matchedProjects = [], matchedActions = [];
       if (!trimmed) {
         matchedSections = defaultSections.slice(0, 6);
         matchedAnime = (cachedAnimeData || []).filter(a => a.favorite || (a.score && a.score >= 9.5)).slice(0, 4);
       } else {
         matchedActions = quickActions.filter(a => matchesText(a.title, trimmed) || matchesText(a.desc, trimmed) || (a.keywords && a.keywords.some(k => matchesText(k, trimmed))));
         matchedSections = defaultSections.filter(s => matchesText(s.title, trimmed) || matchesText(s.desc, trimmed)).slice(0, 4);
-        matchedAnime = (cachedAnimeData || []).filter(a => matchesText(a.title, trimmed) || (a.genres && a.genres.some(g => matchesText(g, trimmed)))).slice(0, 8);
+        matchedAnime = (cachedAnimeData || []).filter(a => matchesText(a.title, trimmed) || (a.customGenres && a.customGenres.some(g => matchesText(g, trimmed))) || (a.genres && a.genres.some(g => matchesText(g, trimmed)))).slice(0, 6);
         matchedMovies = (cachedMoviesData || []).filter(m => matchesText(m.title, trimmed) || matchesText(m.director, trimmed)).slice(0, 4);
+        matchedSeries = (cachedSeriesData || []).filter(s => matchesText(s.title, trimmed) || matchesText(s.network, trimmed)).slice(0, 4);
+        matchedBooks = (cachedBooksData || []).filter(b => matchesText(b.title, trimmed) || matchesText(b.author, trimmed)).slice(0, 4);
+        matchedManga = (cachedMangaData || []).filter(m => matchesText(m.title, trimmed) || matchesText(m.author, trimmed)).slice(0, 4);
         matchedGuides = (cachedGuidesData || []).filter(g => matchesText(g.title, trimmed) || matchesText(g.forumSection, trimmed)).slice(0, 5);
         matchedProjects = (cachedProjectsData || []).filter(p => matchesText(p.title, trimmed) || matchesText(p.name, trimmed) || matchesText(p.description, trimmed)).slice(0, 3);
       }
 
-      if (!matchedActions.length && !matchedSections.length && !matchedAnime.length && !matchedMovies.length && !matchedGuides.length && !matchedProjects.length) {
+      const totalFound = matchedActions.length + matchedSections.length + matchedAnime.length + matchedMovies.length + matchedSeries.length + matchedBooks.length + matchedManga.length + matchedGuides.length + matchedProjects.length;
+      if (!totalFound) {
         resultsContainer.append(el('div', 'cmd-empty', `"${trimmed}" için sonuç bulunamadı.`));
         return;
       }
@@ -709,6 +1293,23 @@
         items.forEach(it => resultsContainer.append(renderItem(it)));
       };
 
+      const renderMediaCmdItem = (it, secId, folder, icName, subText) => {
+        const item = el('a', 'cmd-item');
+        item.href = (cur === secId ? '#' : root + folder + '#') + encodeURIComponent(it.id);
+        const eff = getHomeEffectiveScore(it, secId);
+        const sc = eff ? `★ ${Number(eff).toFixed(1)}` : folder.replace('/', '');
+        const thumb = it.image ? `<img class="cmd-item-thumb" src="${esc(resolveAsset(it.image))}" alt="" loading="lazy">` : `<span class="cmd-item-ic">${icon(icName)}</span>`;
+        item.innerHTML = `<div class="cmd-item-left">${thumb}<div class="cmd-item-info"><span class="cmd-item-title">${esc(it.title)}</span><span class="cmd-item-desc">${esc(subText)}</span></div></div><span class="cmd-item-badge">${esc(sc)}</span>`;
+        item.onclick = e => {
+          window.closeCommandPalette();
+          if (cur === 'home' && !e.metaKey && !e.ctrlKey) {
+            e.preventDefault();
+            openHomeSheet(it, [it], secId);
+          }
+        };
+        return item;
+      };
+
       addGroup('Bölümler', matchedSections, s => {
         const a = el('a', 'cmd-item');
         a.href = root + s.path;
@@ -717,24 +1318,11 @@
         return a;
       });
 
-      addGroup('Anime', matchedAnime, a => {
-        const item = el('a', 'cmd-item');
-        item.href = (cur === 'anime' ? '#' : root + 'anime/#') + encodeURIComponent(a.id);
-        const sc = a.score ? `★ ${Number(a.score).toFixed(1)}` : 'Anime';
-        const thumb = a.image ? `<img class="cmd-item-thumb" src="${esc(resolveAsset(a.image))}" alt="" loading="lazy">` : `<span class="cmd-item-ic">${icon('anime')}</span>`;
-        item.innerHTML = `<div class="cmd-item-left">${thumb}<div class="cmd-item-info"><span class="cmd-item-title">${esc(a.title)}</span><span class="cmd-item-desc">${esc((a.genres || []).slice(0, 3).join(' · ') || 'Anime')}</span></div></div><span class="cmd-item-badge">${esc(sc)}</span>`;
-        item.onclick = () => window.closeCommandPalette();
-        return item;
-      });
-
-      addGroup('Filmler', matchedMovies, m => {
-        const item = el('a', 'cmd-item');
-        item.href = (cur === 'movie' ? '#' : root + 'film/#') + encodeURIComponent(m.id);
-        const sc = m.score ? `★ ${Number(m.score).toFixed(1)}` : 'Film';
-        item.innerHTML = `<div class="cmd-item-left"><span class="cmd-item-ic">${icon('movie')}</span><div class="cmd-item-info"><span class="cmd-item-title">${esc(m.title)}</span><span class="cmd-item-desc">${esc([m.year, m.director].filter(Boolean).join(' · ') || 'Film')}</span></div></div><span class="cmd-item-badge">${esc(sc)}</span>`;
-        item.onclick = () => window.closeCommandPalette();
-        return item;
-      });
+      addGroup('Anime', matchedAnime, a => renderMediaCmdItem(a, 'anime', 'anime/', 'anime', (a.customGenres || a.genres || []).slice(0, 3).join(' · ') || 'Anime'));
+      addGroup('Filmler', matchedMovies, m => renderMediaCmdItem(m, 'movie', 'film/', 'movie', [m.year, m.director].filter(Boolean).join(' · ') || 'Film'));
+      addGroup('Diziler', matchedSeries, s => renderMediaCmdItem(s, 'series', 'dizi/', 'series', [s.network, s.year].filter(Boolean).join(' · ') || 'Dizi'));
+      addGroup('Kitaplar', matchedBooks, b => renderMediaCmdItem(b, 'book', 'kitap/', 'book', b.author || 'Kitap'));
+      addGroup('Mangalar', matchedManga, m => renderMediaCmdItem(m, 'manga', 'manga/', 'manga', m.author || 'Manga'));
 
       addGroup('Rehberler', matchedGuides, g => {
         const item = el('a', 'cmd-item');
@@ -842,6 +1430,9 @@
       }
     }, { passive: true });
 
+    initShelfArrows();
+    initTierExportButton();
+
     // Back to top
     let topBtn = null;
     window.addEventListener('scroll', () => {
@@ -885,6 +1476,7 @@
   // BOOTSTRAP & DATA HYDRATION
   // ============================================================================
   async function boot() {
+    initImageFallback();
     initTopNav();
     initCommandPalette();
     initInteractions();
@@ -895,7 +1487,6 @@
         window.SITE_CONFIG = cfg;
         document.dispatchEvent(new CustomEvent('siteconfig', { detail: cfg }));
 
-        // Footer links on home
         const linksEl = document.getElementById('links');
         if (linksEl && Array.isArray(cfg.links)) {
           const fr = document.createDocumentFragment();
@@ -911,7 +1502,6 @@
           linksEl.replaceChildren(fr);
         }
 
-        // Custom boxes on home
         const boxesTop = document.getElementById('boxesTop');
         const boxesBottom = document.getElementById('boxesBottom');
         if (boxesTop || boxesBottom) {
@@ -948,6 +1538,8 @@
         cachedProjectsData = projectList;
         const ps = document.getElementById('hubProjectSub');
         if (ps && projectList.length) ps.textContent = `${projectList.length} açık kaynak proje · GitHub`;
+
+        renderHomeGuidesAndProjects(guideList, projectList);
       }
     } catch (e) {
       console.warn('Bootstrap error:', e);

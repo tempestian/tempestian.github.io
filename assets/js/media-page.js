@@ -740,6 +740,7 @@ function renderTierBoard(visibleNodes) {
       cardEl.classList.remove('has-backdrop');
     }
     t('#sh-title').textContent = it.title;
+    if (window.UI && window.UI.updateAmbientGlow) window.UI.updateAmbientGlow(it.title || it.id);
     const bits = [];
     if (it.favorite) bits.push('★ Başyapıt');
     if (extraMeta) bits.push(extraMeta);

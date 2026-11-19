@@ -2341,17 +2341,308 @@ img { display: block; max-width: 100%; }
 }
 
 /* ==========================================================================
+   13-STEP UI ENHANCEMENTS (Carousel, Shelf Arrows, Live Previews, Ambient Glow, Mobile Dock)
+   ========================================================================== */
+
+/* Step 1: Hero Carousel Controls */
+.hero-carousel-nav {
+  position: absolute;
+  right: 28px;
+  bottom: 24px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(11, 13, 20, 0.58);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.hero-slide-arrow {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 150ms var(--ease);
+}
+.hero-slide-arrow:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+.hero-slide-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px;
+}
+.hero-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: rgba(255, 255, 255, 0.32);
+  transition: width 220ms var(--ease), background 220ms var(--ease);
+}
+.hero-dot.active {
+  width: 20px;
+  background: #58b9ff;
+}
+
+/* Step 2: Poster Card Progress Bar */
+.poster-card-pg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  z-index: 3;
+}
+.poster-card-pg i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 0 2px 2px 0;
+}
+
+/* Step 3: Shelf Rail Wrapper & Floating Arrows */
+.shelf-rail-wrap {
+  position: relative;
+}
+.shelf-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-55%);
+  z-index: 5;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: rgba(17, 20, 32, 0.88);
+  backdrop-filter: blur(10px);
+  color: var(--ink);
+  font-size: 1.25rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms var(--ease), transform 180ms var(--ease), background 150ms var(--ease);
+}
+[data-theme="light"] .shelf-nav-btn {
+  background: rgba(255, 255, 255, 0.92);
+}
+.shelf-nav-btn.prev { left: -14px; }
+.shelf-nav-btn.next { right: -14px; }
+.shelf-rail-wrap:hover .shelf-nav-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+.shelf-nav-btn:hover {
+  background: var(--surface-2);
+  border-color: var(--accent);
+}
+
+/* Step 4: Home Live Guides & Projects Preview Columns */
+.home-live-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 38px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.home-preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.home-preview-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 15px 18px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: background 160ms var(--ease), border-color 160ms var(--ease), transform 160ms var(--ease);
+}
+.home-preview-card:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+.hp-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.hp-meta {
+  font-size: 0.74rem;
+  color: var(--ink3);
+  font-variant-numeric: tabular-nums;
+}
+.hp-title {
+  margin: 0;
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.home-preview-card:hover .hp-title {
+  color: var(--accent);
+}
+.hp-desc {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--ink2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.hp-link {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Step 7: Clickable Genre Chips in Detail Sheet */
+.sh-genre-chip {
+  cursor: pointer;
+  transition: background 150ms var(--ease), border-color 150ms var(--ease), color 150ms var(--ease);
+}
+.sh-genre-chip:hover {
+  background: var(--accent-soft);
+  border-color: rgba(88, 185, 255, 0.4);
+  color: var(--accent);
+}
+
+/* Step 8: Ambient Backdrop Glow */
+body::before {
+  content: "";
+  position: fixed;
+  top: -15vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 55vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--ambient-glow, rgba(88, 185, 255, 0.14)) 0%, transparent 70%);
+  filter: blur(60px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 500ms var(--ease), background 500ms var(--ease);
+}
+body.has-ambient-glow::before {
+  opacity: 1;
+}
+.sheet-card {
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65), 0 0 48px var(--ambient-glow, rgba(88, 185, 255, 0.15));
+}
+
+/* Step 10: Command Palette Active Thumbnail Zoom */
+.cmd-item.selected .cmd-item-thumb {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+}
+.cmd-item-thumb {
+  transition: transform 150ms var(--ease);
+}
+
+/* Step 12: Tier List Export Button */
+.tier-export-btn {
+  height: 38px;
+  padding: 0 13px;
+  background: var(--accent-soft);
+  border-color: rgba(88, 185, 255, 0.35);
+  color: var(--accent);
+  font-weight: 600;
+}
+.tier-export-btn:hover {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Step 15: Mobile Floating Bottom Navigation Bar */
+.mobile-bottom-nav {
+  display: none;
+}
+
+/* ==========================================================================
    RESPONSIVE
    ========================================================================== */
 @media (max-width: 768px) {
   .bar-in { padding: 0 16px; gap: 12px; height: 56px; }
   .bar-left { gap: 16px; }
   .top-nav { gap: 14px; }
-  .wrap { padding: 14px 16px 48px; }
-  .hero-spotlight { padding: 26px 22px; min-height: 250px; }
-  .hero-progress-track { width: 140px; }
+  .wrap { padding: 14px 16px 88px; }
+  .hero-spotlight { padding: 26px 20px 58px; min-height: 260px; }
+  .hero-carousel-nav { right: 16px; bottom: 14px; }
+  .hero-progress-track { width: 130px; }
   .poster-rail { grid-auto-columns: 140px; gap: 10px; }
+  .shelf-nav-btn { display: none; }
+  .home-live-columns { grid-template-columns: 1fr; gap: 22px; }
   #list.grid { grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 14px 10px; }
   .sheet-head { flex-direction: column; }
   .sheet-cover { width: 92px; }
+  .back-to-top { bottom: 76px; right: 16px; }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    z-index: 100;
+    height: 56px;
+    padding: 0 8px;
+    border-radius: 16px;
+    background: rgba(17, 20, 32, 0.9);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  [data-theme="light"] .mobile-bottom-nav {
+    background: rgba(255, 255, 255, 0.92);
+  }
+  .mob-nav-item {
+    flex: 1;
+    height: 44px;
+    border: none;
+    background: transparent;
+    border-radius: 11px;
+    color: var(--ink2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    transition: color 150ms var(--ease), background 150ms var(--ease);
+  }
+  .mob-nav-item svg {
+    width: 18px;
+    height: 18px;
+  }
+  .mob-nav-item.active {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
 }

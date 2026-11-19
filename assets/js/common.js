@@ -609,8 +609,17 @@
           </div>
 
             <div class="aside-history-wrap">
-              <div class="aside-group-lbl">Önceki Dinlenenler</div>
-              <div class="lastfm-history-list" id="lastfmHistoryList">
+              <button type="button" class="aside-history-toggle" id="lastfmHistoryToggle" aria-expanded="false" aria-controls="lastfmHistoryList" title="Önceki dinlenenleri göster/gizle">
+                <span class="aside-hist-btn-left">
+                  <span class="aside-hist-ic">🕒</span>
+                  <span class="aside-hist-btn-text">Önceki Dinlenenler</span>
+                  <span class="aside-hist-count-badge" id="lastfmHistCount">5</span>
+                </span>
+                <svg class="aside-hist-arrow" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+              <div class="lastfm-history-list" id="lastfmHistoryList" hidden>
                 <div class="lastfm-hist-placeholder">Geçmiş yükleniyor...</div>
               </div>
             </div>
@@ -758,6 +767,25 @@
       const defaultUser = 'tempestian';
       const defaultKey = 'b25b959554ed76058ac220b7b2e0a026';
 
+      const histToggleBtn = document.getElementById('lastfmHistoryToggle');
+      const historyListEl = document.getElementById('lastfmHistoryList');
+      if (histToggleBtn && historyListEl) {
+        histToggleBtn.onclick = () => {
+          const isHidden = historyListEl.hasAttribute('hidden') || historyListEl.style.display === 'none';
+          if (isHidden) {
+            historyListEl.removeAttribute('hidden');
+            historyListEl.style.display = '';
+            histToggleBtn.classList.add('is-open');
+            histToggleBtn.setAttribute('aria-expanded', 'true');
+          } else {
+            historyListEl.setAttribute('hidden', '');
+            historyListEl.style.display = 'none';
+            histToggleBtn.classList.remove('is-open');
+            histToggleBtn.setAttribute('aria-expanded', 'false');
+          }
+        };
+      }
+
       async function update() {
         let siteConfig = null;
         try {
@@ -876,6 +904,8 @@
 
           if (historyList) {
             const historyTracks = tracks.slice(1, 6);
+            const countBadge = document.getElementById('lastfmHistCount');
+            if (countBadge) countBadge.textContent = historyTracks.length ? String(historyTracks.length) : '0';
             if (!historyTracks.length) {
               historyList.innerHTML = '<div class="lastfm-empty-hist">Önceki parça kaydı yok</div>';
             } else {

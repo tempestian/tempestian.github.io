@@ -714,12 +714,91 @@ img { display: block; max-width: 100%; }
 .aside-history-wrap {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
+  margin-top: 2px;
+}
+.aside-history-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-xs);
+  box-shadow: 1.5px 1.5px 0px var(--line);
+  cursor: pointer;
+  color: var(--ink);
+  font-family: var(--font-base);
+  font-size: 0.76rem;
+  font-weight: 700;
+  transition: transform 120ms var(--ease), box-shadow 120ms var(--ease), background 120ms var(--ease), border-color 120ms var(--ease);
+  user-select: none;
+}
+.aside-history-toggle:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 2.5px 2.5px 0px var(--line);
+  background: var(--surface-2);
+}
+.aside-history-toggle:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 0 0 var(--line);
+}
+.aside-history-toggle.is-open {
+  background: var(--surface-2);
+  border-color: var(--accent);
+}
+.aside-hist-btn-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.aside-hist-ic {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+.aside-hist-count-badge {
+  font-size: 0.64rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  color: var(--ink2);
+  transition: background 120ms var(--ease), color 120ms var(--ease), border-color 120ms var(--ease);
+}
+.aside-history-toggle.is-open .aside-hist-count-badge {
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.aside-hist-arrow {
+  color: var(--ink3);
+  transition: transform 180ms ease, color 120ms var(--ease);
+  flex-shrink: 0;
+}
+.aside-history-toggle.is-open .aside-hist-arrow {
+  transform: rotate(180deg);
+  color: var(--accent);
 }
 .lastfm-history-list {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  animation: fadeInHist 160ms ease-out;
+}
+.lastfm-history-list[hidden] {
+  display: none !important;
+}
+@keyframes fadeInHist {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .lastfm-hist-placeholder, .lastfm-empty-hist {
   padding: 10px;

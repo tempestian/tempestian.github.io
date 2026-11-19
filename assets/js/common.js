@@ -710,28 +710,32 @@
       const card = document.getElementById('lastfmCard');
       if (!card) return;
 
-      const defaultUser = 'TurkTempestian';
+      const defaultUser = 'tempestian';
       const defaultKey = 'b25b959554ed76058ac220b7b2e0a026';
 
-      let siteConfig = null;
-      try {
-        const secRes = await fetch(root + 'data/sections.json');
-        if (secRes.ok) siteConfig = await secRes.json();
-      } catch (_) {}
-
-      const lfmCfg = (siteConfig && siteConfig.lastfm) || {};
-      if (lfmCfg.enabled === false) {
-        const asideEl = document.getElementById('appAside');
-        if (asideEl) asideEl.style.display = 'none';
-        const asideBtn = document.getElementById('asideToggleBtn');
-        if (asideBtn) asideBtn.style.display = 'none';
-        return;
-      }
-
-      const currentUser = lfmCfg.user || defaultUser;
-      const currentKey = lfmCfg.apiKey || defaultKey;
-
       async function update() {
+        let siteConfig = null;
+        try {
+          const preview = localStorage.getItem('tp_site_preview');
+          if (preview) {
+            siteConfig = JSON.parse(preview);
+          } else {
+            const secRes = await fetch(root + 'data/sections.json?v=' + Date.now());
+            if (secRes.ok) siteConfig = await secRes.json();
+          }
+        } catch (_) {}
+
+        const lfmCfg = (siteConfig && siteConfig.lastfm) || {};
+        if (lfmCfg.enabled === false) {
+          const asideEl = document.getElementById('appAside');
+          if (asideEl) asideEl.style.display = 'none';
+          const asideBtn = document.getElementById('asideToggleBtn');
+          if (asideBtn) asideBtn.style.display = 'none';
+          return;
+        }
+
+        const currentUser = localStorage.getItem('tp_lastfm_user') || lfmCfg.user || defaultUser;
+        const currentKey = localStorage.getItem('tp_lastfm_key') || lfmCfg.apiKey || defaultKey;
         const titleEl = document.getElementById('lastfmTitle');
         const artistEl = document.getElementById('lastfmArtist');
         const albumEl = document.getElementById('lastfmAlbum');

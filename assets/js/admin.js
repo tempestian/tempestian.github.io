@@ -8953,8 +8953,8 @@
 
     const lastfm = state.config.lastfm || {};
     if ($('#cfgLastfmEnabled')) $('#cfgLastfmEnabled').checked = lastfm.enabled !== false;
-    if ($('#cfgLastfmUser')) $('#cfgLastfmUser').value = lastfm.user || '';
-    if ($('#cfgLastfmApiKey')) $('#cfgLastfmApiKey').value = lastfm.apiKey || '';
+    if ($('#cfgLastfmUser')) $('#cfgLastfmUser').value = localStorage.getItem('tp_lastfm_user') || lastfm.user || 'tempestian';
+    if ($('#cfgLastfmApiKey')) $('#cfgLastfmApiKey').value = localStorage.getItem('tp_lastfm_key') || lastfm.apiKey || '';
 
     if ($('#cfgSecretBookUrl')) $('#cfgSecretBookUrl').value = secretBook.url || 'kitap/ozel/';
     if ($('#cfgSecretBookTitle')) $('#cfgSecretBookTitle').value = secretBook.title || '🐾 Özel Anı Kitabı';
@@ -9013,9 +9013,15 @@
     const elLfmEn = $('#cfgLastfmEnabled');
     if (elLfmEn) lfm.enabled = Boolean(elLfmEn.checked);
     const elLfmUsr = $('#cfgLastfmUser');
-    if (elLfmUsr) lfm.user = S(elLfmUsr.value, 80).trim();
+    if (elLfmUsr) {
+      lfm.user = S(elLfmUsr.value, 80).trim() || 'tempestian';
+      localStorage.setItem('tp_lastfm_user', lfm.user);
+    }
     const elLfmKey = $('#cfgLastfmApiKey');
-    if (elLfmKey) lfm.apiKey = S(elLfmKey.value, 100).trim();
+    if (elLfmKey) {
+      lfm.apiKey = S(elLfmKey.value, 100).trim();
+      if (lfm.apiKey) localStorage.setItem('tp_lastfm_key', lfm.apiKey);
+    }
 
     if (!state.config.secretBook) state.config.secretBook = {};
     const sb = state.config.secretBook;
@@ -10681,10 +10687,11 @@
       btn.onclick = () => switchNodeModalTab(btn.dataset.nodeTab);
     });
 
-    ['#cfgSiteTitle', '#cfgSiteSubtitle', '#cfgSiteBarTitle', '#cfgSiteHomeLabel', '#cfgSiteDesc'].forEach(sel => {
+    ['#cfgSiteTitle', '#cfgSiteSubtitle', '#cfgSiteBarTitle', '#cfgSiteHomeLabel', '#cfgSiteDesc', '#cfgLastfmUser', '#cfgLastfmApiKey', '#cfgLastfmEnabled'].forEach(sel => {
       const el = $(sel);
       if (el) {
-        el.addEventListener('input', () => {
+        const evt = el.type === 'checkbox' ? 'change' : 'input';
+        el.addEventListener(evt, () => {
           collectFormFieldsIntoConfig();
           markDirty('config');
         });

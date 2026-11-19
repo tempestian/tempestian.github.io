@@ -80,19 +80,43 @@
 .tensura-pill.kind-movie { background: rgba(168, 85, 247, 0.16); border-color: rgba(168, 85, 247, 0.35); color: #c084fc; }
 .tensura-pill.kind-ova { background: rgba(245, 197, 66, 0.15); border-color: rgba(245, 197, 66, 0.35); color: var(--gold); }
 .tensura-pill.req { background: rgba(52, 211, 153, 0.15); border-color: rgba(52, 211, 153, 0.35); color: var(--ok); }
-.tensura-title { margin: 0 0 4px; font-size: 1.02rem; font-weight: 700; color: var(--ink); }
-.tensura-desc { margin: 0; font-size: 0.86rem; color: var(--ink2); line-height: 1.5; }
-.tensura-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.tensura-link-btn {
-  display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--radius-sm);
+.tensura-title { margin: 0 0 4px; font-size: 1.04rem; font-weight: 700; color: var(--ink); }
+.tensura-episodes { font-size: 0.78rem; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+.tensura-desc, .tensura-note { margin: 8px 0 0; font-size: 0.86rem; color: var(--ink2); line-height: 1.55; }
+.tensura-links, .tensura-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+.tensura-link-btn, .tensura-watch-btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: var(--radius-sm);
   background: var(--ink); color: var(--bg); font-size: 0.8rem; font-weight: 700;
+  transition: opacity 150ms var(--ease), transform 150ms var(--ease);
 }
+.tensura-link-btn:hover, .tensura-watch-btn:hover { opacity: 0.9; transform: translateY(-1px); }
 .tensura-link-btn.secondary { background: var(--glass2); color: var(--ink); border: 1px solid var(--border-strong); font-weight: 600; }
+.tensura-no-link { font-size: 0.78rem; color: var(--ink3); font-style: italic; }
 .tensura-check-btn {
   height: 32px; padding: 0 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong);
   background: var(--bg-elev); color: var(--ink2); font-size: 0.78rem; font-weight: 600;
+  transition: background 150ms var(--ease), border-color 150ms var(--ease), color 150ms var(--ease);
 }
-.tensura-card.is-watched .tensura-check-btn { background: rgba(52, 211, 153, 0.16); border-color: rgba(52, 211, 153, 0.4); color: var(--ok); }
+.tensura-check-btn:hover { border-color: var(--accent); color: var(--ink); }
+.tensura-card.is-watched .tensura-check-btn, .tensura-check-btn.checked { background: rgba(52, 211, 153, 0.16); border-color: rgba(52, 211, 153, 0.4); color: var(--ok); }
+.tensura-preview-banner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 16px;
+  background: rgba(245, 197, 66, 0.14); border: 1px solid rgba(245, 197, 66, 0.35); color: var(--gold);
+  font-size: 0.84rem; font-weight: 600;
+}
+.tensura-empty {
+  text-align: center; padding: 40px 20px; border-radius: var(--radius-md);
+  background: var(--surface); border: 1px solid var(--border); color: var(--ink2); font-size: 0.9rem;
+}
+.tensura-footer {
+  margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--border);
+  text-align: center; font-size: 0.78rem; color: var(--ink3);
+}
+@media (max-width: 640px) {
+  .tensura-card { grid-template-columns: 1fr; gap: 10px; }
+  .tensura-step-col { flex-direction: row; justify-content: flex-start; }
+}
 </style>
 </head>
 <body data-root="../" data-section="tensura-watch-order">
@@ -140,6 +164,7 @@
   <footer class="tensura-footer" id="tensuraFooter"></footer>
 </main>
 
+<script src="../assets/js/common.js?v=3.0"></script>
 <script src="../assets/js/tensura.js"></script>
 </body>
 </html>

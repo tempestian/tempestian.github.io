@@ -108,12 +108,21 @@
   margin-bottom: 4px;
 }
 .kpi-val {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
   font-size: 1.85rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
   line-height: 1.1;
   color: var(--ink);
+}
+.kpi-val .unit {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink2);
+  letter-spacing: -0.01em;
 }
 .kpi-card:first-child .kpi-val {
   color: var(--accent);
@@ -122,6 +131,7 @@
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--ink2);
+  margin-top: 2px;
 }
 .kpi-sub {
   font-size: 0.74rem;
@@ -129,11 +139,13 @@
 }
 
 /* Analytics Panels */
-.stats-grid {
+.stats-grid,
+.stats-wrap .stats-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  align-items: stretch;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 .stats-panel {
   background: var(--surface);
@@ -164,19 +176,29 @@
 .score-dist-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 11px;
 }
 .score-bar-row {
   display: grid;
-  grid-template-columns: 54px 1fr 44px;
+  grid-template-columns: 74px 1fr 78px;
   align-items: center;
   gap: 10px;
   font-size: 0.82rem;
 }
 .score-tier-lbl {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-weight: 600;
   color: var(--ink2);
   font-variant-numeric: tabular-nums;
+}
+.score-tier-lbl .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
 }
 .score-bar-track {
   height: 7px;
@@ -195,6 +217,7 @@
   font-weight: 600;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 /* Status Meter */
@@ -271,6 +294,11 @@
   font-size: 1.18rem;
   font-weight: 700;
   color: var(--ink);
+}
+.fame-section-head .hint {
+  font-size: 0.8rem;
+  color: var(--ink2);
+  font-weight: 500;
 }
 .fame-grid {
   display: grid;

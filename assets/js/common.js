@@ -473,38 +473,6 @@
       };
     }
 
-    // Step 15: Mobile Floating Bottom Navigation Bar (<768px)
-    if (!document.getElementById('mobileBottomNav')) {
-      const mNav = el('nav', 'mobile-bottom-nav');
-      mNav.id = 'mobileBottomNav';
-      mNav.setAttribute('aria-label', 'Mobil hızlı menü');
-      const mobileLinks = [
-        { id: 'home', label: 'Vitrin', href: root || './', ic: 'home', active: cur === 'home' },
-        { id: 'anime', label: 'Anime', href: root + 'anime/', ic: 'anime', active: isNavActive('anime') },
-        { id: 'movie', label: 'Film', href: root + 'film/', ic: 'movie', active: isNavActive('movie') },
-        { id: 'guide', label: 'Rehber', href: root + 'rehber/', ic: 'guide', active: isNavActive('guide') }
-      ];
-      mNav.innerHTML = mobileLinks.map(m => `
-        <a class="mob-nav-item${m.active ? ' active' : ''}" href="${m.href}">
-          ${icon(m.ic)}
-          <span>${m.label}</span>
-        </a>
-      `).join('') + `
-        <button type="button" class="mob-nav-item" id="mobSearchTrigger" aria-label="Ara">
-          ${icon('search')}
-          <span>Ara</span>
-        </button>
-      `;
-      document.body.appendChild(mNav);
-      const mobSearch = document.getElementById('mobSearchTrigger');
-      if (mobSearch) {
-        mobSearch.onclick = e => {
-          e.preventDefault();
-          if (typeof window.openCommandPalette === 'function') window.openCommandPalette();
-        };
-      }
-    }
-
     let on = false;
     const upd = () => {
       const n = scrollY > 18;

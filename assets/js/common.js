@@ -424,13 +424,27 @@
     const bar = document.querySelector('.bar');
     if (!bar) return;
 
-    const navItems = [
-      { id: 'anime', label: 'Anime', path: 'anime/', icon: 'anime' },
-      { id: 'movie', label: 'Film', path: 'film/', icon: 'movie' },
-      { id: 'series', label: 'Dizi', path: 'dizi/', icon: 'series' },
-      { id: 'book', label: 'Kitap', path: 'kitap/', icon: 'book' },
-      { id: 'manga', label: 'Manga', path: 'manga/', icon: 'manga' },
-      { id: 'guide', label: 'Rehber', path: 'rehber/', icon: 'guide' }
+    const navGroups = [
+      {
+        title: 'Medya Arşivi',
+        items: [
+          { id: 'home', label: 'Vitrin', path: '', icon: 'home' },
+          { id: 'anime', label: 'Anime', path: 'anime/', icon: 'anime' },
+          { id: 'movie', label: 'Film', path: 'film/', icon: 'movie' },
+          { id: 'series', label: 'Dizi', path: 'dizi/', icon: 'series' },
+          { id: 'book', label: 'Kitap', path: 'kitap/', icon: 'book' },
+          { id: 'manga', label: 'Manga', path: 'manga/', icon: 'manga' }
+        ]
+      },
+      {
+        title: 'Üretim & Analiz',
+        items: [
+          { id: 'guide', label: 'Rehberler', path: 'rehber/', icon: 'guide' },
+          { id: 'project', label: 'Projeler', path: 'projeler/', icon: 'code' },
+          { id: 'timeline', label: 'Zaman Tüneli', path: 'zaman-tuneli/', icon: 'clock' },
+          { id: 'stats', label: 'İstatistikler', path: 'istatistik/', icon: 'chart' }
+        ]
+      }
     ];
 
     const isNavActive = id => {
@@ -446,26 +460,269 @@
     const statsHref = existingStatsBtn ? existingStatsBtn.getAttribute('href') : null;
     const statsTitle = existingStatsBtn ? existingStatsBtn.getAttribute('title') : 'İstatistikler';
 
+    const rimuruBadgeSvg = `<svg class="brand-slime-ic" viewBox="0 0 64 54" width="24" height="20" aria-hidden="true"><path d="M8 36 C8 16, 20 7, 32 7 C44 7, 56 16, 56 36 C56 46, 46 50, 32 50 C18 50, 8 46, 8 36 Z" fill="var(--frame-bg)" stroke="var(--line)" stroke-width="4"/><path d="M20 31 L26 29 M38 29 L44 31" stroke="var(--line)" stroke-width="3.5" stroke-linecap="round"/></svg>`;
+
+    const themesList = window.THEMES_LIST || [
+      { id: 'rimuru-dark', label: '💧 Rimuru Midnight' },
+      { id: 'jura-violet', label: '🔮 Jura Violet' },
+      { id: 'tempest-teal', label: '🌊 Tempest Teal' },
+      { id: 'shuna-sakura', label: '🌸 Shuna Sakura' },
+      { id: 'veldora-cream', label: '☀️ Veldora Amber' }
+    ];
+
     bar.innerHTML = `
       <div class="bar-in">
         <div class="bar-left">
-          <a class="nav-brand" href="${root || './'}" id="barTitle">Tempestian</a>
-          <nav class="top-nav" aria-label="Ana gezinme">
-            ${navItems.map(n => `<a class="nav-link${isNavActive(n.id) ? ' active' : ''}" href="${root}${n.path}" data-nav="${n.id}">${n.label}</a>`).join('')}
-          </nav>
+          <button type="button" class="btn Neo-btn sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Menüyü Aç/Kapat" title="Kenar Çubuğunu Aç/Kapat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><line x1="9" y1="4" x2="9" y2="20"/></svg>
+          </button>
+          <a class="nav-brand" href="${root || './'}" id="barTitle">
+            ${rimuruBadgeSvg}
+            <span>Tempestian</span>
+          </a>
+          <div class="win-nav-Cluster">
+            <button type="button" class="btn neo-sq-btn" id="winBackBtn" title="Geri" aria-label="Geri">‹</button>
+            <button type="button" class="btn neo-sq-btn" id="winFwdBtn" title="İleri" aria-label="İleri">›</button>
+          </div>
         </div>
+
+        <button class="neo-search-bar" id="searchTrigger" type="button" aria-label="Hızlı Arama" title="Tüm Arşivde Ara (/ veya Ctrl+K)">
+          <span class="neo-search-ic">${icon('search')}</span>
+          <span class="neo-search-placeholder">Anime, film, dizi, kitap, rehber ara...</span>
+          <kbd>/</kbd>
+        </button>
+
         <div class="bar-actions">
           ${statsHref ? `<a class="btn bar-stats-btn" href="${esc(statsHref)}" title="${esc(statsTitle)}" aria-label="${esc(statsTitle)}">${icon('chart')}</a>` : ''}
-          <button class="search-pill" id="searchTrigger" type="button" aria-label="Hızlı Arama" title="Hızlı Arama (/ veya Ctrl+K)">
-            <span>Ara</span>
-            <kbd>/</kbd>
-          </button>
-          <button class="btn" id="theme" type="button" data-icon="theme" aria-label="Tema"></button>
+          <div class="theme-picker-wrap">
+            <button class="btn theme-trigger-btn" id="themePickerBtn" type="button" title="Tema Seç" aria-label="Tema Seç">
+              <span class="theme-swatch-dot"></span>
+              <span class="theme-btn-lbl">Tema</span>
+            </button>
+            <div class="theme-popover" id="themePopover" hidden>
+              <div class="theme-pop-title">YERLEŞİK TEMALAR</div>
+              ${themesList.map(t => `
+                <button type="button" class="theme-opt-btn" data-preset-opt="${t.id}">
+                  <span>${t.label}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+          <button class="btn" id="theme" type="button" data-icon="theme" aria-label="Hızlı Tema Değiştir" title="Sonraki Temaya Geç (T)"></button>
         </div>
       </div>
     `;
 
+    // Build Left App Sidebar + Main Content Workspace Grid
+    const mainEl = document.querySelector('main.wrap, main.tensura-wrap');
+    if (mainEl && !document.getElementById('appWorkspace')) {
+      const workspace = el('div', 'app-workspace');
+      workspace.id = 'appWorkspace';
+
+      const sidebar = el('aside', 'app-sidebar');
+      sidebar.id = 'appSidebar';
+      sidebar.setAttribute('aria-label', 'Uygulama Menüsü');
+
+      sidebar.innerHTML = `
+        <div class="sidebar-inner">
+          ${navGroups.map(grp => `
+            <div class="sidebar-group">
+              <div class="sidebar-group-lbl">${grp.title}</div>
+              <nav class="sidebar-nav">
+                ${grp.items.map(it => `
+                  <a class="sidebar-link${isNavActive(it.id) ? ' active' : ''}" href="${root}${it.path}" data-nav="${it.id}">
+                    <span class="sb-ic">${icon(it.icon)}</span>
+                    <span class="sb-txt">${it.label}</span>
+                  </a>
+                `).join('')}
+              </nav>
+            </div>
+          `).join('')}
+
+          <div class="sidebar-group sidebar-quick-group">
+            <div class="sidebar-group-lbl">Hızlı Eylemler</div>
+            <button type="button" class="sidebar-link sb-action-btn" id="sbWheelActionBtn">
+              <span class="sb-ic">🎡</span>
+              <span class="sb-txt">Ne İzlemeliyim?</span>
+            </button>
+            <a class="sidebar-link" href="${root}tensura-izleme-sirasi/">
+              <span class="sb-ic">${icon('sparkle')}</span>
+              <span class="sb-txt">Tensura Sırası</span>
+            </a>
+          </div>
+
+          <div class="sidebar-footer">
+            <span class="sb-status-pill"><i class="sb-dot"></i>Jura Tempest v3.5</span>
+          </div>
+        </div>
+      `;
+
+      const queueAside = el('aside', 'app-queue');
+      queueAside.id = 'appQueue';
+      queueAside.setAttribute('aria-label', 'Devam ve Kuyruk');
+      queueAside.innerHTML = `
+        <div class="queue-header">
+          <div class="queue-title-wrap">
+            <span class="queue-title">Kuyruk & Devam</span>
+            <span class="queue-pill" id="queueActiveCount">...</span>
+          </div>
+          <div class="queue-header-actions">
+            <button type="button" class="queue-sq-btn" id="queueWheelBtn" title="Ne İzlemeliyim? Çarkı Çevir">🎡</button>
+            <button type="button" class="queue-sq-btn" id="queueToggleBtn" title="Kuyruğu Daralt/Genişlet">◫</button>
+          </div>
+        </div>
+        <div class="queue-now-playing-card" id="queueNowPlayingCard">
+          <div class="qnp-details"><span class="qnp-sub">Kuyruk yükleniyor...</span></div>
+        </div>
+        <div class="queue-sub-head">
+          <span>Sıradakiler</span>
+          <span id="queueNextCount"></span>
+        </div>
+        <div class="queue-list" id="queueItemsList"></div>
+      `;
+
+      mainEl.parentNode.insertBefore(workspace, mainEl);
+      workspace.append(sidebar, mainEl, queueAside);
+
+      if (!document.getElementById('appPlayerDock')) {
+        const dock = el('footer', 'app-player-dock');
+        dock.id = 'appPlayerDock';
+        dock.setAttribute('aria-label', 'Medya Kontrol Paneli');
+        dock.innerHTML = `
+          <div class="player-dock-scrubber" id="playerDockScrubber" title="İlerleme Çubuğu">
+            <div class="player-dock-scrubber-fill" id="playerDockScrubberFill"></div>
+          </div>
+          <div class="player-dock-left">
+            <img class="player-dock-thumb" id="playerDockThumb" alt="" src="${root}assets/img/icon-192.png">
+            <div class="player-dock-meta">
+              <a class="player-dock-title" id="playerDockTitle" href="${root}anime/">Yükleniyor...</a>
+              <span class="player-dock-sub" id="playerDockSub">...</span>
+            </div>
+            <button type="button" class="player-dock-fav-btn" id="playerDockFavBtn" aria-label="Favorilere ekle" title="Favori">♥</button>
+          </div>
+          <div class="player-dock-center">
+            <button type="button" class="player-ctrl-btn" id="playerShuffleBtn" title="Rastgele (Shuffle)" aria-label="Rastgele">🔀</button>
+            <button type="button" class="player-ctrl-btn" id="playerPrevBtn" title="Önceki" aria-label="Önceki">⏮</button>
+            <button type="button" class="player-ctrl-btn play-btn" id="playerPlayBtn" title="Devam Et / Detay" aria-label="Oynat / Durdur">▶</button>
+            <button type="button" class="player-ctrl-btn" id="playerNextBtn" title="Sonraki" aria-label="Sonraki">⏭</button>
+            <button type="button" class="player-ctrl-btn wheel-btn" id="playerWheelBtn" title="Ne İzlemeliyim? Çarkı Çevir" aria-label="Çarkı Çevir">🎡</button>
+          </div>
+          <div class="player-dock-right">
+            <span class="player-score-badge" id="playerScoreBadge" title="Skor">★ 9.5</span>
+            <button type="button" class="player-queue-toggle-btn" id="playerQueueToggleBtn" title="Kuyruğu Göster/Gizle">
+              <span>◫</span>
+              <span>Kuyruk</span>
+            </button>
+          </div>
+        `;
+        document.body.appendChild(dock);
+      }
+
+      // Mobile horizontal pill strip right inside main top for touch ergonomics
+      const mobStrip = el('nav', 'mobile-section-strip');
+      mobStrip.setAttribute('aria-label', 'Bölümler');
+      const allMobileItems = [...navGroups[0].items, ...navGroups[1].items];
+      mobStrip.innerHTML = allMobileItems.map(it => `
+        <a class="mob-strip-pill${isNavActive(it.id) ? ' active' : ''}" href="${root}${it.path}">${it.label}</a>
+      `).join('');
+      mainEl.insertBefore(mobStrip, mainEl.firstChild);
+
+      const toggleBtn = document.getElementById('sidebarToggleBtn');
+      if (toggleBtn) {
+        if (ls('tp_sidebar_collapsed') === '1') workspace.classList.add('sidebar-collapsed');
+        toggleBtn.onclick = () => {
+          if (window.innerWidth <= 940) {
+            workspace.classList.toggle('sidebar-mobile-open');
+          } else {
+            const c = workspace.classList.toggle('sidebar-collapsed');
+            ls('tp_sidebar_collapsed', c ? '1' : '0');
+          }
+        };
+      }
+
+      const sbWheel = document.getElementById('sbWheelActionBtn');
+      if (sbWheel) {
+        sbWheel.onclick = async () => {
+          const wBtn = document.getElementById('whatToWatchBtn');
+          if (wBtn) { wBtn.click(); return; }
+          if (!cachedAnimeData) {
+            try {
+              const r = await fetch(root + 'data/anime.json');
+              if (r.ok) { const j = await r.json(); cachedAnimeData = j.anime || j.items || []; }
+            } catch (_) {}
+          }
+          const pool = (cachedAnimeData || []).filter(x => x && (x.status === 'watching' || x.status === 'paused' || Boolean(x.next)));
+          openWhatToWatchWheel(pool.length ? pool : (cachedAnimeData || []).slice(0, 10));
+        };
+      }
+    }
+
+    // Floating Chibi Rimuru Mascot in bottom-right corner (like reference image 1!)
+    if (!document.getElementById('chibiRimuruMascot')) {
+      const mascot = el('button', 'chibi-rimuru-mascot');
+      mascot.id = 'chibiRimuruMascot';
+      mascot.type = 'button';
+      mascot.title = "Rimuru'nun Kader Çarkını Aç (Ne İzlemeliyim?)";
+      mascot.setAttribute('aria-label', 'Rimuru Kader Çarkı');
+      mascot.innerHTML = `
+        <span class="chibi-speech">Ne izlesek? 💧</span>
+        <svg class="chibi-rimuru-svg" viewBox="0 0 110 100" width="68" height="62">
+          <!-- Tactile sticker white outline & shadow -->
+          <path d="M14 64 C14 30, 34 14, 55 14 C76 14, 96 30, 96 64 C96 82, 78 88, 55 88 C32 88, 14 82, 14 64 Z" fill="#58b9ff" stroke="#14131d" stroke-width="5.5"/>
+          <path d="M22 60 C22 35, 38 22, 55 22 C72 22, 88 35, 88 60" fill="none" stroke="#9ee6ff" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+          <ellipse cx="38" cy="34" rx="10" ry="5" transform="rotate(-20 38 34)" fill="#ffffff" opacity="0.75"/>
+          <!-- Happy squinted golden/dark anime eyes -->
+          <path d="M35 55 Q42 49 48 55" fill="none" stroke="#14131d" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M62 55 Q68 49 75 55" fill="none" stroke="#14131d" stroke-width="4.5" stroke-linecap="round"/>
+          <!-- Blush cheeks -->
+          <ellipse cx="29" cy="61" rx="5.5" ry="3" fill="#ff6b9d" opacity="0.75"/>
+          <ellipse cx="81" cy="61" rx="5.5" ry="3" fill="#ff6b9d" opacity="0.75"/>
+          <!-- Small happy cat/slime mouth -->
+          <path d="M50 61 Q55 66 60 61" fill="none" stroke="#14131d" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+      `;
+      mascot.onclick = () => {
+        const sbWheel = document.getElementById('sbWheelActionBtn');
+        if (sbWheel) sbWheel.click();
+      };
+      document.body.appendChild(mascot);
+    }
+
     bindThemeAndIcons();
+
+    const winBack = document.getElementById('winBackBtn');
+    const winFwd = document.getElementById('winFwdBtn');
+    if (winBack) winBack.onclick = () => history.back();
+    if (winFwd) winFwd.onclick = () => history.forward();
+
+    const pickerBtn = document.getElementById('themePickerBtn');
+    const popover = document.getElementById('themePopover');
+    if (pickerBtn && popover) {
+      const syncActivePreset = () => {
+        const curPreset = document.documentElement.dataset.preset || 'rimuru-dark';
+        popover.querySelectorAll('[data-preset-opt]').forEach(b => {
+          b.classList.toggle('active', b.dataset.presetOpt === curPreset);
+        });
+      };
+      syncActivePreset();
+      document.addEventListener('themechange', syncActivePreset);
+
+      pickerBtn.onclick = e => {
+        e.stopPropagation();
+        popover.hidden = !popover.hidden;
+        syncActivePreset();
+      };
+      popover.querySelectorAll('[data-preset-opt]').forEach(b => {
+        b.onclick = e => {
+          e.stopPropagation();
+          if (typeof window.setThemePreset === 'function') window.setThemePreset(b.dataset.presetOpt);
+          popover.hidden = true;
+        };
+      });
+      document.addEventListener('click', e => {
+        if (!popover.hidden && !e.target.closest('.theme-picker-wrap')) popover.hidden = true;
+      });
+    }
 
     const searchBtn = document.getElementById('searchTrigger');
     if (searchBtn) {
@@ -477,12 +734,238 @@
 
     let on = false;
     const upd = () => {
-      const n = scrollY > 18;
+      const n = scrollY > 10;
       if (n !== on) { on = n; bar.classList.toggle('on', n); }
     };
     addEventListener('scroll', upd, { passive: true });
     upd();
   }
+
+  // ============================================================================
+  // NUCLEAR V2 MEDIA ENGINE: PERSISTENT QUEUE & PLAYER CONTROLLER
+  // ============================================================================
+  window.TempestianPlayer = {
+    queue: [],
+    activeIndex: 0,
+    isPlaying: true,
+    _eventsBound: false,
+    init(items) {
+      if (!Array.isArray(items) || !items.length) return;
+      this.queue = items;
+      this.activeIndex = 0;
+      this.syncUI();
+      this.bindEvents();
+    },
+    getActive() {
+      return this.queue[this.activeIndex] || this.queue[0];
+    },
+    setActive(idx) {
+      if (idx >= 0 && idx < this.queue.length) {
+        this.activeIndex = idx;
+        this.syncUI();
+      }
+    },
+    next() {
+      if (!this.queue.length) return;
+      this.activeIndex = (this.activeIndex + 1) % this.queue.length;
+      this.syncUI();
+    },
+    prev() {
+      if (!this.queue.length) return;
+      this.activeIndex = (this.activeIndex - 1 + this.queue.length) % this.queue.length;
+      this.syncUI();
+    },
+    shuffle() {
+      if (this.queue.length <= 1) return;
+      let nextIdx;
+      do {
+        nextIdx = Math.floor(Math.random() * this.queue.length);
+      } while (nextIdx === this.activeIndex);
+      this.activeIndex = nextIdx;
+      this.syncUI();
+    },
+    togglePlay() {
+      this.isPlaying = !this.isPlaying;
+      const playBtns = document.querySelectorAll('#playerPlayBtn, #mpcPlayBtn');
+      playBtns.forEach(b => { if (b) b.textContent = this.isPlaying ? '▶' : '⏸'; });
+    },
+    syncUI() {
+      const cur = this.getActive();
+      if (!cur) return;
+
+      let progressTxt = 'Aktif Yapım';
+      let percent = 35;
+      let epCur = 1, epTotal = 12;
+      if (Array.isArray(cur.parts) && cur.parts.length) {
+        const activePart = cur.parts.find(p => p.status === 'CURRENT') || cur.parts[0];
+        if (activePart) {
+          epCur = activePart.watched || 0;
+          epTotal = activePart.episodes || 12;
+          percent = epTotal > 0 ? Math.min(100, Math.round((epCur / epTotal) * 100)) : 50;
+          progressTxt = `Bölüm ${epCur} / ${epTotal} · ${activePart.format || 'TV'}`;
+        }
+      } else if (cur.episodes) {
+        epTotal = cur.episodes;
+        percent = 50;
+        progressTxt = `${epTotal} Bölüm`;
+      }
+
+      const itemUrl = cur.url || (root + (cur._mediaType || 'anime') + '/#' + encodeURIComponent(cur.id || ''));
+      const imgUrl = resolveAsset(cur.image || cur.cover || 'assets/img/icon-512.png');
+      const scoreVal = typeof cur.score === 'number' ? cur.score.toFixed(1) : (cur.calculatedScore ? cur.calculatedScore.toFixed(1) : '9.5');
+
+      const dThumb = document.getElementById('playerDockThumb');
+      if (dThumb) dThumb.src = imgUrl;
+      const dTitle = document.getElementById('playerDockTitle');
+      if (dTitle) {
+        dTitle.textContent = cur.title || 'Başlıksız';
+        dTitle.href = itemUrl;
+      }
+      const dSub = document.getElementById('playerDockSub');
+      if (dSub) dSub.textContent = progressTxt;
+      const dScore = document.getElementById('playerScoreBadge');
+      if (dScore) dScore.textContent = `★ ${scoreVal}`;
+      const dFill = document.getElementById('playerDockScrubberFill');
+      if (dFill) dFill.style.width = `${percent}%`;
+
+      const qCard = document.getElementById('queueNowPlayingCard');
+      if (qCard) {
+        qCard.innerHTML = `
+          <div class="qnp-top">
+            <img class="qnp-thumb" src="${imgUrl}" alt="${esc(cur.title)}">
+            <div class="qnp-details">
+              <span class="qnp-badge">ŞU ANDA İZLENİYOR</span>
+              <a class="qnp-title" href="${itemUrl}">${esc(cur.title)}</a>
+              <span class="qnp-sub">${esc(progressTxt)}</span>
+            </div>
+          </div>
+          <div class="qnp-track-wrap">
+            <div class="qnp-track"><div class="qnp-track-fill" style="width: ${percent}%;"></div></div>
+            <div class="qnp-track-meta"><span>%${percent} tamamlandı</span><span>★ ${scoreVal}</span></div>
+          </div>
+          <div class="qnp-actions">
+            <a class="qnp-btn primary" href="${itemUrl}">▶ Devam Et</a>
+            <button type="button" class="qnp-btn" id="qnpNextTrackBtn">Sonraki ⏭</button>
+          </div>
+        `;
+        const qnpNext = qCard.querySelector('#qnpNextTrackBtn');
+        if (qnpNext) qnpNext.onclick = () => this.next();
+      }
+
+      const qList = document.getElementById('queueItemsList');
+      const qCount = document.getElementById('queueActiveCount');
+      const qNextCount = document.getElementById('queueNextCount');
+      if (qCount) qCount.textContent = `${this.queue.length} Aktif`;
+      if (qNextCount) qNextCount.textContent = `${this.queue.length - 1}`;
+      if (qList) {
+        qList.innerHTML = this.queue.map((it, idx) => {
+          if (idx === this.activeIndex) return '';
+          const itImg = resolveAsset(it.image || it.cover || 'assets/img/icon-192.png');
+          return `
+            <button type="button" class="queue-item" data-q-idx="${idx}">
+              <img class="queue-item-thumb" src="${itImg}" alt="">
+              <div class="queue-item-info">
+                <span class="queue-item-title">${esc(it.title)}</span>
+                <span class="queue-item-meta">${esc(it.status === 'watching' ? 'İzleniyor' : (it.status === 'paused' ? 'Beklemede' : 'Sıradaki'))}</span>
+              </div>
+              <span class="queue-item-play-btn">▶</span>
+            </button>
+          `;
+        }).join('');
+        qList.querySelectorAll('[data-q-idx]').forEach(btn => {
+          btn.onclick = () => this.setActive(Number(btn.dataset.qIdx));
+        });
+      }
+
+      const mpc = document.getElementById('mobilePlayerCard');
+      if (mpc) {
+        const mArt = document.getElementById('mpcArtwork');
+        if (mArt) mArt.src = imgUrl;
+        const mTitle = document.getElementById('mpcTitle');
+        if (mTitle) mTitle.textContent = cur.title;
+        const mSub = document.getElementById('mpcSub');
+        if (mSub) mSub.textContent = progressTxt;
+        const mFill = document.getElementById('mpcScrubberFill');
+        if (mFill) mFill.style.width = `${percent}%`;
+        const mCur = document.getElementById('mpcTimeCur');
+        if (mCur) mCur.textContent = `Bölüm ${epCur}`;
+        const mTot = document.getElementById('mpcTimeTotal');
+        if (mTot) mTot.textContent = `${epTotal} Bölüm`;
+        const mQpList = document.getElementById('mpcQpList');
+        if (mQpList) {
+          mQpList.innerHTML = this.queue.slice(0, 5).map((it, idx) => {
+            if (idx === this.activeIndex) return '';
+            const itImg = resolveAsset(it.image || it.cover || 'assets/img/icon-192.png');
+            return `
+              <button type="button" class="queue-item" data-q-idx="${idx}">
+                <img class="queue-item-thumb" src="${itImg}" alt="">
+                <div class="queue-item-info">
+                  <span class="queue-item-title">${esc(it.title)}</span>
+                  <span class="queue-item-meta">${esc(it.status === 'watching' ? 'İzleniyor' : 'Sıradaki')}</span>
+                </div>
+                <span class="queue-item-play-btn">▶</span>
+              </button>
+            `;
+          }).join('');
+          mQpList.querySelectorAll('[data-q-idx]').forEach(btn => {
+            btn.onclick = () => this.setActive(Number(btn.dataset.qIdx));
+          });
+        }
+      }
+    },
+    bindEvents() {
+      if (this._eventsBound) return;
+      this._eventsBound = true;
+      const pPlay = document.getElementById('playerPlayBtn');
+      if (pPlay) pPlay.onclick = () => this.togglePlay();
+      const pNext = document.getElementById('playerNextBtn');
+      if (pNext) pNext.onclick = () => this.next();
+      const pPrev = document.getElementById('playerPrevBtn');
+      if (pPrev) pPrev.onclick = () => this.prev();
+      const pShuf = document.getElementById('playerShuffleBtn');
+      if (pShuf) pShuf.onclick = () => this.shuffle();
+      const pWheel = document.getElementById('playerWheelBtn');
+      if (pWheel) pWheel.onclick = () => openWhatToWatchWheel(this.queue);
+
+      const mPlay = document.getElementById('mpcPlayBtn');
+      if (mPlay) mPlay.onclick = () => this.togglePlay();
+      const mNext = document.getElementById('mpcNextBtn');
+      if (mNext) mNext.onclick = () => this.next();
+      const mPrev = document.getElementById('mpcPrevBtn');
+      if (mPrev) mPrev.onclick = () => this.prev();
+      const mShuf = document.getElementById('mpcShuffleBtn');
+      if (mShuf) mShuf.onclick = () => this.shuffle();
+      const mWheel = document.getElementById('mpcWheelBtn');
+      if (mWheel) mWheel.onclick = () => openWhatToWatchWheel(this.queue);
+
+      const qToggle = document.getElementById('queueToggleBtn');
+      const pQToggle = document.getElementById('playerQueueToggleBtn');
+      const ws = document.getElementById('appWorkspace');
+      const toggleQ = () => {
+        if (!ws) return;
+        const isCol = ws.classList.toggle('queue-collapsed');
+        ls('tp_queue_collapsed', isCol ? '1' : '0');
+      };
+      if (qToggle) qToggle.onclick = toggleQ;
+      if (pQToggle) pQToggle.onclick = toggleQ;
+      if (ws && ls('tp_queue_collapsed') === '1') {
+        ws.classList.add('queue-collapsed');
+      }
+
+      const qWheel = document.getElementById('queueWheelBtn');
+      if (qWheel) qWheel.onclick = () => openWhatToWatchWheel(this.queue);
+
+      const scrubber = document.getElementById('playerDockScrubber');
+      if (scrubber) {
+        scrubber.onclick = e => {
+          const rect = scrubber.getBoundingClientRect();
+          const pct = Math.max(0, Math.min(100, Math.round(((e.clientX - rect.left) / rect.width) * 100)));
+          const fill = document.getElementById('playerDockScrubberFill');
+          if (fill) fill.style.width = `${pct}%`;
+        };
+      }
+    }
+  };
 
   // ============================================================================
   // STEP 5 & 7 — IN-PLACE HOME DETAIL MODAL SHEET & CLICKABLE GENRE CHIPS
@@ -793,6 +1276,9 @@
     const isMasterpiece = Boolean(item.favorite || (typeof effScore === 'number' && effScore >= 9.5));
     const a = el('a', `poster-card grad-${gradIndex % 10}${isMasterpiece ? ' is-fav' : ''}`);
     a.href = href;
+
+    const artFrame = el('div', 'poster-art-frame');
+
     if (item.image) {
       const img = el('img');
       img.src = resolveAsset(item.image.replace('/cover/medium/', '/cover/large/'));
@@ -807,14 +1293,14 @@
         img.classList.add('in');
         a.classList.add('img-loaded');
       }
-      a.append(img);
+      artFrame.append(img);
     } else {
       a.classList.add('img-loaded');
     }
     if (typeof effScore === 'number' && effScore > 0) {
       const badge = el('span', 'poster-rating');
       badge.innerHTML = `<span class="star">★</span>${effScore.toFixed(1)}`;
-      a.append(badge);
+      artFrame.append(badge);
     }
 
     const ps = parts(item);
@@ -828,17 +1314,17 @@
         : item.status === 'paused'
         ? (watched > 0 ? `Beklemede · ${total ? watched + '/' + total : watched}` : 'Beklemede')
         : item.next ? 'Sıradaki' : '';
-      if (stTxt) a.append(el('span', 'poster-status-dot', stTxt));
+      if (stTxt) artFrame.append(el('span', 'poster-status-dot', stTxt));
       if (watched > 0 && total > 0) {
         const pct = Math.min(100, Math.round((watched / total) * 100));
         const pg = el('div', 'poster-card-pg');
         pg.innerHTML = `<i style="width:${pct}%"></i>`;
-        a.append(pg);
+        artFrame.append(pg);
       }
     }
 
     const title = el('h3', 'poster-title', item.title || '');
-    a.append(title);
+    a.append(artFrame, title);
 
     a.addEventListener('click', e => {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -1757,6 +2243,22 @@
     initTierExportButton();
     initLocalSearchEnhancements();
 
+    // Live Shelf Inline Search Filters (Nuclear v2 Shelf Architecture)
+    document.addEventListener('input', e => {
+      if (e.target && e.target.classList.contains('shelf-inline-filter')) {
+        const targetRailId = e.target.dataset.target;
+        const rail = document.getElementById(targetRailId);
+        if (!rail) return;
+        const q = e.target.value.trim().toLowerCase();
+        rail.querySelectorAll('.poster-card').forEach(card => {
+          const title = (card.querySelector('.poster-card-title')?.textContent || '').toLowerCase();
+          const meta = (card.querySelector('.poster-card-meta')?.textContent || '').toLowerCase();
+          const match = !q || title.includes(q) || meta.includes(q);
+          card.style.display = match ? '' : 'none';
+        });
+      }
+    });
+
     // Back to top
     let topBtn = null;
     window.addEventListener('scroll', () => {
@@ -1875,6 +2377,10 @@
             ...bookList.filter(isContinuing).map(x => ({ ...x, _mediaType: 'book' }))
           ];
           wheelBtn.onclick = () => openWhatToWatchWheel(activePool);
+
+          if (activePool.length && window.TempestianPlayer) {
+            window.TempestianPlayer.init(activePool);
+          }
         }
 
         const guideList = (guidesJson && (guidesJson.items || guidesJson.guides)) || [];
@@ -1888,6 +2394,22 @@
         if (ps && projectList.length) ps.textContent = `${projectList.length} açık kaynak proje · GitHub`;
 
         renderHomeGuidesAndProjects(guideList, projectList);
+      } else if (cur !== 'admin') {
+        // Hydrate Nuclear player & queue for subpages as well!
+        if (!cachedAnimeData) {
+          try {
+            const r = await fetch(root + 'data/anime.json');
+            if (r.ok) {
+              const j = await r.json();
+              cachedAnimeData = (j && (j.anime || j.items)) || [];
+              const isContinuing = x => x && (x.status === 'watching' || x.status === 'paused' || Boolean(x.next));
+              const pool = cachedAnimeData.filter(isContinuing).map(x => ({ ...x, _mediaType: 'anime' }));
+              if (pool.length && window.TempestianPlayer) {
+                window.TempestianPlayer.init(pool);
+              }
+            }
+          } catch (_) {}
+        }
       }
     } catch (e) {
       console.warn('Bootstrap error:', e);

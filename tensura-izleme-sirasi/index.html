@@ -14,7 +14,7 @@
 <script src="../assets/js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="../assets/css/style.css?v=3.2">
+<link rel="stylesheet" href="../assets/css/style.css?v=4.0">
 <style>
 .tensura-bar-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .tensura-brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1rem; color: var(--ink); letter-spacing: -0.02em; }
@@ -24,93 +24,96 @@
   padding: 28px 30px;
   border-radius: var(--radius-lg);
   margin-bottom: 20px;
-  background: linear-gradient(108deg, #0d1018 0%, #15192a 38%, #2d1e5b 74%, #9a3e76 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow-lg);
+  color: var(--ink);
 }
-.tensura-hero h1 { margin: 0 0 8px; font-size: clamp(1.55rem, 3.2vw, 2.2rem); font-weight: 800; letter-spacing: -0.03em; color: #ffffff; }
-.tensura-hero .sub { margin: 0; color: rgba(226, 232, 245, 0.8); font-size: 0.94rem; }
+.tensura-hero h1 { margin: 0 0 8px; font-size: clamp(1.55rem, 3.2vw, 2.2rem); font-weight: 800; letter-spacing: -0.03em; color: var(--ink); }
+.tensura-hero .sub { margin: 0; color: var(--ink2); font-size: 0.94rem; font-weight: 600; }
 .tensura-note-box {
   margin-top: 16px;
   padding: 12px 15px;
-  border-radius: var(--radius-sm);
-  background: rgba(11, 13, 20, 0.48);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(226, 232, 245, 0.85);
+  border-radius: var(--radius-xs);
+  background: var(--bg-elev);
+  border: 2px solid var(--line);
+  color: var(--ink);
   font-size: 0.88rem;
+  font-weight: 600;
   display: flex;
   gap: 10px;
 }
 .tensura-controls {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 14px 18px; border-radius: var(--radius-md); background: var(--surface); border: 1px solid var(--border); margin-bottom: 18px;
+  padding: 14px 18px; border-radius: var(--radius-md); background: var(--surface); border: 2px solid var(--line); box-shadow: var(--neo-shadow-sm); margin-bottom: 18px;
 }
 .tensura-filters { display: flex; flex-wrap: wrap; gap: 8px; }
 .tensura-filter-btn {
   height: 32px; padding: 0 13px; border-radius: var(--radius-pill);
-  border: 1px solid var(--border); background: var(--bg-elev); color: var(--ink2);
-  font-size: 0.82rem; font-weight: 600;
+  border: 2px solid var(--line); box-shadow: var(--neo-shadow-sm); background: var(--surface); color: var(--ink);
+  font-size: 0.82rem; font-weight: 700; cursor: pointer;
+  transition: transform 120ms var(--ease), box-shadow 120ms var(--ease);
 }
-.tensura-filter-btn:hover { border-color: var(--border-strong); color: var(--ink); }
-.tensura-filter-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tensura-filter-btn:hover { transform: translate(-1px, -1px); box-shadow: 2px 2px 0px var(--line); }
+.tensura-filter-btn.active { background: var(--frame-bg); color: var(--frame-ink); border-color: var(--line); box-shadow: 2px 2px 0px var(--line); }
 .tensura-progress-wrap { display: flex; align-items: center; gap: 10px; min-width: 180px; }
-.tensura-progress-text { font-size: 0.82rem; font-weight: 600; color: var(--ink2); font-variant-numeric: tabular-nums; }
-.tensura-progress-bar { width: 120px; height: 5px; border-radius: var(--radius-pill); background: var(--glass2); overflow: hidden; }
+.tensura-progress-text { font-size: 0.82rem; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tensura-progress-bar { width: 120px; height: 6px; border-radius: var(--radius-pill); background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; }
 .tensura-progress-fill { height: 100%; width: 0%; border-radius: var(--radius-pill); background: var(--accent); transition: width 260ms var(--ease); }
 .tensura-timeline { display: flex; flex-direction: column; gap: 12px; }
 .tensura-card {
   display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px;
-  padding: 18px 20px; border-radius: var(--radius-md);
-  background: var(--surface); border: 1px solid var(--border);
-  transition: transform 160ms var(--ease), border-color 160ms var(--ease), opacity 160ms var(--ease);
+  padding: 18px 20px; border-radius: var(--radius-sm);
+  background: var(--surface); border: 2px solid var(--line); box-shadow: var(--neo-shadow-sm);
+  transition: transform 120ms var(--ease), box-shadow 120ms var(--ease), opacity 160ms var(--ease);
 }
-.tensura-card:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+.tensura-card:hover { transform: translate(-1px, -1px); box-shadow: 2px 2px 0px var(--line); }
 .tensura-card.is-watched { opacity: 0.68; }
 .tensura-card.is-watched .tensura-title { text-decoration: line-through; text-decoration-color: var(--accent); }
 .tensura-step-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .tensura-step-num {
-  width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
-  font-weight: 700; font-size: 0.94rem; background: var(--surface-2); border: 1px solid var(--border-strong); color: var(--ink);
+  width: 40px; height: 40px; border-radius: 8px; display: grid; place-items: center;
+  font-weight: 800; font-size: 0.94rem; background: var(--surface-2); border: 2px solid var(--line); color: var(--ink);
 }
-.tensura-card.is-watched .tensura-step-num { background: rgba(52, 211, 153, 0.16); border-color: rgba(52, 211, 153, 0.4); color: var(--ok); }
+.tensura-card.is-watched .tensura-step-num { background: rgba(52, 211, 153, 0.2); color: var(--ok); }
 .tensura-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .tensura-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
-.tensura-pill { display: inline-flex; align-items: center; padding: 2px 9px; border-radius: var(--radius-pill); font-size: 0.72rem; font-weight: 600; background: var(--glass2); border: 1px solid var(--border); color: var(--ink2); }
-.tensura-pill.kind-main { background: var(--accent-soft); border-color: rgba(88, 185, 255, 0.35); color: var(--accent); }
-.tensura-pill.kind-movie { background: rgba(168, 85, 247, 0.16); border-color: rgba(168, 85, 247, 0.35); color: #c084fc; }
-.tensura-pill.kind-ova { background: rgba(245, 197, 66, 0.15); border-color: rgba(245, 197, 66, 0.35); color: var(--gold); }
-.tensura-pill.req { background: rgba(52, 211, 153, 0.15); border-color: rgba(52, 211, 153, 0.35); color: var(--ok); }
-.tensura-title { margin: 0 0 4px; font-size: 1.04rem; font-weight: 700; color: var(--ink); }
-.tensura-episodes { font-size: 0.78rem; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+.tensura-pill { display: inline-flex; align-items: center; padding: 2px 9px; border-radius: var(--radius-pill); font-size: 0.72rem; font-weight: 700; background: var(--surface-2); border: 1.5px solid var(--line); color: var(--ink); }
+.tensura-pill.kind-main { background: var(--accent-soft); color: var(--accent); }
+.tensura-pill.kind-movie { background: rgba(168, 85, 247, 0.16); color: #c084fc; }
+.tensura-pill.kind-ova { background: rgba(245, 197, 66, 0.15); color: var(--gold); }
+.tensura-pill.req { background: rgba(52, 211, 153, 0.15); color: var(--ok); }
+.tensura-title { margin: 0 0 4px; font-size: 1.05rem; font-weight: 800; color: var(--ink); }
+.tensura-episodes { font-size: 0.78rem; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
 .tensura-desc, .tensura-note { margin: 8px 0 0; font-size: 0.86rem; color: var(--ink2); line-height: 1.55; }
 .tensura-links, .tensura-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
 .tensura-link-btn, .tensura-watch-btn {
-  display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: var(--radius-sm);
-  background: var(--ink); color: var(--bg); font-size: 0.8rem; font-weight: 700;
-  transition: opacity 150ms var(--ease), transform 150ms var(--ease);
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: var(--radius-xs);
+  background: var(--frame-bg); color: var(--frame-ink); border: 2px solid var(--line); box-shadow: var(--neo-shadow-sm); font-size: 0.8rem; font-weight: 800;
+  text-decoration: none; cursor: pointer; transition: transform 120ms var(--ease), box-shadow 120ms var(--ease);
 }
-.tensura-link-btn:hover, .tensura-watch-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-.tensura-link-btn.secondary { background: var(--glass2); color: var(--ink); border: 1px solid var(--border-strong); font-weight: 600; }
+.tensura-link-btn:hover, .tensura-watch-btn:hover { transform: translate(-1px, -1px); box-shadow: 2px 2px 0px var(--line); }
+.tensura-link-btn.secondary { background: var(--surface); color: var(--ink); }
 .tensura-no-link { font-size: 0.78rem; color: var(--ink3); font-style: italic; }
 .tensura-check-btn {
-  height: 32px; padding: 0 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong);
-  background: var(--bg-elev); color: var(--ink2); font-size: 0.78rem; font-weight: 600;
-  transition: background 150ms var(--ease), border-color 150ms var(--ease), color 150ms var(--ease);
+  height: 32px; padding: 0 12px; border-radius: var(--radius-xs); border: 2px solid var(--line);
+  background: var(--surface); color: var(--ink); font-size: 0.78rem; font-weight: 700; cursor: pointer;
+  transition: transform 120ms var(--ease);
 }
-.tensura-check-btn:hover { border-color: var(--accent); color: var(--ink); }
-.tensura-card.is-watched .tensura-check-btn, .tensura-check-btn.checked { background: rgba(52, 211, 153, 0.16); border-color: rgba(52, 211, 153, 0.4); color: var(--ok); }
+.tensura-check-btn:hover { transform: translate(-1px, -1px); }
+.tensura-card.is-watched .tensura-check-btn, .tensura-check-btn.checked { background: rgba(52, 211, 153, 0.2); color: var(--ok); }
 .tensura-preview-banner {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
   padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 16px;
-  background: rgba(245, 197, 66, 0.14); border: 1px solid rgba(245, 197, 66, 0.35); color: var(--gold);
-  font-size: 0.84rem; font-weight: 600;
+  background: rgba(245, 197, 66, 0.14); border: 2px solid var(--gold); color: var(--gold);
+  font-size: 0.84rem; font-weight: 700;
 }
 .tensura-empty {
   text-align: center; padding: 40px 20px; border-radius: var(--radius-md);
-  background: var(--surface); border: 1px solid var(--border); color: var(--ink2); font-size: 0.9rem;
+  background: var(--surface); border: 2px solid var(--line); color: var(--ink2); font-size: 0.9rem;
 }
 .tensura-footer {
-  margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--border);
+  margin-top: 32px; padding-top: 18px; border-top: 2px dashed rgba(128, 128, 128, 0.25);
   text-align: center; font-size: 0.78rem; color: var(--ink3);
 }
 @media (max-width: 640px) {
@@ -164,7 +167,7 @@
   <footer class="tensura-footer" id="tensuraFooter"></footer>
 </main>
 
-<script src="../assets/js/common.js?v=3.2"></script>
-<script src="../assets/js/tensura.js?v=3.2"></script>
+<script src="../assets/js/common.js?v=4.0"></script>
+<script src="../assets/js/tensura.js?v=4.0"></script>
 </body>
 </html>

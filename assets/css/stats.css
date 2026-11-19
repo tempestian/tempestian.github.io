@@ -23,27 +23,29 @@
   height: 34px;
   padding: 0 14px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--border);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow-sm);
   background: var(--surface);
-  color: var(--ink2);
+  color: var(--ink);
   font-size: 0.83rem;
-  font-weight: 500;
+  font-weight: 700;
   white-space: nowrap;
-  transition: background 150ms var(--ease), border-color 150ms var(--ease), color 150ms var(--ease);
+  cursor: pointer;
+  transition: transform 120ms var(--ease), box-shadow 120ms var(--ease);
 }
 .stats-nav-item:hover:not(.is-active) {
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0px var(--line);
   background: var(--surface-2);
-  border-color: var(--border-strong);
-  color: var(--ink);
 }
 .stats-nav-item.is-active {
-  background: var(--ink);
-  color: var(--bg);
-  border-color: var(--ink);
-  font-weight: 700;
+  background: var(--frame-bg);
+  color: var(--frame-ink);
+  box-shadow: 2px 2px 0px var(--line);
+  font-weight: 800;
 }
 
-/* Hero Banner matching 4376.jpg */
+/* Hero Banner */
 .stats-hero {
   position: relative;
   display: flex;
@@ -52,20 +54,20 @@
   padding: 28px 32px;
   margin-bottom: 22px;
   border-radius: var(--radius-lg);
-  background: linear-gradient(108deg, #0d1018 0%, #15192a 38%, #2d1e5b 74%, #9a3e76 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  box-shadow: var(--shadow-md);
+  background: var(--surface);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow-lg);
+  color: var(--ink);
 }
 .stats-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: #58b9ff;
+  color: var(--accent);
   margin-bottom: 6px;
 }
 .stats-hero h1 {
@@ -73,12 +75,13 @@
   font-size: clamp(1.6rem, 3.2vw, 2.25rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #ffffff;
+  color: var(--ink);
 }
 .stats-hero .sub {
   margin: 0;
   font-size: 0.92rem;
-  color: rgba(226, 232, 245, 0.78);
+  color: var(--ink2);
+  font-weight: 600;
   max-width: 660px;
 }
 
@@ -93,15 +96,16 @@
   padding: 18px 20px;
   border-radius: var(--radius-md);
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 4px;
-  transition: transform 160ms var(--ease), border-color 160ms var(--ease);
+  transition: transform 140ms var(--ease), box-shadow 140ms var(--ease);
 }
 .kpi-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--border-strong);
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0px var(--line);
 }
 .kpi-icon {
   font-size: 1.15rem;
@@ -120,7 +124,7 @@
 }
 .kpi-val .unit {
   font-size: 0.92rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--ink2);
   letter-spacing: -0.01em;
 }
@@ -129,13 +133,14 @@
 }
 .kpi-lbl {
   font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--ink2);
+  font-weight: 700;
+  color: var(--ink);
   margin-top: 2px;
 }
 .kpi-sub {
   font-size: 0.74rem;
   color: var(--ink3);
+  font-weight: 600;
 }
 
 /* Analytics Panels */
@@ -149,7 +154,8 @@
 }
 .stats-panel {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow);
   border-radius: var(--radius-md);
   padding: 20px 22px;
 }
@@ -164,12 +170,13 @@
 .stats-panel-head h3 {
   margin: 0;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--ink);
 }
 .stats-panel-head .hint {
   font-size: 0.76rem;
   color: var(--ink3);
+  font-weight: 600;
 }
 
 /* Score Distribution Bars */
@@ -281,7 +288,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Hall of Fame Poster Grid (Matches 4376.jpg cards) */
+/* Hall of Fame Poster Grid */
 .fame-section-head {
   display: flex;
   align-items: baseline;
@@ -292,82 +299,77 @@
 .fame-section-head h2 {
   margin: 0;
   font-size: 1.18rem;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--ink);
 }
 .fame-section-head .hint {
   font-size: 0.8rem;
   color: var(--ink2);
-  font-weight: 500;
+  font-weight: 600;
 }
 .fame-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(156px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(164px, 1fr));
   gap: 14px;
 }
 .fame-card {
   position: relative;
-  display: block;
-  aspect-ratio: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 9px 9px 11px;
   border-radius: var(--radius-md);
-  overflow: hidden;
-  background: linear-gradient(180deg, #213d82 0%, #101627 100%);
-  border: 1px solid var(--border);
+  background: var(--frame-bg);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow);
   cursor: pointer;
-  padding: 0;
   text-align: left;
-  transition: transform 200ms var(--ease), border-color 200ms var(--ease), box-shadow 200ms var(--ease);
+  transition: transform 150ms var(--ease), box-shadow 150ms var(--ease);
 }
 .fame-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-md);
+  transform: translate(-2px, -2px);
+  box-shadow: var(--neo-shadow-lg);
 }
 .fame-thumb-box {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
 }
 .fame-thumb {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.fame-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(11, 13, 20, 0.92) 0%, rgba(11, 13, 20, 0.3) 45%, transparent 75%);
-  pointer-events: none;
-}
+.fame-card::after { display: none; }
 .fame-score-badge {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 7px;
+  right: 7px;
   z-index: 2;
-  padding: 3px 7px;
-  border-radius: 7px;
-  background: rgba(11, 13, 20, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(11, 13, 20, 0.85);
+  border: 1.5px solid var(--line);
   color: var(--gold);
-  font-size: 0.74rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 .fame-title {
-  position: absolute;
-  left: 11px;
-  right: 11px;
-  bottom: 11px;
-  z-index: 2;
+  position: static;
   margin: 0;
-  font-size: 0.84rem;
-  font-weight: 600;
-  line-height: 1.28;
-  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--frame-ink);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-shadow: none;
 }
 
 .empty-stats-card {

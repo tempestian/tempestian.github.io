@@ -1,35 +1,45 @@
 (() => {
-  const root = document.documentElement;
-  const mq = matchMedia('(prefers-color-scheme: dark)');
+  const THEMES = {
+    'rimuru-dark': { mode: 'dark', color: '#14131d', label: '💧 Rimuru Midnight' },
+    'jura-violet': { mode: 'dark', color: '#1a1426', label: '🔮 Jura Violet' },
+    'tempest-teal': { mode: 'dark', color: '#0d1b1e', label: '🌊 Tempest Teal' },
+    'shuna-sakura': { mode: 'light', color: '#fdf2f6', label: '🌸 Shuna Sakura' },
+    'veldora-cream': { mode: 'light', color: '#faf3e8', label: '☀️ Veldora Amber' }
+  };
+  const ORDER = Object.keys(THEMES);
+  const d = document.documentElement;
+  let saved = null;
+  try { saved = localStorage.getItem('tp_theme_preset') || localStorage.getItem('theme'); } catch (e) {}
+  if (saved === 'dark') saved = 'rimuru-dark';
+  if (saved === 'light') saved = 'shuna-sakura';
+  if (!saved || !THEMES[saved]) saved = 'rimuru-dark';
 
-  const savedTheme = () => {
-    try { return localStorage.getItem('theme'); } catch (e) { return null; }
+  const set = p => {
+    const preset = THEMES[p] ? p : 'rimuru-dark';
+    const meta = THEMES[preset];
+    d.dataset.theme = meta.mode;
+    d.dataset.preset = preset;
+    d.style.colorScheme = meta.mode;
+    const c = document.querySelector('meta[name="theme-color"]');
+    if (c) c.content = meta.color;
   };
 
-  const urlTheme = () => {
+  set(saved);
+
+  window.THEMES_LIST = ORDER.map(id => ({ id, ...THEMES[id] }));
+  window.setThemePreset = p => {
+    if (!THEMES[p]) return;
+    set(p);
     try {
-      const p = new URLSearchParams(location.search).get('theme');
-      return (p === 'light' || p === 'dark') ? p : null;
-    } catch (e) { return null; }
+      localStorage.setItem('tp_theme_preset', p);
+      localStorage.setItem('theme', THEMES[p].mode);
+    } catch (e) {}
+    document.dispatchEvent(new CustomEvent('themechange', { detail: { preset: p, ...THEMES[p] } }));
   };
-
-  const apply = (mode) => {
-    const m = mode || urlTheme() || root.dataset.theme || savedTheme() || 'dark';
-    root.dataset.theme = m;
-    const c = document.querySelector('meta[name=theme-color]');
-    if (c) c.content = m === 'dark' ? '#0b0d14' : '#f4f6fb';
-    document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: m } }));
-  };
-
-  apply(urlTheme() || savedTheme() || 'dark');
-
-  mq.addEventListener('change', e => {
-    if (!savedTheme()) apply(e.matches ? 'dark' : 'light');
-  });
 
   window.toggleTheme = () => {
-    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    try { localStorage.setItem('theme', next); } catch (e) {}
-    apply(next);
+    const cur = d.dataset.preset || 'rimuru-dark';
+    const next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length];
+    window.setThemePreset(next);
   };
 })();

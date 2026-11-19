@@ -5,6 +5,7 @@
   padding-bottom: 72px;
 }
 
+/* Hero Banner */
 .timeline-hero {
   display: flex;
   flex-direction: column;
@@ -12,22 +13,23 @@
   padding: 28px 32px;
   margin-bottom: 22px;
   border-radius: var(--radius-lg);
-  background: linear-gradient(108deg, #0d1018 0%, #15192a 38%, #2d1e5b 74%, #9a3e76 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  box-shadow: var(--shadow-md);
+  background: var(--surface);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow-lg);
+  color: var(--ink);
 }
 .timeline-hero h1 {
   margin: 0 0 6px;
   font-size: clamp(1.65rem, 3.4vw, 2.3rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #ffffff;
+  color: var(--ink);
 }
 .timeline-hero .sub {
   margin: 0;
   font-size: 0.92rem;
-  color: rgba(226, 232, 245, 0.78);
+  color: var(--ink2);
+  font-weight: 600;
   max-width: 640px;
 }
 
@@ -54,24 +56,26 @@
   height: 34px;
   padding: 0 14px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--border);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow-sm);
   background: var(--surface);
-  color: var(--ink2);
+  color: var(--ink);
   font-size: 0.82rem;
-  font-weight: 500;
+  font-weight: 700;
   white-space: nowrap;
-  transition: background 150ms var(--ease), border-color 150ms var(--ease), color 150ms var(--ease);
+  cursor: pointer;
+  transition: transform 120ms var(--ease), box-shadow 120ms var(--ease);
 }
 .timeline-cat-btn:hover:not(.is-active) {
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0px var(--line);
   background: var(--surface-2);
-  border-color: var(--border-strong);
-  color: var(--ink);
 }
 .timeline-cat-btn.is-active {
-  background: var(--ink);
-  color: var(--bg);
-  border-color: var(--ink);
-  font-weight: 700;
+  background: var(--frame-bg);
+  color: var(--frame-ink);
+  box-shadow: 2px 2px 0px var(--line);
+  font-weight: 800;
 }
 
 .timeline-mode-toggle,
@@ -80,26 +84,33 @@
   align-items: center;
   gap: 4px;
   padding: 3px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow-sm);
 }
 .timeline-mode-btn,
 .timeline-order-btn {
   height: 28px;
   padding: 0 11px;
-  border: none;
-  border-radius: 7px;
+  border: 1.5px solid transparent;
+  border-radius: 5px;
   background: transparent;
   color: var(--ink2);
   font-size: 0.78rem;
-  font-weight: 600;
-  transition: background 140ms var(--ease), color 140ms var(--ease);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 120ms var(--ease), color 120ms var(--ease);
+}
+.timeline-mode-btn:hover,
+.timeline-order-btn:hover {
+  color: var(--ink);
 }
 .timeline-mode-btn.is-active,
 .timeline-order-btn.is-active {
-  background: var(--surface-2);
-  color: var(--ink);
+  background: var(--frame-bg);
+  color: var(--frame-ink);
+  border-color: var(--line);
 }
 
 /* Quick Year Jump Bar */
@@ -112,14 +123,15 @@
   margin-bottom: 24px;
   border-radius: var(--radius-md);
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow-sm);
 }
 .tyj-lbl {
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--ink3);
+  color: var(--ink);
   margin-right: 4px;
 }
 .tyj-btn {
@@ -129,23 +141,23 @@
   height: 28px;
   padding: 0 11px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--border);
-  background: var(--bg-elev);
-  color: var(--ink2);
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
-  transition: background 140ms var(--ease), border-color 140ms var(--ease), color 140ms var(--ease);
+  cursor: pointer;
+  transition: transform 120ms var(--ease), background 120ms var(--ease);
 }
 .tyj-btn:hover {
+  transform: translate(-1px, -1px);
   background: var(--surface-2);
-  border-color: var(--accent);
-  color: var(--ink);
 }
 .tyj-btn small {
   font-size: 0.68rem;
   color: var(--accent);
-  font-weight: 700;
+  font-weight: 800;
 }
 
 /* Vertical Spine & Items */
@@ -161,8 +173,7 @@
   bottom: 24px;
   left: 20px;
   width: 2px;
-  background: var(--border-strong);
-  border-radius: 2px;
+  background: var(--line);
 }
 
 .timeline-year-group {
@@ -180,17 +191,19 @@
   gap: 8px;
   padding: 5px 14px;
   border-radius: var(--radius-pill);
-  background: var(--surface-2);
-  border: 1px solid var(--border-strong);
-  color: var(--ink);
+  background: var(--frame-bg);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow-sm);
+  color: var(--frame-ink);
   font-size: 0.96rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 .timeline-year-count {
   font-size: 0.76rem;
-  font-weight: 500;
-  color: var(--ink2);
+  font-weight: 700;
+  color: var(--frame-ink);
+  opacity: 0.85;
 }
 
 .timeline-items-list {
@@ -210,7 +223,7 @@
   height: 12px;
   border-radius: 50%;
   background: var(--bg);
-  border: 2px solid var(--accent);
+  border: 2px solid var(--line);
   z-index: 2;
 }
 
@@ -219,25 +232,26 @@
   align-items: center;
   gap: 14px;
   padding: 12px 16px;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   background: var(--surface);
-  border: 1px solid var(--border);
-  transition: background 150ms var(--ease), border-color 150ms var(--ease), transform 150ms var(--ease);
+  border: 2px solid var(--line);
+  box-shadow: var(--neo-shadow-sm);
+  transition: transform 120ms var(--ease), box-shadow 120ms var(--ease), background 120ms var(--ease);
 }
 .timeline-card:hover {
   background: var(--surface-2);
-  border-color: var(--border-strong);
-  transform: translateX(3px);
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0px var(--line);
 }
 
 .timeline-thumb {
   width: 46px;
   height: 66px;
-  border-radius: 8px;
+  border-radius: 6px;
   object-fit: cover;
   flex-shrink: 0;
   background: var(--bg-elev);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--line);
 }
 
 .timeline-info {

@@ -188,16 +188,26 @@ function build(it){
 
   if(effScore){
     const sc = h('span','score glass');
+    if (effScore >= 9.0) sc.classList.add('sc-s');
+    else if (effScore >= 8.0) sc.classList.add('sc-a');
+    else if (effScore >= 7.0) sc.classList.add('sc-b');
+    else sc.classList.add('sc-c');
     sc.setAttribute('role','img'); sc.setAttribute('aria-label','Puan '+effScore+'/10'); sc.innerHTML = UI.icon('star'); sc.append(String(effScore));
     li.append(sc);
   }
   const im = li.querySelector('img');
   im.onload = () => { im.classList.add('in'); po.classList.add('img-loaded'); };
+  im.onerror = () => {
+    im.onerror = null;
+    im.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300"><rect width="200" height="300" fill="%23232035"/><text x="50%25" y="48%25" dominant-baseline="middle" text-anchor="middle" font-size="44">🎬</text><text x="50%25" y="64%25" dominant-baseline="middle" text-anchor="middle" fill="%238f8ba8" font-size="11" font-weight="bold" font-family="sans-serif">TEMPESTIAN</text></svg>';
+    im.classList.add('in', 'is-fallback');
+    po.classList.add('img-loaded');
+  };
   if(it.image) {
     im.src = big(it.image);
     if (im.complete) { im.classList.add('in'); po.classList.add('img-loaded'); }
   } else {
-    po.classList.add('img-loaded');
+    im.onerror();
   }
   // [AI-MIMARI-NOTU: OPTİMİZASYON — FARE KARTIN ÜZERİNE GELDİĞİNDE BANNER'I ÖNCEDEN İNDİRME]
   li.addEventListener('pointerenter', () => {
@@ -656,7 +666,51 @@ let opener = null, pushed = false;
   }
 })();
 
-$('#q').oninput = e => { state.q = e.target.value; go(); };
+const qEl = $('#q');
+const qClear = $('#qClearBtn');
+function updateClearBtn() {
+  if (qClear) qClear.hidden = !qEl || !qEl.value;
+  if (qEl && qEl.parentElement) qEl.parentElement.classList.toggle('has-val', Boolean(qEl.value));
+}
+if (qEl) {
+  qEl.oninput = e => {
+    state.q = e.target.value;
+    updateClearBtn();
+    go();
+  };
+  updateClearBtn();
+}
+if (qClear && qEl) {
+  qClear.onclick = () => {
+    qEl.value = '';
+    state.q = '';
+    updateClearBtn();
+    qEl.focus();
+    go();
+  };
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && sheet.hidden) {
+    const active = document.activeElement;
+    const isInput = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable);
+    if (!isInput && qEl) {
+      e.preventDefault();
+      qEl.focus();
+      qEl.select();
+    }
+  } else if (e.key === 'Escape') {
+    if (qEl && document.activeElement === qEl) {
+      if (qEl.value) {
+        qEl.value = '';
+        state.q = '';
+        updateClearBtn();
+        go();
+      }
+      qEl.blur();
+    }
+  }
+});
 $('#sort').onchange = e => { state.sort = e.target.value; go(); };
 document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => { state.view = b.dataset.view; ls('view', state.view); go(); });
 
@@ -709,10 +763,21 @@ function fillSheet(it){
   const c = [cnt('season') && cnt('season')+' sezon', cnt('movie') && cnt('movie')+' film', cnt('other') && cnt('other')+' ek'].filter(Boolean).join(', ');
   if(c) bits.push(c);
   const rp = rew(ps.filter(own)); if(rp) bits.push(rp);
-  t('.sh-sub').textContent = bits.join(' · ');
   const gEl = t('.sh-genres');
   if (gEl) {
-    gEl.innerHTML = effGenres.map(g => `<span class="sh-genre-chip">${UI.esc(g)}</span>`).join('');
+    gEl.replaceChildren();
+    effGenres.forEach(g => {
+      const chip = h('button', 'sh-genre-chip', g);
+      chip.type = 'button';
+      chip.title = `"${g}" türündeki yapımları filtrele`;
+      chip.onclick = () => {
+        closeSheet();
+        setF('gn', g);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.showToast) window.showToast(`Tür filtrelendi: ${g}`);
+      };
+      gEl.append(chip);
+    });
     gEl.hidden = !effGenres.length;
   }
   const im = t('.sheet-cover');
@@ -730,6 +795,12 @@ function fillSheet(it){
         if (im.dataset.targetId === it.id) {
           im.src = targetCover;
           im.dataset.loadedSrc = targetCover;
+          im.style.opacity = '1';
+        }
+      };
+      tempCover.onerror = () => {
+        if (im.dataset.targetId === it.id) {
+          im.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300"><rect width="200" height="300" fill="%23232035"/><text x="50%25" y="48%25" dominant-baseline="middle" text-anchor="middle" font-size="44">🎬</text><text x="50%25" y="64%25" dominant-baseline="middle" text-anchor="middle" fill="%238f8ba8" font-size="11" font-weight="bold" font-family="sans-serif">TEMPESTIAN</text></svg>';
           im.style.opacity = '1';
         }
       };
@@ -832,6 +903,7 @@ function fillSheet(it){
       try {
         await navigator.clipboard.writeText(shareUrl);
         shareBtn.textContent = '✓ Kopyalandı!';
+        if (window.showToast) window.showToast('Bağlantı panoya kopyalandı! ✨');
         setTimeout(() => { shareBtn.textContent = (typeof navigator.share === 'function') ? '📤 Paylaş' : '🔗 Bağlantıyı Kopyala'; }, 2000);
       } catch (e) {}
     };
@@ -872,9 +944,16 @@ function syncSheet(){
   const it = state.items.find(i => i.id === hashId());
   if(it){
     if(sheet.hidden) opener = document.activeElement;
-    fillSheet(it); sheet.hidden = false; document.body.style.overflow = 'hidden'; document.body.classList.add('sheet-open'); closeBtn.focus({preventScroll:true});
+    fillSheet(it);
+    sheet.hidden = false;
+    document.documentElement.classList.add('sheet-open');
+    document.body.classList.add('sheet-open');
+    closeBtn.focus({preventScroll:true});
   } else if(!sheet.hidden){
-    sheet.hidden = true; document.body.style.overflow = ''; document.body.classList.remove('sheet-open'); pushed = false;
+    sheet.hidden = true;
+    document.documentElement.classList.remove('sheet-open');
+    document.body.classList.remove('sheet-open');
+    pushed = false;
     UI.hideAmbientGlow();
     if(opener && opener.focus) opener.focus({preventScroll:true}); opener = null;
   }
@@ -910,7 +989,6 @@ addEventListener('keydown', e => {
 const rndBtn = document.getElementById('randomPickBtn');
 if (rndBtn) {
   rndBtn.onclick = () => {
-    // [AI-MIMARI-NOTU: ADIM 21]: Butona mikro-dönme animasyonu ekler
     rndBtn.classList.remove('is-rolling');
     void rndBtn.offsetWidth;
     rndBtn.classList.add('is-rolling');
@@ -921,7 +999,9 @@ if (rndBtn) {
     const pool = visible.length ? visible : state.items;
     if (!pool.length) return;
     const pick = pool[Math.floor(Math.random() * pool.length)];
-    openSheet(pick.id, true);
+    setTimeout(() => {
+      openSheet(pick.id, true);
+    }, 280);
   };
 }
 

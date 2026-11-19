@@ -804,12 +804,27 @@
             }
           }
 
+          function formatLastFmTime(uts) {
+            if (!uts) return '';
+            const sec = Math.floor(Date.now() / 1000 - Number(uts));
+            if (sec < 60) return 'Az önce';
+            const min = Math.floor(sec / 60);
+            if (min < 60) return `${min} dk önce`;
+            const hr = Math.floor(min / 60);
+            if (hr < 24) return `${hr} sa önce`;
+            const days = Math.floor(hr / 24);
+            if (days === 1) return 'Dün';
+            if (days < 7) return `${days} gün önce`;
+            return `${Math.floor(days / 7)} hf önce`;
+          }
+
           if (isNow) {
             if (statusTxt) statusTxt.textContent = 'Şu An Çalıyor';
             if (livePill) livePill.classList.add('is-now-playing');
             if (cardEl) cardEl.classList.add('is-playing');
           } else {
-            if (statusTxt) statusTxt.textContent = (current.date && current.date['#text']) ? 'Son Çalınan' : 'Dinlendi';
+            const relTime = current.date && current.date.uts ? formatLastFmTime(current.date.uts) : '';
+            if (statusTxt) statusTxt.textContent = relTime ? `Son Dinlenen · ${relTime}` : 'Son Dinlenen';
             if (livePill) livePill.classList.remove('is-now-playing');
             if (cardEl) cardEl.classList.remove('is-playing');
           }
@@ -822,6 +837,7 @@
               historyList.innerHTML = historyTracks.map(t => {
                 const tImg = (t.image && (t.image[1] || t.image[0])['#text']) || '';
                 const tArtist = (t.artist && (t.artist['#text'] || t.artist.name)) || '';
+                const tTime = t.date && t.date.uts ? formatLastFmTime(t.date.uts) : '';
                 return `
                   <a class="lastfm-hist-item" href="${t.url || '#'}" target="_blank" rel="noopener">
                     ${tImg ? `<img class="lastfm-hist-thumb" src="${tImg}" alt="" />` : '<div class="lastfm-hist-thumb-ph">🎵</div>'}
@@ -829,6 +845,7 @@
                       <span class="lastfm-hist-title">${t.name}</span>
                       <span class="lastfm-hist-artist">${tArtist}</span>
                     </div>
+                    ${tTime ? `<span class="lastfm-hist-time">${tTime}</span>` : ''}
                   </a>
                 `;
               }).join('');
@@ -880,6 +897,19 @@
       });
       document.addEventListener('click', e => {
         if (!popover.hidden && !e.target.closest('.theme-picker-wrap')) popover.hidden = true;
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          if (!popover.hidden) popover.hidden = true;
+          const workspace = document.querySelector('.app-workspace');
+          if (workspace && workspace.classList.contains('aside-open')) {
+            workspace.classList.remove('aside-open');
+          }
+          if (document.body.classList.contains('sidebar-mobile-open')) {
+            document.body.classList.remove('sidebar-mobile-open');
+          }
+        }
       });
     }
 

@@ -572,9 +572,9 @@
               <span class="aside-title">Müzik Odası</span>
             </div>
             <div class="aside-header-actions">
-              <button type="button" class="btn neo-sq-btn aside-cfg-btn" id="lastfmConfigBtn" title="Last.fm Ayarları / Bağla" aria-label="Last.fm Ayarları">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-              </button>
+              <a href="https://www.last.fm" target="_blank" rel="noopener" class="btn neo-sq-btn aside-link-btn" id="lastfmExtLink" title="Last.fm Profilini Aç">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
               <button type="button" class="btn neo-sq-btn aside-close-btn" id="asideCloseBtn" title="Kapat" aria-label="Kapat">✕</button>
             </div>
           </div>
@@ -612,19 +612,6 @@
             <div class="aside-group-lbl">Önceki Dinlenenler</div>
             <div class="lastfm-history-list" id="lastfmHistoryList">
               <div class="lastfm-hist-placeholder">Geçmiş yükleniyor...</div>
-            </div>
-          </div>
-
-          <div class="lastfm-config-popover" id="lastfmConfigPopover" hidden>
-            <div class="lastfm-pop-title">LAST.FM HESABINI BAĞLA</div>
-            <label class="lastfm-cfg-label" for="lastfmUserInput">Kullanıcı Adı:
-              <input type="text" class="lastfm-cfg-input" id="lastfmUserInput" placeholder="ör. tempestian" />
-            </label>
-            <label class="lastfm-cfg-label" for="lastfmKeyInput">API Anahtarı (İsteğe Bağlı):
-              <input type="text" class="lastfm-cfg-input" id="lastfmKeyInput" placeholder="Varsayılan anahtar hazır" />
-            </label>
-            <div class="lastfm-cfg-actions">
-              <button type="button" class="btn btn-primary" id="lastfmSaveBtn">Kaydet &amp; Yenile</button>
             </div>
           </div>
         </div>
@@ -719,52 +706,30 @@
       }
     }
 
-    function initLastFmWidget() {
+    async function initLastFmWidget() {
       const card = document.getElementById('lastfmCard');
       if (!card) return;
-
-      const cfgBtn = document.getElementById('lastfmConfigBtn');
-      const popover = document.getElementById('lastfmConfigPopover');
-      const userInp = document.getElementById('lastfmUserInput');
-      const keyInp = document.getElementById('lastfmKeyInput');
-      const saveBtn = document.getElementById('lastfmSaveBtn');
 
       const defaultUser = 'TurkTempestian';
       const defaultKey = 'b25b959554ed76058ac220b7b2e0a026';
 
-      let currentUser = localStorage.getItem('tp_lastfm_user') || defaultUser;
-      let currentKey = localStorage.getItem('tp_lastfm_key') || defaultKey;
+      let siteConfig = null;
+      try {
+        const secRes = await fetch(root + 'data/sections.json');
+        if (secRes.ok) siteConfig = await secRes.json();
+      } catch (_) {}
 
-      if (cfgBtn && popover) {
-        cfgBtn.onclick = (e) => {
-          e.stopPropagation();
-          popover.hidden = !popover.hidden;
-          if (!popover.hidden) {
-            if (userInp) userInp.value = localStorage.getItem('tp_lastfm_user') || '';
-            if (keyInp) keyInp.value = localStorage.getItem('tp_lastfm_key') || '';
-          }
-        };
-        document.addEventListener('click', (e) => {
-          if (!popover.contains(e.target) && e.target !== cfgBtn) {
-            popover.hidden = true;
-          }
-        });
+      const lfmCfg = (siteConfig && siteConfig.lastfm) || {};
+      if (lfmCfg.enabled === false) {
+        const asideEl = document.getElementById('appAside');
+        if (asideEl) asideEl.style.display = 'none';
+        const asideBtn = document.getElementById('asideToggleBtn');
+        if (asideBtn) asideBtn.style.display = 'none';
+        return;
       }
 
-      if (saveBtn) {
-        saveBtn.onclick = () => {
-          const u = (userInp && userInp.value.trim()) || '';
-          const k = (keyInp && keyInp.value.trim()) || '';
-          if (u) localStorage.setItem('tp_lastfm_user', u);
-          else localStorage.removeItem('tp_lastfm_user');
-          if (k) localStorage.setItem('tp_lastfm_key', k);
-          else localStorage.removeItem('tp_lastfm_key');
-          currentUser = u || defaultUser;
-          currentKey = k || defaultKey;
-          if (popover) popover.hidden = true;
-          update();
-        };
-      }
+      const currentUser = lfmCfg.user || defaultUser;
+      const currentKey = lfmCfg.apiKey || defaultKey;
 
       async function update() {
         const titleEl = document.getElementById('lastfmTitle');
@@ -774,12 +739,15 @@
         const statusTxt = document.getElementById('lastfmStatusTxt');
         const livePill = document.getElementById('lastfmLivePill');
         const userLink = document.getElementById('lastfmUserLink');
+        const extLink = document.getElementById('lastfmExtLink');
         const userDisplay = document.getElementById('lastfmUserDisplay');
         const historyList = document.getElementById('lastfmHistoryList');
         const cardEl = document.getElementById('lastfmCard');
 
+        const profileUrl = 'https://www.last.fm/user/' + encodeURIComponent(currentUser);
         if (userDisplay) userDisplay.textContent = '@' + currentUser;
-        if (userLink) userLink.href = 'https://www.last.fm/user/' + encodeURIComponent(currentUser);
+        if (userLink) userLink.href = profileUrl;
+        if (extLink) extLink.href = profileUrl;
 
         try {
           const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${encodeURIComponent(currentUser)}&api_key=${encodeURIComponent(currentKey)}&format=json&limit=5`;
@@ -790,16 +758,15 @@
           if (data.error) {
             if (statusTxt) statusTxt.textContent = 'Bağlantı Bekleniyor';
             if (titleEl) {
-              titleEl.textContent = 'Last.fm Hesabını Bağla';
-              titleEl.href = '#';
-              titleEl.onclick = (e) => { e.preventDefault(); if (cfgBtn) cfgBtn.click(); };
+              titleEl.textContent = 'Son Çalınan Parça';
+              titleEl.href = profileUrl;
             }
-            if (artistEl) artistEl.textContent = 'Kullanıcı adı girmek için ⚙️ tıkla';
-            if (albumEl) albumEl.textContent = 'Canlı dinleme verisi burada gösterilecek';
+            if (artistEl) artistEl.textContent = 'Last.fm hesabı: ' + currentUser;
+            if (albumEl) albumEl.textContent = 'Yönetim panelinden kullanıcı adınızı güncelleyin';
             if (livePill) livePill.classList.remove('is-now-playing');
             if (cardEl) cardEl.classList.remove('is-playing');
             if (historyList) {
-              historyList.innerHTML = '<div class="lastfm-empty-hist">Hesabını bağlamak için ⚙️ simgesine tıkla.</div>';
+              historyList.innerHTML = '<div class="lastfm-empty-hist">Yönetim Panelinden Last.fm kullanıcı adınızı güncelleyin.</div>';
             }
             return;
           }
@@ -864,13 +831,12 @@
             }
           }
         } catch (err) {
-          if (statusTxt) statusTxt.textContent = 'Bağlantı Kurulamadı';
+          if (statusTxt) statusTxt.textContent = 'Bağlantı Bekleniyor';
           if (titleEl) {
-            titleEl.textContent = 'Last.fm Hesabını Bağla';
-            titleEl.href = '#';
-            titleEl.onclick = (e) => { e.preventDefault(); if (cfgBtn) cfgBtn.click(); };
+            titleEl.textContent = 'Son Çalınan Parça';
+            titleEl.href = profileUrl;
           }
-          if (artistEl) artistEl.textContent = 'Kullanıcı adı ayarlamak için ⚙️ tıkla';
+          if (artistEl) artistEl.textContent = 'Last.fm hesabı: ' + currentUser;
         }
       }
 

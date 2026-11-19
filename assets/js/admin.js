@@ -1703,6 +1703,33 @@
               </label>
             </div>
           </div>
+        <div class="admin-card glass sq">
+          <div class="card-head split-head">
+            <div>
+              <h2>🎧 Last.fm Entegrasyonu &amp; Canlı Müzik Odası</h2>
+              <p>Masaüstü ve mobil sağ panelde yer alan "Müzik Odası" bileşeni için Last.fm hesabınızı bağlayın. Tüm ziyaretçiler son dinlediğiniz parçayı canlı olarak burada görebilir.</p>
+            </div>
+          </div>
+          <div class="field-stack">
+            <div class="field-row">
+              <label class="toggle-switch">
+                <input type="checkbox" id="cfgLastfmEnabled" checked>
+                <span><b>Müzik Odasını Aktif Et</b> (Sağ panelde Last.fm canlı scrobble kartı)</span>
+              </label>
+            </div>
+            <div class="field-row">
+              <label class="field" style="flex:1">
+                <span>Last.fm Kullanıcı Adı</span>
+                <input type="text" id="cfgLastfmUser" class="inp glass" placeholder="ör. TurkTempestian veya tempestian">
+                <small>Parçalarınız doğrudan bu kullanıcı profilinden gerçek zamanlı çekilecektir.</small>
+              </label>
+              <label class="field" style="flex:1">
+                <span>Last.fm API Anahtarı (İsteğe Bağlı)</span>
+                <input type="text" id="cfgLastfmApiKey" class="inp glass" placeholder="Varsayılan okuma anahtarı hazır">
+                <small>Boş bırakırsanız sistemin hazır genel okuma anahtarı kullanılır.</small>
+              </label>
+            </div>
+          </div>
         </div>
 
         <div class="admin-card glass sq">
@@ -8924,6 +8951,11 @@
     if ($('#cfgHubTimelineDesc')) $('#cfgHubTimelineDesc').value = homeFeatures.hubTimelineDesc || '';
     if ($('#cfgHubStatsDesc')) $('#cfgHubStatsDesc').value = homeFeatures.hubStatsDesc || '';
 
+    const lastfm = state.config.lastfm || {};
+    if ($('#cfgLastfmEnabled')) $('#cfgLastfmEnabled').checked = lastfm.enabled !== false;
+    if ($('#cfgLastfmUser')) $('#cfgLastfmUser').value = lastfm.user || '';
+    if ($('#cfgLastfmApiKey')) $('#cfgLastfmApiKey').value = lastfm.apiKey || '';
+
     if ($('#cfgSecretBookUrl')) $('#cfgSecretBookUrl').value = secretBook.url || 'kitap/ozel/';
     if ($('#cfgSecretBookTitle')) $('#cfgSecretBookTitle').value = secretBook.title || '🐾 Özel Anı Kitabı';
     if ($('#cfgSecretBookKeywords')) $('#cfgSecretBookKeywords').value = Array.isArray(secretBook.keywords) ? secretBook.keywords.join(', ') : (secretBook.keywords || '');
@@ -8975,6 +9007,15 @@
     if (elHubTime) hf.hubTimelineDesc = S(elHubTime.value, 200);
     const elHubStat = $('#cfgHubStatsDesc');
     if (elHubStat) hf.hubStatsDesc = S(elHubStat.value, 200);
+
+    if (!state.config.lastfm) state.config.lastfm = {};
+    const lfm = state.config.lastfm;
+    const elLfmEn = $('#cfgLastfmEnabled');
+    if (elLfmEn) lfm.enabled = Boolean(elLfmEn.checked);
+    const elLfmUsr = $('#cfgLastfmUser');
+    if (elLfmUsr) lfm.user = S(elLfmUsr.value, 80).trim();
+    const elLfmKey = $('#cfgLastfmApiKey');
+    if (elLfmKey) lfm.apiKey = S(elLfmKey.value, 100).trim();
 
     if (!state.config.secretBook) state.config.secretBook = {};
     const sb = state.config.secretBook;

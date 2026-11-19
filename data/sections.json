@@ -21,6 +21,11 @@
     "hubTimelineDesc": "2016'dan bugüne izlenen ve okunan yapımların eksiksiz kronolojik yolculuğu.",
     "hubStatsDesc": "Tür dağılımları, ortalama puanlar, bölüm telemetrisi ve detaylı tüketim analitiği."
   },
+  "lastfm": {
+    "enabled": true,
+    "user": "TurkTempestian",
+    "apiKey": "b25b959554ed76058ac220b7b2e0a026"
+  },
   "secretBook": {
     "url": "kitap/ozel/",
     "title": "🐾 Özel Anı Kitabı",

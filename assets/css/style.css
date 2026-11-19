@@ -515,7 +515,7 @@ img { display: block; max-width: 100%; }
   align-items: center;
   gap: 6px;
 }
-.aside-cfg-btn, .aside-close-btn {
+.aside-link-btn, .aside-close-btn {
   width: 28px !important;
   min-width: 28px !important;
   height: 28px !important;
@@ -764,49 +764,6 @@ img { display: block; max-width: 100%; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.lastfm-config-popover {
-  position: absolute;
-  top: 48px;
-  right: 14px;
-  left: 14px;
-  z-index: 80;
-  background: var(--surface);
-  border: 2px solid var(--line);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--neo-shadow-lg);
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.lastfm-pop-title {
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--ink3);
-  letter-spacing: 0.08em;
-}
-.lastfm-cfg-label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--ink2);
-}
-.lastfm-cfg-input {
-  height: 32px;
-  padding: 0 10px;
-  border-radius: var(--radius-xs);
-  border: 1.5px solid var(--line);
-  background: var(--bg);
-  color: var(--ink);
-  font-size: 0.8rem;
-}
-.lastfm-cfg-actions {
-  display: flex;
-  justify-content: flex-end;
 }
 
 .sidebar-inner {

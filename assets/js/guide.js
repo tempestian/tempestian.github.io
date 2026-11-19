@@ -243,6 +243,12 @@
 
     const fr = document.createDocumentFragment();
     let idx = 0;
+    const recentIds = new Set(
+      [...state.items]
+        .sort((a, b) => (b.addedAt || '').localeCompare(a.addedAt || ''))
+        .slice(0, 4)
+        .map(x => x.id)
+    );
     for (const it of filtered) {
       const li = h('li', 'tile glass sq guide-card' + (it.favorite ? ' is-fav' : ''));
       li.style.setProperty('--stagger', `${Math.min(idx++, 15) * 20}ms`);
@@ -255,6 +261,9 @@
       const metaTop = h('div', 'guide-card-meta');
       const cats = getCategories(it);
       const catRow = h('div', 'guide-cat-row');
+      if (recentIds.has(it.id)) {
+        catRow.append(h('span', 'tag tag-new', '✨ YENİ'));
+      }
       if (it.favorite) {
         catRow.append(h('span', 'tag tag-active', '★ Öne Çıkan'));
       }
@@ -277,6 +286,11 @@
       }
 
       const foot = h('div', 'guide-card-foot');
+      const wordEstimate = ((it.title || '').length + (it.summary || '').length);
+      const readMin = Math.max(3, Math.min(12, Math.round(wordEstimate / 28)));
+      const readTag = h('span', 'guide-read-time', `⏱️ ~${readMin} dk okuma`);
+      foot.append(readTag);
+
       const rightBadge = h('span', 'guide-out-badge');
       rightBadge.innerHTML = `<span>${ UI.esc ? UI.esc(pageTexts.externalButtonText || 'Technopat Sosyal') : (pageTexts.externalButtonText || 'Technopat Sosyal') }</span> ${UI.icon('out')}`;
       foot.append(rightBadge);

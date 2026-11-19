@@ -213,7 +213,7 @@
     const effGenres = getEffectiveGenres(it);
     const extraMeta = P.metaKey && it[P.metaKey] ? it[P.metaKey] : '';
     const li = h('li');
-    if (it.favorite) li.classList.add('is-fav');
+    if (it.favorite || (effScore && effScore >= 9.5)) li.classList.add('is-fav');
     li.innerHTML = '<div class="poster"><img alt="" loading="lazy" decoding="async" width="142" height="213"></div><div class="t"><h3><a target="_blank" rel="noopener"></a></h3><p class="meta"></p><p class="st"></p></div>';
     const a = li.querySelector('a'); a.textContent = it.title;
     a.href = '#' + it.id; a.onclick = e => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; e.preventDefault(); openSheet(it.id, true); };
@@ -266,8 +266,14 @@
       sc.setAttribute('role', 'img'); sc.setAttribute('aria-label', 'Puan ' + effScore + '/10'); sc.innerHTML = UI.icon('star'); sc.append(String(effScore));
       li.append(sc);
     }
-    const im = li.querySelector('img'); im.onload = () => im.classList.add('in');
-    if (it.image) im.src = big(it.image);
+    const im = li.querySelector('img');
+    im.onload = () => { im.classList.add('in'); po.classList.add('img-loaded'); };
+    if (it.image) {
+      im.src = big(it.image);
+      if (im.complete) { im.classList.add('in'); po.classList.add('img-loaded'); }
+    } else {
+      po.classList.add('img-loaded');
+    }
     // [AI-MIMARI-NOTU: OPTİMİZASYON — FARE KARTIN ÜZERİNE GELDİĞİNDE BANNER'I ÖNCEDEN İNDİRME]
     li.addEventListener('pointerenter', () => {
       const bUrl = it.banner || it.backdrop;
@@ -694,7 +700,7 @@ function renderTierBoard(visibleNodes) {
 
   const sheet = document.createElement('div');
   sheet.className = 'sheet'; sheet.hidden = true; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true'); sheet.setAttribute('aria-labelledby', 'sh-title');
-  sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-backdrop" hidden><img class="sheet-backdrop-img" alt="" decoding="async"><div class="sheet-backdrop-grad"></div></div><div class="sheet-head"><img class="sheet-cover" alt="" decoding="async"><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><div class="sh-rating-breakdown" id="shRatingBreakdown" hidden></div><ol class="parts"></ol><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-share-btn" data-sh-share title="Bağlantıyı kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
+  sheet.innerHTML = '<div class="sheet-bg"></div><div class="sheet-card glass sq"><div class="sheet-backdrop" hidden><img class="sheet-backdrop-img" alt="" decoding="async"><div class="sheet-backdrop-grad"></div></div><div class="sheet-head"><img class="sheet-cover" alt="" decoding="async"><div class="sheet-t"><h2 id="sh-title"></h2><p class="sh-sub"></p><p class="sh-genres meta" style="margin-top:4px"></p></div><button class="btn glass" type="button" aria-label="Kapat" data-close></button></div><div class="sh-pg" hidden><i></i></div><div class="sh-rating-breakdown" id="shRatingBreakdown" hidden></div><ol class="parts"></ol><div class="sh-similar-box" id="shSimilarBox" hidden></div><div class="sheet-foot-bar"><div class="sheet-nav-grp"><button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki (←)">← Önceki</button><span class="sheet-pos-lbl" data-sh-pos></span><button type="button" class="sheet-nav-btn" data-sh-next title="Sonraki (→)">Sonraki →</button></div><div class="sheet-act-grp"><button type="button" class="sheet-share-btn" data-sh-share title="Bağlantıyı kopyala">🔗 Bağlantıyı Kopyala</button><a class="sh-al" target="_blank" rel="noopener"></a></div></div></div>';
   document.body.append(sheet);
   const closeBtn = sheet.querySelector('[data-close]'); closeBtn.innerHTML = UI.icon('close');
   let opener = null, pushed = false;
@@ -799,6 +805,10 @@ function renderTierBoard(visibleNodes) {
       li.querySelector('.pm').textContent = [p.year, p.episodes > 1 ? p.episodes + ' ' + P.unitEp : '', p.score ? '★ ' + p.score : ''].filter(Boolean).join(' · ');
       li.querySelector('.ps').textContent = txt + (p.repeat ? ' · ' + (p.repeat + 1) + ' kez' : '');
       ol.append(li);
+    }
+    const simBox = t('#shSimilarBox');
+    if (simBox && typeof window.renderSimilarItemsInSheet === 'function') {
+      window.renderSimilarItemsInSheet(simBox, it, state.items, nextIt => navigateSheetTo(nextIt.id), sectionId);
     }
     const al = t('.sh-al');
     const mainUrl = it.firstSeasonUrl || it.url || '';

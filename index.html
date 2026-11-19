@@ -25,7 +25,7 @@
 <script src="assets/js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=3.0">
+<link rel="stylesheet" href="assets/css/style.css?v=3.2">
 <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin*"}}]},"eagerness":"moderate"}]}</script>
 </head>
 <body data-root="" data-section="home">
@@ -94,7 +94,13 @@
 
   <section class="shelf-section" id="homeContinue" hidden aria-label="Devam Edilecek">
     <div class="shelf-head">
-      <h2 class="shelf-title">Devam Edilecek</h2>
+      <div class="shelf-head-left">
+        <h2 class="shelf-title">Devam Edilecek</h2>
+        <button type="button" class="wheel-trigger-btn" id="whatToWatchBtn" title="Aktif içerikler arasından çark çevirerek seç">
+          <span class="wheel-ic">🎡</span>
+          <span>Ne İzlemeliyim?</span>
+        </button>
+      </div>
       <a class="shelf-more" href="anime/">Listeyi aç ›</a>
     </div>
     <div class="shelf-rail-wrap">
@@ -179,6 +185,6 @@
 
   <noscript><p class="note">İçerikler için JavaScript gerekiyor.</p></noscript>
 </main>
-<script src="assets/js/common.js?v=3.0"></script>
+<script src="assets/js/common.js?v=3.2"></script>
 </body>
 </html>

@@ -418,6 +418,8 @@
     }
     const dock = document.getElementById('dock');
     if (dock) dock.remove();
+    const oldMobNav = document.getElementById('mobileBottomNav');
+    if (oldMobNav) oldMobNav.remove();
 
     const bar = document.querySelector('.bar');
     if (!bar) return;
@@ -539,6 +541,7 @@
         <div class="sh-pg" hidden><i></i></div>
         <div class="sh-rating-breakdown" id="homeShRatingBreakdown" hidden></div>
         <ol class="parts"></ol>
+        <div class="sh-similar-box" id="homeShSimilarBox" hidden></div>
         <div class="sheet-foot-bar">
           <div class="sheet-nav-grp">
             <button type="button" class="sheet-nav-btn" data-sh-prev title="Önceki (←)">← Önceki</button>
@@ -576,6 +579,60 @@
 
     return homeSheetEl;
   }
+
+  // Step 3 (New List): Similar Items / Same Genre Recommendations Renderer inside any Detail Sheet
+  function renderSimilarItemsInSheet(containerEl, currentItem, allPool, onSelectItem, typeKey = 'anime') {
+    if (!containerEl || !currentItem || !Array.isArray(allPool) || allPool.length < 2) {
+      if (containerEl) { containerEl.hidden = true; containerEl.replaceChildren(); }
+      return;
+    }
+    const getGenres = it => (Array.isArray(it.customGenres) && it.customGenres.length ? it.customGenres : (it.genres || []));
+    const curGenres = new Set(getGenres(currentItem));
+
+    const scored = [];
+    for (const cand of allPool) {
+      if (!cand || cand.id === currentItem.id) continue;
+      const cGenres = getGenres(cand);
+      let shared = 0;
+      for (const g of cGenres) if (curGenres.has(g)) shared++;
+      if (shared > 0 || curGenres.size === 0) {
+        const sc = getHomeEffectiveScore(cand, typeKey) || 0;
+        scored.push({ item: cand, shared, sc });
+      }
+    }
+
+    scored.sort((a, b) => b.shared - a.shared || (b.item.favorite ? 1 : 0) - (a.item.favorite ? 1 : 0) || b.sc - a.sc);
+    const picks = scored.slice(0, 4).map(x => x.item);
+    if (!picks.length) {
+      containerEl.hidden = true;
+      containerEl.replaceChildren();
+      return;
+    }
+
+    containerEl.innerHTML = `<div class="sh-sim-head"><span>Benzer Yapımlar &amp; Aynı Türden Öneriler</span></div><div class="sh-sim-grid"></div>`;
+    const grid = containerEl.querySelector('.sh-sim-grid');
+    picks.forEach(p => {
+      const btn = el('button', 'sh-sim-card');
+      btn.type = 'button';
+      const sc = getHomeEffectiveScore(p, typeKey);
+      const imgUrl = p.image ? resolveAsset(p.image.replace('/cover/medium/', '/cover/large/')) : '';
+      btn.innerHTML = `
+        <div class="sh-sim-poster">
+          ${imgUrl ? `<img src="${esc(imgUrl)}" alt="${esc(p.title)}" loading="lazy">` : ''}
+          ${sc ? `<span class="sh-sim-sc">★ ${sc.toFixed(1)}</span>` : ''}
+        </div>
+        <span class="sh-sim-title">${esc(p.title)}</span>
+      `;
+      btn.onclick = e => {
+        e.preventDefault();
+        e.stopPropagation();
+        onSelectItem(p);
+      };
+      grid.append(btn);
+    });
+    containerEl.hidden = false;
+  }
+  window.renderSimilarItemsInSheet = renderSimilarItemsInSheet;
 
   function openHomeSheet(item, list, typeKey = 'anime') {
     if (!item) return;
@@ -654,6 +711,10 @@
       ol.append(li);
     }
 
+    const simBox = t('#homeShSimilarBox');
+    const fullPool = typeKey === 'movie' ? (cachedMoviesData || homeSheetList) : (cachedAnimeData || homeSheetList);
+    renderSimilarItemsInSheet(simBox, item, fullPool, nextIt => openHomeSheet(nextIt, fullPool, typeKey), typeKey);
+
     const al = t('.sh-al');
     const extUrl = item.url || item.firstSeasonUrl || (item.anilistId ? 'https://anilist.co/anime/' + item.anilistId : '');
     if (extUrl) {
@@ -700,7 +761,7 @@
   document.addEventListener('click', e => {
     const chipEl = e.target.closest('.sh-genre-chip');
     if (!chipEl) return;
-    if (chipEl.tagName === 'A') return; // Already a link on home sheet
+    if (chipEl.tagName === 'A') return;
     const genreName = (chipEl.textContent || '').trim();
     if (!genreName) return;
     const matchingFilterBtn = [...document.querySelectorAll('[data-g="gn"]')].find(b => b.dataset.v === genreName);
@@ -723,12 +784,14 @@
   }, { passive: true });
 
   // ============================================================================
-  // STEP 1, 2, 3, 4 — HOME PAGE RENDERERS (Hero Carousel, Progress Cards, Arrows, Live Previews)
+  // STEP 1 (Rimuru Slime Loader) & HOME PAGE RENDERERS
   // ============================================================================
   const FMT_LABEL = { TV: 'TV', TV_SHORT: 'Kısa', MOVIE: 'Film', OVA: 'OVA', SPECIAL: 'Özel', ONA: 'ONA' };
 
   function buildPosterCard(item, href, gradIndex, showStatus, listContext = [], typeKey = 'anime') {
-    const a = el('a', `poster-card grad-${gradIndex % 10}`);
+    const effScore = getHomeEffectiveScore(item, typeKey);
+    const isMasterpiece = Boolean(item.favorite || (typeof effScore === 'number' && effScore >= 9.5));
+    const a = el('a', `poster-card grad-${gradIndex % 10}${isMasterpiece ? ' is-fav' : ''}`);
     a.href = href;
     if (item.image) {
       const img = el('img');
@@ -736,17 +799,24 @@
       img.alt = item.title || '';
       img.loading = 'lazy';
       img.decoding = 'async';
-      img.onload = () => img.classList.add('in');
+      img.onload = () => {
+        img.classList.add('in');
+        a.classList.add('img-loaded');
+      };
+      if (img.complete) {
+        img.classList.add('in');
+        a.classList.add('img-loaded');
+      }
       a.append(img);
+    } else {
+      a.classList.add('img-loaded');
     }
-    const effScore = getHomeEffectiveScore(item, typeKey);
     if (typeof effScore === 'number' && effScore > 0) {
       const badge = el('span', 'poster-rating');
       badge.innerHTML = `<span class="star">★</span>${effScore.toFixed(1)}`;
       a.append(badge);
     }
 
-    // Step 2: Progress bar & episode badge on Continue Watching / active cards
     const ps = parts(item);
     const activePart = ps.find(p => p.status === 'CURRENT' || p.status === 'PAUSED') || ps[0];
     const watched = activePart ? (activePart.watched || 0) : 0;
@@ -770,7 +840,6 @@
     const title = el('h3', 'poster-title', item.title || '');
     a.append(title);
 
-    // Step 5: In-place modal opening on home page without page reload
     a.addEventListener('click', e => {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       e.preventDefault();
@@ -784,7 +853,6 @@
     const heroEl = document.getElementById('heroSpotlight');
     if (!heroEl || !Array.isArray(animeList) || !animeList.length) return;
 
-    // Step 1: Collect up to 5 spotlight slides (Watching items + recent 9.5+ Masterpieces)
     const watchingItems = animeList.filter(a => a && a.status === 'watching');
     const masterpieces = animeList
       .filter(a => a && a.status !== 'watching' && (a.favorite || (getHomeEffectiveScore(a, 'anime') || 0) >= 9.5))
@@ -893,6 +961,24 @@
       navWrap.hidden = false;
       heroEl.addEventListener('pointerenter', () => clearInterval(slideTimer));
       heroEl.addEventListener('pointerleave', resetAutoTimer);
+
+      // Step 5 (New List): Touch Swipe on Hero Spotlight Banner
+      let touchStartX = 0;
+      let touchStartY = 0;
+      heroEl.addEventListener('touchstart', e => {
+        if (!e.touches || !e.touches[0]) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+      heroEl.addEventListener('touchend', e => {
+        if (!e.changedTouches || !e.changedTouches[0]) return;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+          showSlide(dx < 0 ? activeSlideIdx + 1 : activeSlideIdx - 1);
+          resetAutoTimer();
+        }
+      }, { passive: true });
     }
 
     showSlide(0);
@@ -943,6 +1029,234 @@
     sec.hidden = false;
   }
 
+  // ============================================================================
+  // CUSTOM FEATURE: "NE İZLEMELİYİM?" SPINNING WHEEL OF FORTUNE (Rimuru Edition)
+  // ============================================================================
+  const WHEEL_COLORS = [
+    ['#1e3a8a', '#3b82f6'],
+    ['#581c87', '#a855f7'],
+    ['#065f46', '#10b981'],
+    ['#7c2d12', '#f97316'],
+    ['#831843', '#ec4899'],
+    ['#312e81', '#6366f1'],
+    ['#134e4a', '#14b8a6'],
+    ['#713f12', '#eab308']
+  ];
+
+  function openWhatToWatchWheel(poolItems) {
+    if (!Array.isArray(poolItems) || !poolItems.length) {
+      showToast('Şu anda devam edilecek aktif içerik bulunamadı.');
+      return;
+    }
+
+    let modal = document.getElementById('wheelModal');
+    if (modal) modal.remove();
+
+    modal = el('div', 'wheel-modal-backdrop');
+    modal.id = 'wheelModal';
+    modal.innerHTML = `
+      <div class="wheel-modal-card" role="dialog" aria-modal="true" aria-label="Ne İzlemeliyim Çarkı">
+        <button type="button" class="btn wheel-close-btn" id="wheelCloseBtn" aria-label="Kapat">${icon('close')}</button>
+        <div class="wheel-head">
+          <span class="wheel-eyebrow">RİMURU'NUN KADER ÇARKI · ${poolItems.length} AKTİF YAPIM</span>
+          <h2>Ne İzlemeliyim?</h2>
+          <p class="wheel-sub" id="wheelTickerText">Çarkı çevir, sıradaki devam edeceğin yapımı kader belirlesin!</p>
+        </div>
+
+        <div class="wheel-stage">
+          <div class="wheel-pointer" aria-hidden="true">▼</div>
+          <canvas id="wheelCanvas" width="380" height="380"></canvas>
+          <button type="button" class="wheel-center-cap" id="wheelCenterSpinBtn" aria-label="Çarkı Çevir">
+            <svg viewBox="0 0 64 54" width="34" height="28">
+              <path d="M8 36 C8 17, 20 8, 32 8 C44 8, 56 17, 56 36 C56 46, 46 50, 32 50 C18 50, 8 46, 8 36 Z" fill="#58b9ff"/>
+              <path d="M20 31 L26 29 M38 29 L44 31" stroke="#0b0d14" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="wheel-winner-card" id="wheelWinnerCard" hidden></div>
+
+        <div class="wheel-actions">
+          <button type="button" class="hero-btn-primary wheel-spin-btn" id="wheelSpinMainBtn">🎡 Çarkı Çevir!</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+
+    const close = () => {
+      modal.remove();
+      document.body.style.overflow = '';
+    };
+    modal.querySelector('#wheelCloseBtn').onclick = close;
+    modal.onclick = e => { if (e.target === modal) close(); };
+
+    const canvas = modal.querySelector('#wheelCanvas');
+    const ctx = canvas.getContext('2d');
+    const tickerEl = modal.querySelector('#wheelTickerText');
+    const winnerBox = modal.querySelector('#wheelWinnerCard');
+    const spinBtn = modal.querySelector('#wheelSpinMainBtn');
+    const centerBtn = modal.querySelector('#wheelCenterSpinBtn');
+
+    const items = poolItems.slice(0, 14);
+    const N = items.length;
+    const arc = (Math.PI * 2) / N;
+    let currentAngle = 0;
+    let isSpinning = false;
+
+    function getPointerIndex(angle) {
+      // Pointer is at top (-PI/2 = 3*PI/2)
+      const norm = ((Math.PI * 1.5 - angle) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+      return Math.floor(norm / arc) % N;
+    }
+
+    function drawWheel(angle, highlightIdx = -1) {
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const r = cx - 12;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < N; i++) {
+        const start = angle + i * arc;
+        const end = start + arc;
+        const [c1, c2] = WHEEL_COLORS[i % WHEEL_COLORS.length];
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, r, start, end);
+        ctx.closePath();
+
+        const grad = ctx.createRadialGradient(cx, cy, 30, cx, cy, r);
+        grad.addColorStop(0, c1);
+        grad.addColorStop(1, i === highlightIdx ? '#58b9ff' : c2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.lineWidth = i === highlightIdx ? 3 : 1.5;
+        ctx.strokeStyle = i === highlightIdx ? '#ffffff' : 'rgba(11, 13, 20, 0.7)';
+        ctx.stroke();
+
+        // Slice Title
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(start + arc / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 12px Inter, system-ui, sans-serif';
+        const rawTitle = items[i].title || '';
+        const label = rawTitle.length > 19 ? rawTitle.slice(0, 18) + '…' : rawTitle;
+        ctx.shadowColor = 'rgba(0,0,0,0.65)';
+        ctx.shadowBlur = 4;
+        ctx.fillText(label, r - 16, 4);
+        ctx.restore();
+      }
+
+      // Outer rim
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+      ctx.stroke();
+    }
+
+    drawWheel(currentAngle);
+
+    // Web Audio API subtle tick sound
+    let audioCtx = null;
+    function playTick(freq = 520, dur = 0.025) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+      } catch (_) {}
+    }
+
+    function spin() {
+      if (isSpinning) return;
+      isSpinning = true;
+      winnerBox.hidden = true;
+      spinBtn.disabled = true;
+      spinBtn.textContent = '🌪️ Çark Dönüyor...';
+
+      const extraSpins = (6 + Math.random() * 4) * Math.PI * 2;
+      const startAngle = currentAngle;
+      const targetAngle = startAngle + extraSpins;
+      const duration = 4200;
+      const startTime = performance.now();
+      let lastSliceIdx = -1;
+
+      function frame(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(1, elapsed / duration);
+        // Dramatic quintic ease-out
+        const easeOut = 1 - Math.pow(1 - t, 4.5);
+        currentAngle = startAngle + (targetAngle - startAngle) * easeOut;
+
+        const curIdx = getPointerIndex(currentAngle);
+        if (curIdx !== lastSliceIdx) {
+          lastSliceIdx = curIdx;
+          const activeIt = items[curIdx];
+          if (tickerEl && activeIt) tickerEl.textContent = `🎯 ${activeIt.title}`;
+          playTick(440 + (1 - t) * 260, 0.022);
+        }
+
+        drawWheel(currentAngle, t >= 1 ? curIdx : -1);
+
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          isSpinning = false;
+          spinBtn.disabled = false;
+          spinBtn.textContent = '🔄 Tekrar Çevir';
+          const winner = items[curIdx];
+          playTick(780, 0.12);
+          showWinner(winner);
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    function showWinner(winner) {
+      if (!winner) return;
+      if (tickerEl) tickerEl.textContent = `🎉 Kaderin seçimi: ${winner.title}!`;
+      const ps = parts(winner);
+      const curPart = ps.find(p => p.status === 'CURRENT' || p.status === 'PAUSED') || ps[0];
+      const epInfo = curPart && curPart.episodes
+        ? `${curPart.watched || 0} / ${curPart.episodes} bölüm`
+        : (curPart && curPart.watched ? `${curPart.watched}. bölümde kaldın` : 'Devam edilecek');
+      const cover = winner.image ? resolveAsset(winner.image.replace('/cover/medium/', '/cover/large/')) : '';
+
+      winnerBox.innerHTML = `
+        <div class="ww-left">
+          ${cover ? `<img class="ww-cover" src="${esc(cover)}" alt="${esc(winner.title)}">` : ''}
+          <div class="ww-info">
+            <span class="ww-badge">SIRADAKİ BÖLÜMÜN HAZIR</span>
+            <h3 class="ww-title">${esc(winner.title)}</h3>
+            <span class="ww-ep">${esc(epInfo)}</span>
+          </div>
+        </div>
+        <button type="button" class="hero-btn-primary ww-open-btn" id="wwOpenBtn">İzlemeye Devam Et →</button>
+      `;
+      winnerBox.hidden = false;
+      winnerBox.querySelector('#wwOpenBtn').onclick = () => {
+        close();
+        openHomeSheet(winner, items, winner._mediaType || 'anime');
+      };
+    }
+
+    spinBtn.onclick = spin;
+    centerBtn.onclick = spin;
+  }
+
   function renderHomeMovies(movieList) {
     const sec = document.getElementById('homeMovies');
     const rail = document.getElementById('moviesRail');
@@ -955,7 +1269,6 @@
     sec.hidden = false;
   }
 
-  // Step 4: Live Guides & Open Source Projects Preview Cards on Home
   function renderHomeGuidesAndProjects(guideList, projectList) {
     const wrap = document.getElementById('homeLiveColumns');
     const gBox = document.getElementById('homeGuidesList');
@@ -1005,7 +1318,6 @@
     wrap.hidden = false;
   }
 
-  // Step 3: Shelf Scroll Arrows Binding
   function initShelfArrows() {
     document.querySelectorAll('.shelf-nav-btn[data-rail]').forEach(btn => {
       const rail = document.getElementById(btn.dataset.rail);
@@ -1037,6 +1349,49 @@
     }
     container.replaceChildren(fr);
     container.hidden = false;
+  }
+
+  // ============================================================================
+  // STEP 7 (New List) — LOCAL SEARCH INPUT CLEAR (✕) & LIVE MATCH COUNTER
+  // ============================================================================
+  function initLocalSearchEnhancements() {
+    const qInp = document.getElementById('q');
+    const searchWrap = qInp && qInp.closest('.search');
+    if (!qInp || !searchWrap || searchWrap.querySelector('.local-search-clear')) return;
+
+    const countBadge = el('span', 'local-search-count');
+    countBadge.hidden = true;
+    const clearBtn = el('button', 'search-clear local-search-clear', '✕');
+    clearBtn.type = 'button';
+    clearBtn.title = 'Aramayı Temizle';
+    clearBtn.setAttribute('aria-label', 'Aramayı Temizle');
+
+    searchWrap.append(countBadge, clearBtn);
+
+    const updateSearchHUD = () => {
+      const val = (qInp.value || '').trim();
+      clearBtn.classList.toggle('on', val.length > 0);
+      if (!val) {
+        countBadge.hidden = true;
+        return;
+      }
+      setTimeout(() => {
+        const listEl = document.getElementById('list') || document.getElementById('guideList') || document.getElementById('projectList');
+        if (!listEl) return;
+        const visibleCount = [...listEl.children].filter(li => !li.hidden).length;
+        countBadge.textContent = `${visibleCount} sonuç`;
+        countBadge.hidden = false;
+      }, 30);
+    };
+
+    qInp.addEventListener('input', updateSearchHUD);
+    clearBtn.onclick = e => {
+      e.preventDefault();
+      qInp.value = '';
+      qInp.dispatchEvent(new Event('input', { bubbles: true }));
+      qInp.focus();
+      updateSearchHUD();
+    };
   }
 
   // ============================================================================
@@ -1400,6 +1755,7 @@
 
     initShelfArrows();
     initTierExportButton();
+    initLocalSearchEnhancements();
 
     // Back to top
     let topBtn = null;
@@ -1480,9 +1836,12 @@
       }
 
       if (cur === 'home') {
-        const [animeJson, moviesJson, guidesJson, projectsJson] = await Promise.all([
+        const [animeJson, moviesJson, seriesJson, booksJson, mangaJson, guidesJson, projectsJson] = await Promise.all([
           fetch(root + 'data/anime.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
           fetch(root + 'data/movies.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch(root + 'data/series.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch(root + 'data/books.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch(root + 'data/manga.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
           fetch(root + 'data/guides.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
           fetch(root + 'data/projects.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null)
         ]);
@@ -1496,6 +1855,27 @@
         const movieList = (moviesJson && (moviesJson.items || moviesJson.movies)) || [];
         cachedMoviesData = movieList;
         renderHomeMovies(movieList);
+
+        const seriesList = (seriesJson && (seriesJson.items || seriesJson.series)) || [];
+        cachedSeriesData = seriesList;
+        const bookList = (booksJson && (booksJson.items || booksJson.books)) || [];
+        cachedBooksData = bookList;
+        const mangaList = (mangaJson && (mangaJson.items || mangaJson.manga)) || [];
+        cachedMangaData = mangaList;
+
+        // Bind "Ne İzlemeliyim?" Wheel button with all currently continuing/paused items across archives
+        const wheelBtn = document.getElementById('whatToWatchBtn');
+        if (wheelBtn) {
+          const isContinuing = x => x && (x.status === 'watching' || x.status === 'paused' || Boolean(x.next));
+          const activePool = [
+            ...animeList.filter(isContinuing).map(x => ({ ...x, _mediaType: 'anime' })),
+            ...seriesList.filter(isContinuing).map(x => ({ ...x, _mediaType: 'series' })),
+            ...movieList.filter(isContinuing).map(x => ({ ...x, _mediaType: 'movie' })),
+            ...mangaList.filter(isContinuing).map(x => ({ ...x, _mediaType: 'manga' })),
+            ...bookList.filter(isContinuing).map(x => ({ ...x, _mediaType: 'book' }))
+          ];
+          wheelBtn.onclick = () => openWhatToWatchWheel(activePool);
+        }
 
         const guideList = (guidesJson && (guidesJson.items || guidesJson.guides)) || [];
         cachedGuidesData = guideList;

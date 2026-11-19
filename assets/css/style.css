@@ -2577,6 +2577,353 @@ body.has-ambient-glow::before {
 }
 
 /* ==========================================================================
+   ROUND 2 ENHANCEMENTS: RIMURU SLIME LOADER, GOLD MASTERPIECE, SIMILAR RAIL, WHEEL OF FORTUNE
+   ========================================================================== */
+
+/* 1. Rimuru Slime Bouncing Loader inside Unloaded Poster Cards */
+.poster-card:not(.img-loaded)::before,
+#list.grid .poster:not(.img-loaded)::before {
+  content: "";
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  width: 50px;
+  height: 42px;
+  margin-left: -25px;
+  margin-top: -21px;
+  z-index: 2;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 54'><defs><radialGradient id='rg' cx='35%' cy='30%' r='70%'><stop offset='0%' stop-color='%239ee6ff'/><stop offset='55%' stop-color='%2338bdf8'/><stop offset='100%' stop-color='%230284c7'/></radialGradient></defs><path d='M8 36 C8 16, 20 7, 32 7 C44 7, 56 16, 56 36 C56 46, 46 50, 32 50 C18 50, 8 46, 8 36 Z' fill='url(%23rg)' stroke='rgba(255,255,255,0.45)' stroke-width='2'/><ellipse cx='23' cy='18' rx='7' ry='3.5' transform='rotate(-22 23 18)' fill='rgba(255,255,255,0.55)'/><path d='M20 31 L26 29 M38 29 L44 31' stroke='%230b0d14' stroke-width='3' stroke-linecap='round'/><ellipse cx='16' cy='35' rx='3' ry='1.5' fill='rgba(244,63,94,0.45)'/><ellipse cx='48' cy='35' rx='3' ry='1.5' fill='rgba(244,63,94,0.45)'/></svg>");
+  animation: rimuruBounce 1.15s infinite ease-in-out;
+  filter: drop-shadow(0 8px 14px rgba(56, 189, 248, 0.35));
+}
+
+@keyframes rimuruBounce {
+  0%, 100% { transform: translateY(0) scale(1.06, 0.92); }
+  45% { transform: translateY(-10px) scale(0.94, 1.07); }
+  55% { transform: translateY(-11px) scale(0.95, 1.05); }
+}
+
+/* 2. Masterpiece (★ 9.5+ & Favorite) Gold Border & Subtle Shimmer */
+#list.grid li.is-fav .poster,
+.poster-card.is-fav {
+  border-color: rgba(245, 197, 66, 0.42);
+  box-shadow: 0 0 0 1px rgba(245, 197, 66, 0.16), 0 8px 24px rgba(245, 197, 66, 0.12);
+}
+#list.grid li.is-fav:hover .poster,
+.poster-card.is-fav:hover {
+  border-color: rgba(245, 197, 66, 0.78);
+  box-shadow: 0 0 0 1px rgba(245, 197, 66, 0.3), 0 14px 34px rgba(245, 197, 66, 0.22);
+}
+#list.list li.is-fav {
+  border-color: rgba(245, 197, 66, 0.35);
+}
+
+/* 3. Similar Items / Recommendations inside Detail Sheet */
+.sh-similar-box {
+  margin: 18px 0 4px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.sh-sim-head {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink2);
+  margin-bottom: 10px;
+}
+.sh-sim-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.sh-sim-card {
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+.sh-sim-poster {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: transform 180ms var(--ease), border-color 180ms var(--ease);
+}
+.sh-sim-card:hover .sh-sim-poster {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+.sh-sim-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.sh-sim-sc {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  background: rgba(11, 13, 20, 0.84);
+  color: var(--gold);
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+.sh-sim-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.28;
+}
+.sh-sim-card:hover .sh-sim-title {
+  color: var(--ink);
+}
+
+/* 7. Local Search Result Counter Badge */
+.local-search-count {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 12. Guide Card NEW Badge & Reading Time */
+.tag.tag-new {
+  background: rgba(52, 211, 153, 0.16);
+  border-color: rgba(52, 211, 153, 0.38);
+  color: var(--ok);
+}
+.guide-read-time {
+  font-size: 0.75rem;
+  color: var(--ink3);
+  font-weight: 500;
+}
+
+/* Custom Feature: "Ne İzlemeliyim?" Wheel of Fortune Trigger & Modal */
+.shelf-head-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.wheel-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(105deg, rgba(88, 185, 255, 0.18) 0%, rgba(168, 85, 247, 0.22) 100%);
+  border: 1px solid rgba(88, 185, 255, 0.38);
+  color: #f4f6fb;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: transform 150ms var(--ease), border-color 150ms var(--ease), box-shadow 150ms var(--ease);
+}
+[data-theme="light"] .wheel-trigger-btn {
+  color: var(--ink);
+}
+.wheel-trigger-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px rgba(88, 185, 255, 0.25);
+}
+.wheel-ic {
+  display: inline-block;
+  transition: transform 350ms var(--ease);
+}
+.wheel-trigger-btn:hover .wheel-ic {
+  transform: rotate(180deg);
+}
+
+.wheel-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 230;
+  background: rgba(5, 7, 12, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeInSheet 180ms var(--ease);
+}
+.wheel-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: var(--radius-lg);
+  background: var(--bg-elev);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(88, 185, 255, 0.18);
+  padding: 24px 22px;
+  text-align: center;
+  animation: popInSheet 220ms var(--ease);
+}
+.wheel-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+.wheel-head {
+  margin-bottom: 16px;
+}
+.wheel-eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.wheel-head h2 {
+  margin: 0 0 4px;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.wheel-sub {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink2);
+  min-height: 22px;
+}
+.wheel-stage {
+  position: relative;
+  width: 340px;
+  height: 340px;
+  max-width: 78vw;
+  max-height: 78vw;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wheel-stage canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0 12px 38px rgba(0, 0, 0, 0.55);
+}
+.wheel-pointer {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-size: 1.45rem;
+  color: var(--gold);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.8));
+}
+.wheel-center-cap {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  background: #0b0d14;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.65);
+  transition: transform 150ms var(--ease), border-color 150ms var(--ease);
+}
+.wheel-center-cap:hover {
+  transform: scale(1.08);
+  border-color: var(--accent);
+}
+.wheel-winner-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(108deg, rgba(17, 21, 36, 0.95) 0%, rgba(45, 30, 91, 0.75) 100%);
+  border: 1px solid rgba(88, 185, 255, 0.4);
+  text-align: left;
+  animation: popInSheet 220ms var(--ease);
+}
+.ww-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.ww-cover {
+  width: 46px;
+  height: 66px;
+  border-radius: 7px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+.ww-info {
+  min-width: 0;
+}
+.ww-badge {
+  display: block;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  color: var(--gold);
+}
+.ww-title {
+  margin: 2px 0;
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ww-ep {
+  display: block;
+  font-size: 0.76rem;
+  color: rgba(226, 232, 245, 0.8);
+}
+.ww-open-btn {
+  flex-shrink: 0;
+  height: 34px;
+  padding: 0 13px;
+  font-size: 0.8rem;
+}
+.wheel-actions {
+  display: flex;
+  justify-content: center;
+}
+.wheel-spin-btn {
+  min-width: 180px;
+  height: 40px;
+  font-size: 0.92rem;
+}
+
+/* ==========================================================================
    RESPONSIVE (Single Unified Top Bar on Mobile & Desktop)
    ========================================================================== */
 @media (max-width: 768px) {
@@ -2602,5 +2949,7 @@ body.has-ambient-glow::before {
   #list.grid { grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 14px 10px; }
   .sheet-head { flex-direction: column; }
   .sheet-cover { width: 92px; }
+  .sh-sim-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wheel-winner-card { flex-direction: column; align-items: stretch; }
   .back-to-top { bottom: 20px; right: 16px; }
 }

@@ -557,66 +557,8 @@
         </div>
       `;
 
-      const queueAside = el('aside', 'app-queue');
-      queueAside.id = 'appQueue';
-      queueAside.setAttribute('aria-label', 'Devam ve Kuyruk');
-      queueAside.innerHTML = `
-        <div class="queue-header">
-          <div class="queue-title-wrap">
-            <span class="queue-title">Kuyruk & Devam</span>
-            <span class="queue-pill" id="queueActiveCount">...</span>
-          </div>
-          <div class="queue-header-actions">
-            <button type="button" class="queue-sq-btn" id="queueWheelBtn" title="Ne İzlemeliyim? Çarkı Çevir">🎡</button>
-            <button type="button" class="queue-sq-btn" id="queueToggleBtn" title="Kuyruğu Daralt/Genişlet">◫</button>
-          </div>
-        </div>
-        <div class="queue-now-playing-card" id="queueNowPlayingCard">
-          <div class="qnp-details"><span class="qnp-sub">Kuyruk yükleniyor...</span></div>
-        </div>
-        <div class="queue-sub-head">
-          <span>Sıradakiler</span>
-          <span id="queueNextCount"></span>
-        </div>
-        <div class="queue-list" id="queueItemsList"></div>
-      `;
-
       mainEl.parentNode.insertBefore(workspace, mainEl);
-      workspace.append(sidebar, mainEl, queueAside);
-
-      if (!document.getElementById('appPlayerDock')) {
-        const dock = el('footer', 'app-player-dock');
-        dock.id = 'appPlayerDock';
-        dock.setAttribute('aria-label', 'Medya Kontrol Paneli');
-        dock.innerHTML = `
-          <div class="player-dock-scrubber" id="playerDockScrubber" title="İlerleme Çubuğu">
-            <div class="player-dock-scrubber-fill" id="playerDockScrubberFill"></div>
-          </div>
-          <div class="player-dock-left">
-            <img class="player-dock-thumb" id="playerDockThumb" alt="" src="${root}assets/img/icon-192.png">
-            <div class="player-dock-meta">
-              <a class="player-dock-title" id="playerDockTitle" href="${root}anime/">Yükleniyor...</a>
-              <span class="player-dock-sub" id="playerDockSub">...</span>
-            </div>
-            <button type="button" class="player-dock-fav-btn" id="playerDockFavBtn" aria-label="Favorilere ekle" title="Favori">♥</button>
-          </div>
-          <div class="player-dock-center">
-            <button type="button" class="player-ctrl-btn" id="playerShuffleBtn" title="Rastgele (Shuffle)" aria-label="Rastgele">🔀</button>
-            <button type="button" class="player-ctrl-btn" id="playerPrevBtn" title="Önceki" aria-label="Önceki">⏮</button>
-            <button type="button" class="player-ctrl-btn play-btn" id="playerPlayBtn" title="Devam Et / Detay" aria-label="Oynat / Durdur">▶</button>
-            <button type="button" class="player-ctrl-btn" id="playerNextBtn" title="Sonraki" aria-label="Sonraki">⏭</button>
-            <button type="button" class="player-ctrl-btn wheel-btn" id="playerWheelBtn" title="Ne İzlemeliyim? Çarkı Çevir" aria-label="Çarkı Çevir">🎡</button>
-          </div>
-          <div class="player-dock-right">
-            <span class="player-score-badge" id="playerScoreBadge" title="Skor">★ 9.5</span>
-            <button type="button" class="player-queue-toggle-btn" id="playerQueueToggleBtn" title="Kuyruğu Göster/Gizle">
-              <span>◫</span>
-              <span>Kuyruk</span>
-            </button>
-          </div>
-        `;
-        document.body.appendChild(dock);
-      }
+      workspace.append(sidebar, mainEl);
 
       // Mobile horizontal pill strip right inside main top for touch ergonomics
       const mobStrip = el('nav', 'mobile-section-strip');
@@ -740,232 +682,6 @@
     addEventListener('scroll', upd, { passive: true });
     upd();
   }
-
-  // ============================================================================
-  // NUCLEAR V2 MEDIA ENGINE: PERSISTENT QUEUE & PLAYER CONTROLLER
-  // ============================================================================
-  window.TempestianPlayer = {
-    queue: [],
-    activeIndex: 0,
-    isPlaying: true,
-    _eventsBound: false,
-    init(items) {
-      if (!Array.isArray(items) || !items.length) return;
-      this.queue = items;
-      this.activeIndex = 0;
-      this.syncUI();
-      this.bindEvents();
-    },
-    getActive() {
-      return this.queue[this.activeIndex] || this.queue[0];
-    },
-    setActive(idx) {
-      if (idx >= 0 && idx < this.queue.length) {
-        this.activeIndex = idx;
-        this.syncUI();
-      }
-    },
-    next() {
-      if (!this.queue.length) return;
-      this.activeIndex = (this.activeIndex + 1) % this.queue.length;
-      this.syncUI();
-    },
-    prev() {
-      if (!this.queue.length) return;
-      this.activeIndex = (this.activeIndex - 1 + this.queue.length) % this.queue.length;
-      this.syncUI();
-    },
-    shuffle() {
-      if (this.queue.length <= 1) return;
-      let nextIdx;
-      do {
-        nextIdx = Math.floor(Math.random() * this.queue.length);
-      } while (nextIdx === this.activeIndex);
-      this.activeIndex = nextIdx;
-      this.syncUI();
-    },
-    togglePlay() {
-      this.isPlaying = !this.isPlaying;
-      const playBtns = document.querySelectorAll('#playerPlayBtn, #mpcPlayBtn');
-      playBtns.forEach(b => { if (b) b.textContent = this.isPlaying ? '▶' : '⏸'; });
-    },
-    syncUI() {
-      const cur = this.getActive();
-      if (!cur) return;
-
-      let progressTxt = 'Aktif Yapım';
-      let percent = 35;
-      let epCur = 1, epTotal = 12;
-      if (Array.isArray(cur.parts) && cur.parts.length) {
-        const activePart = cur.parts.find(p => p.status === 'CURRENT') || cur.parts[0];
-        if (activePart) {
-          epCur = activePart.watched || 0;
-          epTotal = activePart.episodes || 12;
-          percent = epTotal > 0 ? Math.min(100, Math.round((epCur / epTotal) * 100)) : 50;
-          progressTxt = `Bölüm ${epCur} / ${epTotal} · ${activePart.format || 'TV'}`;
-        }
-      } else if (cur.episodes) {
-        epTotal = cur.episodes;
-        percent = 50;
-        progressTxt = `${epTotal} Bölüm`;
-      }
-
-      const itemUrl = cur.url || (root + (cur._mediaType || 'anime') + '/#' + encodeURIComponent(cur.id || ''));
-      const imgUrl = resolveAsset(cur.image || cur.cover || 'assets/img/icon-512.png');
-      const scoreVal = typeof cur.score === 'number' ? cur.score.toFixed(1) : (cur.calculatedScore ? cur.calculatedScore.toFixed(1) : '9.5');
-
-      const dThumb = document.getElementById('playerDockThumb');
-      if (dThumb) dThumb.src = imgUrl;
-      const dTitle = document.getElementById('playerDockTitle');
-      if (dTitle) {
-        dTitle.textContent = cur.title || 'Başlıksız';
-        dTitle.href = itemUrl;
-      }
-      const dSub = document.getElementById('playerDockSub');
-      if (dSub) dSub.textContent = progressTxt;
-      const dScore = document.getElementById('playerScoreBadge');
-      if (dScore) dScore.textContent = `★ ${scoreVal}`;
-      const dFill = document.getElementById('playerDockScrubberFill');
-      if (dFill) dFill.style.width = `${percent}%`;
-
-      const qCard = document.getElementById('queueNowPlayingCard');
-      if (qCard) {
-        qCard.innerHTML = `
-          <div class="qnp-top">
-            <img class="qnp-thumb" src="${imgUrl}" alt="${esc(cur.title)}">
-            <div class="qnp-details">
-              <span class="qnp-badge">ŞU ANDA İZLENİYOR</span>
-              <a class="qnp-title" href="${itemUrl}">${esc(cur.title)}</a>
-              <span class="qnp-sub">${esc(progressTxt)}</span>
-            </div>
-          </div>
-          <div class="qnp-track-wrap">
-            <div class="qnp-track"><div class="qnp-track-fill" style="width: ${percent}%;"></div></div>
-            <div class="qnp-track-meta"><span>%${percent} tamamlandı</span><span>★ ${scoreVal}</span></div>
-          </div>
-          <div class="qnp-actions">
-            <a class="qnp-btn primary" href="${itemUrl}">▶ Devam Et</a>
-            <button type="button" class="qnp-btn" id="qnpNextTrackBtn">Sonraki ⏭</button>
-          </div>
-        `;
-        const qnpNext = qCard.querySelector('#qnpNextTrackBtn');
-        if (qnpNext) qnpNext.onclick = () => this.next();
-      }
-
-      const qList = document.getElementById('queueItemsList');
-      const qCount = document.getElementById('queueActiveCount');
-      const qNextCount = document.getElementById('queueNextCount');
-      if (qCount) qCount.textContent = `${this.queue.length} Aktif`;
-      if (qNextCount) qNextCount.textContent = `${this.queue.length - 1}`;
-      if (qList) {
-        qList.innerHTML = this.queue.map((it, idx) => {
-          if (idx === this.activeIndex) return '';
-          const itImg = resolveAsset(it.image || it.cover || 'assets/img/icon-192.png');
-          return `
-            <button type="button" class="queue-item" data-q-idx="${idx}">
-              <img class="queue-item-thumb" src="${itImg}" alt="">
-              <div class="queue-item-info">
-                <span class="queue-item-title">${esc(it.title)}</span>
-                <span class="queue-item-meta">${esc(it.status === 'watching' ? 'İzleniyor' : (it.status === 'paused' ? 'Beklemede' : 'Sıradaki'))}</span>
-              </div>
-              <span class="queue-item-play-btn">▶</span>
-            </button>
-          `;
-        }).join('');
-        qList.querySelectorAll('[data-q-idx]').forEach(btn => {
-          btn.onclick = () => this.setActive(Number(btn.dataset.qIdx));
-        });
-      }
-
-      const mpc = document.getElementById('mobilePlayerCard');
-      if (mpc) {
-        const mArt = document.getElementById('mpcArtwork');
-        if (mArt) mArt.src = imgUrl;
-        const mTitle = document.getElementById('mpcTitle');
-        if (mTitle) mTitle.textContent = cur.title;
-        const mSub = document.getElementById('mpcSub');
-        if (mSub) mSub.textContent = progressTxt;
-        const mFill = document.getElementById('mpcScrubberFill');
-        if (mFill) mFill.style.width = `${percent}%`;
-        const mCur = document.getElementById('mpcTimeCur');
-        if (mCur) mCur.textContent = `Bölüm ${epCur}`;
-        const mTot = document.getElementById('mpcTimeTotal');
-        if (mTot) mTot.textContent = `${epTotal} Bölüm`;
-        const mQpList = document.getElementById('mpcQpList');
-        if (mQpList) {
-          mQpList.innerHTML = this.queue.slice(0, 5).map((it, idx) => {
-            if (idx === this.activeIndex) return '';
-            const itImg = resolveAsset(it.image || it.cover || 'assets/img/icon-192.png');
-            return `
-              <button type="button" class="queue-item" data-q-idx="${idx}">
-                <img class="queue-item-thumb" src="${itImg}" alt="">
-                <div class="queue-item-info">
-                  <span class="queue-item-title">${esc(it.title)}</span>
-                  <span class="queue-item-meta">${esc(it.status === 'watching' ? 'İzleniyor' : 'Sıradaki')}</span>
-                </div>
-                <span class="queue-item-play-btn">▶</span>
-              </button>
-            `;
-          }).join('');
-          mQpList.querySelectorAll('[data-q-idx]').forEach(btn => {
-            btn.onclick = () => this.setActive(Number(btn.dataset.qIdx));
-          });
-        }
-      }
-    },
-    bindEvents() {
-      if (this._eventsBound) return;
-      this._eventsBound = true;
-      const pPlay = document.getElementById('playerPlayBtn');
-      if (pPlay) pPlay.onclick = () => this.togglePlay();
-      const pNext = document.getElementById('playerNextBtn');
-      if (pNext) pNext.onclick = () => this.next();
-      const pPrev = document.getElementById('playerPrevBtn');
-      if (pPrev) pPrev.onclick = () => this.prev();
-      const pShuf = document.getElementById('playerShuffleBtn');
-      if (pShuf) pShuf.onclick = () => this.shuffle();
-      const pWheel = document.getElementById('playerWheelBtn');
-      if (pWheel) pWheel.onclick = () => openWhatToWatchWheel(this.queue);
-
-      const mPlay = document.getElementById('mpcPlayBtn');
-      if (mPlay) mPlay.onclick = () => this.togglePlay();
-      const mNext = document.getElementById('mpcNextBtn');
-      if (mNext) mNext.onclick = () => this.next();
-      const mPrev = document.getElementById('mpcPrevBtn');
-      if (mPrev) mPrev.onclick = () => this.prev();
-      const mShuf = document.getElementById('mpcShuffleBtn');
-      if (mShuf) mShuf.onclick = () => this.shuffle();
-      const mWheel = document.getElementById('mpcWheelBtn');
-      if (mWheel) mWheel.onclick = () => openWhatToWatchWheel(this.queue);
-
-      const qToggle = document.getElementById('queueToggleBtn');
-      const pQToggle = document.getElementById('playerQueueToggleBtn');
-      const ws = document.getElementById('appWorkspace');
-      const toggleQ = () => {
-        if (!ws) return;
-        const isCol = ws.classList.toggle('queue-collapsed');
-        ls('tp_queue_collapsed', isCol ? '1' : '0');
-      };
-      if (qToggle) qToggle.onclick = toggleQ;
-      if (pQToggle) pQToggle.onclick = toggleQ;
-      if (ws && ls('tp_queue_collapsed') === '1') {
-        ws.classList.add('queue-collapsed');
-      }
-
-      const qWheel = document.getElementById('queueWheelBtn');
-      if (qWheel) qWheel.onclick = () => openWhatToWatchWheel(this.queue);
-
-      const scrubber = document.getElementById('playerDockScrubber');
-      if (scrubber) {
-        scrubber.onclick = e => {
-          const rect = scrubber.getBoundingClientRect();
-          const pct = Math.max(0, Math.min(100, Math.round(((e.clientX - rect.left) / rect.width) * 100)));
-          const fill = document.getElementById('playerDockScrubberFill');
-          if (fill) fill.style.width = `${pct}%`;
-        };
-      }
-    }
-  };
 
   // ============================================================================
   // STEP 5 & 7 — IN-PLACE HOME DETAIL MODAL SHEET & CLICKABLE GENRE CHIPS
@@ -2243,22 +1959,6 @@
     initTierExportButton();
     initLocalSearchEnhancements();
 
-    // Live Shelf Inline Search Filters (Nuclear v2 Shelf Architecture)
-    document.addEventListener('input', e => {
-      if (e.target && e.target.classList.contains('shelf-inline-filter')) {
-        const targetRailId = e.target.dataset.target;
-        const rail = document.getElementById(targetRailId);
-        if (!rail) return;
-        const q = e.target.value.trim().toLowerCase();
-        rail.querySelectorAll('.poster-card').forEach(card => {
-          const title = (card.querySelector('.poster-card-title')?.textContent || '').toLowerCase();
-          const meta = (card.querySelector('.poster-card-meta')?.textContent || '').toLowerCase();
-          const match = !q || title.includes(q) || meta.includes(q);
-          card.style.display = match ? '' : 'none';
-        });
-      }
-    });
-
     // Back to top
     let topBtn = null;
     window.addEventListener('scroll', () => {
@@ -2377,10 +2077,6 @@
             ...bookList.filter(isContinuing).map(x => ({ ...x, _mediaType: 'book' }))
           ];
           wheelBtn.onclick = () => openWhatToWatchWheel(activePool);
-
-          if (activePool.length && window.TempestianPlayer) {
-            window.TempestianPlayer.init(activePool);
-          }
         }
 
         const guideList = (guidesJson && (guidesJson.items || guidesJson.guides)) || [];
@@ -2394,22 +2090,6 @@
         if (ps && projectList.length) ps.textContent = `${projectList.length} açık kaynak proje · GitHub`;
 
         renderHomeGuidesAndProjects(guideList, projectList);
-      } else if (cur !== 'admin') {
-        // Hydrate Nuclear player & queue for subpages as well!
-        if (!cachedAnimeData) {
-          try {
-            const r = await fetch(root + 'data/anime.json');
-            if (r.ok) {
-              const j = await r.json();
-              cachedAnimeData = (j && (j.anime || j.items)) || [];
-              const isContinuing = x => x && (x.status === 'watching' || x.status === 'paused' || Boolean(x.next));
-              const pool = cachedAnimeData.filter(isContinuing).map(x => ({ ...x, _mediaType: 'anime' }));
-              if (pool.length && window.TempestianPlayer) {
-                window.TempestianPlayer.init(pool);
-              }
-            }
-          } catch (_) {}
-        }
       }
     } catch (e) {
       console.warn('Bootstrap error:', e);

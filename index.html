@@ -53,46 +53,6 @@
 </header>
 
 <main class="wrap">
-  <!-- Dedicated Retro Mobile Player Card (Image 1 Left Architecture) -->
-  <section class="mobile-player-card" id="mobilePlayerCard" aria-label="Şu Anda İzleniyor">
-    <div class="mpc-frame">
-      <div class="mpc-artwork-wrap">
-        <img class="mpc-artwork" id="mpcArtwork" alt="Kapak" src="assets/img/icon-512.png">
-        <span class="mpc-badge" id="mpcBadge">ŞU ANDA İZLENİYOR</span>
-      </div>
-      <div class="mpc-meta">
-        <div class="mpc-title-row">
-          <h2 class="mpc-title" id="mpcTitle">Tempestian</h2>
-          <button type="button" class="mpc-fav-btn" id="mpcFavBtn" aria-label="Favori">♥</button>
-        </div>
-        <p class="mpc-artist" id="mpcSub">Anime / Medya Arşivi</p>
-      </div>
-      <div class="mpc-scrubber-wrap">
-        <div class="mpc-scrubber-track">
-          <div class="mpc-scrubber-fill" id="mpcScrubberFill" style="width: 48%;"></div>
-        </div>
-        <div class="mpc-times">
-          <span id="mpcTimeCur">Bölüm 9</span>
-          <span id="mpcTimeTotal">26 Bölüm</span>
-        </div>
-      </div>
-      <div class="mpc-controls">
-        <button type="button" class="btn neo-sq-btn mpc-ctrl" id="mpcShuffleBtn" title="Rastgele" aria-label="Rastgele">🔀</button>
-        <button type="button" class="btn neo-sq-btn mpc-ctrl" id="mpcPrevBtn" title="Önceki" aria-label="Önceki">⏮</button>
-        <button type="button" class="btn neo-sq-btn mpc-ctrl mpc-play-btn" id="mpcPlayBtn" title="Devam Et" aria-label="Oynat / Durdur">▶</button>
-        <button type="button" class="btn neo-sq-btn mpc-ctrl" id="mpcNextBtn" title="Sonraki" aria-label="Sonraki">⏭</button>
-        <button type="button" class="btn neo-sq-btn mpc-ctrl" id="mpcWheelBtn" title="Çarkı Çevir" aria-label="Çark">🎡</button>
-      </div>
-    </div>
-    <div class="mpc-queue-preview" id="mpcQueuePreview">
-      <div class="mpc-qp-head">
-        <span>UP NEXT · SIRADAKİLER</span>
-        <span class="mpc-qp-count" id="mpcQpCount">Aktif</span>
-      </div>
-      <div class="mpc-qp-list" id="mpcQpList"></div>
-    </div>
-  </section>
-
   <section class="hero-spotlight" id="heroSpotlight" aria-label="Şu Anda İzleniyor">
     <img class="hero-bg-img" id="heroBgImg" alt="" decoding="async">
     <div class="hero-scrim" aria-hidden="true"></div>
@@ -126,13 +86,6 @@
         <h2 class="shelf-title" id="hhTitle">Öne Çıkan Başyapıtlar</h2>
         <span class="shelf-pill-badge">★ 9.5+</span>
       </div>
-      <div class="shelf-filter-group">
-        <div class="shelf-search-box">
-          <span class="shelf-search-ic">🔍</span>
-          <input type="text" class="shelf-inline-filter" data-target="hhRail" placeholder="Başyapıt filtrele..." aria-label="Bu rafta ara">
-        </div>
-        <button type="button" class="shelf-filter-funnel-btn" data-target="hhRail" title="Filtrele" aria-label="Filtrele">▽</button>
-      </div>
       <div class="shelf-head-controls">
         <a class="btn neo-pill-link" href="anime/">Tümü</a>
         <button type="button" class="btn neo-sq-btn shelf-nav-btn prev" data-rail="hhRail" aria-label="Sola kaydır">‹</button>
@@ -154,13 +107,6 @@
           <span>Ne İzlemeliyim?</span>
         </button>
       </div>
-      <div class="shelf-filter-group">
-        <div class="shelf-search-box">
-          <span class="shelf-search-ic">🔍</span>
-          <input type="text" class="shelf-inline-filter" data-target="continueRail" placeholder="Aktif yapımlarda ara..." aria-label="Bu rafta ara">
-        </div>
-        <button type="button" class="shelf-filter-funnel-btn" data-target="continueRail" title="Filtrele" aria-label="Filtrele">▽</button>
-      </div>
       <div class="shelf-head-controls">
         <a class="btn neo-pill-link" href="anime/">Liste</a>
         <button type="button" class="btn neo-sq-btn shelf-nav-btn prev" data-rail="continueRail" aria-label="Sola kaydır">‹</button>
@@ -177,13 +123,6 @@
       <div class="shelf-head-left">
         <h2 class="shelf-title">Filmler</h2>
         <span class="shelf-pill-badge">Sinema</span>
-      </div>
-      <div class="shelf-filter-group">
-        <div class="shelf-search-box">
-          <span class="shelf-search-ic">🔍</span>
-          <input type="text" class="shelf-inline-filter" data-target="moviesRail" placeholder="Filmlerde ara..." aria-label="Bu rafta ara">
-        </div>
-        <button type="button" class="shelf-filter-funnel-btn" data-target="moviesRail" title="Filtrele" aria-label="Filtrele">▽</button>
       </div>
       <div class="shelf-head-controls">
         <a class="btn neo-pill-link" href="film/">Tümü</a>

@@ -1118,6 +1118,8 @@
     };
     addEventListener('scroll', upd, { passive: true });
     upd();
+
+    bindThemeAndIcons();
   }
 
   // ============================================================================

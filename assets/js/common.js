@@ -2449,8 +2449,45 @@
   // ============================================================================
   // BOOTSTRAP & DATA HYDRATION
   // ============================================================================
+
+  // ============================================================================
+  // ULTRA-FAST ZERO-LATENCY INSTANT PREFETCH / HOVER SPECULATION
+  // Accelerates navigation for touch and mouse interactions across all browsers
+  // ============================================================================
+  function initInstantHoverPrefetch() {
+    const prefetchedUrls = new Set();
+    const prefetch = url => {
+      if (!url || prefetchedUrls.has(url)) return;
+      try {
+        const u = new URL(url, location.href);
+        if (u.origin !== location.origin || u.pathname.startsWith('/admin')) return;
+        prefetchedUrls.add(url);
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = u.href;
+        link.as = 'document';
+        document.head.appendChild(link);
+      } catch (e) {}
+    };
+
+    document.addEventListener('mouseover', e => {
+      const a = e.target.closest('a[href]');
+      if (a && a.href && !a.target && !a.download) {
+        prefetch(a.href);
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchstart', e => {
+      const a = e.target.closest('a[href]');
+      if (a && a.href && !a.target && !a.download) {
+        prefetch(a.href);
+      }
+    }, { passive: true });
+  }
+
   async function boot() {
     initImageFallback();
+    initInstantHoverPrefetch();
     initTopNav();
     initCommandPalette();
     initInteractions();

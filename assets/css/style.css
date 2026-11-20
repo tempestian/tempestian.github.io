@@ -4288,3 +4288,49 @@ body.has-ambient-glow::before {
     font-size: 0.8rem;
   }
 }
+
+
+/* ==========================================================================
+   SEAMLESS ZERO-FLICKER CROSS-DOCUMENT VIEW TRANSITIONS & INSTANT NAV
+   Makes page navigation feel completely native (SPA-like) without reloads
+   ========================================================================== */
+@view-transition {
+  navigation: auto;
+}
+
+/* Persistent Chrome Elements that do NOT animate or reload across pages */
+.bar {
+  view-transition-name: site-bar;
+}
+.app-sidebar {
+  view-transition-name: site-sidebar;
+}
+.app-aside {
+  view-transition-name: site-aside;
+}
+
+/* Ultra-fast, smooth cross-fade for the main content stage */
+::view-transition-old(root) {
+  animation: 140ms cubic-bezier(0.16, 1, 0.3, 1) both vt-fade-out;
+}
+::view-transition-new(root) {
+  animation: 160ms cubic-bezier(0.16, 1, 0.3, 1) both vt-fade-in;
+}
+
+@keyframes vt-fade-out {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.995); }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; transform: scale(0.995); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}

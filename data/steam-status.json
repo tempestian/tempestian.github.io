@@ -2,13 +2,9 @@
   "steamId": "76561199415059525",
   "personaName": "Tempestian",
   "avatar": "https://avatars.fastly.steamstatic.com/8f9816f51d7293088a0e21ef2fc1f6290577bc43_full.jpg",
-  "onlineState": "in-game",
-  "stateMessage": "Oyunda: Grand Theft Auto IV: The Complete Edition",
-  "inGame": {
-    "name": "Grand Theft Auto IV: The Complete Edition",
-    "appid": "12210",
-    "header": "https://cdn.cloudflare.steamstatic.com/steam/apps/12210/header.jpg"
-  },
+  "onlineState": "online",
+  "stateMessage": "Çevrimiçi",
+  "inGame": null,
   "recentGames": [
     {
       "appid": "12210",
@@ -27,5 +23,5 @@
     }
   ],
   "profileUrl": "https://steamcommunity.com/profiles/76561199415059525/",
-  "updatedAt": "2026-11-19T18:53:02.963Z"
+  "updatedAt": "2026-11-20T01:07:47.904Z"
 }

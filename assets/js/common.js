@@ -52,7 +52,8 @@
     chart: '<path d="M18 20V10M12 20V4M6 20v-6"/>',
     technopat: '<path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/><path d="m9 12 2 2 4-4"/>',
     github: '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>',
-    anilist: '<path d="m11.9 2 9.6 18.5H16.8l-2.1-4.2H9.3l-2.1 4.2H2.5L11.9 2zm0 6.8-2.6 5.5h5.2l-2.6-5.5z"/>'
+    anilist: '<path d="m11.9 2 9.6 18.5H16.8l-2.1-4.2H9.3l-2.1 4.2H2.5L11.9 2zm0 6.8-2.6 5.5h5.2l-2.6-5.5z"/>',
+    heart: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor"/>'
   };
   const icon = n => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[n] || P.dot) + '</svg>';
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -444,6 +445,12 @@
           { id: 'timeline', label: 'Zaman Tüneli', path: 'zaman-tuneli/', icon: 'clock' },
           { id: 'stats', label: 'İstatistikler', path: 'istatistik/', icon: 'chart' }
         ]
+      },
+      {
+        title: 'Özel',
+        items: [
+          { id: 'special-book', label: 'Miniğime', path: 'kitap/ozel/', icon: 'heart', badge: 'Özel' }
+        ]
       }
     ];
 
@@ -453,6 +460,7 @@
       if (id === 'series' && cur === 'dizi') return true;
       if (id === 'book' && cur === 'kitap') return true;
       if (id === 'guide' && cur === 'rehber') return true;
+      if (id === 'special-book' && (cur === 'special-book' || cur === 'kitap-ozel')) return true;
       return false;
     };
 
@@ -517,7 +525,7 @@
     `;
 
     // Build Left App Sidebar + Main Content Workspace Grid
-    const mainEl = document.querySelector('main.wrap, main.tensura-wrap');
+    const mainEl = document.querySelector('main.wrap, main.tensura-wrap, main.special-wrap');
     if (mainEl && !document.getElementById('appWorkspace')) {
       const workspace = el('div', 'app-workspace');
       workspace.id = 'appWorkspace';
@@ -2191,7 +2199,8 @@
       { id: 'guide', title: 'Rehber', desc: 'Technopat GNU/Linux rehberleri', path: 'rehber/', badge: 'Rehber' },
       { id: 'project', title: 'Projeler', desc: 'Açık kaynak depolar', path: 'projeler/', badge: 'GitHub' },
       { id: 'timeline', title: 'Zaman Tüneli', desc: 'Kronolojik akış', path: 'zaman-tuneli/', badge: 'Akış' },
-      { id: 'stats', title: 'İstatistikler', desc: 'Tüm arşiv özeti ve grafikler', path: 'istatistik/', badge: 'Metrik' }
+      { id: 'stats', title: 'İstatistikler', desc: 'Tüm arşiv özeti ve grafikler', path: 'istatistik/', badge: 'Metrik' },
+      { id: 'special-book', title: 'Miniğime', desc: 'Özel Anı Kitabı', path: 'kitap/ozel/', badge: 'Özel' }
     ];
 
     async function loadData() {
@@ -2277,7 +2286,7 @@
       addGroup('Bölümler', matchedSections, s => {
         const a = el('a', 'cmd-item');
         a.href = root + s.path;
-        a.innerHTML = `<div class="cmd-item-left"><span class="cmd-item-ic">${icon(s.id === 'movie' ? 'movie' : s.id === 'book' ? 'book' : s.id === 'project' ? 'code' : s.id === 'timeline' ? 'clock' : s.id === 'stats' ? 'chart' : s.id)}</span><div class="cmd-item-info"><span class="cmd-item-title">${esc(s.title)}</span><span class="cmd-item-desc">${esc(s.desc)}</span></div></div><span class="cmd-item-badge">${esc(s.badge)}</span>`;
+        a.innerHTML = `<div class="cmd-item-left"><span class="cmd-item-ic">${icon(s.id === 'movie' ? 'movie' : s.id === 'book' ? 'book' : s.id === 'project' ? 'code' : s.id === 'timeline' ? 'clock' : s.id === 'stats' ? 'chart' : s.id === 'special-book' ? 'heart' : s.id)}</span><div class="cmd-item-info"><span class="cmd-item-title">${esc(s.title)}</span><span class="cmd-item-desc">${esc(s.desc)}</span></div></div><span class="cmd-item-badge">${esc(s.badge)}</span>`;
         a.onclick = () => window.closeCommandPalette();
         return a;
       });

@@ -1098,6 +1098,19 @@ img { display: block; max-width: 100%; }
   border-color: var(--line);
   box-shadow: var(--neo-shadow-sm);
 }
+.sidebar-link[data-nav="special-book"] {
+  color: #ff8ca3;
+}
+.sidebar-link[data-nav="special-book"]:hover {
+  background: rgba(220, 38, 78, 0.12);
+  color: #ffb3c1;
+}
+.sidebar-link[data-nav="special-book"].active {
+  background: linear-gradient(135deg, rgba(220, 38, 78, 0.22), rgba(181, 29, 59, 0.32));
+  color: #fff;
+  border-color: rgba(255, 140, 163, 0.45);
+}
+
 .sb-ic {
   display: inline-flex;
   align-items: center;

@@ -2470,6 +2470,19 @@
       } catch (e) {}
     };
 
+    // Instant mousedown navigation: starts transition 80-120ms before click event finishes!
+    document.addEventListener('mousedown', e => {
+      if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+      const a = e.target.closest('a[href]');
+      if (!a || !a.href || a.target || a.download) return;
+      try {
+        const u = new URL(a.href, location.href);
+        if (u.origin === location.origin && !u.pathname.startsWith('/admin') && u.pathname !== location.pathname) {
+          location.href = u.href;
+        }
+      } catch (err) {}
+    });
+
     document.addEventListener('mouseover', e => {
       const a = e.target.closest('a[href]');
       if (a && a.href && !a.target && !a.download) {

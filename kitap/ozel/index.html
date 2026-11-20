@@ -14,7 +14,7 @@
 <link rel="icon" href="../../assets/img/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
 <script src="../../assets/js/theme.js"></script>
-<link rel="stylesheet" href="../../assets/css/style.css?v=4.1">
+<link rel="stylesheet" href="../../assets/css/style.css?v=4.2">
 <style>
 :root {
   --paper-red-1: #fff3f5;
@@ -402,7 +402,39 @@
 @keyframes paws { 0%,100% { transform: rotate(0deg); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
 @keyframes tail { 0% { transform: rotate(-10deg); } 100% { transform: rotate(12deg); } }
 </style>
-<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin*"}}]},"eagerness":"immediate"}]}</script>
+<script type="speculationrules">
+{
+  "prerender": [
+    {
+      "source": "list",
+      "urls": [
+        "/",
+        "/anime/",
+        "/film/",
+        "/dizi/",
+        "/kitap/",
+        "/manga/",
+        "/rehber/",
+        "/projeler/",
+        "/zaman-tuneli/",
+        "/istatistik/",
+        "/kitap/ozel/",
+        "/tensura-izleme-sirasi/"
+      ],
+      "eagerness": "immediate"
+    },
+    {
+      "where": {
+        "and": [
+          { "href_matches": "/*" },
+          { "not": { "href_matches": "/admin*" } }
+        ]
+      },
+      "eagerness": "immediate"
+    }
+  ]
+}
+</script>
 </head>
 <body data-root="../../" data-section="special-book">
 <header class="bar">
@@ -933,6 +965,6 @@
 
 })();
 </script>
-<script src="../../assets/js/common.js?v=4.1"></script>
+<script src="../../assets/js/common.js?v=4.2"></script>
 </body>
 </html>

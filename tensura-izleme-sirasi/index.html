@@ -14,7 +14,7 @@
 <script src="../assets/js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="../assets/css/style.css?v=4.1">
+<link rel="stylesheet" href="../assets/css/style.css?v=4.2">
 <style>
 .tensura-bar-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .tensura-brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1rem; color: var(--ink); letter-spacing: -0.02em; }
@@ -121,7 +121,39 @@
   .tensura-step-col { flex-direction: row; justify-content: flex-start; }
 }
 </style>
-<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin*"}}]},"eagerness":"immediate"}]}</script>
+<script type="speculationrules">
+{
+  "prerender": [
+    {
+      "source": "list",
+      "urls": [
+        "/",
+        "/anime/",
+        "/film/",
+        "/dizi/",
+        "/kitap/",
+        "/manga/",
+        "/rehber/",
+        "/projeler/",
+        "/zaman-tuneli/",
+        "/istatistik/",
+        "/kitap/ozel/",
+        "/tensura-izleme-sirasi/"
+      ],
+      "eagerness": "immediate"
+    },
+    {
+      "where": {
+        "and": [
+          { "href_matches": "/*" },
+          { "not": { "href_matches": "/admin*" } }
+        ]
+      },
+      "eagerness": "immediate"
+    }
+  ]
+}
+</script>
 </head>
 <body data-root="../" data-section="tensura-watch-order">
 <header class="bar on">
@@ -168,7 +200,7 @@
   <footer class="tensura-footer" id="tensuraFooter"></footer>
 </main>
 
-<script src="../assets/js/common.js?v=4.1"></script>
+<script src="../assets/js/common.js?v=4.2"></script>
 <script src="../assets/js/tensura.js?v=4.0"></script>
 </body>
 </html>

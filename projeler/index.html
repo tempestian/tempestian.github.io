@@ -26,7 +26,7 @@
 <script src="../assets/js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="../assets/css/style.css?v=4.1">
+<link rel="stylesheet" href="../assets/css/style.css?v=4.2">
 <style>
 #projectList.project-catalog-grid {
   display: grid;
@@ -87,7 +87,39 @@
 .project-upstream-line a:hover { text-decoration: underline; }
 .term-prompt { color: var(--accent); font-weight: 700; user-select: none; }
 </style>
-<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/admin*"}}]},"eagerness":"immediate"}]}</script>
+<script type="speculationrules">
+{
+  "prerender": [
+    {
+      "source": "list",
+      "urls": [
+        "/",
+        "/anime/",
+        "/film/",
+        "/dizi/",
+        "/kitap/",
+        "/manga/",
+        "/rehber/",
+        "/projeler/",
+        "/zaman-tuneli/",
+        "/istatistik/",
+        "/kitap/ozel/",
+        "/tensura-izleme-sirasi/"
+      ],
+      "eagerness": "immediate"
+    },
+    {
+      "where": {
+        "and": [
+          { "href_matches": "/*" },
+          { "not": { "href_matches": "/admin*" } }
+        ]
+      },
+      "eagerness": "immediate"
+    }
+  ]
+}
+</script>
 </head>
 <body data-root="../" data-section="project" data-data="../data/projects.json">
 <header class="bar">
@@ -134,7 +166,7 @@
 
 <nav id="dock" class="dock glass" aria-label="Bölümler" hidden></nav>
 
-<script src="../assets/js/common.js?v=4.1"></script>
+<script src="../assets/js/common.js?v=4.2"></script>
 <script src="../assets/js/project.js?v=4.0"></script>
 </body>
 </html>

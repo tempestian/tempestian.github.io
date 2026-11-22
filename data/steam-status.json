@@ -5,23 +5,7 @@
   "onlineState": "online",
   "stateMessage": "Çevrimiçi",
   "inGame": null,
-  "recentGames": [
-    {
-      "appid": "12210",
-      "name": "Grand Theft Auto IV: The Complete Edition",
-      "header": "https://cdn.cloudflare.steamstatic.com/steam/apps/12210/header.jpg"
-    },
-    {
-      "appid": "2483190",
-      "name": "Forza Horizon 6",
-      "header": "https://cdn.cloudflare.steamstatic.com/steam/apps/2483190/header.jpg"
-    },
-    {
-      "appid": "1372110",
-      "name": "JoJo's Bizarre Adventure: All-Star Battle R",
-      "header": "https://cdn.cloudflare.steamstatic.com/steam/apps/1372110/header.jpg"
-    }
-  ],
+  "recentGames": [],
   "profileUrl": "https://steamcommunity.com/profiles/76561199415059525/",
-  "updatedAt": "2026-11-21T19:59:44.978Z"
+  "updatedAt": "2026-11-22T00:17:07.637Z"
 }

@@ -2,8 +2,8 @@
   "steamId": "76561199415059525",
   "personaName": "Tempestian",
   "avatar": "https://avatars.fastly.steamstatic.com/8f9816f51d7293088a0e21ef2fc1f6290577bc43_full.jpg",
-  "onlineState": "offline",
-  "stateMessage": "Offline",
+  "onlineState": "online",
+  "stateMessage": "Çevrimiçi",
   "inGame": null,
   "recentGames": [
     {
@@ -23,5 +23,5 @@
     }
   ],
   "profileUrl": "https://steamcommunity.com/profiles/76561199415059525/",
-  "updatedAt": "2026-11-23T10:34:25.816Z"
+  "updatedAt": "2026-11-23T22:15:06.927Z"
 }

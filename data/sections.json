@@ -32,10 +32,10 @@
   "boxes": [
     {
       "id": "box-1793189451192",
-      "title": "One Piece izlemek mi?",
-      "badge": "Durum",
-      "text": "Aşırı yavaş ilerleyiş yüzünden One Piece izlemek tamamen zulüm ama bu kadar ilerlemişken devam etmeliyim...",
-      "icon": "anime",
+      "title": "The Kirito kim?",
+      "badge": "Derin düşünceler",
+      "text": "Böyle bir Technopat moderatörü tanımıyorum.",
+      "icon": "moon",
       "image": "",
       "url": "",
       "position": "above",
@@ -254,8 +254,7 @@
   "steam": {
     "enabled": true,
     "steamId": "76561199415059525",
-    "apiKey": "",
-    "proxyUrl": ""
+    "apiKey": ""
   },
   "secretBook": {
     "url": "kitap/ozel/",

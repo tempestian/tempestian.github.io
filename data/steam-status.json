@@ -2,13 +2,9 @@
   "steamId": "76561199415059525",
   "personaName": "Tempestian",
   "avatar": "https://avatars.fastly.steamstatic.com/8f9816f51d7293088a0e21ef2fc1f6290577bc43_full.jpg",
-  "onlineState": "in-game",
-  "stateMessage": "Oyunda: Persona 3 Reload",
-  "inGame": {
-    "name": "Persona 3 Reload",
-    "appid": "2161700",
-    "header": "https://cdn.cloudflare.steamstatic.com/steam/apps/2161700/header.jpg"
-  },
+  "onlineState": "online",
+  "stateMessage": "Çevrimiçi",
+  "inGame": null,
   "recentGames": [
     {
       "appid": "2161700",
@@ -27,5 +23,5 @@
     }
   ],
   "profileUrl": "https://steamcommunity.com/profiles/76561199415059525/",
-  "updatedAt": "2026-11-26T12:45:24.034Z"
+  "updatedAt": "2026-11-26T22:12:27.469Z"
 }

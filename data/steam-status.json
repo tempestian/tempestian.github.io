@@ -2,10 +2,19 @@
   "steamId": "76561199415059525",
   "personaName": "Tempestian",
   "avatar": "https://avatars.fastly.steamstatic.com/8f9816f51d7293088a0e21ef2fc1f6290577bc43_full.jpg",
-  "onlineState": "online",
-  "stateMessage": "Çevrimiçi",
-  "inGame": null,
+  "onlineState": "in-game",
+  "stateMessage": "Oyunda: Persona 3 Reload",
+  "inGame": {
+    "name": "Persona 3 Reload",
+    "appid": "2161700",
+    "header": "https://cdn.cloudflare.steamstatic.com/steam/apps/2161700/header.jpg"
+  },
   "recentGames": [
+    {
+      "appid": "2161700",
+      "name": "Persona 3 Reload",
+      "header": "https://cdn.cloudflare.steamstatic.com/steam/apps/2161700/header.jpg"
+    },
     {
       "appid": "12210",
       "name": "Grand Theft Auto IV: The Complete Edition",
@@ -15,13 +24,8 @@
       "appid": "2483190",
       "name": "Forza Horizon 6",
       "header": "https://cdn.cloudflare.steamstatic.com/steam/apps/2483190/header.jpg"
-    },
-    {
-      "appid": "1372110",
-      "name": "JoJo's Bizarre Adventure: All-Star Battle R",
-      "header": "https://cdn.cloudflare.steamstatic.com/steam/apps/1372110/header.jpg"
     }
   ],
   "profileUrl": "https://steamcommunity.com/profiles/76561199415059525/",
-  "updatedAt": "2026-11-26T03:11:36.980Z"
+  "updatedAt": "2026-11-26T12:45:24.034Z"
 }

@@ -174,8 +174,8 @@
       "3": 9,
       "4": 7,
       "5": 8,
-      "6": 15,
-      "7": 15,
+      "6": 16,
+      "7": 14,
       "8": 5,
       "9": 8,
       "10": 6
@@ -10374,7 +10374,7 @@
         "Psikolojik",
         "Doğaüstü"
       ],
-      "score": 7.5,
+      "score": 6.9,
       "parts": [
         {
           "id": 8460,
@@ -10407,14 +10407,14 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2011,
-          "score": 7.9,
+          "score": 7.2,
           "subScores": {
             "story": 8,
-            "world": 10,
+            "world": 7,
             "characters": 6,
             "visuals": 6,
             "sound": 8,
-            "enjoyment": 10
+            "enjoyment": 9
           },
           "adminModified": true
         },
@@ -10454,11 +10454,11 @@
       "addedAt": "2021-11",
       "subScores": {
         "story": 7.5,
-        "world": 9.1,
+        "world": 6.8,
         "characters": 6,
         "visuals": 6,
         "sound": 7.5,
-        "enjoyment": 9.1
+        "enjoyment": 8.3
       },
       "adminModified": true,
       "lockedFields": [

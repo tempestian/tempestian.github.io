@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "updated": "2026-11-22",
+  "updated": "2026-11-27",
   "source": "site-first:relations_only",
   "statsConfig": {
     "animeCountRule": "completed_season_or_movie",
@@ -10374,7 +10374,7 @@
         "Psikolojik",
         "Doğaüstü"
       ],
-      "score": 7.8,
+      "score": 7.5,
       "parts": [
         {
           "id": 8460,
@@ -10407,11 +10407,11 @@
           "status": "COMPLETED",
           "release": "FINISHED",
           "year": 2011,
-          "score": 8.3,
+          "score": 7.9,
           "subScores": {
             "story": 8,
             "world": 10,
-            "characters": 8,
+            "characters": 6,
             "visuals": 6,
             "sound": 8,
             "enjoyment": 10
@@ -10455,7 +10455,7 @@
       "subScores": {
         "story": 7.5,
         "world": 9.1,
-        "characters": 7.5,
+        "characters": 6,
         "visuals": 6,
         "sound": 7.5,
         "enjoyment": 9.1
@@ -10466,7 +10466,8 @@
         "score",
         "status",
         "genres",
-        "addedAt"
+        "addedAt",
+        "image"
       ]
     },
     {
